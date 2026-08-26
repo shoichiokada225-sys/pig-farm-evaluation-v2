@@ -108,7 +108,7 @@
     "name_vi": "Giữ sạch dụng cụ, bộ phận sinh dục ngoài và quản lý nhiệt độ tinh dịch",
     "kanten_vi": "Có giữ sạch dụng cụ và bộ phận sinh dục ngoài, bơm tinh chậm rãi, tránh làm ấm đột ngột và quản lý được nhiệt độ không.",
     "levels_vi": [
-     "Không làm sạch dụng cụ và bộ phận sinh dục ngoài, làm ấm tinh dịch đột ngột, gây bẩn ống thông và hỏng do nhiệt độ cao.",
+     "Không làm sạch dụng cụ và bộ phận sinh dục ngoài, làm ấm tinh dịch đột ngột, gây bẩn catheter và hỏng do nhiệt độ cao.",
      "Nếu có chỉ dẫn thì làm sạch, nhưng có bỏ sót việc quản lý nhiệt độ và tốc độ bơm.",
      "Nếu có chỉ dẫn thì giữ sạch dụng cụ và bộ phận sinh dục ngoài, bơm tinh được cơ bản một cách chậm rãi.",
      "Không cần chỉ dẫn cũng giữ sạch kỹ, không làm ấm tinh dịch đột ngột mà bơm chậm rãi.",
@@ -1471,9 +1471,9 @@
   ],
   "name_en": "PG (Prostaglandin) Injection",
   "purposeShort_en": "Synchronize farrowing timing to make farrowing management and attendance easier",
-  "name_vi": "Tiêm PG (prostaglandin) — gây đẻ (kích thích đẻ)",
+  "name_vi": "Tiêm PG (prostaglandin)",
   "purposeShort_vi": "Làm đồng đều thời điểm đẻ, giúp quản lý đẻ và trực đẻ dễ dàng hơn",
-  "name_id": "Penyuntikan PG (prostaglandin) — induksi kelahiran",
+  "name_id": "Penyuntikan PG (prostaglandin)",
   "purposeShort_id": "Menyeragamkan waktu melahirkan agar pengelolaan dan pendampingan kelahiran lebih mudah"
  },
  {
