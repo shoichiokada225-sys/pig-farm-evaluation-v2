@@ -1,0 +1,29 @@
+{
+  "name": "HSS 実技試験 V2",
+  "short_name": "実技V2",
+  "description": "作業別 従業員実技評価 V2（HSS認定制度）",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f2f5f3",
+  "theme_color": "#0f5c4a",
+  "lang": "ja",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "shortcuts": [
+    {
+      "name": "評価履歴を見る",
+      "short_name": "履歴",
+      "url": "./#pgHi",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "グラフを見る",
+      "short_name": "グラフ",
+      "url": "./#pgCh",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

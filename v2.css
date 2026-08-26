@@ -1,0 +1,40 @@
+/* v2.css — V2専用の追加スタイル（作業複数選択パネル・作業見出し・詳細の作業グループ） */
+
+/* 作業選択パネル */
+.wsel{padding:16px}
+.wsel-hd{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.wsel-hd h3{margin:0;font-size:1rem}
+.wsel-cnt{font-size:.8rem;font-weight:700;color:#fff;background:var(--brand,#177863);border-radius:999px;padding:2px 10px;min-height:0}
+.wsel-cnt:empty{display:none}
+.wsel-hint{font-size:.8rem;color:var(--sub,#54635d);margin:6px 0 10px}
+.wsel-acts{margin-top:10px;display:flex;justify-content:flex-end}
+
+.wcat{border:1px solid var(--line,#e3eae7);border-radius:10px;margin-bottom:8px;background:var(--bg2,#fff);overflow:hidden}
+.wcat summary{display:flex;align-items:center;justify-content:space-between;gap:8px;list-style:none;cursor:pointer;padding:10px 14px;font-weight:700;min-height:44px}
+.wcat summary::-webkit-details-marker{display:none}
+.wcat summary::before{content:'▸';margin-right:6px;color:var(--sub,#54635d);transition:transform .15s}
+.wcat[open] summary::before{transform:rotate(90deg)}
+.wcat-nm{flex:1}
+.wcat-ct{font-size:.75rem;color:var(--sub,#54635d);background:var(--bg3,#eef2f0);border-radius:999px;padding:2px 8px}
+.wcat-ct.has{color:#fff;background:var(--brand,#177863)}
+.wcat-ls{padding:4px 10px 10px;display:grid;grid-template-columns:1fr;gap:4px}
+@media(min-width:560px){.wcat-ls{grid-template-columns:1fr 1fr}}
+
+.wchk{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;cursor:pointer;min-height:44px;border:1px solid transparent}
+.wchk:hover{background:var(--bg3,#eef2f0)}
+.wchk.on{background:rgba(23,120,99,.08);border-color:rgba(23,120,99,.35)}
+.wchk input{width:20px;height:20px;accent-color:var(--brand,#177863);flex:none}
+.wchk-no{font-size:.7rem;font-weight:700;color:var(--sub,#54635d);background:var(--bg3,#eef2f0);border-radius:6px;padding:2px 6px;flex:none;min-width:26px;text-align:center}
+.wchk.on .wchk-no{color:#fff;background:var(--brand,#177863)}
+.wchk-nm{font-size:.9rem}
+
+/* 採点エリアの作業見出し */
+.wshd{display:flex;align-items:center;gap:10px;margin:22px 2px 10px;padding:10px 14px;border-radius:10px;background:var(--brand,#177863);color:#fff}
+.wshd:first-child{margin-top:6px}
+.wshd-no{font-size:.72rem;font-weight:700;background:rgba(255,255,255,.2);border-radius:6px;padding:2px 8px;letter-spacing:.03em}
+.wshd-nm{font-weight:800;font-size:1.02rem;flex:1}
+.wshd-cat{font-size:.72rem;opacity:.85}
+
+/* 詳細モーダルの作業グループ見出し */
+.dwh{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:14px 0 6px;padding:6px 10px;border-radius:8px;background:var(--bg3,#eef2f0);font-weight:700}
+.dwh-av{font-size:.8rem;color:var(--sub,#54635d);font-weight:700}
