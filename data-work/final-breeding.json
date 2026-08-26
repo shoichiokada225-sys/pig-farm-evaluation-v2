@@ -1,0 +1,1690 @@
+[
+ {
+  "id": "ai-insem",
+  "category": "breeding",
+  "no": "No.14",
+  "name": "AI（人工授精）注入作業",
+  "purposeShort": "受胎数・産子数を高く保ち、精液を無駄なく計画的に使う",
+  "gyomu": "14",
+  "aspects": [
+   {
+    "id": "prep-activity",
+    "name": "事前準備と精子活性の確認",
+    "kanten": "産歴・AI回数・本数を確認して器具をそろえ、注入前に顕微鏡で精子の活性を確認できるか。",
+    "levels": [
+     "母豚や本数を確かめず器具も不足したまま始め、活性確認を省いて悪い精液を使う。",
+     "指示があれば準備するが、本数の確認や活性チェックに抜けが多い。",
+     "指示があれば産歴・回数・本数を確認し、顕微鏡で活性を見てから注入に入れる。",
+     "指示がなくても対象母豚と必要本数を自分で確かめ、活性確認と保冷まで整えてから始める。",
+     "準備不足が受胎率と精液のムダに直結することを理解し、準備と活性確認の手順を新人に指導できる。"
+    ],
+    "name_en": "Advance preparation and checking sperm activity",
+    "kanten_en": "Can they check parity, AI count, and the number of doses, prepare the equipment, and check sperm activity under a microscope before insemination?",
+    "levels_en": [
+     "Starts without confirming the sows or the number of doses and with equipment missing, skips the activity check, and uses bad semen.",
+     "With guidance, prepares, but often misses checking the number of doses and the activity check.",
+     "With guidance, checks parity, AI count, and the number of doses, and can check activity under the microscope before starting insemination.",
+     "Independently confirms the target sows and the required number of doses, and gets everything ready including the activity check and cold storage before starting.",
+     "Understands that poor preparation directly lowers conception rates and wastes semen, and can teach new staff the preparation and activity-check procedure."
+    ],
+    "name_vi": "Chuẩn bị trước và kiểm tra hoạt lực tinh trùng",
+    "kanten_vi": "Có kiểm tra lứa đẻ, số lần AI, số liều để chuẩn bị dụng cụ, và kiểm tra hoạt lực tinh trùng bằng kính hiển vi trước khi bơm không.",
+    "levels_vi": [
+     "Bắt đầu mà không kiểm tra lợn nái và số liều, dụng cụ còn thiếu, bỏ qua kiểm tra hoạt lực nên dùng cả tinh dịch kém.",
+     "Nếu có chỉ dẫn thì chuẩn bị, nhưng hay bỏ sót việc kiểm tra số liều và hoạt lực.",
+     "Nếu có chỉ dẫn thì kiểm tra lứa đẻ, số lần, số liều, xem hoạt lực bằng kính hiển vi rồi mới vào bơm tinh.",
+     "Không cần chỉ dẫn cũng tự kiểm tra lợn nái đối tượng và số liều cần thiết, chuẩn bị xong cả kiểm tra hoạt lực và giữ lạnh rồi mới bắt đầu.",
+     "Hiểu việc chuẩn bị thiếu ảnh hưởng trực tiếp đến tỷ lệ thụ thai và lãng phí tinh dịch, và có thể hướng dẫn người mới trình tự chuẩn bị và kiểm tra hoạt lực."
+    ],
+    "name_id": "Persiapan awal dan pemeriksaan daya gerak sperma",
+    "kanten_id": "Apakah memeriksa paritas, jumlah AI, dan jumlah dosis untuk menyiapkan alat, serta memeriksa daya gerak sperma dengan mikroskop sebelum inseminasi.",
+    "levels_id": [
+     "Mulai tanpa memeriksa induk dan jumlah dosis, alat pun kurang, melewatkan pemeriksaan daya gerak sehingga memakai semen yang jelek.",
+     "Jika ada instruksi bisa menyiapkan, tetapi sering lalai memeriksa jumlah dosis dan daya gerak.",
+     "Jika ada instruksi, bisa memeriksa paritas, jumlah AI, dan jumlah dosis, lalu melihat daya gerak dengan mikroskop sebelum mulai inseminasi.",
+     "Tanpa instruksi pun, memastikan sendiri induk babi sasaran dan jumlah dosis yang diperlukan, serta menyiapkan semuanya termasuk pemeriksaan daya gerak dan penyimpanan dingin sebelum mulai.",
+     "Memahami bahwa persiapan yang kurang langsung menurunkan angka kebuntingan dan memboroskan semen, dan bisa mengajari karyawan baru urutan persiapan dan pemeriksaan daya gerak."
+    ]
+   },
+   {
+    "id": "acceptance",
+    "name": "許容確認と挿入の判断",
+    "kanten": "許容を確認してから無理なく挿入し、排卵タイミングに合った適期に注入できるか。",
+    "levels": [
+     "許容を確かめず無理に挿入し、排卵タイミングを無視して受胎率を落とす。",
+     "指示があれば実施するが、許容確認が不十分で適期を外すことが多い。",
+     "指示があれば許容を確認し、指示された適期にひと通り注入できる。",
+     "指示がなくても許容を確かめてから適期に注入し、無理な挿入を避ける。",
+     "許容開始からの排卵時間を理解し、適期の判断と丁寧な注入を新人に指導できる。"
+    ],
+    "name_en": "Confirming standing heat and judging insertion",
+    "kanten_en": "Can they confirm standing heat before inserting gently, and inseminate at the right time matched to ovulation?",
+    "levels_en": [
+     "Inserts forcibly without confirming standing heat and ignores ovulation timing, lowering the conception rate.",
+     "With guidance, performs the procedure, but standing heat checks are insufficient and the optimal window is often missed.",
+     "With guidance, confirms standing heat and can adequately inseminate at the instructed timing.",
+     "Independently confirms standing heat before inseminating at the right time, avoiding forced insertion.",
+     "Understands the time from onset of standing heat to ovulation, and can teach new staff timing judgment and careful insemination."
+    ],
+    "name_vi": "Kiểm tra phản xạ đứng yên và phán đoán đưa ống vào",
+    "kanten_vi": "Có kiểm tra phản xạ đứng yên rồi mới đưa ống vào nhẹ nhàng, bơm tinh đúng thời kỳ phù hợp với thời điểm rụng trứng không.",
+    "levels_vi": [
+     "Không kiểm tra phản xạ đứng yên mà đưa ống vào cưỡng ép, bỏ qua thời điểm rụng trứng làm giảm tỷ lệ thụ thai.",
+     "Nếu có chỉ dẫn thì làm được, nhưng kiểm tra phản xạ đứng yên chưa đủ, thường lỡ thời kỳ thích hợp.",
+     "Nếu có chỉ dẫn thì kiểm tra phản xạ đứng yên, bơm tinh được cơ bản vào thời kỳ được chỉ định.",
+     "Không cần chỉ dẫn cũng kiểm tra phản xạ đứng yên rồi bơm tinh đúng thời kỳ, tránh đưa ống vào cưỡng ép.",
+     "Hiểu thời gian rụng trứng tính từ khi bắt đầu chịu đực, và có thể hướng dẫn người mới cách phán đoán thời kỳ và bơm tinh nhẹ nhàng."
+    ],
+    "name_id": "Pemeriksaan refleks diam dan keputusan memasukkan kateter",
+    "kanten_id": "Apakah memeriksa refleks diam dulu baru memasukkan kateter tanpa paksaan, dan bisa memasukkan semen pada waktu yang tepat sesuai saat ovulasi.",
+    "levels_id": [
+     "Memasukkan kateter dengan paksa tanpa memeriksa refleks diam, mengabaikan saat ovulasi sehingga menurunkan angka kebuntingan.",
+     "Jika ada instruksi bisa melaksanakan, tetapi pemeriksaan refleks diam kurang sehingga sering meleset dari waktu yang tepat.",
+     "Jika ada instruksi, bisa memeriksa refleks diam dan memasukkan semen secara garis besar pada waktu yang diinstruksikan.",
+     "Tanpa instruksi pun, memeriksa refleks diam dulu baru memasukkan semen pada waktu yang tepat, dan menghindari pemasukan kateter secara paksa.",
+     "Memahami waktu ovulasi dihitung dari mulainya refleks diam, dan bisa mengajari karyawan baru cara menilai waktu yang tepat dan memasukkan semen dengan hati-hati."
+    ]
+   },
+   {
+    "id": "hygiene-temp",
+    "name": "器具・外陰部の清潔と精液の温度管理",
+    "kanten": "器具・外陰部を清潔に保ち、精液をゆっくり入れ、急激な加温を避けて温度管理できるか。",
+    "levels": [
+     "器具・外陰部を清潔にせず、精液を急激に加温してカテーテル汚染や高温障害を招く。",
+     "指示があれば清潔にするが、温度管理や注入速度に漏れがある。",
+     "指示があれば器具・外陰部を清潔に保ち、精液をひと通りゆっくり入れられる。",
+     "指示がなくても清潔を徹底し、精液を急激に加温せずゆっくり注入する。",
+     "子宮炎・高温障害の仕組みを理解し、清潔操作と温度管理を新人に指導できる。"
+    ],
+    "name_en": "Cleanliness of equipment and vulva, and semen temperature control",
+    "kanten_en": "Can they keep the equipment and vulva clean, introduce semen slowly, and control temperature while avoiding rapid warming?",
+    "levels_en": [
+     "Does not clean the equipment or vulva and warms semen rapidly, causing catheter contamination and heat damage.",
+     "With guidance, keeps things clean, but is inconsistent about temperature control and insemination speed.",
+     "With guidance, keeps the equipment and vulva clean and can adequately introduce the semen slowly.",
+     "Independently maintains strict cleanliness and inseminates slowly without rapidly warming the semen.",
+     "Understands the mechanisms of metritis and heat damage, and can teach new staff clean technique and temperature control."
+    ],
+    "name_vi": "Giữ sạch dụng cụ, bộ phận sinh dục ngoài và quản lý nhiệt độ tinh dịch",
+    "kanten_vi": "Có giữ sạch dụng cụ và bộ phận sinh dục ngoài, bơm tinh chậm rãi, tránh làm ấm đột ngột và quản lý được nhiệt độ không.",
+    "levels_vi": [
+     "Không làm sạch dụng cụ và bộ phận sinh dục ngoài, làm ấm tinh dịch đột ngột, gây bẩn ống thông và hỏng do nhiệt độ cao.",
+     "Nếu có chỉ dẫn thì làm sạch, nhưng có bỏ sót việc quản lý nhiệt độ và tốc độ bơm.",
+     "Nếu có chỉ dẫn thì giữ sạch dụng cụ và bộ phận sinh dục ngoài, bơm tinh được cơ bản một cách chậm rãi.",
+     "Không cần chỉ dẫn cũng giữ sạch kỹ, không làm ấm tinh dịch đột ngột mà bơm chậm rãi.",
+     "Hiểu cơ chế viêm tử cung và hỏng do nhiệt độ cao, và có thể hướng dẫn người mới thao tác sạch và quản lý nhiệt độ."
+    ],
+    "name_id": "Kebersihan alat dan vulva serta pengelolaan suhu semen",
+    "kanten_id": "Apakah menjaga alat dan vulva tetap bersih, memasukkan semen perlahan, dan mengelola suhu dengan menghindari pemanasan mendadak.",
+    "levels_id": [
+     "Tidak membersihkan alat dan vulva, memanaskan semen secara mendadak sehingga menyebabkan kontaminasi kateter dan kerusakan karena suhu tinggi.",
+     "Jika ada instruksi bisa menjaga kebersihan, tetapi sering lalai mengelola suhu dan kecepatan memasukkan semen.",
+     "Jika ada instruksi, bisa menjaga alat dan vulva tetap bersih, dan memasukkan semen secara garis besar dengan perlahan.",
+     "Tanpa instruksi pun, menjaga kebersihan dengan ketat, dan memasukkan semen perlahan tanpa memanaskannya mendadak.",
+     "Memahami mekanisme radang rahim dan kerusakan karena suhu tinggi, dan bisa mengajari karyawan baru kerja bersih dan pengelolaan suhu."
+    ]
+   },
+   {
+    "id": "natural-inflow",
+    "name": "自然流入での注入とカテーテル対応",
+    "kanten": "精液を無理に押し込まず自然に流し、注入後2〜3分さわらず、排尿・汚染時にカテーテルを正しく対応できるか。",
+    "levels": [
+     "精液を無理に押し込み、注入直後にカテーテルをさわり、汚れたカテーテルもそのまま使う。",
+     "指示があれば注入できるが、押し込みや注入後の放置時間にムラがあり、排尿時の対応は他者まかせ。",
+     "指示があれば自然流入で注入し、注入後2〜3分さわらずに待てる。",
+     "指示がなくても排尿時はカテーテルを上げ、汚れたら新品に交換し、自然流入を守って抜去まで丁寧に行う。",
+     "母豚が吸い込む仕組みと逆流・汚染の原因を理解し、注入とカテーテル対応のコツを新人に指導できる。"
+    ],
+    "name_en": "Insemination by natural inflow and catheter handling",
+    "kanten_en": "Can they let the semen flow in naturally without forcing it, leave the catheter untouched for 2-3 minutes after insemination, and handle the catheter correctly when the sow urinates or it gets contaminated?",
+    "levels_en": [
+     "Forces the semen in, touches the catheter right after insemination, and keeps using contaminated catheters.",
+     "With guidance, can inseminate, but tends to push the semen in, is inconsistent about the waiting time afterward, and leaves urination handling to others.",
+     "With guidance, inseminates by natural inflow and can wait 2-3 minutes without touching the catheter.",
+     "Independently raises the catheter when the sow urinates, replaces contaminated catheters with new ones, keeps to natural inflow, and removes the catheter carefully.",
+     "Understands how the sow draws the semen in and what causes backflow and contamination, and can teach new staff the knack of insemination and catheter handling."
+    ],
+    "name_vi": "Bơm tinh bằng cách để tự chảy và xử lý catheter",
+    "kanten_vi": "Có để tinh dịch tự chảy vào không ép mạnh, sau khi bơm 2〜3 phút không chạm vào, và xử lý đúng catheter khi lợn đi tiểu hoặc catheter bị bẩn không.",
+    "levels_vi": [
+     "Ép mạnh tinh dịch vào, vừa bơm xong đã chạm vào catheter, catheter bẩn vẫn dùng tiếp.",
+     "Nếu có chỉ dẫn thì bơm được, nhưng hay ép tinh vào, thời gian chờ sau khi bơm không đều, việc xử lý khi lợn đi tiểu thì phó mặc cho người khác.",
+     "Nếu có chỉ dẫn thì bơm bằng cách để tự chảy, và chờ được 2〜3 phút sau khi bơm mà không chạm vào.",
+     "Không cần chỉ dẫn cũng nâng catheter lên khi lợn đi tiểu, thay catheter mới khi bị bẩn, giữ cách để tự chảy và rút ra nhẹ nhàng.",
+     "Hiểu cơ chế lợn nái tự hút tinh vào và nguyên nhân trào ngược, nhiễm bẩn, và có thể hướng dẫn người mới mẹo bơm tinh và xử lý catheter."
+    ],
+    "name_id": "Inseminasi dengan aliran alami dan penanganan kateter",
+    "kanten_id": "Apakah membiarkan semen mengalir masuk secara alami tanpa didorong paksa, tidak menyentuh kateter selama 2〜3 menit setelah inseminasi, dan menangani kateter dengan benar saat babi kencing atau kateter kotor.",
+    "levels_id": [
+     "Mendorong semen dengan paksa, langsung menyentuh kateter begitu selesai, dan tetap memakai kateter yang kotor.",
+     "Jika ada instruksi bisa inseminasi, tetapi cenderung mendorong semen, waktu tunggu setelahnya tidak tetap, dan penanganan saat babi kencing diserahkan ke orang lain.",
+     "Jika ada instruksi, bisa inseminasi dengan aliran alami dan menunggu 2〜3 menit tanpa menyentuh kateter.",
+     "Tanpa instruksi pun, mengangkat kateter saat babi kencing, mengganti dengan yang baru jika kotor, menjaga aliran alami, dan mencabut kateter dengan hati-hati.",
+     "Memahami mekanisme induk babi menghisap semen serta penyebab aliran balik dan kontaminasi, dan bisa mengajari karyawan baru trik inseminasi dan penanganan kateter."
+    ]
+   },
+   {
+    "id": "record-restock",
+    "name": "記録・医療ゴミ処理と資材補充",
+    "kanten": "母豚カード・野帳をその場で記入し、医療ゴミを片付け、アル綿・ペーパー等を補充できるか。",
+    "levels": [
+     "記録をせず、医療ゴミや余ったカテーテルも放置し、資材が切れても補充しない。",
+     "指示されれば記入・片付けするが、記載漏れや補充忘れが多い。",
+     "指示があれば母豚カード・野帳を記入し、ゴミの片付けと補充までひと通りできる。",
+     "指示がなくても作業後すぐ記録し、医療ゴミを正しく処理して次回分の資材を補充しておく。",
+     "記録と資材管理が交配計画の土台であることを理解し、記入と片付けの型を新人に指導できる。"
+    ],
+    "name_en": "Records, medical waste disposal, and restocking supplies",
+    "kanten_en": "Can they fill in the sow card and field notebook on the spot, clear away medical waste, and restock alcohol cotton, paper, and other supplies?",
+    "levels_en": [
+     "Does not record, leaves medical waste and leftover catheters lying around, and does not restock supplies even when they run out.",
+     "With guidance, records and tidies up, but often leaves entries incomplete and forgets to restock.",
+     "With guidance, fills in the sow card and field notebook and can adequately tidy up the waste and restock.",
+     "Independently records right after the work, disposes of medical waste correctly, and restocks supplies for the next time.",
+     "Understands that records and supply management underpin the breeding plan, and can teach new staff the routine of recording and tidying up."
+    ],
+    "name_vi": "Ghi chép, xử lý rác y tế và bổ sung vật tư",
+    "kanten_vi": "Có ghi thẻ nái và sổ ghi chép ngay tại chỗ, dọn rác y tế, và bổ sung bông cồn, giấy v.v. không.",
+    "levels_vi": [
+     "Không ghi chép, bỏ mặc rác y tế và catheter còn thừa, vật tư hết cũng không bổ sung.",
+     "Nếu có chỉ dẫn thì ghi và dọn dẹp, nhưng hay ghi sót và quên bổ sung.",
+     "Nếu có chỉ dẫn thì ghi thẻ nái, sổ ghi chép, dọn rác và bổ sung được cơ bản.",
+     "Không cần chỉ dẫn cũng ghi chép ngay sau khi làm, xử lý đúng rác y tế và bổ sung sẵn vật tư cho lần sau.",
+     "Hiểu ghi chép và quản lý vật tư là nền tảng của kế hoạch phối giống, và có thể hướng dẫn người mới nề nếp ghi chép và dọn dẹp."
+    ],
+    "name_id": "Pencatatan, pembuangan sampah medis, dan pengisian ulang perlengkapan",
+    "kanten_id": "Apakah mengisi kartu induk dan buku catatan di tempat, membereskan sampah medis, dan mengisi ulang kapas alkohol, kertas, dan lainnya.",
+    "levels_id": [
+     "Tidak mencatat, membiarkan sampah medis dan kateter sisa, dan tidak mengisi ulang walau perlengkapan habis.",
+     "Jika ada instruksi bisa mencatat dan membereskan, tetapi catatan sering kurang dan lupa mengisi ulang.",
+     "Jika ada instruksi, bisa mengisi kartu induk dan buku catatan, membereskan sampah, dan mengisi ulang secara garis besar.",
+     "Tanpa instruksi pun, langsung mencatat setelah bekerja, membuang sampah medis dengan benar, dan menyiapkan perlengkapan untuk kali berikutnya.",
+     "Memahami bahwa pencatatan dan pengelolaan perlengkapan adalah dasar rencana perkawinan, dan bisa mengajari karyawan baru pola pencatatan dan beres-beres."
+    ]
+   }
+  ],
+  "name_en": "AI (artificial insemination)",
+  "purposeShort_en": "Keep conception and litter size high, and use semen efficiently and according to plan",
+  "name_vi": "Công việc bơm tinh AI (thụ tinh nhân tạo)",
+  "purposeShort_vi": "Giữ số con thụ thai và số con đẻ ra ở mức cao, dùng tinh dịch có kế hoạch, không lãng phí",
+  "name_id": "Pekerjaan inseminasi AI (inseminasi buatan)",
+  "purposeShort_id": "Menjaga angka kebuntingan dan jumlah anak tetap tinggi, dan memakai semen secara terencana tanpa pemborosan"
+ },
+ {
+  "id": "standing-check",
+  "category": "breeding",
+  "no": "No.33",
+  "name": "許容確認",
+  "purposeShort": "交配に入れる最適なタイミングを見極め、受胎率と産子数を上げる",
+  "gyomu": "33",
+  "aspects": [
+   {
+    "id": "target-list",
+    "name": "対象母豚の絞り込み",
+    "kanten": "前日の記録から離乳後3〜7日と交配後約21日の母豚を抜き出し、重点的に確認できるか。",
+    "levels": [
+     "記録を見ずに手当たり次第に見て、発情の来やすい母豚を確認し忘れる。",
+     "指示があれば対象を見るが、離乳日・前回交配日の確認に抜けが多い。",
+     "指示があれば前日の記録から対象母豚をひと通り抜き出して確認できる。",
+     "指示がなくても離乳後3〜7日・交配後約21日の母豚を自分でリストアップし、重点的に見る。",
+     "発情周期と発情が来やすい時期の理由を理解し、対象の絞り込み方を新人に指導できる。"
+    ],
+    "name_en": "Narrowing down the target sows",
+    "kanten_en": "Can they pick out sows at 3-7 days after weaning and around 21 days after mating from the previous day's records and check them with priority?",
+    "levels_en": [
+     "Looks at sows at random without checking the records, and forgets to check the sows most likely to come into heat.",
+     "With guidance, looks at the targets, but often misses checking weaning dates and previous mating dates.",
+     "With guidance, can adequately pick out the target sows from the previous day's records and check them.",
+     "Independently lists up sows at 3-7 days after weaning and around 21 days after mating, and checks them with priority.",
+     "Understands the estrous cycle and why heat tends to come at those times, and can teach new staff how to narrow down the targets."
+    ],
+    "name_vi": "Chọn lọc lợn nái đối tượng",
+    "kanten_vi": "Có xem ghi chép ngày hôm trước để lọc ra nái 3〜7 ngày sau cai sữa và nái khoảng 21 ngày sau phối, rồi kiểm tra trọng điểm không.",
+    "levels_vi": [
+     "Không xem ghi chép mà xem tùy tiện, quên kiểm tra những nái dễ động dục.",
+     "Nếu có chỉ dẫn thì xem nái đối tượng, nhưng hay bỏ sót việc kiểm tra ngày cai sữa và ngày phối lần trước.",
+     "Nếu có chỉ dẫn thì lọc ra được cơ bản nái đối tượng từ ghi chép ngày hôm trước để kiểm tra.",
+     "Không cần chỉ dẫn cũng tự lập danh sách nái 3〜7 ngày sau cai sữa và khoảng 21 ngày sau phối, kiểm tra trọng điểm.",
+     "Hiểu chu kỳ động dục và lý do động dục dễ đến vào các thời điểm đó, và có thể hướng dẫn người mới cách chọn lọc đối tượng."
+    ],
+    "name_id": "Menyaring induk babi sasaran",
+    "kanten_id": "Apakah dari catatan hari sebelumnya bisa memilih induk 3〜7 hari setelah sapih dan induk sekitar 21 hari setelah kawin, lalu memeriksanya secara khusus.",
+    "levels_id": [
+     "Melihat sembarangan tanpa membaca catatan, dan lupa memeriksa induk yang mudah birahi.",
+     "Jika ada instruksi bisa melihat sasaran, tetapi sering lalai memeriksa tanggal sapih dan tanggal kawin sebelumnya.",
+     "Jika ada instruksi, bisa memilih induk sasaran dari catatan hari sebelumnya dan memeriksanya secara garis besar.",
+     "Tanpa instruksi pun, membuat sendiri daftar induk 3〜7 hari setelah sapih dan sekitar 21 hari setelah kawin, lalu memeriksanya secara khusus.",
+     "Memahami siklus birahi dan alasan birahi mudah datang pada waktu-waktu itu, dan bisa mengajari karyawan baru cara menyaring sasaran."
+    ]
+   },
+   {
+    "id": "boar-backpressure",
+    "name": "雄豚接触＋背圧での確認",
+    "kanten": "雄豚を接触させ、背圧をかけて強く押しても動かず立つかを確かめられるか。",
+    "levels": [
+     "雄豚を近づけず外陰部の腫れだけで判断し、偽陰性・適期外授精を招く。",
+     "指示があれば背圧を確かめるが、雄豚接触が不十分で判断が甘い。",
+     "指示があれば雄豚接触＋背圧で許容をひと通り確認できる。",
+     "指示がなくても雄豚を接触させて背圧をかけ、静止するかを確実に確かめる。",
+     "許容反応の仕組みを理解し、確実な確認方法と適期の見極めを新人に指導できる。"
+    ],
+    "name_en": "Checking with boar contact plus back pressure",
+    "kanten_en": "Can they bring a boar into contact and apply back pressure to verify that the sow stands firm even when pushed hard?",
+    "levels_en": [
+     "Judges only by vulvar swelling without bringing a boar close, causing false negatives and mistimed insemination.",
+     "With guidance, checks back pressure, but boar contact is insufficient and judgment is unreliable.",
+     "With guidance, can adequately confirm standing heat with boar contact plus back pressure.",
+     "Independently brings the boar into contact, applies back pressure, and reliably verifies that the sow stands still.",
+     "Understands the mechanism of the standing reflex, and can teach new staff reliable checking methods and how to judge the optimal timing."
+    ],
+    "name_vi": "Kiểm tra bằng tiếp xúc lợn đực và ấn lưng",
+    "kanten_vi": "Có cho tiếp xúc lợn đực, ấn lưng mạnh để kiểm tra lợn có đứng yên không nhúc nhích không.",
+    "levels_vi": [
+     "Không cho lợn đực lại gần, chỉ phán đoán bằng độ sưng của bộ phận sinh dục ngoài, gây âm tính giả và phối sai thời kỳ.",
+     "Nếu có chỉ dẫn thì kiểm tra bằng ấn lưng, nhưng việc tiếp xúc lợn đực chưa đủ nên phán đoán còn non.",
+     "Nếu có chỉ dẫn thì kiểm tra được cơ bản phản xạ đứng yên bằng tiếp xúc lợn đực và ấn lưng.",
+     "Không cần chỉ dẫn cũng cho tiếp xúc lợn đực và ấn lưng, kiểm tra chắc chắn lợn có đứng yên không.",
+     "Hiểu cơ chế của phản xạ đứng yên, và có thể hướng dẫn người mới cách kiểm tra chắc chắn và nhìn ra thời kỳ thích hợp."
+    ],
+    "name_id": "Pemeriksaan dengan kontak babi jantan + tekanan punggung",
+    "kanten_id": "Apakah bisa mendekatkan babi jantan, memberi tekanan pada punggung, dan memastikan babi tetap berdiri diam walau ditekan kuat.",
+    "levels_id": [
+     "Tidak mendekatkan babi jantan dan hanya menilai dari bengkaknya vulva, sehingga terjadi negatif palsu dan inseminasi di luar waktu yang tepat.",
+     "Jika ada instruksi bisa memeriksa tekanan punggung, tetapi kontak dengan babi jantan kurang sehingga penilaiannya lemah.",
+     "Jika ada instruksi, bisa memeriksa refleks diam secara garis besar dengan kontak babi jantan + tekanan punggung.",
+     "Tanpa instruksi pun, mendekatkan babi jantan, memberi tekanan punggung, dan memastikan dengan pasti apakah babi berdiri diam.",
+     "Memahami mekanisme refleks diam saat birahi, dan bisa mengajari karyawan baru cara pemeriksaan yang pasti dan penentuan waktu yang tepat."
+    ]
+   },
+   {
+    "id": "sign-composite",
+    "name": "外陰部・粘液・行動の複合判断",
+    "kanten": "外陰部の色・腫れ、粘液の状態、行動の変化を合わせて見て、発情の時期を総合判断できるか。",
+    "levels": [
+     "外陰部の見た目だけで授精を決め、粘液や行動のサインを見ない。",
+     "指示があればサインを見るが、透明で糸を引く粘液と白くにごった粘液の区別など判断が曖昧。",
+     "指示があれば外陰部・粘液・行動をひと通り観察して判断材料にできる。",
+     "指示がなくても複数のサインを合わせて時期を判断し、見た目だけで早すぎる授精をしない。",
+     "各サインが発情のどの段階を示すかを理解し、複合判断の見方を新人に指導できる。"
+    ],
+    "name_en": "Combined judgment from vulva, mucus, and behavior",
+    "kanten_en": "Can they look at vulvar color and swelling, the state of the mucus, and behavioral changes together, and judge the stage of heat comprehensively?",
+    "levels_en": [
+     "Decides to inseminate from the look of the vulva alone, without looking at mucus or behavioral signs.",
+     "With guidance, looks at the signs, but judgment is vague, such as distinguishing clear stringy mucus from cloudy white mucus.",
+     "With guidance, can adequately observe the vulva, mucus, and behavior and use them as judgment material.",
+     "Independently combines multiple signs to judge the stage, and does not inseminate too early on looks alone.",
+     "Understands which stage of heat each sign indicates, and can teach new staff how to make the combined judgment."
+    ],
+    "name_vi": "Phán đoán tổng hợp từ âm hộ, dịch nhầy và hành vi",
+    "kanten_vi": "Có nhìn kết hợp màu và độ sưng của âm hộ, trạng thái dịch nhầy, thay đổi hành vi để phán đoán tổng hợp thời kỳ động dục không.",
+    "levels_vi": [
+     "Chỉ nhìn bề ngoài âm hộ đã quyết định phối, không xem dấu hiệu dịch nhầy và hành vi.",
+     "Nếu có chỉ dẫn thì xem các dấu hiệu, nhưng phán đoán còn mơ hồ như phân biệt dịch nhầy trong kéo sợi với dịch nhầy trắng đục.",
+     "Nếu có chỉ dẫn thì quan sát được cơ bản âm hộ, dịch nhầy, hành vi để làm căn cứ phán đoán.",
+     "Không cần chỉ dẫn cũng kết hợp nhiều dấu hiệu để phán đoán thời kỳ, không phối quá sớm chỉ dựa vào bề ngoài.",
+     "Hiểu mỗi dấu hiệu thể hiện giai đoạn nào của động dục, và có thể hướng dẫn người mới cách nhìn phán đoán tổng hợp."
+    ],
+    "name_id": "Penilaian gabungan dari vulva, lendir, dan perilaku",
+    "kanten_id": "Apakah melihat bersama warna dan bengkak vulva, keadaan lendir, serta perubahan perilaku untuk menilai masa birahi secara menyeluruh.",
+    "levels_id": [
+     "Memutuskan inseminasi hanya dari penampilan vulva, tanpa melihat tanda lendir dan perilaku.",
+     "Jika ada instruksi bisa melihat tanda-tandanya, tetapi penilaiannya samar, misalnya membedakan lendir bening yang menarik benang dengan lendir putih keruh.",
+     "Jika ada instruksi, bisa mengamati vulva, lendir, dan perilaku secara garis besar sebagai bahan penilaian.",
+     "Tanpa instruksi pun, menggabungkan beberapa tanda untuk menilai waktunya, dan tidak inseminasi terlalu awal hanya dari penampilan.",
+     "Memahami tiap tanda menunjukkan tahap birahi yang mana, dan bisa mengajari karyawan baru cara penilaian gabungan."
+    ]
+   },
+   {
+    "id": "quiet-timing",
+    "name": "静かな母豚・夜間発情の見落とし防止",
+    "kanten": "静かな母豚は外見・行動も合わせて見て、夜間・早朝発情を見落とさず確認できるか。",
+    "levels": [
+     "1日1回の確認だけで、夜間・早朝発情や静かな母豚の発情を見落とす。",
+     "指示があれば確認するが、静かな母豚や時間帯による見落としが多い。",
+     "指示があれば静かな母豚も外見・行動を合わせてひと通り確認できる。",
+     "指示がなくても確認回数を工夫し、静かな母豚も排尿等の行動から発情を捉える。",
+     "夜間発情や微弱発情の見落としリスクを理解し、確認のタイミングを新人に指導できる。"
+    ],
+    "name_en": "Avoiding missed quiet sows and night-time heats",
+    "kanten_en": "Can they assess quiet sows by appearance and behavior as well, and check without missing night-time or early-morning heats?",
+    "levels_en": [
+     "Checks only once a day and misses night or early-morning heats and the heats of quiet sows.",
+     "With guidance, checks, but often misses quiet sows and heats at certain times of day.",
+     "With guidance, can adequately check quiet sows using appearance and behavior together.",
+     "Independently varies the number and timing of checks, and detects heat in quiet sows from behaviors such as urination.",
+     "Understands the risk of missing night-time and weak heats, and can teach new staff the timing of checks."
+    ],
+    "name_vi": "Phòng bỏ sót lợn nái động dục thầm lặng và động dục ban đêm",
+    "kanten_vi": "Với lợn nái động dục thầm lặng có nhìn thêm cả bề ngoài và hành vi, không bỏ sót động dục ban đêm và sáng sớm không.",
+    "levels_vi": [
+     "Chỉ kiểm tra 1 lần mỗi ngày, bỏ sót động dục ban đêm, sáng sớm và động dục của lợn nái thầm lặng.",
+     "Nếu có chỉ dẫn thì kiểm tra, nhưng hay bỏ sót lợn nái thầm lặng và tùy theo giờ giấc.",
+     "Nếu có chỉ dẫn thì kiểm tra được cơ bản cả lợn nái thầm lặng bằng cách nhìn thêm bề ngoài và hành vi.",
+     "Không cần chỉ dẫn cũng thay đổi số lần kiểm tra, nhận ra động dục của lợn nái thầm lặng qua hành vi như đi tiểu.",
+     "Hiểu nguy cơ bỏ sót động dục ban đêm và động dục yếu, và có thể hướng dẫn người mới thời điểm kiểm tra."
+    ],
+    "name_id": "Mencegah terlewatnya induk pendiam dan birahi malam hari",
+    "kanten_id": "Apakah induk babi yang pendiam diperiksa juga dari penampilan dan perilakunya, dan birahi malam serta pagi buta tidak terlewat.",
+    "levels_id": [
+     "Hanya memeriksa sekali sehari, sehingga melewatkan birahi malam dan pagi buta serta birahi induk babi yang pendiam.",
+     "Jika ada instruksi bisa memeriksa, tetapi sering melewatkan induk yang pendiam atau karena jam pemeriksaan.",
+     "Jika ada instruksi, bisa memeriksa induk yang pendiam juga secara garis besar dengan melihat penampilan dan perilakunya.",
+     "Tanpa instruksi pun, mengatur frekuensi pemeriksaan, dan menangkap birahi induk yang pendiam dari perilaku seperti buang air kecil.",
+     "Memahami risiko terlewatnya birahi malam hari dan birahi yang lemah, dan bisa mengajari karyawan baru waktu-waktu pemeriksaan."
+    ]
+   },
+   {
+    "id": "time-record-report",
+    "name": "時刻の即時記録と未発情の報告",
+    "kanten": "許容確認した時刻をその場で記録・マーキングし、判定に迷う母豚と離乳後8日以上未発情の母豚を報告できるか。",
+    "levels": [
+     "時刻を記録せずマーキングもせず、発情が来ない母豚も報告せず放置する。",
+     "指示されれば記録するが、あとでまとめて書いて時刻が曖昧になり、報告漏れも多い。",
+     "指示があればその場で個体番号・日付・時刻を記録し、迷った母豚を報告できる。",
+     "指示がなくても許容ごとに即時記録・マーキングし、8日以上未発情の母豚をリスト化して報告する。",
+     "時刻がAIタイミングの基準になることを理解し、記録と報告の型を新人に指導できる。"
+    ],
+    "name_en": "Immediate time recording and reporting sows not in heat",
+    "kanten_en": "Can they record and mark the time of the standing heat check on the spot, and report sows they are unsure about and sows not in heat 8 or more days after weaning?",
+    "levels_en": [
+     "Records no times, does no marking, and leaves sows that do not come into heat unreported.",
+     "With guidance, records, but writes it all up later so times become vague, and often fails to report.",
+     "With guidance, records the ID number, date, and time on the spot and can report sows they were unsure about.",
+     "Independently records and marks each standing heat immediately, and lists and reports sows not in heat for 8 or more days.",
+     "Understands that the time becomes the basis for AI timing, and can teach new staff the routine of recording and reporting."
+    ],
+    "name_vi": "Ghi giờ ngay tại chỗ và báo cáo nái chưa động dục",
+    "kanten_vi": "Có ghi và đánh dấu ngay tại chỗ giờ kiểm tra phản xạ đứng yên, báo cáo nái khó phán đoán và nái quá 8 ngày sau cai sữa chưa động dục không.",
+    "levels_vi": [
+     "Không ghi giờ, không đánh dấu, nái không động dục cũng không báo cáo mà bỏ mặc.",
+     "Nếu có chỉ dẫn thì ghi, nhưng để sau mới ghi gộp nên giờ giấc mơ hồ, cũng hay quên báo cáo.",
+     "Nếu có chỉ dẫn thì ghi ngay tại chỗ số hiệu cá thể, ngày, giờ và báo cáo được nái khó phán đoán.",
+     "Không cần chỉ dẫn cũng ghi và đánh dấu ngay từng lần chịu đực, lập danh sách nái quá 8 ngày chưa động dục để báo cáo.",
+     "Hiểu giờ ghi được là căn cứ cho thời điểm AI, và có thể hướng dẫn người mới nề nếp ghi chép và báo cáo."
+    ],
+    "name_id": "Mencatat waktu langsung di tempat dan melaporkan induk yang belum birahi",
+    "kanten_id": "Apakah mencatat dan menandai langsung di tempat waktu pemeriksaan refleks diam, serta melaporkan induk yang sulit dinilai dan induk yang belum birahi lebih dari 8 hari setelah sapih.",
+    "levels_id": [
+     "Tidak mencatat waktu, tidak menandai, dan induk yang tidak birahi pun dibiarkan tanpa dilaporkan.",
+     "Jika ada instruksi bisa mencatat, tetapi menulisnya belakangan sekaligus sehingga waktunya samar, dan sering lupa melapor.",
+     "Jika ada instruksi, bisa mencatat nomor individu, tanggal, dan waktu langsung di tempat, serta melaporkan induk yang sulit dinilai.",
+     "Tanpa instruksi pun, mencatat dan menandai langsung setiap refleks diam, dan membuat daftar induk yang belum birahi lebih dari 8 hari untuk dilaporkan.",
+     "Memahami bahwa waktu itu menjadi patokan saat AI, dan bisa mengajari karyawan baru pola pencatatan dan pelaporan."
+    ]
+   }
+  ],
+  "name_en": "Standing heat check",
+  "purposeShort_en": "Identify the optimal timing for breeding and raise conception rate and litter size",
+  "name_vi": "Kiểm tra phản xạ đứng yên khi động dục",
+  "purposeShort_vi": "Nhìn ra thời điểm tốt nhất để phối giống, nâng tỷ lệ thụ thai và số con đẻ ra",
+  "name_id": "Pemeriksaan refleks diam saat birahi",
+  "purposeShort_id": "Menentukan waktu terbaik untuk perkawinan, menaikkan angka kebuntingan dan jumlah anak"
+ },
+ {
+  "id": "semen-check",
+  "category": "breeding",
+  "no": "No.03",
+  "name": "精液検査・反転",
+  "purposeShort": "問題のある精液を使用前に除外し、繁殖成績の低下を防ぐ",
+  "gyomu": "03",
+  "aspects": [
+   {
+    "id": "temp-control",
+    "name": "17℃保管と温度変化の抑制",
+    "kanten": "精液を17℃前後で保管し、検査前の温度を均一にして温度変化を最小限にできるか。",
+    "levels": [
+     "保管温度を気にせず、検査前の温度も不均一なまま評価して誤判定する。",
+     "指示があれば温度を確認するが、変化の抑制や均一化に漏れがある。",
+     "指示があれば17℃前後で保管し、ひと通り温度に配慮できる。",
+     "指示がなくても温度変化を最小限に抑え、検査前に温度を均一にする。",
+     "温度が精子品質に与える影響を理解し、保管・検査時の温度管理を新人に指導できる。"
+    ],
+    "name_en": "Storage at 17°C and minimizing temperature changes",
+    "kanten_en": "Can they store semen at around 17°C and equalize its temperature before testing, keeping temperature changes to a minimum?",
+    "levels_en": [
+     "Pays no attention to storage temperature and evaluates semen at uneven temperatures, causing misjudgment.",
+     "With guidance, checks the temperature, but is inconsistent about limiting changes and equalizing it.",
+     "With guidance, stores semen at around 17°C and can pay adequate attention to temperature.",
+     "Independently keeps temperature changes to a minimum and equalizes the temperature before testing.",
+     "Understands how temperature affects sperm quality, and can teach new staff temperature control during storage and testing."
+    ],
+    "name_vi": "Bảo quản 17℃ và hạn chế thay đổi nhiệt độ",
+    "kanten_vi": "Có bảo quản tinh dịch quanh 17℃, làm đều nhiệt độ trước khi kiểm tra và giữ thay đổi nhiệt độ ở mức nhỏ nhất không.",
+    "levels_vi": [
+     "Không quan tâm nhiệt độ bảo quản, đánh giá khi nhiệt độ trước kiểm tra chưa đều nên phán đoán sai.",
+     "Nếu có chỉ dẫn thì kiểm tra nhiệt độ, nhưng có bỏ sót việc hạn chế thay đổi và làm đều nhiệt độ.",
+     "Nếu có chỉ dẫn thì bảo quản quanh 17℃, chú ý được cơ bản đến nhiệt độ.",
+     "Không cần chỉ dẫn cũng giữ thay đổi nhiệt độ ở mức nhỏ nhất, làm đều nhiệt độ trước khi kiểm tra.",
+     "Hiểu nhiệt độ ảnh hưởng đến chất lượng tinh trùng, và có thể hướng dẫn người mới cách quản lý nhiệt độ khi bảo quản và kiểm tra."
+    ],
+    "name_id": "Penyimpanan 17°C dan menekan perubahan suhu",
+    "kanten_id": "Apakah menyimpan semen sekitar 17°C, menyeragamkan suhu sebelum pemeriksaan, dan menekan perubahan suhu seminimal mungkin.",
+    "levels_id": [
+     "Tidak peduli suhu penyimpanan, mengevaluasi dengan suhu sebelum pemeriksaan yang tidak seragam sehingga salah menilai.",
+     "Jika ada instruksi bisa memeriksa suhu, tetapi sering lalai menekan perubahan dan menyeragamkan suhu.",
+     "Jika ada instruksi, bisa menyimpan sekitar 17°C dan cukup memperhatikan suhu.",
+     "Tanpa instruksi pun, menekan perubahan suhu seminimal mungkin, dan menyeragamkan suhu sebelum pemeriksaan.",
+     "Memahami pengaruh suhu terhadap kualitas sperma, dan bisa mengajari karyawan baru pengelolaan suhu saat penyimpanan dan pemeriksaan."
+    ]
+   },
+   {
+    "id": "activity-mix",
+    "name": "精子活力確認と穏やかな反転",
+    "kanten": "顕微鏡で精子活力を確認し、反転を穏やかに行って精子へのダメージを防げるか。",
+    "levels": [
+     "活力確認を省き、新鮮精液を激しく振盪して精子を傷める。",
+     "指示があれば確認するが、反転の強さやタイミングに漏れがある。",
+     "指示があれば顕微鏡で活力を確認し、ひと通り穏やかに反転できる。",
+     "指示がなくても活力を確認し、反転を穏やかに行ってダメージを防ぐ。",
+     "精子活力と反転操作の関係を理解し、検査と反転の手技を新人に指導できる。"
+    ],
+    "name_en": "Checking sperm motility and gentle inversion",
+    "kanten_en": "Can they check sperm motility under a microscope and invert the container gently to prevent sperm damage?",
+    "levels_en": [
+     "Skips the motility check and shakes fresh semen violently, damaging the sperm.",
+     "With guidance, checks motility, but is inconsistent about the force and timing of inversion.",
+     "With guidance, checks motility under the microscope and can adequately invert the container gently.",
+     "Independently checks motility and inverts gently to prevent damage.",
+     "Understands the relationship between sperm motility and the inversion procedure, and can teach new staff the testing and inversion techniques."
+    ],
+    "name_vi": "Kiểm tra hoạt lực tinh trùng và đảo chai nhẹ nhàng",
+    "kanten_vi": "Có kiểm tra hoạt lực tinh trùng bằng kính hiển vi, đảo chai nhẹ nhàng để tránh làm tổn thương tinh trùng không.",
+    "levels_vi": [
+     "Bỏ qua kiểm tra hoạt lực, lắc mạnh tinh dịch tươi làm tổn thương tinh trùng.",
+     "Nếu có chỉ dẫn thì kiểm tra, nhưng có bỏ sót về độ mạnh và thời điểm đảo chai.",
+     "Nếu có chỉ dẫn thì kiểm tra hoạt lực bằng kính hiển vi, đảo chai được cơ bản một cách nhẹ nhàng.",
+     "Không cần chỉ dẫn cũng kiểm tra hoạt lực, đảo chai nhẹ nhàng để tránh tổn thương.",
+     "Hiểu quan hệ giữa hoạt lực tinh trùng và thao tác đảo chai, và có thể hướng dẫn người mới kỹ thuật kiểm tra và đảo chai."
+    ],
+    "name_id": "Pemeriksaan motilitas sperma dan membalik botol dengan lembut",
+    "kanten_id": "Apakah memeriksa motilitas (gerak) sperma dengan mikroskop, dan membalik botol dengan lembut untuk mencegah kerusakan sperma.",
+    "levels_id": [
+     "Melewatkan pemeriksaan motilitas, dan mengguncang semen segar dengan keras sehingga merusak sperma.",
+     "Jika ada instruksi bisa memeriksa, tetapi sering lalai soal kekuatan dan waktu membalik botol.",
+     "Jika ada instruksi, bisa memeriksa motilitas dengan mikroskop dan membalik botol secara garis besar dengan lembut.",
+     "Tanpa instruksi pun, memeriksa motilitas dan membalik botol dengan lembut sehingga mencegah kerusakan.",
+     "Memahami hubungan motilitas sperma dengan cara membalik botol, dan bisa mengajari karyawan baru teknik pemeriksaan dan pembalikan."
+    ]
+   },
+   {
+    "id": "reject-report",
+    "name": "不良精液の除外と報告",
+    "kanten": "運動率・凝集・色の異常から使えない精液を見分け、戻さず分けて上長へ報告できるか。",
+    "levels": [
+     "動きの悪い精液や色のおかしい精液も「もったいない」とそのまま使う。",
+     "指示があれば見るが、振動運動や凝集の見分けが曖昧で、報告は他者まかせ。",
+     "指示があれば運動率の基準に沿って判定し、問題のあるロットを分けて報告できる。",
+     "指示がなくても不良精液をインキュベーターに戻さず分け、すぐ上長に報告して使用を止める。",
+     "受胎しない損が精液1本より大きいことを理解し、判定基準と除外・報告の判断を新人に指導できる。"
+    ],
+    "name_en": "Excluding bad semen and reporting",
+    "kanten_en": "Can they identify unusable semen from motility rate, clumping, and abnormal color, set it aside without returning it, and report to the supervisor?",
+    "levels_en": [
+     "Uses semen with poor movement or odd color anyway, thinking it a waste to discard.",
+     "With guidance, looks, but is vague about telling vibrating-in-place movement and clumping apart, and leaves reporting to others.",
+     "With guidance, judges by the motility standard and can separate problem lots and report them.",
+     "Independently keeps bad semen out of the incubator, sets it aside, and reports to the supervisor immediately to stop its use.",
+     "Understands that a failed conception costs more than one dose of semen, and can teach new staff the judgment standards and the decisions to exclude and report."
+    ],
+    "name_vi": "Loại bỏ tinh dịch kém và báo cáo",
+    "kanten_vi": "Có phân biệt tinh dịch không dùng được qua tỷ lệ vận động, vón cục, màu bất thường, tách riêng không cho lại vào và báo cáo cấp trên không.",
+    "levels_vi": [
+     "Tinh dịch vận động kém hay màu lạ vẫn dùng vì thấy tiếc.",
+     "Nếu có chỉ dẫn thì xem, nhưng phân biệt vận động rung tại chỗ và vón cục còn mơ hồ, việc báo cáo thì phó mặc người khác.",
+     "Nếu có chỉ dẫn thì phán định theo tiêu chuẩn tỷ lệ vận động, tách riêng lô có vấn đề và báo cáo được.",
+     "Không cần chỉ dẫn cũng không cho tinh dịch kém lại vào incubator, tách riêng và báo ngay cấp trên để ngừng sử dụng.",
+     "Hiểu thiệt hại khi không thụ thai lớn hơn một liều tinh, và có thể hướng dẫn người mới tiêu chuẩn phán định và cách quyết định loại bỏ, báo cáo."
+    ],
+    "name_id": "Menyingkirkan semen jelek dan melapor",
+    "kanten_id": "Apakah bisa membedakan semen yang tidak bisa dipakai dari daya gerak, gumpalan, dan warna yang tidak normal, memisahkannya tanpa mengembalikan, dan melapor ke atasan.",
+    "levels_id": [
+     "Semen yang geraknya jelek atau warnanya aneh tetap dipakai karena merasa sayang.",
+     "Jika ada instruksi bisa melihat, tetapi samar membedakan gerak bergetar di tempat dan gumpalan, dan pelaporan diserahkan ke orang lain.",
+     "Jika ada instruksi, bisa menilai sesuai standar daya gerak, memisahkan lot yang bermasalah, dan melaporkannya.",
+     "Tanpa instruksi pun, tidak mengembalikan semen jelek ke inkubator, memisahkannya, dan segera melapor ke atasan untuk menghentikan pemakaiannya.",
+     "Memahami bahwa kerugian gagal bunting lebih besar daripada satu dosis semen, dan bisa mengajari karyawan baru standar penilaian serta keputusan menyingkirkan dan melapor."
+    ]
+   },
+   {
+    "id": "expiry-fifo",
+    "name": "使用期限の管理（先入れ先出し）",
+    "kanten": "ラベルの使用期限を確認して期限が近いものを手前に置き、期限切れを絶対に使わず廃棄・記録できるか。",
+    "levels": [
+     "期限を見ずに使い、期限切れの精液も気づかずに使う。",
+     "指示があれば期限を見るが、置き直しや廃棄の記録に抜けが多い。",
+     "指示があれば期限を確認し、先入れ先出しでひと通り並べ替えられる。",
+     "指示がなくても期限の近いものを手前に置き、期限切れは廃棄して記録に残す。",
+     "使用期限と精子品質の関係を理解し、先入れ先出しの管理を新人に指導できる。"
+    ],
+    "name_en": "Managing expiration dates (first-in, first-out)",
+    "kanten_en": "Can they check the expiration date on the label, place those expiring soon at the front, never use expired semen, and discard and record it?",
+    "levels_en": [
+     "Uses semen without looking at the dates, and uses expired semen without noticing.",
+     "With guidance, looks at the dates, but often misses rearranging and recording disposals.",
+     "With guidance, checks the dates and can adequately rearrange on a first-in, first-out basis.",
+     "Independently places semen expiring soon at the front, and discards expired semen and leaves a record.",
+     "Understands the relationship between expiration dates and sperm quality, and can teach new staff first-in, first-out management."
+    ],
+    "name_vi": "Quản lý hạn sử dụng (nhập trước xuất trước)",
+    "kanten_vi": "Có kiểm tra hạn sử dụng trên nhãn, đặt loại gần hết hạn ra phía trước, tuyệt đối không dùng loại hết hạn mà hủy bỏ và ghi lại không.",
+    "levels_vi": [
+     "Không xem hạn mà dùng, loại hết hạn cũng dùng mà không nhận ra.",
+     "Nếu có chỉ dẫn thì xem hạn, nhưng hay bỏ sót việc xếp lại và ghi chép hủy bỏ.",
+     "Nếu có chỉ dẫn thì kiểm tra hạn, xếp lại được cơ bản theo nhập trước xuất trước.",
+     "Không cần chỉ dẫn cũng đặt loại gần hết hạn ra phía trước, hủy bỏ loại hết hạn và ghi lại.",
+     "Hiểu quan hệ giữa hạn sử dụng và chất lượng tinh trùng, và có thể hướng dẫn người mới cách quản lý nhập trước xuất trước."
+    ],
+    "name_id": "Pengelolaan tanggal kedaluwarsa (masuk dulu keluar dulu)",
+    "kanten_id": "Apakah memeriksa tanggal kedaluwarsa pada label, meletakkan yang hampir habis masa pakainya di depan, sama sekali tidak memakai yang kedaluwarsa, serta membuang dan mencatatnya.",
+    "levels_id": [
+     "Memakai tanpa melihat tanggal, dan memakai semen kedaluwarsa tanpa sadar.",
+     "Jika ada instruksi bisa melihat tanggal, tetapi sering lalai menata ulang dan mencatat pembuangan.",
+     "Jika ada instruksi, bisa memeriksa tanggal dan menata ulang secara garis besar dengan cara masuk dulu keluar dulu.",
+     "Tanpa instruksi pun, meletakkan yang hampir kedaluwarsa di depan, membuang yang kedaluwarsa, dan meninggalkan catatan.",
+     "Memahami hubungan tanggal kedaluwarsa dengan kualitas sperma, dan bisa mengajari karyawan baru pengelolaan masuk dulu keluar dulu."
+    ]
+   },
+   {
+    "id": "record-equip",
+    "name": "検査記録と機器の点検",
+    "kanten": "温度・ロット別の検査結果を毎回記録し、レンズ清掃・扉閉め・電源プラグの確認まで行えるか。",
+    "levels": [
+     "温度も検査結果も記録せず、扉の閉め忘れやプラグ抜けにも気づかない。",
+     "指示されれば記録するが、ロット番号や判定の記載漏れが多く、片付けも不十分。",
+     "指示があれば温度と検査結果をロットごとに記録し、レンズ清掃・扉・プラグの確認までできる。",
+     "指示がなくても毎朝の温度記録と検査記録を続け、「昨日より悪い」変化に気づいて相談する。",
+     "プラグ抜け等が精液全損につながることを理解し、記録と機器点検の習慣を新人に指導できる。"
+    ],
+    "name_en": "Test records and equipment checks",
+    "kanten_en": "Can they record the temperature and per-lot test results every time, and go as far as cleaning the lens, closing the door, and checking the power plug?",
+    "levels_en": [
+     "Records neither temperature nor test results, and does not notice the door left open or the plug pulled out.",
+     "With guidance, records, but often omits lot numbers and judgments, and tidying up is incomplete.",
+     "With guidance, records temperature and test results per lot, and can check the lens cleaning, the door, and the plug.",
+     "Independently keeps up the daily morning temperature and test records, notices changes such as 'worse than yesterday', and consults.",
+     "Understands that a pulled plug can mean total loss of the semen, and can teach new staff the habit of recording and equipment checks."
+    ],
+    "name_vi": "Ghi chép kiểm tra và kiểm tra máy móc",
+    "kanten_vi": "Có ghi mỗi lần kết quả kiểm tra theo nhiệt độ và từng lô, làm đến cả vệ sinh ống kính, đóng cửa, kiểm tra phích cắm điện không.",
+    "levels_vi": [
+     "Không ghi nhiệt độ lẫn kết quả kiểm tra, cửa quên đóng hay phích cắm tuột cũng không nhận ra.",
+     "Nếu có chỉ dẫn thì ghi, nhưng hay ghi sót số lô và kết luận, dọn dẹp cũng chưa đủ.",
+     "Nếu có chỉ dẫn thì ghi nhiệt độ và kết quả theo từng lô, làm được đến vệ sinh ống kính, kiểm tra cửa và phích cắm.",
+     "Không cần chỉ dẫn cũng duy trì ghi nhiệt độ mỗi sáng và ghi kết quả kiểm tra, nhận ra thay đổi như 'kém hơn hôm qua' và trao đổi.",
+     "Hiểu tuột phích cắm v.v. có thể làm hỏng toàn bộ tinh dịch, và có thể hướng dẫn người mới thói quen ghi chép và kiểm tra máy móc."
+    ],
+    "name_id": "Catatan pemeriksaan dan pengecekan alat",
+    "kanten_id": "Apakah setiap kali mencatat suhu dan hasil pemeriksaan per lot, serta sampai membersihkan lensa, menutup pintu, dan memeriksa steker listrik.",
+    "levels_id": [
+     "Tidak mencatat suhu maupun hasil pemeriksaan, dan tidak sadar pintu lupa ditutup atau steker terlepas.",
+     "Jika ada instruksi bisa mencatat, tetapi nomor lot dan keputusan sering tidak ditulis, dan beres-beresnya kurang.",
+     "Jika ada instruksi, bisa mencatat suhu dan hasil pemeriksaan per lot, serta memeriksa sampai kebersihan lensa, pintu, dan steker.",
+     "Tanpa instruksi pun, terus mencatat suhu tiap pagi dan hasil pemeriksaan, menyadari perubahan seperti 'lebih jelek dari kemarin' dan berkonsultasi.",
+     "Memahami bahwa steker terlepas dan sejenisnya bisa merusak seluruh semen, dan bisa mengajari karyawan baru kebiasaan mencatat dan mengecek alat."
+    ]
+   }
+  ],
+  "name_en": "Semen check and inversion",
+  "purposeShort_en": "Exclude problem semen before use and prevent declines in reproductive performance",
+  "name_vi": "Kiểm tra tinh dịch và đảo chai tinh",
+  "purposeShort_vi": "Loại bỏ tinh dịch có vấn đề trước khi dùng, ngăn thành tích sinh sản giảm sút",
+  "name_id": "Pemeriksaan semen dan membalik botol semen",
+  "purposeShort_id": "Menyingkirkan semen yang bermasalah sebelum dipakai, mencegah turunnya hasil reproduksi"
+ },
+ {
+  "id": "semen-mix",
+  "category": "breeding",
+  "no": "No.17",
+  "name": "精液攪拌",
+  "purposeShort": "精子濃度を均一化する",
+  "gyomu": "17",
+  "aspects": [
+   {
+    "id": "temp-check",
+    "name": "保管温度の確認と逸脱時の対応",
+    "kanten": "攪拌前にインキュベーターが17℃前後にあるか確認・記録し、範囲を外れていたら使う前に上長へ報告できるか。",
+    "levels": [
+     "温度計を見ずに攪拌を始め、温度が外れていても気にせず使わせてしまう。",
+     "指示があれば温度を見るが、記録や逸脱時の報告に抜けがある。",
+     "指示があれば温度を確認・記録し、範囲外のときは報告してから進められる。",
+     "指示がなくても毎回温度を確かめ、逸脱時は精液を使う前に必ず報告して対応につなげる。",
+     "温度逸脱が精子に与えるダメージを理解し、確認と報告の判断基準を新人に指導できる。"
+    ],
+    "name_en": "Checking storage temperature and responding to deviations",
+    "kanten_en": "Can they check and record that the incubator is at around 17°C before mixing, and report to the supervisor before use if it is out of range?",
+    "levels_en": [
+     "Starts mixing without looking at the thermometer, and lets the semen be used even when the temperature is off.",
+     "With guidance, looks at the temperature, but misses recording it and reporting deviations.",
+     "With guidance, checks and records the temperature, and can report before proceeding when it is out of range.",
+     "Independently checks the temperature every time, and always reports deviations before the semen is used so action can be taken.",
+     "Understands the damage temperature deviations do to sperm, and can teach new staff the criteria for checking and reporting."
+    ],
+    "name_vi": "Kiểm tra nhiệt độ bảo quản và xử lý khi lệch chuẩn",
+    "kanten_vi": "Trước khi lắc có kiểm tra, ghi lại incubator có ở quanh 17℃ không, nếu ra ngoài phạm vi thì báo cấp trên trước khi dùng không.",
+    "levels_vi": [
+     "Không nhìn nhiệt kế đã bắt đầu lắc, nhiệt độ lệch cũng mặc kệ để dùng.",
+     "Nếu có chỉ dẫn thì xem nhiệt độ, nhưng có bỏ sót việc ghi lại và báo cáo khi lệch.",
+     "Nếu có chỉ dẫn thì kiểm tra, ghi nhiệt độ, khi ra ngoài phạm vi thì báo cáo rồi mới tiến hành.",
+     "Không cần chỉ dẫn cũng kiểm tra nhiệt độ mỗi lần, khi lệch chuẩn nhất định báo cáo trước khi dùng tinh để kịp xử lý.",
+     "Hiểu nhiệt độ lệch chuẩn gây hại cho tinh trùng thế nào, và có thể hướng dẫn người mới tiêu chí kiểm tra và báo cáo."
+    ],
+    "name_id": "Memeriksa suhu penyimpanan dan menangani penyimpangan",
+    "kanten_id": "Apakah sebelum mengaduk memeriksa dan mencatat inkubator berada sekitar 17°C, dan jika keluar dari rentang, melapor ke atasan sebelum dipakai.",
+    "levels_id": [
+     "Mulai mengaduk tanpa melihat termometer, dan walau suhunya melenceng tetap membiarkannya dipakai.",
+     "Jika ada instruksi bisa melihat suhu, tetapi sering lalai mencatat dan melapor saat menyimpang.",
+     "Jika ada instruksi, bisa memeriksa dan mencatat suhu, dan saat di luar rentang melapor dulu sebelum melanjutkan.",
+     "Tanpa instruksi pun, memeriksa suhu setiap kali, dan saat menyimpang selalu melapor sebelum semen dipakai agar bisa ditangani.",
+     "Memahami kerusakan yang ditimbulkan penyimpangan suhu pada sperma, dan bisa mengajari karyawan baru patokan pemeriksaan dan pelaporan."
+    ]
+   },
+   {
+    "id": "gentle-mix",
+    "name": "穏やかな攪拌と温度・浸透圧の配慮",
+    "kanten": "強く振らず穏やかに攪拌し、希釈液との温度差や気泡混入を避けられるか。",
+    "levels": [
+     "強く振って気泡を混入させ、希釈液との温度差で浸透圧ショックを招く。",
+     "指示があれば攪拌するが、強さや温度差への配慮に漏れがある。",
+     "指示があれば穏やかにひと通り攪拌できる。",
+     "指示がなくても温度差を抑えて穏やかに攪拌し、気泡混入を避ける。",
+     "浸透圧ショックや酸化ストレスの仕組みを理解し、攪拌のコツを新人に指導できる。"
+    ],
+    "name_en": "Gentle mixing with attention to temperature and osmotic pressure",
+    "kanten_en": "Can they mix gently without shaking hard, avoiding temperature differences with the extender and air bubble entrainment?",
+    "levels_en": [
+     "Shakes hard, entraining air bubbles, and causes osmotic shock through temperature differences with the extender.",
+     "With guidance, mixes, but is inconsistent about force and attention to temperature differences.",
+     "With guidance, can adequately mix gently.",
+     "Independently limits temperature differences, mixes gently, and avoids entraining air bubbles.",
+     "Understands the mechanisms of osmotic shock and oxidative stress, and can teach new staff the knack of mixing."
+    ],
+    "name_vi": "Lắc nhẹ nhàng và chú ý nhiệt độ, áp suất thẩm thấu",
+    "kanten_vi": "Có lắc nhẹ nhàng, không lắc mạnh, tránh chênh lệch nhiệt độ với dung dịch pha loãng và tránh lẫn bọt khí không.",
+    "levels_vi": [
+     "Lắc mạnh làm lẫn bọt khí, chênh lệch nhiệt độ với dung dịch pha loãng gây sốc thẩm thấu.",
+     "Nếu có chỉ dẫn thì lắc, nhưng có bỏ sót về độ mạnh và chú ý đến chênh lệch nhiệt độ.",
+     "Nếu có chỉ dẫn thì lắc được cơ bản một cách nhẹ nhàng.",
+     "Không cần chỉ dẫn cũng giữ chênh lệch nhiệt độ nhỏ, lắc nhẹ nhàng và tránh lẫn bọt khí.",
+     "Hiểu cơ chế sốc thẩm thấu và stress oxy hóa, và có thể hướng dẫn người mới mẹo lắc đều."
+    ],
+    "name_id": "Pengadukan lembut dan perhatian pada suhu serta tekanan osmotik",
+    "kanten_id": "Apakah mengaduk dengan lembut tanpa mengocok keras, dan menghindari perbedaan suhu dengan cairan pengencer serta masuknya gelembung udara.",
+    "levels_id": [
+     "Mengocok keras sehingga gelembung udara masuk, dan perbedaan suhu dengan cairan pengencer menyebabkan syok tekanan osmotik.",
+     "Jika ada instruksi bisa mengaduk, tetapi sering lalai memperhatikan kekuatan dan perbedaan suhu.",
+     "Jika ada instruksi, bisa mengaduk secara garis besar dengan lembut.",
+     "Tanpa instruksi pun, menekan perbedaan suhu, mengaduk dengan lembut, dan menghindari masuknya gelembung udara.",
+     "Memahami mekanisme syok tekanan osmotik dan stres oksidatif, dan bisa mengajari karyawan baru trik pengadukan."
+    ]
+   },
+   {
+    "id": "visual-inspect",
+    "name": "沈殿・結露・色の点検",
+    "kanten": "攪拌時に底の沈み・固まりが消えたか、結露や色の変化がないかを目で確かめ、異常ロットを報告できるか。",
+    "levels": [
+     "ひっくり返すだけで底や色を見ず、大きな固まりのあるロットも気づかず戻す。",
+     "指示があれば見るが、結露や色の変化の意味が分からず見過ごしが多い。",
+     "指示があれば沈殿・結露・色をひと通り点検し、気づいたことを伝えられる。",
+     "指示がなくても毎回点検し、大きな固まりや色の変化があるロットは使わずに報告する。",
+     "結露＝温度差・色の変化＝品質低下のサインであることを理解し、点検の着眼点を新人に指導できる。"
+    ],
+    "name_en": "Inspecting sediment, condensation, and color",
+    "kanten_en": "Can they visually confirm during mixing that the sediment and clumps at the bottom have disappeared and that there is no condensation or color change, and report abnormal lots?",
+    "levels_en": [
+     "Just turns the bottle over without looking at the bottom or the color, and returns lots with large clumps without noticing.",
+     "With guidance, looks, but does not understand what condensation and color changes mean and often overlooks them.",
+     "With guidance, can adequately inspect sediment, condensation, and color, and pass on what they notice.",
+     "Independently inspects every time, and does not use lots with large clumps or color changes but reports them.",
+     "Understands that condensation signals a temperature difference and color change signals quality loss, and can teach new staff the inspection points."
+    ],
+    "name_vi": "Kiểm tra cặn lắng, đọng sương và màu sắc",
+    "kanten_vi": "Khi lắc có nhìn xem cặn, cục ở đáy đã tan chưa, có đọng sương hay đổi màu không, và báo cáo lô bất thường không.",
+    "levels_vi": [
+     "Chỉ lật chai mà không nhìn đáy và màu, lô có cục lớn cũng không nhận ra mà cho lại vào.",
+     "Nếu có chỉ dẫn thì nhìn, nhưng không hiểu ý nghĩa của đọng sương và đổi màu nên hay bỏ qua.",
+     "Nếu có chỉ dẫn thì kiểm tra được cơ bản cặn lắng, đọng sương, màu sắc và truyền đạt điều nhận thấy.",
+     "Không cần chỉ dẫn cũng kiểm tra mỗi lần, lô có cục lớn hay đổi màu thì không dùng mà báo cáo.",
+     "Hiểu đọng sương = chênh lệch nhiệt độ, đổi màu = dấu hiệu giảm chất lượng, và có thể hướng dẫn người mới điểm cần nhìn khi kiểm tra."
+    ],
+    "name_id": "Memeriksa endapan, embun, dan warna",
+    "kanten_id": "Apakah saat mengaduk melihat dengan mata bahwa endapan dan gumpalan di dasar sudah hilang, tidak ada embun atau perubahan warna, dan melaporkan lot yang tidak normal.",
+    "levels_id": [
+     "Hanya membalik botol tanpa melihat dasar dan warna, lot dengan gumpalan besar pun dikembalikan tanpa disadari.",
+     "Jika ada instruksi bisa melihat, tetapi tidak paham arti embun dan perubahan warna sehingga sering terlewat.",
+     "Jika ada instruksi, bisa memeriksa endapan, embun, dan warna secara garis besar, serta menyampaikan yang disadari.",
+     "Tanpa instruksi pun, memeriksa setiap kali, dan lot dengan gumpalan besar atau perubahan warna tidak dipakai melainkan dilaporkan.",
+     "Memahami embun = tanda beda suhu dan perubahan warna = tanda penurunan kualitas, dan bisa mengajari karyawan baru titik perhatian pemeriksaan."
+    ]
+   },
+   {
+    "id": "light-shield",
+    "name": "遮光の徹底",
+    "kanten": "インキュベーターを直射日光の当たる場所に置かず、攪拌のときも精液を強い光に当てないようにできるか。",
+    "levels": [
+     "直射日光の当たる場所で作業し、精液を光にさらしたまま精子を傷める。",
+     "指示があれば光を避けるが、置き場所や扱いの徹底に漏れがある。",
+     "指示があれば直射日光を避け、ひと通り光に当てずに扱える。",
+     "指示がなくても置き場所と扱いの両方で強い光を避け、光線ダメージを防ぐ。",
+     "強い光が精子を弱らせることを理解し、遮光管理を新人に指導できる。"
+    ],
+    "name_en": "Thorough light shielding",
+    "kanten_en": "Can they keep the incubator out of direct sunlight, and avoid exposing the semen to strong light during mixing as well?",
+    "levels_en": [
+     "Works in direct sunlight and leaves the semen exposed to light, damaging the sperm.",
+     "With guidance, avoids light, but is not thorough about placement and handling.",
+     "With guidance, avoids direct sunlight and can adequately handle the semen without exposing it to light.",
+     "Independently avoids strong light in both placement and handling, preventing light damage.",
+     "Understands that strong light weakens sperm, and can teach new staff light-shielding management."
+    ],
+    "name_vi": "Che sáng kỹ càng",
+    "kanten_vi": "Có không đặt incubator ở nơi có nắng chiếu trực tiếp, khi lắc cũng không để tinh dịch tiếp xúc ánh sáng mạnh không.",
+    "levels_vi": [
+     "Làm việc ở nơi nắng chiếu trực tiếp, để tinh dịch phơi ra ánh sáng làm tổn thương tinh trùng.",
+     "Nếu có chỉ dẫn thì tránh ánh sáng, nhưng chưa triệt để về chỗ đặt và cách xử lý.",
+     "Nếu có chỉ dẫn thì tránh nắng trực tiếp, xử lý được cơ bản mà không để tinh dịch ra ánh sáng.",
+     "Không cần chỉ dẫn cũng tránh ánh sáng mạnh cả về chỗ đặt lẫn cách xử lý, phòng tổn thương do ánh sáng.",
+     "Hiểu ánh sáng mạnh làm tinh trùng yếu đi, và có thể hướng dẫn người mới cách quản lý che sáng."
+    ],
+    "name_id": "Menjalankan pelindungan dari cahaya",
+    "kanten_id": "Apakah tidak meletakkan inkubator di tempat yang terkena sinar matahari langsung, dan saat mengaduk pun tidak membiarkan semen terkena cahaya kuat.",
+    "levels_id": [
+     "Bekerja di tempat yang terkena sinar matahari langsung dan membiarkan semen terpapar cahaya sehingga sperma rusak.",
+     "Jika ada instruksi bisa menghindari cahaya, tetapi belum menyeluruh soal tempat meletakkan dan cara menangani.",
+     "Jika ada instruksi, bisa menghindari sinar matahari langsung dan menangani semen secara garis besar tanpa terkena cahaya.",
+     "Tanpa instruksi pun, menghindari cahaya kuat baik dalam penempatan maupun penanganan, sehingga mencegah kerusakan karena cahaya.",
+     "Memahami bahwa cahaya kuat melemahkan sperma, dan bisa mengajari karyawan baru pengelolaan pelindungan dari cahaya."
+    ]
+   },
+   {
+    "id": "fifo-record",
+    "name": "短時間の取り扱いと先入れ先出し・記録",
+    "kanten": "外に出す時間を1〜2分以内にし、期限の近いものを手前に置き直し、攪拌と温度を記録できるか。",
+    "levels": [
+     "外に出したまま長く握り、期限も並び順も気にせず、記録も残さない。",
+     "指示があれば戻すが、出す時間が長引きがちで、置き直しや記録に抜けが多い。",
+     "指示があれば1〜2分以内に戻し、先入れ先出しの置き直しと記録までできる。",
+     "指示がなくても素手で長く握らず短時間で戻し、期限順に整えて攪拌・温度を毎回記録する。",
+     "手の体温と時間経過が精子を弱らせることを理解し、扱いの型と記録を新人に指導できる。"
+    ],
+    "name_en": "Short handling time, first-in first-out, and records",
+    "kanten_en": "Can they keep the time out of the incubator to 1-2 minutes, put those expiring soon back at the front, and record the mixing and temperature?",
+    "levels_en": [
+     "Holds the bottle outside for a long time, ignores dates and order, and leaves no records.",
+     "With guidance, puts it back, but tends to keep it out too long and often misses rearranging and recording.",
+     "With guidance, returns it within 1-2 minutes and can do the first-in, first-out rearranging and the records.",
+     "Independently avoids holding it long with bare hands, returns it quickly, arranges by date order, and records mixing and temperature every time.",
+     "Understands that hand warmth and elapsed time weaken sperm, and can teach new staff the handling routine and records."
+    ],
+    "name_vi": "Thao tác trong thời gian ngắn, nhập trước xuất trước và ghi chép",
+    "kanten_vi": "Có giữ thời gian để bên ngoài trong vòng 1〜2 phút, xếp lại loại gần hết hạn ra phía trước, ghi lại việc lắc và nhiệt độ không.",
+    "levels_vi": [
+     "Cầm bên ngoài lâu, không quan tâm hạn và thứ tự, cũng không ghi chép.",
+     "Nếu có chỉ dẫn thì cho lại vào, nhưng hay để bên ngoài lâu, hay bỏ sót việc xếp lại và ghi chép.",
+     "Nếu có chỉ dẫn thì cho lại vào trong vòng 1〜2 phút, làm được cả xếp lại nhập trước xuất trước và ghi chép.",
+     "Không cần chỉ dẫn cũng không cầm lâu bằng tay trần, trả lại nhanh, xếp theo thứ tự hạn và ghi việc lắc, nhiệt độ mỗi lần.",
+     "Hiểu thân nhiệt bàn tay và thời gian trôi qua làm tinh trùng yếu đi, và có thể hướng dẫn người mới nề nếp thao tác và ghi chép."
+    ],
+    "name_id": "Penanganan singkat, masuk dulu keluar dulu, dan pencatatan",
+    "kanten_id": "Apakah menjaga waktu di luar dalam 1〜2 menit, menata kembali yang hampir kedaluwarsa ke depan, dan mencatat pengadukan serta suhu.",
+    "levels_id": [
+     "Menggenggam di luar lama, tidak peduli tanggal dan urutan, dan tidak meninggalkan catatan.",
+     "Jika ada instruksi bisa mengembalikan, tetapi cenderung terlalu lama di luar, dan sering lalai menata ulang dan mencatat.",
+     "Jika ada instruksi, bisa mengembalikan dalam 1〜2 menit, serta melakukan penataan masuk dulu keluar dulu dan pencatatan.",
+     "Tanpa instruksi pun, tidak menggenggam lama dengan tangan kosong, cepat mengembalikan, menata sesuai urutan tanggal, dan mencatat pengadukan serta suhu setiap kali.",
+     "Memahami bahwa panas tangan dan berjalannya waktu melemahkan sperma, dan bisa mengajari karyawan baru pola penanganan dan pencatatan."
+    ]
+   }
+  ],
+  "name_en": "Semen mixing",
+  "purposeShort_en": "Even out the sperm concentration",
+  "name_vi": "Lắc đều tinh dịch (lắc nhẹ)",
+  "purposeShort_vi": "Làm đều nồng độ tinh trùng",
+  "name_id": "Mengaduk semen (kocok pelan)",
+  "purposeShort_id": "Menyeragamkan konsentrasi sperma"
+ },
+ {
+  "id": "preg-check",
+  "category": "breeding",
+  "no": "No.09",
+  "name": "妊娠鑑定",
+  "purposeShort": "分娩・離乳頭数を計画通り確保し、空胎母豚を早く見つけて対応する",
+  "gyomu": "09",
+  "aspects": [
+   {
+    "id": "timing-recheck",
+    "name": "鑑定時期の厳守と再確認",
+    "kanten": "交配後21〜28日に鑑定し、1回で判断せず35日頃の第2回エコーで必ず再確認できるか。",
+    "levels": [
+     "1回の確認だけで妊娠を確定し、胚が吸収されて消えた空胎を見落とす。",
+     "指示があれば鑑定するが、時期の厳守や再確認に漏れが多い。",
+     "指示があれば決められた時期に鑑定し、ひと通り実施できる。",
+     "指示がなくても21〜28日に鑑定し、35日頃の再確認を省略しない。",
+     "早すぎると妊娠嚢が見えないことや陽性後の胚吸収を理解し、鑑定時期と再確認の重要性を新人に指導できる。"
+    ],
+    "name_en": "Strict Timing and Recheck",
+    "kanten_en": "Can they check at 21-28 days after mating, and always reconfirm with a second ultrasound around day 35 instead of deciding from a single check?",
+    "levels_en": [
+     "Confirms pregnancy from a single check and misses open sows whose embryos were resorbed and disappeared.",
+     "With guidance can perform checks, but often misses the required timing or the recheck.",
+     "With guidance can check at the designated timing and complete the basic procedure.",
+     "Independently checks at 21-28 days and never skips the reconfirmation around day 35.",
+     "Understands that gestational sacs are not visible too early and that embryos can be resorbed after a positive result, and can teach new staff the importance of check timing and rechecking."
+    ],
+    "name_vi": "Tuân thủ thời điểm chẩn đoán và kiểm tra lại",
+    "kanten_vi": "Có chẩn đoán vào ngày 21-28 sau giao phối, không kết luận chỉ sau 1 lần mà luôn kiểm tra lại bằng siêu âm lần 2 khoảng ngày 35 không.",
+    "levels_vi": [
+     "Chỉ kiểm tra 1 lần đã kết luận mang thai, bỏ sót nái không mang thai do phôi bị tiêu biến.",
+     "Nếu được chỉ thị thì chẩn đoán, nhưng hay thiếu sót về tuân thủ thời điểm và kiểm tra lại.",
+     "Nếu được chỉ thị thì chẩn đoán đúng thời điểm quy định và thực hiện được cơ bản.",
+     "Dù không có chỉ thị vẫn chẩn đoán vào ngày 21-28 và không bỏ qua việc kiểm tra lại khoảng ngày 35.",
+     "Hiểu việc siêu âm quá sớm sẽ không thấy túi thai và phôi có thể tiêu biến sau khi dương tính, và có thể hướng dẫn người mới về tầm quan trọng của thời điểm chẩn đoán và kiểm tra lại."
+    ],
+    "name_id": "Menepati waktu pemeriksaan dan pemeriksaan ulang",
+    "kanten_id": "Apakah dapat memeriksa pada hari ke-21-28 setelah perkawinan, tidak memutuskan hanya dengan satu kali pemeriksaan, dan selalu memeriksa ulang dengan USG kedua sekitar hari ke-35?",
+    "levels_id": [
+     "Memastikan kebuntingan hanya dengan satu kali pemeriksaan, sehingga melewatkan induk yang tidak bunting karena embrionya diserap kembali dan hilang.",
+     "Memeriksa jika diperintah, tetapi sering lalai menepati waktu dan melakukan pemeriksaan ulang.",
+     "Jika diperintah, dapat memeriksa pada waktu yang ditentukan dan melakukannya secara lengkap.",
+     "Tanpa diperintah pun, memeriksa pada hari ke-21-28 dan tidak melewatkan pemeriksaan ulang sekitar hari ke-35.",
+     "Memahami bahwa kantung janin tidak terlihat jika terlalu awal dan embrio bisa diserap kembali setelah hasil positif, dan dapat mengajarkan pentingnya waktu pemeriksaan dan pemeriksaan ulang kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "echo-reading",
+    "name": "エコー画像の正しい読み取り",
+    "kanten": "膀胱・腸内容物と胎胞を混同せず、エコー画像を正しく読み取れるか。",
+    "levels": [
+     "膀胱や腸内容物を妊娠と誤読し、判定を誤る。",
+     "指示があれば当てるが、画像の読み取りに誤りが多い。",
+     "指示があればひと通りエコーを当てて胎胞を確認できる。",
+     "指示がなくても膀胱・腸内容物と胎胞を見分けて正しく判定する。",
+     "エコー画像の見分け方を理解し、誤読を避ける読み取りを新人に指導できる。"
+    ],
+    "name_en": "Correct Reading of Ultrasound Images",
+    "kanten_en": "Can they read ultrasound images correctly without confusing the bladder or intestinal contents with gestational sacs?",
+    "levels_en": [
+     "Misreads the bladder or intestinal contents as pregnancy and makes wrong judgments.",
+     "With guidance can apply the probe, but makes frequent errors in reading the images.",
+     "With guidance can apply the ultrasound probe and confirm gestational sacs through the basic procedure.",
+     "Independently distinguishes the bladder and intestinal contents from gestational sacs and judges correctly.",
+     "Understands how to distinguish ultrasound images and can teach new staff how to read them without misinterpretation."
+    ],
+    "name_vi": "Đọc đúng hình ảnh siêu âm",
+    "kanten_vi": "Có đọc đúng hình ảnh siêu âm, không nhầm bàng quang hoặc chất chứa trong ruột với túi thai không.",
+    "levels_vi": [
+     "Đọc nhầm bàng quang hoặc chất chứa trong ruột thành mang thai, dẫn đến kết luận sai.",
+     "Nếu được chỉ thị thì áp đầu dò siêu âm, nhưng hay đọc sai hình ảnh.",
+     "Nếu được chỉ thị thì có thể siêu âm và xác nhận túi thai một cách cơ bản.",
+     "Dù không có chỉ thị vẫn phân biệt được bàng quang, chất chứa trong ruột với túi thai và kết luận đúng.",
+     "Hiểu cách phân biệt hình ảnh siêu âm, và có thể hướng dẫn người mới cách đọc để tránh đọc sai."
+    ],
+    "name_id": "Membaca gambar USG dengan benar",
+    "kanten_id": "Apakah dapat membaca gambar USG dengan benar, tanpa mengira kandung kemih atau isi usus sebagai kantung janin?",
+    "levels_id": [
+     "Salah membaca kandung kemih atau isi usus sebagai kebuntingan, sehingga hasil penilaian keliru.",
+     "Menempelkan alat USG jika diperintah, tetapi sering salah membaca gambar.",
+     "Jika diperintah, dapat menempelkan alat USG dan memeriksa kantung janin secara lengkap.",
+     "Tanpa diperintah pun, dapat membedakan kandung kemih dan isi usus dari kantung janin, lalu menilai dengan benar.",
+     "Memahami cara membedakan gambar USG dan dapat mengajarkan cara membaca yang menghindari salah baca kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "hold-judgment",
+    "name": "迷ったときの保留判断と再検査設定",
+    "kanten": "判定に迷ったら無理に決めず保留とし、排尿後の再確認や5〜7日後の再検査日を決めて対応できるか。",
+    "levels": [
+     "あいまいな画像でも陽性・陰性を確定してしまい、誤判定を招く。",
+     "指示があれば保留にするが、排尿させての再確認や再検査日の設定に漏れがある。",
+     "指示があれば迷った個体を保留にし、5〜7日後の再検査日を決めて記録できる。",
+     "指示がなくても排尿させて当て直し、それでも不明なら保留として再検査日を設定し、2回目も不明なら獣医師に相談する。",
+     "保留を恥ずかしがらない判断の価値を理解し、迷ったときの決め方を新人に指導できる。"
+    ],
+    "name_en": "Holding Judgment When Unsure and Scheduling Retests",
+    "kanten_en": "Can they mark unclear cases as pending instead of forcing a decision, and handle them by rechecking after urination or setting a retest date 5-7 days later?",
+    "levels_en": [
+     "Declares even ambiguous images positive or negative, causing misdiagnosis.",
+     "With guidance can mark cases pending, but misses rechecking after having the sow urinate or setting the retest date.",
+     "With guidance can mark unclear animals as pending, and set and record a retest date 5-7 days later.",
+     "Independently has the sow urinate and scans again; if still unclear, marks it pending with a retest date, and consults the veterinarian if the second check is also unclear.",
+     "Understands the value of not being ashamed to mark a case pending, and can teach new staff how to decide when unsure."
+    ],
+    "name_vi": "Tạm hoãn kết luận khi phân vân và đặt lịch kiểm tra lại",
+    "kanten_vi": "Khi phân vân có không cố kết luận mà để tạm hoãn, xử lý bằng cách kiểm tra lại sau khi lợn đi tiểu hoặc định ngày kiểm tra lại sau 5-7 ngày không.",
+    "levels_vi": [
+     "Hình ảnh mơ hồ vẫn kết luận dương tính hay âm tính, gây chẩn đoán sai.",
+     "Nếu được chỉ thị thì để tạm hoãn, nhưng còn thiếu sót về việc cho lợn đi tiểu rồi kiểm tra lại và đặt ngày kiểm tra lại.",
+     "Nếu được chỉ thị thì để tạm hoãn con phân vân, định ngày kiểm tra lại sau 5-7 ngày và ghi lại.",
+     "Dù không có chỉ thị vẫn cho lợn đi tiểu rồi siêu âm lại, nếu vẫn không rõ thì để tạm hoãn và đặt ngày kiểm tra lại, lần 2 vẫn không rõ thì hỏi bác sĩ thú y.",
+     "Hiểu giá trị của việc không ngại để tạm hoãn, và có thể hướng dẫn người mới cách quyết định khi phân vân."
+    ],
+    "name_id": "Menunda keputusan saat ragu dan menjadwalkan pemeriksaan ulang",
+    "kanten_id": "Apakah saat ragu tidak memaksakan keputusan melainkan menandai tunda, lalu menanganinya dengan memeriksa ulang setelah babi kencing atau menetapkan tanggal periksa ulang 5-7 hari kemudian?",
+    "levels_id": [
+     "Gambar yang samar pun tetap diputuskan positif atau negatif, sehingga terjadi salah diagnosa.",
+     "Jika diperintah bisa menandai tunda, tetapi sering lalai memeriksa ulang setelah babi dibuat kencing dan menetapkan tanggal periksa ulang.",
+     "Jika diperintah, dapat menandai tunda pada individu yang meragukan, serta menetapkan dan mencatat tanggal periksa ulang 5-7 hari kemudian.",
+     "Tanpa diperintah pun, membuat babi kencing lalu memeriksa lagi; jika masih tidak jelas menandai tunda dan menetapkan tanggal periksa ulang, dan jika kali kedua pun tidak jelas berkonsultasi dengan dokter hewan.",
+     "Memahami nilai dari tidak malu menandai tunda, dan dapat mengajarkan cara memutuskan saat ragu kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "recheck-return",
+    "name": "鑑定後の再発情チェック",
+    "kanten": "鑑定後も再発情チェックを続け、空胎の長期化を防げるか。",
+    "levels": [
+     "鑑定後の再発情チェックを中断し、空胎を長期化させる。",
+     "指示があれば確認するが、継続に漏れが多い。",
+     "指示があれば鑑定後の再発情をひと通り確認できる。",
+     "指示がなくても再発情チェックを続け、空胎の母豚を早く見つける。",
+     "再発情チェックの意義を理解し、空胎長期化を防ぐ管理を新人に指導できる。"
+    ],
+    "name_en": "Return-to-Estrus Checks After Diagnosis",
+    "kanten_en": "Can they continue return-to-estrus checks after diagnosis and prevent prolonged open days?",
+    "levels_en": [
+     "Stops return-to-estrus checks after diagnosis and lets open days drag on.",
+     "With guidance can check, but often fails to keep it up.",
+     "With guidance can carry out the basic return-to-estrus checks after diagnosis.",
+     "Independently continues return-to-estrus checks and finds open sows early.",
+     "Understands the purpose of return-to-estrus checks and can teach new staff how to prevent prolonged open days."
+    ],
+    "name_vi": "Kiểm tra động dục trở lại sau chẩn đoán",
+    "kanten_vi": "Sau khi chẩn đoán có tiếp tục kiểm tra động dục trở lại, tránh để tình trạng không mang thai kéo dài không.",
+    "levels_vi": [
+     "Ngừng kiểm tra động dục trở lại sau chẩn đoán, để tình trạng không mang thai kéo dài.",
+     "Nếu được chỉ thị thì kiểm tra, nhưng hay không duy trì liên tục.",
+     "Nếu được chỉ thị thì có thể kiểm tra động dục trở lại sau chẩn đoán một cách cơ bản.",
+     "Dù không có chỉ thị vẫn tiếp tục kiểm tra động dục trở lại, phát hiện sớm lợn nái không mang thai.",
+     "Hiểu ý nghĩa của việc kiểm tra động dục trở lại, và có thể hướng dẫn người mới cách quản lý để tránh tình trạng không mang thai kéo dài."
+    ],
+    "name_id": "Memeriksa birahi kembali setelah diagnosa",
+    "kanten_id": "Apakah tetap memeriksa birahi kembali setelah diagnosa, sehingga masa tidak bunting tidak berkepanjangan?",
+    "levels_id": [
+     "Berhenti memeriksa birahi kembali setelah diagnosa, sehingga masa tidak bunting menjadi berkepanjangan.",
+     "Memeriksa jika diperintah, tetapi sering tidak melanjutkannya.",
+     "Jika diperintah, dapat memeriksa birahi kembali setelah diagnosa secara lengkap.",
+     "Tanpa diperintah pun, terus memeriksa birahi kembali dan cepat menemukan induk babi yang tidak bunting.",
+     "Memahami pentingnya pemeriksaan birahi kembali dan dapat mengajarkan cara mencegah masa tidak bunting berkepanjangan kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "onsite-record-probe",
+    "name": "その場での記録とプローブ消毒",
+    "kanten": "結果を1頭ごとにその場でプレート・記録用紙に記入し、プローブを毎回清拭・消毒して片付けられるか。",
+    "levels": [
+     "「覚えているから後で」と記録を後回しにし、プローブも汚れたまま次に使う。",
+     "指示されれば記入・消毒するが、まとめ書きによる間違いや消毒忘れが多い。",
+     "指示があれば1頭ごとに結果をその場で記入し、使用後のプローブ清拭・消毒までできる。",
+     "指示がなくても即時記入を徹底して陰性・保留には次回検査日を書き、プローブ消毒と機器の片付けを毎回行う。",
+     "伝達漏れ・重複検査・病気の持ち運びを防ぐ意味を理解し、即時記録と消毒の型を新人に指導できる。"
+    ],
+    "name_en": "On-the-Spot Recording and Probe Disinfection",
+    "kanten_en": "Can they write the result for each sow on the plate and record sheet on the spot, and wipe, disinfect, and put away the probe every time?",
+    "levels_en": [
+     "Puts off recording, thinking they will remember, and uses the probe on the next sow while still dirty.",
+     "With guidance can record and disinfect, but batch writing causes mistakes and disinfection is often forgotten.",
+     "With guidance can write each sow's result on the spot, and wipe and disinfect the probe after use.",
+     "Independently records immediately, writes the next test date for negatives and pending cases, and disinfects the probe and puts the equipment away every time.",
+     "Understands that this prevents missed communication, duplicate testing, and carrying disease, and can teach new staff the routine of immediate recording and disinfection."
+    ],
+    "name_vi": "Ghi ngay tại chỗ và khử trùng đầu dò",
+    "kanten_vi": "Có ghi kết quả từng con ngay tại chỗ vào bảng và giấy ghi chép, mỗi lần đều lau sạch, khử trùng đầu dò rồi dọn dẹp không.",
+    "levels_vi": [
+     "Nghĩ nhớ được nên để sau mà hoãn ghi chép, đầu dò còn bẩn vẫn dùng cho con tiếp theo.",
+     "Nếu được chỉ thị thì ghi và khử trùng, nhưng hay sai do ghi gộp và hay quên khử trùng.",
+     "Nếu được chỉ thị thì ghi kết quả từng con ngay tại chỗ, lau sạch và khử trùng đầu dò sau khi dùng.",
+     "Dù không có chỉ thị vẫn triệt để ghi ngay, ghi ngày kiểm tra lần sau cho con âm tính và tạm hoãn, mỗi lần đều khử trùng đầu dò và dọn máy.",
+     "Hiểu ý nghĩa phòng sót thông tin, kiểm tra trùng lặp và mang mầm bệnh đi, và có thể hướng dẫn người mới nề nếp ghi ngay và khử trùng."
+    ],
+    "name_id": "Pencatatan di tempat dan disinfeksi probe",
+    "kanten_id": "Apakah menulis hasil setiap ekor langsung di tempat pada papan dan lembar catatan, serta setiap kali mengelap, mendisinfeksi probe dan membereskannya?",
+    "levels_id": [
+     "Menunda pencatatan dengan alasan masih ingat nanti saja, dan memakai probe yang masih kotor untuk babi berikutnya.",
+     "Jika diperintah bisa mencatat dan mendisinfeksi, tetapi sering salah karena menulis sekaligus dan lupa disinfeksi.",
+     "Jika diperintah, dapat menulis hasil setiap ekor langsung di tempat, serta mengelap dan mendisinfeksi probe setelah dipakai.",
+     "Tanpa diperintah pun, mencatat langsung dengan tertib, menulis tanggal periksa berikutnya untuk yang negatif dan tunda, serta setiap kali mendisinfeksi probe dan membereskan alat.",
+     "Memahami arti mencegah informasi terlewat, pemeriksaan ganda, dan terbawanya penyakit, dan dapat mengajarkan pola catat langsung dan disinfeksi kepada karyawan baru."
+    ]
+   }
+  ],
+  "name_en": "Pregnancy Check",
+  "purposeShort_en": "Secure planned farrowing and weaning numbers, and find open sows early to take action",
+  "name_vi": "Chẩn đoán mang thai",
+  "purposeShort_vi": "Đảm bảo số con đẻ ra và số con cai sữa theo kế hoạch, phát hiện sớm lợn nái không mang thai để xử lý",
+  "name_id": "Diagnosa kebuntingan",
+  "purposeShort_id": "Memastikan jumlah kelahiran dan penyapihan sesuai rencana, serta cepat menemukan induk babi yang tidak bunting untuk ditangani"
+ },
+ {
+  "id": "pms",
+  "category": "breeding",
+  "no": "No.08",
+  "name": "PMS投与",
+  "purposeShort": "発情が弱い・来ない母豚に発情を誘起し、タイミングをそろえる",
+  "gyomu": "08",
+  "aspects": [
+   {
+    "id": "timing-judge",
+    "name": "投与時期と黄体確認",
+    "kanten": "基本は離乳翌日に指示された量を投与し、黄体遺残をエコー確認せずに重複投与しないか。",
+    "levels": [
+     "黄体遺残を確認せず重複投与し、投与時期も守らない。",
+     "指示があれば投与するが、時期や黄体確認に漏れがある。",
+     "指示があれば決められた時期に用量を守ってひと通り投与できる。",
+     "指示がなくても離乳翌日のタイミングを守って投与し、再投与は獣医師の判断を仰いで重複を避ける。",
+     "黄体とホルモン誘起の関係を理解し、投与時期と適応の判断を新人に指導できる。"
+    ],
+    "name_en": "Administration Timing and Corpus Luteum Check",
+    "kanten_en": "Can they administer the instructed dose on the day after weaning as a rule, and never give a duplicate dose without checking for retained corpora lutea by ultrasound?",
+    "levels_en": [
+     "Doses repeatedly without checking for retained corpora lutea, and ignores the administration timing.",
+     "With guidance can administer, but misses the timing or the corpus luteum check.",
+     "With guidance can administer the correct dose at the designated timing through the basic procedure.",
+     "Independently keeps to the day-after-weaning timing, and asks the veterinarian's judgment for any repeat dose to avoid duplication.",
+     "Understands the relationship between corpora lutea and hormonal induction, and can teach new staff how to judge timing and indications."
+    ],
+    "name_vi": "Thời điểm tiêm và kiểm tra thể vàng",
+    "kanten_vi": "Về cơ bản có tiêm liều được chỉ thị vào ngày hôm sau cai sữa, và không tiêm trùng lặp khi chưa siêu âm kiểm tra thể vàng tồn lưu không.",
+    "levels_vi": [
+     "Không kiểm tra thể vàng tồn lưu mà tiêm trùng lặp, cũng không giữ đúng thời điểm tiêm.",
+     "Nếu được chỉ thị thì tiêm, nhưng còn thiếu sót về thời điểm và kiểm tra thể vàng.",
+     "Nếu được chỉ thị thì tiêm đúng thời điểm, đúng liều lượng quy định một cách cơ bản.",
+     "Dù không có chỉ thị vẫn giữ đúng thời điểm ngày hôm sau cai sữa để tiêm, việc tiêm lại thì xin ý kiến bác sĩ thú y để tránh trùng lặp.",
+     "Hiểu quan hệ giữa thể vàng và kích thích bằng hormone, và có thể hướng dẫn người mới cách phán đoán thời điểm tiêm và đối tượng phù hợp."
+    ],
+    "name_id": "Waktu penyuntikan dan pemeriksaan korpus luteum",
+    "kanten_id": "Apakah pada dasarnya menyuntikkan dosis yang diinstruksikan pada hari setelah sapih, dan tidak menyuntik ganda tanpa memeriksa sisa korpus luteum dengan USG?",
+    "levels_id": [
+     "Menyuntik ganda tanpa memeriksa sisa korpus luteum, dan tidak menepati waktu penyuntikan.",
+     "Menyuntik jika diperintah, tetapi sering lalai soal waktu dan pemeriksaan korpus luteum.",
+     "Jika diperintah, dapat menyuntik pada waktu yang ditentukan dengan dosis yang benar secara lengkap.",
+     "Tanpa diperintah pun, menepati waktu penyuntikan pada hari setelah sapih, dan untuk penyuntikan ulang meminta penilaian dokter hewan agar tidak ganda.",
+     "Memahami hubungan korpus luteum dengan induksi hormon, dan dapat mengajarkan penilaian waktu dan sasaran penyuntikan kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "no-self-judge",
+    "name": "自己判断の回避と対象母豚の確認",
+    "kanten": "使いすぎず上長・獣医師と相談し、未経産・経産の量の違いに注意し、妊娠の可能性がある母豚を対象から外せるか。",
+    "levels": [
+     "自己判断で使い、妊娠しているかもしれない母豚にも打って流産の危険を招く。",
+     "指示があれば投与するが、相談や対象母豚の確認に漏れがある。",
+     "指示があれば上長・獣医師と相談し、対象リストの母豚だけにひと通り投与できる。",
+     "指示がなくても使いすぎを避けて相談し、妊娠の可能性がある母豚は対象から外して確かめる。",
+     "ホルモン剤の使いすぎが卵巣の機能低下を招くことを理解し、相談と対象確認の要点を新人に指導できる。"
+    ],
+    "name_en": "Avoiding Self-Judgment and Confirming Target Sows",
+    "kanten_en": "Can they avoid overuse by consulting supervisors and the veterinarian, watch the dose difference between gilts and parous sows, and exclude possibly pregnant sows from the targets?",
+    "levels_en": [
+     "Uses the drug on their own judgment and injects even possibly pregnant sows, risking abortion.",
+     "With guidance can administer, but misses consultations and the target-sow check.",
+     "With guidance can consult supervisors and the veterinarian and administer only to the sows on the target list.",
+     "Independently avoids overuse by consulting others, and excludes possibly pregnant sows from the targets and verifies them.",
+     "Understands that hormone overuse degrades ovarian function, and can teach new staff the key points of consultation and target confirmation."
+    ],
+    "name_vi": "Tránh tự ý quyết định và xác nhận lợn nái đối tượng",
+    "kanten_vi": "Có tránh lạm dụng, trao đổi với cấp trên và bác sĩ thú y, chú ý sự khác nhau về liều giữa nái chưa đẻ và nái đã đẻ, loại nái có khả năng mang thai khỏi đối tượng không.",
+    "levels_vi": [
+     "Tự ý sử dụng, tiêm cả nái có thể đang mang thai, gây nguy cơ sảy thai.",
+     "Nếu được chỉ thị thì tiêm, nhưng còn thiếu sót về trao đổi và xác nhận nái đối tượng.",
+     "Nếu được chỉ thị thì trao đổi với cấp trên, bác sĩ thú y và chỉ tiêm được cơ bản cho nái trong danh sách đối tượng.",
+     "Dù không có chỉ thị vẫn tránh lạm dụng, có trao đổi, loại nái có khả năng mang thai khỏi đối tượng và kiểm tra lại.",
+     "Hiểu lạm dụng hormone làm suy giảm chức năng buồng trứng, và có thể hướng dẫn người mới các điểm chính về trao đổi và xác nhận đối tượng."
+    ],
+    "name_id": "Tidak memutuskan sendiri dan memastikan induk babi sasaran",
+    "kanten_id": "Apakah tidak memakai obat berlebihan, berkonsultasi dengan atasan dan dokter hewan, memperhatikan perbedaan dosis babi dara dan induk beranak, serta mengeluarkan induk yang mungkin bunting dari sasaran?",
+    "levels_id": [
+     "Memakai obat atas keputusan sendiri, menyuntik juga induk yang mungkin sedang bunting, sehingga menimbulkan bahaya keguguran.",
+     "Menyuntik jika diperintah, tetapi sering lalai berkonsultasi dan memastikan induk sasaran.",
+     "Jika diperintah, dapat berkonsultasi dengan atasan dan dokter hewan, dan menyuntik secara lengkap hanya pada induk dalam daftar sasaran.",
+     "Tanpa diperintah pun, menghindari pemakaian berlebihan, berkonsultasi, mengeluarkan induk yang mungkin bunting dari sasaran dan memastikannya.",
+     "Memahami bahwa pemakaian hormon berlebihan menurunkan fungsi indung telur, dan dapat mengajarkan pokok konsultasi dan pemastian sasaran kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "drug-label-check",
+    "name": "薬剤のラベル確認と温度管理",
+    "kanten": "冷蔵2〜8℃保管の薬剤を出してラベルの名前・量・期限・保管状態・変色沈殿を確認し、少し室温に戻して使えるか。",
+    "levels": [
+     "ラベルを見ずに吸い、期限切れや変色した薬でも気づかず使う。",
+     "指示があれば確認するが、5つの確認項目に抜けがあり、冷たいまま打って母豚を暴れさせる。",
+     "指示があればラベルの確認項目をひと通りチェックし、室温に戻してから使える。",
+     "指示がなくても毎回声に出して確認し、異常のある薬は使わずに報告する。",
+     "保管温度と薬効の関係を理解し、ラベル確認と温度管理の手順を新人に指導できる。"
+    ],
+    "name_en": "Checking the Drug Label and Temperature Control",
+    "kanten_en": "Can they take out the drug stored refrigerated at 2-8°C, check the label for name, dose, expiration, storage condition, and discoloration or sediment, and let it warm slightly to room temperature before use?",
+    "levels_en": [
+     "Draws up the drug without reading the label, and uses expired or discolored drug without noticing.",
+     "With guidance can check, but misses some of the five check items and injects the drug cold, making the sow struggle.",
+     "With guidance, can check all the label items and warm the drug toward room temperature before use.",
+     "Independently reads out the checks aloud every time, and does not use abnormal drug but reports it.",
+     "Understands the relationship between storage temperature and drug efficacy, and can teach new staff the label-check and temperature-control procedure."
+    ],
+    "name_vi": "Kiểm tra nhãn thuốc và quản lý nhiệt độ",
+    "kanten_vi": "Có lấy thuốc bảo quản lạnh 2〜8℃ ra, kiểm tra trên nhãn tên thuốc, liều lượng, hạn dùng, tình trạng bảo quản, biến màu cặn lắng, và để ấm lên chút về nhiệt độ phòng rồi mới dùng không.",
+    "levels_vi": [
+     "Không nhìn nhãn đã hút thuốc, thuốc hết hạn hay biến màu cũng dùng mà không nhận ra.",
+     "Nếu được chỉ thị thì kiểm tra, nhưng bỏ sót trong 5 mục cần kiểm tra, tiêm khi thuốc còn lạnh làm nái giãy giụa.",
+     "Nếu được chỉ thị thì kiểm tra được cơ bản các mục trên nhãn, để thuốc về nhiệt độ phòng rồi mới dùng.",
+     "Dù không có chỉ thị vẫn đọc to kiểm tra mỗi lần, thuốc bất thường thì không dùng mà báo cáo.",
+     "Hiểu quan hệ giữa nhiệt độ bảo quản và hiệu lực thuốc, và có thể hướng dẫn người mới trình tự kiểm tra nhãn và quản lý nhiệt độ."
+    ],
+    "name_id": "Memeriksa label obat dan pengelolaan suhu",
+    "kanten_id": "Apakah mengeluarkan obat yang disimpan dingin 2〜8℃, memeriksa pada label nama, dosis, tanggal kedaluwarsa, kondisi penyimpanan, perubahan warna dan endapan, lalu membiarkannya sedikit menghangat ke suhu ruang sebelum dipakai?",
+    "levels_id": [
+     "Menyedot obat tanpa melihat label, dan memakai obat kedaluwarsa atau berubah warna tanpa sadar.",
+     "Jika diperintah bisa memeriksa, tetapi ada yang terlewat dari 5 hal pemeriksaan, dan menyuntik obat yang masih dingin sehingga induk meronta.",
+     "Jika diperintah, dapat memeriksa butir-butir pada label secara lengkap dan memakai obat setelah kembali ke suhu ruang.",
+     "Tanpa diperintah pun, setiap kali memeriksa dengan membacanya bersuara, dan obat yang tidak normal tidak dipakai melainkan dilaporkan.",
+     "Memahami hubungan suhu penyimpanan dengan khasiat obat, dan dapat mengajarkan urutan pemeriksaan label dan pengelolaan suhu kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "injection-safety",
+    "name": "確実な筋肉注射と針の安全管理",
+    "kanten": "首の正しい部位に90度で刺し、血の逆流を確認してからゆっくり注入し、針は1頭ごと交換して専用容器に捨てられるか。",
+    "levels": [
+     "部位を選ばず浅く刺し、逆流確認もせず、使った針にキャップをはめ直して自分を刺しかける。",
+     "指示があれば打てるが、消毒・逆流確認・針交換に抜けが多い。",
+     "指示があれば首の部位を消毒して90度で刺し、逆流確認と針の専用容器への廃棄までできる。",
+     "指示がなくても保定から廃棄まで一連を確実に行い、血が引けたら刺し直して全量を入れる。",
+     "首に打つ理由と針刺し事故の危険を理解し、注射手技と針の安全管理を新人に指導できる。"
+    ],
+    "name_en": "Reliable Intramuscular Injection and Needle Safety",
+    "kanten_en": "Can they insert at 90 degrees into the correct site on the neck, check for blood backflow before injecting slowly, change the needle for every sow, and discard it into the dedicated container?",
+    "levels_en": [
+     "Sticks the needle in shallow anywhere, skips the backflow check, and recaps used needles, nearly sticking themselves.",
+     "With guidance can inject, but often misses disinfection, the backflow check, and needle changes.",
+     "With guidance, disinfects the neck site, inserts at 90 degrees, and can do the backflow check and discard needles into the dedicated container.",
+     "Independently carries out the whole sequence from restraint to disposal reliably, and re-inserts to deliver the full dose if blood is drawn.",
+     "Understands why the neck is used and the danger of needlestick accidents, and can teach new staff injection technique and needle safety."
+    ],
+    "name_vi": "Tiêm bắp chắc chắn và quản lý an toàn kim tiêm",
+    "kanten_vi": "Có đâm kim góc 90 độ vào đúng vị trí ở cổ, kiểm tra máu trào ngược rồi mới bơm chậm, thay kim mỗi con và bỏ vào hộp chuyên dụng không.",
+    "levels_vi": [
+     "Đâm nông không chọn vị trí, không kiểm tra trào ngược, còn đậy lại nắp kim đã dùng suýt đâm vào tay mình.",
+     "Nếu được chỉ thị thì tiêm được, nhưng hay bỏ sót khử trùng, kiểm tra trào ngược và thay kim.",
+     "Nếu được chỉ thị thì khử trùng vị trí ở cổ, đâm góc 90 độ, làm được cả kiểm tra trào ngược và bỏ kim vào hộp chuyên dụng.",
+     "Dù không có chỉ thị vẫn làm chắc chắn cả chuỗi từ giữ cố định đến bỏ kim, nếu hút ra máu thì đâm lại chỗ khác và bơm đủ liều.",
+     "Hiểu lý do tiêm ở cổ và nguy cơ tai nạn kim đâm, và có thể hướng dẫn người mới kỹ thuật tiêm và quản lý an toàn kim."
+    ],
+    "name_id": "Suntikan otot yang pasti dan pengelolaan keamanan jarum",
+    "kanten_id": "Apakah menusukkan jarum 90 derajat di tempat yang benar pada leher, memeriksa aliran balik darah sebelum menyuntik perlahan, mengganti jarum tiap ekor, dan membuangnya ke wadah khusus?",
+    "levels_id": [
+     "Menusuk dangkal tanpa memilih tempat, tidak memeriksa aliran balik, dan memasang kembali tutup jarum bekas sampai hampir menusuk diri sendiri.",
+     "Jika diperintah bisa menyuntik, tetapi sering lalai disinfeksi, memeriksa aliran balik, dan mengganti jarum.",
+     "Jika diperintah, dapat mendisinfeksi tempat di leher, menusuk 90 derajat, memeriksa aliran balik, dan membuang jarum ke wadah khusus.",
+     "Tanpa diperintah pun, melakukan seluruh rangkaian dari memegangi sampai pembuangan dengan pasti, dan jika darah tersedot menusuk ulang lalu memasukkan seluruh dosis.",
+     "Memahami alasan menyuntik di leher dan bahaya kecelakaan tertusuk jarum, dan dapat mengajarkan teknik menyuntik dan keamanan jarum kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "record-followup",
+    "name": "投与記録と発情観察の予定管理",
+    "kanten": "投与日・個体番号・量・実施者を記録し、投与後3〜5日の発情観察を続け、7日来なければ獣医師に相談できるか。",
+    "levels": [
+     "記録を残さず、「打ったから来るだろう」と観察もせず、効かなくても勝手にもう1回打つ。",
+     "指示されれば記録するが、観察予定のメモや毎日の雄豚当てに抜けが多い。",
+     "指示があれば投与記録と発情確認の予定日を書き、投与後の観察をひと通り続けられる。",
+     "指示がなくても毎日観察して発情のサインを捉え、7日過ぎても来ないときは自分で判断せず獣医師相談につなげる。",
+     "投与後の観察がチャンスを逃さない鍵であることを理解し、記録と予定管理の型を新人に指導できる。"
+    ],
+    "name_en": "Administration Records and Heat-Observation Scheduling",
+    "kanten_en": "Can they record the date, ID number, dose, and person, keep observing for heat 3-5 days after administration, and consult the veterinarian if it has not come by day 7?",
+    "levels_en": [
+     "Leaves no records, assumes heat will come because the shot was given without observing, and gives another shot on their own when it does not work.",
+     "With guidance can record, but often misses noting the observation schedule and the daily boar exposure.",
+     "With guidance, records the administration and the planned heat-check dates, and can keep up the observation after dosing.",
+     "Independently observes daily and catches heat signs, and if it has not come after 7 days, does not decide alone but connects to a veterinary consultation.",
+     "Understands that post-administration observation is the key to not missing the chance, and can teach new staff the routine of records and scheduling."
+    ],
+    "name_vi": "Ghi chép tiêm và quản lý lịch quan sát động dục",
+    "kanten_vi": "Có ghi ngày tiêm, số hiệu cá thể, liều lượng, người thực hiện, tiếp tục quan sát động dục 3〜5 ngày sau tiêm, nếu 7 ngày chưa động dục thì hỏi bác sĩ thú y không.",
+    "levels_vi": [
+     "Không ghi chép, nghĩ đã tiêm thì sẽ động dục mà không quan sát, không hiệu quả thì tự ý tiêm thêm 1 lần nữa.",
+     "Nếu được chỉ thị thì ghi, nhưng hay bỏ sót ghi chú lịch quan sát và việc cho tiếp xúc lợn đực hằng ngày.",
+     "Nếu được chỉ thị thì ghi việc tiêm và ngày dự định kiểm tra động dục, duy trì được cơ bản việc quan sát sau tiêm.",
+     "Dù không có chỉ thị vẫn quan sát hằng ngày để nhận ra dấu hiệu động dục, quá 7 ngày chưa động dục thì không tự quyết mà chuyển sang hỏi ý kiến bác sĩ thú y.",
+     "Hiểu quan sát sau tiêm là chìa khóa để không bỏ lỡ cơ hội, và có thể hướng dẫn người mới nề nếp ghi chép và quản lý lịch."
+    ],
+    "name_id": "Catatan penyuntikan dan pengelolaan jadwal pengamatan birahi",
+    "kanten_id": "Apakah mencatat tanggal suntik, nomor individu, dosis, dan pelaksana, terus mengamati birahi 3〜5 hari setelah penyuntikan, dan berkonsultasi dengan dokter hewan jika sampai 7 hari belum birahi?",
+    "levels_id": [
+     "Tidak meninggalkan catatan, tidak mengamati karena berpikir sudah disuntik pasti birahi, dan jika tidak mempan menyuntik lagi atas keputusan sendiri.",
+     "Jika diperintah bisa mencatat, tetapi sering lalai menulis jadwal pengamatan dan kontak babi jantan setiap hari.",
+     "Jika diperintah, dapat menulis catatan penyuntikan dan tanggal rencana pemeriksaan birahi, serta melanjutkan pengamatan setelah penyuntikan secara lengkap.",
+     "Tanpa diperintah pun, mengamati setiap hari untuk menangkap tanda birahi, dan jika lewat 7 hari belum birahi tidak memutuskan sendiri melainkan menghubungkannya ke konsultasi dokter hewan.",
+     "Memahami bahwa pengamatan setelah penyuntikan adalah kunci agar tidak kehilangan kesempatan, dan dapat mengajarkan pola pencatatan dan pengelolaan jadwal kepada karyawan baru."
+    ]
+   }
+  ],
+  "name_en": "PMS Administration",
+  "purposeShort_en": "Induce estrus in sows with weak or absent heat and synchronize timing",
+  "name_vi": "Tiêm PMS (hormone kích thích động dục)",
+  "purposeShort_vi": "Gây động dục cho lợn nái động dục yếu hoặc không động dục, làm đồng đều thời điểm",
+  "name_id": "Penyuntikan PMS (hormon induksi birahi)",
+  "purposeShort_id": "Memicu birahi pada induk babi yang birahinya lemah atau tidak muncul, dan menyeragamkan waktunya"
+ },
+ {
+  "id": "pg",
+  "category": "breeding",
+  "no": "No.36",
+  "name": "PG（プロスタグランジン）接種",
+  "purposeShort": "分娩のタイミングをそろえ、分娩管理・立会いをしやすくする",
+  "gyomu": "36",
+  "aspects": [
+   {
+    "id": "gestation-day",
+    "name": "妊娠日数の確認と適期投与",
+    "kanten": "妊娠日数を交配日の記録から正しく数え、114日未満への投与を避けて決められた日齢・対象に接種できるか。",
+    "levels": [
+     "妊娠日数を誤算して早すぎる時期に投与し、早産と未熟な子豚の死亡を招く。",
+     "指示があれば接種するが、日数確認や対象確認に漏れがある。",
+     "指示があれば決められた日齢・対象にひと通り接種できる。",
+     "指示がなくても妊娠日数を確認し、対象母豚を確かめて適期に接種する。",
+     "早期投与の禁忌と黄体の関係を理解し、適期投与の判断を新人に指導できる。"
+    ],
+    "name_en": "Confirming Gestation Days and Timely Administration",
+    "kanten_en": "Can they count gestation days correctly from the mating-date records, avoid dosing before day 114, and inject the designated animals at the designated day?",
+    "levels_en": [
+     "Miscounts gestation days and injects too early, causing premature farrowing and deaths of immature piglets.",
+     "With guidance can inject, but misses the day count or the target-animal check.",
+     "With guidance can inject the designated animals at the designated day through the basic procedure.",
+     "Independently confirms gestation days, verifies the target sows, and injects at the right time.",
+     "Understands the contraindication of early administration and its relationship with the corpus luteum, and can teach new staff how to judge timely administration."
+    ],
+    "name_vi": "Kiểm tra số ngày mang thai và tiêm đúng thời điểm",
+    "kanten_vi": "Có đếm đúng số ngày mang thai từ ghi chép ngày phối, tránh tiêm khi chưa đủ 114 ngày, tiêm đúng ngày tuổi thai và đúng đối tượng quy định không.",
+    "levels_vi": [
+     "Tính sai số ngày mang thai nên tiêm quá sớm, gây đẻ non và lợn con non yếu bị chết.",
+     "Nếu được chỉ thị thì tiêm, nhưng còn thiếu sót về kiểm tra số ngày và đối tượng.",
+     "Nếu được chỉ thị thì tiêm đúng ngày tuổi thai, đúng đối tượng quy định một cách cơ bản.",
+     "Dù không có chỉ thị vẫn kiểm tra số ngày mang thai, xác nhận lợn nái đối tượng và tiêm đúng thời điểm.",
+     "Hiểu chống chỉ định tiêm sớm và quan hệ với thể vàng, và có thể hướng dẫn người mới cách phán đoán thời điểm tiêm phù hợp."
+    ],
+    "name_id": "Memeriksa umur kebuntingan dan menyuntik pada waktu yang tepat",
+    "kanten_id": "Apakah dapat menghitung umur kebuntingan dengan benar dari catatan tanggal kawin, menghindari penyuntikan sebelum hari ke-114, dan menyuntik pada umur dan sasaran yang ditentukan?",
+    "levels_id": [
+     "Salah menghitung umur kebuntingan sehingga menyuntik terlalu awal, dan menyebabkan lahir prematur serta kematian anak babi yang belum matang.",
+     "Menyuntik jika diperintah, tetapi sering lalai memeriksa jumlah hari dan sasaran.",
+     "Jika diperintah, dapat menyuntik pada umur dan sasaran yang ditentukan secara lengkap.",
+     "Tanpa diperintah pun, memeriksa umur kebuntingan, memastikan induk babi sasaran, dan menyuntik pada waktu yang tepat.",
+     "Memahami larangan penyuntikan terlalu awal dan hubungannya dengan korpus luteum, dan dapat mengajarkan penilaian waktu penyuntikan kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "id-doublecheck",
+    "name": "個体番号の照合とダブルチェック",
+    "kanten": "接種前に個体番号をプレートと照合して先輩とダブルチェックし、接種済みマーキングを付けられるか。",
+    "levels": [
+     "照合せずに打ち、間違った母豚への接種やマーキング忘れによる二重接種を招く。",
+     "指示があれば照合するが、ダブルチェックの依頼やマーキングに抜けが多い。",
+     "指示があればプレート照合とダブルチェックを行い、接種後のマーキングまでできる。",
+     "指示がなくても不安な個体はもう一度見てもらい、接種済みがひと目で分かる状態を保つ。",
+     "打ち間違いが流産につながる重大さを理解し、照合とマーキングの型を新人に指導できる。"
+    ],
+    "name_en": "Verifying ID Numbers and Double-Checking",
+    "kanten_en": "Can they match the ID number against the plate before injecting, double-check with a senior, and apply the injected mark?",
+    "levels_en": [
+     "Injects without verifying, causing injections into the wrong sow and double injections from forgotten marking.",
+     "With guidance can verify, but often misses asking for the double check and the marking.",
+     "With guidance, verifies against the plate, double-checks, and can mark the sow after injection.",
+     "Independently has uncertain animals looked at again, and keeps injected sows recognizable at a glance.",
+     "Understands the seriousness of a wrong injection leading to abortion, and can teach new staff the routine of verification and marking."
+    ],
+    "name_vi": "Đối chiếu số hiệu cá thể và kiểm tra chéo",
+    "kanten_vi": "Trước khi tiêm có đối chiếu số hiệu cá thể với bảng, kiểm tra chéo cùng người đi trước, và đánh dấu đã tiêm không.",
+    "levels_vi": [
+     "Không đối chiếu mà tiêm, gây tiêm nhầm nái và tiêm 2 lần do quên đánh dấu.",
+     "Nếu được chỉ thị thì đối chiếu, nhưng hay bỏ sót việc nhờ kiểm tra chéo và đánh dấu.",
+     "Nếu được chỉ thị thì đối chiếu với bảng, kiểm tra chéo, và đánh dấu được sau khi tiêm.",
+     "Dù không có chỉ thị vẫn nhờ xem lại con chưa chắc chắn, giữ trạng thái nhìn một cái là biết con đã tiêm.",
+     "Hiểu mức độ nghiêm trọng của tiêm nhầm dẫn đến sảy thai, và có thể hướng dẫn người mới nề nếp đối chiếu và đánh dấu."
+    ],
+    "name_id": "Mencocokkan nomor individu dan pemeriksaan ganda",
+    "kanten_id": "Apakah sebelum menyuntik mencocokkan nomor individu dengan papan, memeriksa ganda bersama senior, dan memberi tanda sudah disuntik?",
+    "levels_id": [
+     "Menyuntik tanpa mencocokkan, sehingga terjadi suntikan pada induk yang salah dan suntikan dua kali karena lupa menandai.",
+     "Jika diperintah bisa mencocokkan, tetapi sering lalai meminta pemeriksaan ganda dan memberi tanda.",
+     "Jika diperintah, dapat mencocokkan dengan papan, memeriksa ganda, dan memberi tanda setelah penyuntikan.",
+     "Tanpa diperintah pun, meminta individu yang belum pasti dilihat sekali lagi, dan menjaga agar induk yang sudah disuntik terlihat sekali pandang.",
+     "Memahami betapa seriusnya salah suntik yang berujung keguguran, dan dapat mengajarkan pola pencocokan dan penandaan kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "injection-obs",
+    "name": "確実な注射と分娩受け入れ準備",
+    "kanten": "浅い注射で脂肪層に入るのを避けて確実に筋肉注射し、翌日の分娩に備えて立ち会い道具と子豚の保温を整えられるか。",
+    "levels": [
+     "針が浅く脂肪層に入って効果を弱め、分娩に備えた道具・保温の準備もしない。",
+     "指示があれば接種するが、注射の深さや分娩準備に漏れがある。",
+     "指示があれば十分な深さで筋肉注射し、立ち会いの道具をひと通りそろえられる。",
+     "指示がなくても確実に筋注し、保温灯でクリープエリアを32〜35℃に温めて分娩を受け入れる準備を整える。",
+     "浅い注射で効きが弱くなる理由を理解し、注射手技と分娩準備の段取りを新人に指導できる。"
+    ],
+    "name_en": "Reliable Injection and Preparing to Receive the Farrowing",
+    "kanten_en": "Can they give a reliable intramuscular injection avoiding a shallow shot into the fat layer, and prepare the attendance tools and piglet warming for the next day's farrowing?",
+    "levels_en": [
+     "Injects shallow into the fat layer, weakening the effect, and makes no preparation of tools or warming for the farrowing.",
+     "With guidance can inject, but misses the injection depth and the farrowing preparation.",
+     "With guidance, injects deep enough into the muscle and can lay out the attendance tools.",
+     "Independently gives a reliable intramuscular injection, and warms the creep area to 32-35°C with heat lamps, ready to receive the farrowing.",
+     "Understands why a shallow injection weakens the effect, and can teach new staff injection technique and how to set up for farrowing."
+    ],
+    "name_vi": "Tiêm chắc chắn và chuẩn bị đón đẻ",
+    "kanten_vi": "Có tiêm bắp chắc chắn tránh tiêm nông vào lớp mỡ, chuẩn bị dụng cụ túc trực và giữ ấm cho lợn con để đón đẻ ngày hôm sau không.",
+    "levels_vi": [
+     "Kim đâm nông vào lớp mỡ làm giảm hiệu quả, cũng không chuẩn bị dụng cụ và giữ ấm cho việc đẻ.",
+     "Nếu được chỉ thị thì tiêm, nhưng còn thiếu sót về độ sâu kim tiêm và chuẩn bị đón đẻ.",
+     "Nếu được chỉ thị thì tiêm bắp đủ sâu, xếp được cơ bản dụng cụ túc trực đỡ đẻ.",
+     "Dù không có chỉ thị vẫn tiêm bắp chắc chắn, dùng đèn sưởi làm ấm khu úm lợn con lên 32〜35℃, chuẩn bị sẵn sàng đón đẻ.",
+     "Hiểu lý do tiêm nông làm thuốc kém hiệu quả, và có thể hướng dẫn người mới kỹ thuật tiêm và cách sắp xếp chuẩn bị đón đẻ."
+    ],
+    "name_id": "Menyuntik dengan pasti dan persiapan menyambut kelahiran",
+    "kanten_id": "Apakah menyuntik ke otot dengan pasti menghindari suntikan dangkal yang masuk lapisan lemak, dan menyiapkan peralatan pendampingan serta penghangatan anak babi untuk kelahiran keesokan harinya?",
+    "levels_id": [
+     "Jarum masuk dangkal ke lapisan lemak sehingga efeknya melemah, dan tidak menyiapkan peralatan maupun penghangatan untuk kelahiran.",
+     "Jika diperintah bisa menyuntik, tetapi sering lalai soal kedalaman suntikan dan persiapan kelahiran.",
+     "Jika diperintah, dapat menyuntik ke otot dengan kedalaman cukup, dan menyiapkan peralatan pendampingan secara lengkap.",
+     "Tanpa diperintah pun, menyuntik otot dengan pasti, dan menghangatkan area creep anak babi sampai 32〜35°C dengan lampu penghangat, siap menyambut kelahiran.",
+     "Memahami alasan suntikan dangkal melemahkan efek obat, dan dapat mengajarkan teknik menyuntik dan penyiapan kelahiran kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "human-safety",
+    "name": "人への安全と針・医療ゴミの処理",
+    "kanten": "PGが人にも効く薬と理解して必ず手袋を着け、皮膚に付いたらすぐ洗い流し、針はキャップをせず廃棄容器へ捨てられるか。",
+    "levels": [
+     "素手で薬を扱い、皮膚に付いても洗わず、使った針にキャップをはめ直して危険な捨て方をする。",
+     "指示があれば手袋を着けるが、廃棄の仕方や皮膚に付いたときの対応が不確実。",
+     "指示があれば手袋を着けて扱い、針・注射器を医療ゴミとしてひと通り処理できる。",
+     "指示がなくても手袋と廃棄ルールを徹底し、皮膚に付いたらすぐ洗い流して周囲にも注意を促す。",
+     "妊娠中の女性が扱ってはいけない理由を含めて危険性を理解し、安全な取り扱いを新人に指導できる。"
+    ],
+    "name_en": "Human Safety and Disposal of Needles and Medical Waste",
+    "kanten_en": "Can they understand PG also acts on humans, always wear gloves, rinse immediately if it touches the skin, and discard needles into the disposal container without recapping?",
+    "levels_en": [
+     "Handles the drug bare-handed, does not wash it off the skin, and recaps used needles, disposing of them dangerously.",
+     "With guidance can wear gloves, but is unsure about disposal and what to do when the drug touches the skin.",
+     "With guidance, wears gloves to handle it and can dispose of needles and syringes as medical waste.",
+     "Independently keeps to the glove and disposal rules, rinses the skin immediately if touched, and alerts those around them.",
+     "Understands the hazards, including why pregnant women must not handle it, and can teach new staff safe handling."
+    ],
+    "name_vi": "An toàn cho người và xử lý kim, rác y tế",
+    "kanten_vi": "Có hiểu PG là thuốc có tác dụng cả với người nên nhất định đeo găng tay, dính vào da thì rửa ngay, kim thì không đậy nắp mà bỏ vào thùng đựng rác không.",
+    "levels_vi": [
+     "Cầm thuốc bằng tay trần, dính vào da cũng không rửa, còn đậy lại nắp kim đã dùng và vứt bỏ nguy hiểm.",
+     "Nếu được chỉ thị thì đeo găng tay, nhưng cách vứt bỏ và cách xử lý khi dính vào da còn chưa chắc chắn.",
+     "Nếu được chỉ thị thì đeo găng tay khi thao tác, xử lý được kim và bơm tiêm như rác y tế.",
+     "Dù không có chỉ thị vẫn triệt để đeo găng và giữ quy tắc vứt bỏ, dính vào da thì rửa ngay và nhắc nhở cả người xung quanh.",
+     "Hiểu mức độ nguy hiểm bao gồm lý do phụ nữ mang thai không được cầm thuốc này, và có thể hướng dẫn người mới cách thao tác an toàn."
+    ],
+    "name_id": "Keselamatan manusia dan pembuangan jarum serta sampah medis",
+    "kanten_id": "Apakah memahami PG adalah obat yang juga berefek pada manusia sehingga selalu memakai sarung tangan, segera membilas jika terkena kulit, dan membuang jarum ke wadah pembuangan tanpa memasang tutupnya?",
+    "levels_id": [
+     "Memegang obat dengan tangan kosong, tidak mencuci walau terkena kulit, dan memasang kembali tutup jarum bekas sehingga cara buangnya berbahaya.",
+     "Jika diperintah bisa memakai sarung tangan, tetapi cara membuang dan penanganan saat terkena kulit belum pasti.",
+     "Jika diperintah, dapat menanganinya dengan sarung tangan dan membuang jarum serta alat suntik sebagai sampah medis secara lengkap.",
+     "Tanpa diperintah pun, menjalankan aturan sarung tangan dan pembuangan dengan ketat, segera membilas jika terkena kulit, dan mengingatkan orang di sekitar.",
+     "Memahami bahayanya termasuk alasan wanita hamil tidak boleh menanganinya, dan dapat mengajarkan penanganan yang aman kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "record-timing",
+    "name": "接種記録と観察予定の管理",
+    "kanten": "個体番号・接種日時を必ず記録し、接種後12時間からの兆候確認と48時間の報告基準を守れるか。",
+    "levels": [
+     "だれに打ったかを記録せず、接種後の見回り予定も立てない。",
+     "指示されれば記録するが、日時の記載や観察予定に抜けが多い。",
+     "指示があれば個体番号・接種日時を記録し、翌日の見回り予定までひと通り立てられる。",
+     "指示がなくても記録を確実に残し、48時間たっても産まないときは油断せず必ず報告する。",
+     "分娩が接種後24〜36時間に集中する流れを理解し、記録と観察予定の組み方を新人に指導できる。"
+    ],
+    "name_en": "Injection Records and Observation Scheduling",
+    "kanten_en": "Can they always record the ID number and injection date and time, and keep to checking for signs from 12 hours after injection and the 48-hour reporting rule?",
+    "levels_en": [
+     "Does not record who was injected, and makes no plan to check on them afterward.",
+     "With guidance can record, but often omits the date and time and the observation schedule.",
+     "With guidance, records the ID number and injection date and time, and can plan the next day's rounds.",
+     "Independently keeps reliable records, stays alert, and always reports when no farrowing has come after 48 hours.",
+     "Understands that farrowings concentrate 24-36 hours after injection, and can teach new staff how to organize records and observation schedules."
+    ],
+    "name_vi": "Ghi chép tiêm và quản lý lịch theo dõi",
+    "kanten_vi": "Có nhất định ghi số hiệu cá thể, ngày giờ tiêm, giữ việc kiểm tra dấu hiệu từ 12 giờ sau tiêm và chuẩn báo cáo 48 giờ không.",
+    "levels_vi": [
+     "Không ghi đã tiêm con nào, cũng không lập lịch đi xem sau tiêm.",
+     "Nếu được chỉ thị thì ghi, nhưng hay bỏ sót ghi ngày giờ và lịch theo dõi.",
+     "Nếu được chỉ thị thì ghi số hiệu cá thể, ngày giờ tiêm, và lập được cơ bản lịch đi xem ngày hôm sau.",
+     "Dù không có chỉ thị vẫn ghi chép chắc chắn, không chủ quan và nhất định báo cáo khi quá 48 giờ vẫn chưa đẻ.",
+     "Hiểu việc đẻ tập trung vào 24〜36 giờ sau tiêm, và có thể hướng dẫn người mới cách tổ chức ghi chép và lịch theo dõi."
+    ],
+    "name_id": "Catatan penyuntikan dan pengelolaan jadwal pengawasan",
+    "kanten_id": "Apakah selalu mencatat nomor individu dan tanggal-jam penyuntikan, serta menepati pemeriksaan tanda-tanda mulai 12 jam setelah suntik dan patokan lapor 48 jam?",
+    "levels_id": [
+     "Tidak mencatat siapa yang disuntik, dan tidak membuat rencana keliling memeriksa setelah penyuntikan.",
+     "Jika diperintah bisa mencatat, tetapi sering tidak menulis tanggal-jam dan jadwal pengawasan.",
+     "Jika diperintah, dapat mencatat nomor individu dan tanggal-jam penyuntikan, serta menyusun rencana keliling keesokan harinya secara lengkap.",
+     "Tanpa diperintah pun, meninggalkan catatan dengan pasti, tidak lengah, dan selalu melapor jika lewat 48 jam belum melahirkan.",
+     "Memahami bahwa kelahiran terkonsentrasi 24〜36 jam setelah penyuntikan, dan dapat mengajarkan cara menyusun catatan dan jadwal pengawasan kepada karyawan baru."
+    ]
+   }
+  ],
+  "name_en": "PG (Prostaglandin) Injection",
+  "purposeShort_en": "Synchronize farrowing timing to make farrowing management and attendance easier",
+  "name_vi": "Tiêm PG (prostaglandin) — gây đẻ (kích thích đẻ)",
+  "purposeShort_vi": "Làm đồng đều thời điểm đẻ, giúp quản lý đẻ và trực đẻ dễ dàng hơn",
+  "name_id": "Penyuntikan PG (prostaglandin) — induksi kelahiran",
+  "purposeShort_id": "Menyeragamkan waktu melahirkan agar pengelolaan dan pendampingan kelahiran lebih mudah"
+ },
+ {
+  "id": "uterine-wash",
+  "category": "breeding",
+  "no": "No.42",
+  "name": "子宮内洗浄",
+  "purposeShort": "子宮内の汚染物を減らし、子宮炎・発熱を防ぎ産後回復を促す",
+  "gyomu": "42",
+  "aspects": [
+   {
+    "id": "target-select",
+    "name": "対象選定と獣医師指示の遵守",
+    "kanten": "全頭には行わず対象を選定し、薬剤の濃度・量を守って獣医師の指示に従えるか。",
+    "levels": [
+     "全頭にルーチンで行い、薬剤の濃度・量も守らず自然回復を妨げる。",
+     "指示があれば実施するが、対象選定や濃度管理に漏れがある。",
+     "指示があれば対象を選び、決められた濃度・量でひと通り実施できる。",
+     "指示がなくても手入れした母豚等に絞り、濃度・量を守って獣医師の指示に従う。",
+     "予防的ルーチン洗浄の弊害を理解し、対象選定と適正実施を新人に指導できる。"
+    ],
+    "name_en": "Case Selection and Following Veterinary Instructions",
+    "kanten_en": "Can they select cases instead of treating every sow, keep the correct drug concentration and volume, and follow the veterinarian's instructions?",
+    "levels_en": [
+     "Performs it routinely on every sow, ignores drug concentration and volume, and hinders natural recovery.",
+     "With guidance can perform it, but misses case selection or concentration control.",
+     "With guidance can select cases and perform the basic procedure at the designated concentration and volume.",
+     "Independently limits treatment to sows that required manual intervention and the like, keeps concentration and volume, and follows the veterinarian's instructions.",
+     "Understands the harm of routine preventive flushing, and can teach new staff case selection and proper practice."
+    ],
+    "name_vi": "Chọn đối tượng và tuân theo chỉ thị của bác sĩ thú y",
+    "kanten_vi": "Có chọn đối tượng thay vì làm cho tất cả, giữ đúng nồng độ và lượng thuốc, tuân theo chỉ thị của bác sĩ thú y không.",
+    "levels_vi": [
+     "Làm thường quy cho tất cả, không giữ đúng nồng độ và lượng thuốc, cản trở hồi phục tự nhiên.",
+     "Nếu được chỉ thị thì thực hiện, nhưng còn thiếu sót về chọn đối tượng và quản lý nồng độ.",
+     "Nếu được chỉ thị thì chọn đối tượng, thực hiện đúng nồng độ và lượng quy định một cách cơ bản.",
+     "Dù không có chỉ thị vẫn chỉ làm cho lợn nái đã can thiệp bằng tay v.v., giữ đúng nồng độ, lượng thuốc và tuân theo chỉ thị của bác sĩ thú y.",
+     "Hiểu tác hại của việc rửa thường quy để phòng bệnh, và có thể hướng dẫn người mới cách chọn đối tượng và thực hiện đúng."
+    ],
+    "name_id": "Memilih sasaran dan mengikuti perintah dokter hewan",
+    "kanten_id": "Apakah tidak melakukan pada semua babi tetapi memilih sasaran, menjaga kepekatan dan jumlah obat, serta mengikuti perintah dokter hewan?",
+    "levels_id": [
+     "Melakukan secara rutin pada semua babi, tidak menjaga kepekatan dan jumlah obat, sehingga menghambat pemulihan alami.",
+     "Melakukan jika diperintah, tetapi sering lalai memilih sasaran dan mengatur kepekatan.",
+     "Jika diperintah, dapat memilih sasaran dan melakukannya secara lengkap dengan kepekatan dan jumlah yang ditentukan.",
+     "Tanpa diperintah pun, membatasi hanya pada induk babi yang dibantu saat melahirkan dan sejenisnya, menjaga kepekatan dan jumlah obat, serta mengikuti perintah dokter hewan.",
+     "Memahami kerugian pencucian rutin sebagai pencegahan, dan dapat mengajarkan pemilihan sasaran dan pelaksanaan yang tepat kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "solution-warm",
+    "name": "洗浄液の調製と加温",
+    "kanten": "洗浄液を処方どおりに用意し、体温程度（38〜39℃）に温め、濃度が分からないときは作業を止めて確認できるか。",
+    "levels": [
+     "冷たい液をそのまま使い、濃度が分からなくても適当に薄めて進めてしまう。",
+     "指示があれば用意するが、温度の確認や処方どおりの調製に抜けがある。",
+     "指示があれば処方どおりに調製し、体温程度に温めてから使える。",
+     "指示がなくても直前に液温を確かめ、不明点があれば作業を止めて確認してから進める。",
+     "冷たい液が子宮収縮・泌乳低下を招く仕組みを理解し、調製と加温の要点を新人に指導できる。"
+    ],
+    "name_en": "Preparing and Warming the Flushing Solution",
+    "kanten_en": "Can they prepare the flushing solution as prescribed, warm it to about body temperature (38-39°C), and stop the work to check when the concentration is unclear?",
+    "levels_en": [
+     "Uses the solution cold as it is, and dilutes it by guesswork and proceeds even when the concentration is unknown.",
+     "With guidance can prepare it, but misses checking the temperature and preparing exactly as prescribed.",
+     "With guidance, prepares it as prescribed and can warm it to about body temperature before use.",
+     "Independently checks the solution temperature just before use, and stops the work to confirm anything unclear before proceeding.",
+     "Understands how cold solution causes uterine contraction and reduced milk production, and can teach new staff the key points of preparation and warming."
+    ],
+    "name_vi": "Pha chế và làm ấm dung dịch rửa",
+    "kanten_vi": "Có chuẩn bị dung dịch rửa đúng theo đơn, làm ấm đến khoảng nhiệt độ cơ thể (38〜39℃), khi không rõ nồng độ thì dừng việc để hỏi lại không.",
+    "levels_vi": [
+     "Dùng ngay dung dịch còn lạnh, không rõ nồng độ cũng pha đại rồi làm tiếp.",
+     "Nếu được chỉ thị thì chuẩn bị, nhưng có bỏ sót việc kiểm tra nhiệt độ và pha đúng theo đơn.",
+     "Nếu được chỉ thị thì pha đúng theo đơn, làm ấm đến khoảng nhiệt độ cơ thể rồi mới dùng.",
+     "Dù không có chỉ thị vẫn kiểm tra nhiệt độ dung dịch ngay trước khi làm, có điểm chưa rõ thì dừng việc, hỏi lại rồi mới tiến hành.",
+     "Hiểu cơ chế dung dịch lạnh gây co tử cung, giảm tiết sữa, và có thể hướng dẫn người mới các điểm chính về pha chế và làm ấm."
+    ],
+    "name_id": "Meracik dan menghangatkan cairan pencuci",
+    "kanten_id": "Apakah menyiapkan cairan pencuci sesuai resep, menghangatkannya sampai sekitar suhu tubuh (38〜39°C), dan menghentikan pekerjaan untuk bertanya jika kepekatannya tidak jelas?",
+    "levels_id": [
+     "Memakai cairan yang masih dingin begitu saja, dan walau kepekatannya tidak jelas mengencerkannya sembarangan lalu melanjutkan.",
+     "Jika diperintah bisa menyiapkan, tetapi sering lalai memeriksa suhu dan meracik tepat sesuai resep.",
+     "Jika diperintah, dapat meracik sesuai resep dan menghangatkannya sampai sekitar suhu tubuh sebelum dipakai.",
+     "Tanpa diperintah pun, memeriksa suhu cairan sesaat sebelum dipakai, dan jika ada yang belum jelas menghentikan pekerjaan untuk memastikan dulu.",
+     "Memahami mekanisme cairan dingin menyebabkan kontraksi rahim dan turunnya produksi susu, dan dapat mengajarkan pokok peracikan dan penghangatan kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "aseptic-gentle",
+    "name": "滅菌器具と外陰部消毒・穏やかな操作",
+    "kanten": "滅菌した器具・洗浄液を使い、外陰部を清拭・消毒してから、強くこすらず穏やかに操作できるか。",
+    "levels": [
+     "非滅菌の器具を使い、外陰部も汚れたまま挿入して新しいばい菌を子宮に入れてしまう。",
+     "指示があれば実施するが、滅菌や外陰部の消毒に漏れがある。",
+     "指示があれば滅菌器具を使い、外陰部を消毒してからひと通り実施できる。",
+     "指示がなくても外陰部の清拭消毒と滅菌器具の使用を徹底し、強くこすらず穏やかに操作する。",
+     "非滅菌器具による二次感染と強い操作で子宮を傷めるリスクを理解し、清潔な手順を新人に指導できる。"
+    ],
+    "name_en": "Sterile Equipment, Vulva Disinfection, and Gentle Handling",
+    "kanten_en": "Can they use sterilized equipment and flushing solution, wipe and disinfect the vulva first, and handle gently without harsh scrubbing?",
+    "levels_en": [
+     "Uses unsterilized equipment and inserts with the vulva still dirty, bringing new germs into the uterus.",
+     "With guidance can perform it, but misses sterilization and vulva disinfection.",
+     "With guidance, uses sterile equipment and can perform the basic procedure after disinfecting the vulva.",
+     "Independently keeps to wiping and disinfecting the vulva and using sterile equipment, and handles gently without harsh scrubbing.",
+     "Understands the risks of secondary infection from unsterile equipment and of injuring the uterus by rough handling, and can teach new staff the clean procedure."
+    ],
+    "name_vi": "Dụng cụ tiệt trùng, khử trùng âm hộ và thao tác nhẹ nhàng",
+    "kanten_vi": "Có dùng dụng cụ, dung dịch rửa đã tiệt trùng, lau sạch và khử trùng âm hộ trước, rồi thao tác nhẹ nhàng không chà xát mạnh không.",
+    "levels_vi": [
+     "Dùng dụng cụ không tiệt trùng, âm hộ còn bẩn đã đưa vào, mang vi khuẩn mới vào tử cung.",
+     "Nếu được chỉ thị thì thực hiện, nhưng còn thiếu sót về tiệt trùng và khử trùng âm hộ.",
+     "Nếu được chỉ thị thì dùng dụng cụ tiệt trùng, khử trùng âm hộ rồi thực hiện được cơ bản.",
+     "Dù không có chỉ thị vẫn triệt để lau khử trùng âm hộ và dùng dụng cụ tiệt trùng, thao tác nhẹ nhàng không chà xát mạnh.",
+     "Hiểu rủi ro nhiễm trùng thứ cấp do dụng cụ không tiệt trùng và làm tổn thương tử cung do thao tác mạnh, và có thể hướng dẫn người mới trình tự sạch sẽ."
+    ],
+    "name_id": "Alat steril, disinfeksi vulva, dan penanganan lembut",
+    "kanten_id": "Apakah memakai alat dan cairan pencuci yang steril, mengelap dan mendisinfeksi vulva dulu, lalu menangani dengan lembut tanpa menggosok keras?",
+    "levels_id": [
+     "Memakai alat yang tidak steril dan memasukkan saat vulva masih kotor, sehingga membawa kuman baru ke dalam rahim.",
+     "Jika diperintah bisa melakukan, tetapi sering lalai soal sterilisasi dan disinfeksi vulva.",
+     "Jika diperintah, dapat memakai alat steril dan melakukannya secara lengkap setelah mendisinfeksi vulva.",
+     "Tanpa diperintah pun, menjalankan dengan ketat pengelapan-disinfeksi vulva dan pemakaian alat steril, serta menangani dengan lembut tanpa menggosok keras.",
+     "Memahami risiko infeksi sekunder karena alat tidak steril dan melukai rahim karena penanganan kasar, dan dapat mengajarkan prosedur yang bersih kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "stop-on-resistance",
+    "name": "抵抗・暴れ時の中断判断",
+    "kanten": "カテーテルに抵抗を感じたらすぐ止めて獣医師に相談し、母豚が暴れたら無理をせずいったん抜いて仕切り直せるか。",
+    "levels": [
+     "抵抗があっても力で押し込み、母豚が暴れても押さえつけて続ける。",
+     "指示があれば止まるが、無理をしがちで中断の判断が遅れる。",
+     "指示があれば抵抗を感じた時点で止め、報告してから次の対応に移れる。",
+     "指示がなくても抵抗や暴れの時点でそっと引き抜き、落ち着いてからやり直すか獣医師に相談する。",
+     "無理な操作が子宮穿孔・腹膜炎につながる危険を理解し、止める判断の基準を新人に指導できる。"
+    ],
+    "name_en": "Deciding to Stop on Resistance or Struggling",
+    "kanten_en": "Can they stop immediately and consult the veterinarian when they feel resistance on the catheter, and, when the sow struggles, withdraw it without forcing and start over?",
+    "levels_en": [
+     "Pushes through resistance by force, and holds the sow down and continues even when she struggles.",
+     "With guidance can stop, but tends to force it and is slow to decide to stop.",
+     "With guidance, stops the moment resistance is felt and can report before moving to the next step.",
+     "Independently withdraws the catheter gently at the point of resistance or struggling, and retries once calm or consults the veterinarian.",
+     "Understands the danger that forced handling leads to uterine perforation and peritonitis, and can teach new staff the criteria for stopping."
+    ],
+    "name_vi": "Phán đoán dừng lại khi vướng hoặc lợn giãy giụa",
+    "kanten_vi": "Khi thấy catheter bị vướng có dừng ngay và hỏi bác sĩ thú y, khi nái giãy giụa có không cố mà tạm rút ra làm lại không.",
+    "levels_vi": [
+     "Bị vướng vẫn dùng sức đẩy vào, nái giãy giụa vẫn đè xuống làm tiếp.",
+     "Nếu được chỉ thị thì dừng, nhưng hay cố làm và quyết định dừng còn chậm.",
+     "Nếu được chỉ thị thì dừng ngay lúc thấy vướng, báo cáo rồi mới chuyển sang bước tiếp theo.",
+     "Dù không có chỉ thị vẫn rút nhẹ ra ngay khi vướng hoặc lợn giãy, đợi bình tĩnh rồi làm lại hoặc hỏi bác sĩ thú y.",
+     "Hiểu nguy cơ thao tác cưỡng ép dẫn đến thủng tử cung, viêm phúc mạc, và có thể hướng dẫn người mới tiêu chí quyết định dừng."
+    ],
+    "name_id": "Keputusan berhenti saat tertahan atau babi meronta",
+    "kanten_id": "Apakah saat kateter terasa tertahan segera berhenti dan berkonsultasi dengan dokter hewan, dan saat induk meronta tidak memaksa melainkan mencabutnya dulu lalu mengulang?",
+    "levels_id": [
+     "Walau tertahan tetap mendorong dengan tenaga, dan walau induk meronta tetap menekannya sambil melanjutkan.",
+     "Jika diperintah bisa berhenti, tetapi cenderung memaksa dan lambat memutuskan berhenti.",
+     "Jika diperintah, dapat berhenti begitu terasa tertahan, dan melapor sebelum lanjut ke penanganan berikutnya.",
+     "Tanpa diperintah pun, mencabut perlahan begitu tertahan atau babi meronta, lalu mengulang setelah tenang atau berkonsultasi dengan dokter hewan.",
+     "Memahami bahaya penanganan paksa yang berujung rahim berlubang dan radang selaput perut, dan dapat mengajarkan patokan kapan berhenti kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "effluent-record",
+    "name": "体温・排出液の記録と休薬管理",
+    "kanten": "処置前後の体温を測って比べ、排出液の色・におい・混入物を記録し、抗菌薬使用の記録と休薬の指示に従えるか。",
+    "levels": [
+     "体温も排出液も見ず、処置した母豚と日付の記録も残さない。",
+     "指示されれば記録するが、色・においなど獣医師の判断材料になる情報に抜けが多い。",
+     "指示があれば処置前の体温と排出液の状態を記録し、処置した母豚と日付を残せる。",
+     "指示がなくても翌日まで体温・食欲・悪露を毎日記録し、良くならないときは獣医師に伝える。",
+     "記録が次の処置判断と休薬管理の根拠になることを理解し、観察と記録の型を新人に指導できる。"
+    ],
+    "name_en": "Recording Temperature and Effluent, and Withdrawal Management",
+    "kanten_en": "Can they measure and compare body temperature before and after the procedure, record the color, smell, and contents of the effluent, and follow the antimicrobial-use records and withdrawal instructions?",
+    "levels_en": [
+     "Looks at neither temperature nor effluent, and leaves no record of which sow was treated or when.",
+     "With guidance can record, but often omits information the veterinarian needs, such as color and smell.",
+     "With guidance, records the pre-treatment temperature and the state of the effluent, and can note the treated sow and date.",
+     "Independently records temperature, appetite, and lochia daily through the next day, and tells the veterinarian when there is no improvement.",
+     "Understands that the records are the basis for the next treatment decision and withdrawal management, and can teach new staff the routine of observation and recording."
+    ],
+    "name_vi": "Ghi thân nhiệt, dịch thải và quản lý ngừng thuốc",
+    "kanten_vi": "Có đo và so sánh thân nhiệt trước sau xử lý, ghi màu, mùi, tạp chất của dịch thải ra, tuân theo ghi chép dùng kháng sinh và chỉ thị về thời gian ngừng thuốc không.",
+    "levels_vi": [
+     "Không xem thân nhiệt lẫn dịch thải, cũng không ghi lại đã xử lý nái nào, ngày nào.",
+     "Nếu được chỉ thị thì ghi, nhưng hay thiếu những thông tin làm căn cứ phán đoán cho bác sĩ thú y như màu, mùi.",
+     "Nếu được chỉ thị thì ghi thân nhiệt trước xử lý và trạng thái dịch thải, ghi lại được nái đã xử lý và ngày.",
+     "Dù không có chỉ thị vẫn ghi hằng ngày thân nhiệt, ăn uống, sản dịch đến hôm sau, không đỡ thì báo cho bác sĩ thú y.",
+     "Hiểu ghi chép là căn cứ cho phán đoán xử lý tiếp theo và quản lý thời gian ngừng thuốc, và có thể hướng dẫn người mới nề nếp quan sát và ghi chép."
+    ],
+    "name_id": "Mencatat suhu tubuh dan cairan keluar, serta pengelolaan masa henti obat",
+    "kanten_id": "Apakah mengukur dan membandingkan suhu tubuh sebelum-sesudah tindakan, mencatat warna, bau, dan campuran cairan yang keluar, serta mengikuti catatan pemakaian antibiotik dan instruksi masa henti obat?",
+    "levels_id": [
+     "Tidak melihat suhu tubuh maupun cairan yang keluar, dan tidak mencatat induk mana yang ditangani dan tanggalnya.",
+     "Jika diperintah bisa mencatat, tetapi sering kurang informasi yang menjadi bahan penilaian dokter hewan seperti warna dan bau.",
+     "Jika diperintah, dapat mencatat suhu tubuh sebelum tindakan dan keadaan cairan yang keluar, serta meninggalkan catatan induk yang ditangani dan tanggalnya.",
+     "Tanpa diperintah pun, setiap hari sampai hari berikutnya mencatat suhu tubuh, nafsu makan, dan cairan nifas, serta memberi tahu dokter hewan jika tidak membaik.",
+     "Memahami bahwa catatan menjadi dasar keputusan penanganan berikutnya dan pengelolaan masa henti obat, dan dapat mengajarkan pola pengamatan dan pencatatan kepada karyawan baru."
+    ]
+   }
+  ],
+  "name_en": "Uterine Flushing",
+  "purposeShort_en": "Reduce uterine contamination, prevent metritis and fever, and promote postpartum recovery",
+  "name_vi": "Rửa tử cung (sau khi đẻ)",
+  "purposeShort_vi": "Giảm chất bẩn trong tử cung, phòng viêm tử cung, sốt và giúp hồi phục sau đẻ",
+  "name_id": "Pencucian rahim (setelah melahirkan)",
+  "purposeShort_id": "Mengurangi kotoran di dalam rahim, mencegah radang rahim dan demam, serta mempercepat pemulihan setelah melahirkan"
+ }
+]

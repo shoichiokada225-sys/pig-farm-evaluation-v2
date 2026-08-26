@@ -1,0 +1,1479 @@
+[
+ {
+  "id": "sow-lineup",
+  "category": "facility",
+  "no": "No.13",
+  "name": "母豚の並びの整理",
+  "purposeShort": "母豚をまとめて管理しやすくし、ケンカ・ストレスを減らす",
+  "gyomu": "13",
+  "aspects": [
+   {
+    "id": "schedule-order",
+    "name": "分娩予定日順の整列と台帳反映",
+    "kanten": "交配日・分娩予定日のズレを抑えて整列させ、並び情報を台帳に反映できるか。",
+    "levels": [
+     "分娩予定日順に整列させず、並び情報も台帳に反映せず認識齟齬を招く。",
+     "指示があれば整列させるが、予定日順の徹底や台帳反映に漏れがある。",
+     "指示があれば分娩予定日順にひと通り整列できる。",
+     "指示がなくても予定日のズレを抑えて整列させ、並び情報を台帳に反映する。",
+     "整列と移動指示の連動を理解し、並び管理と台帳反映を新人に指導できる。"
+    ],
+    "name_en": "Lining Up by Due Date and Updating the Ledger",
+    "kanten_en": "Can they line up sows with minimal gaps in mating and due dates, and record the lineup in the ledger?",
+    "levels_en": [
+     "Does not line sows up by due date and does not record the lineup in the ledger, causing misunderstandings.",
+     "With guidance can line sows up, but misses strict due-date ordering or ledger updates.",
+     "With guidance can line sows up by due date through the basic procedure.",
+     "Independently lines sows up with minimal due-date gaps and records the lineup in the ledger.",
+     "Understands how the lineup links to movement orders, and can teach new staff lineup management and ledger updates."
+    ],
+    "name_vi": "Xếp theo thứ tự ngày dự sinh và cập nhật sổ quản lý",
+    "kanten_vi": "Có xếp hàng sao cho ngày giao phối, ngày dự sinh ít chênh lệch, và ghi thông tin vị trí vào sổ quản lý không.",
+    "levels_vi": [
+     "Không xếp theo thứ tự ngày dự sinh, cũng không ghi thông tin vị trí vào sổ, gây hiểu nhầm lẫn nhau.",
+     "Nếu được chỉ thị thì xếp, nhưng còn thiếu sót về xếp đúng thứ tự ngày dự sinh và cập nhật sổ.",
+     "Nếu được chỉ thị thì xếp theo thứ tự ngày dự sinh được cơ bản.",
+     "Dù không có chỉ thị vẫn xếp cho ngày dự sinh ít chênh lệch và ghi thông tin vị trí vào sổ quản lý.",
+     "Hiểu sự liên kết giữa xếp hàng và chỉ thị di chuyển, và có thể hướng dẫn người mới cách quản lý vị trí và cập nhật sổ."
+    ],
+    "name_id": "Menata urut tanggal perkiraan melahirkan dan mencatat ke buku",
+    "kanten_id": "Apakah dapat menata dengan menekan selisih tanggal kawin dan perkiraan melahirkan, serta mencatat susunan posisinya ke buku catatan?",
+    "levels_id": [
+     "Tidak menata urut tanggal perkiraan melahirkan, tidak mencatat susunan ke buku catatan, sehingga terjadi salah paham.",
+     "Menata jika diperintah, tetapi sering lalai menepati urutan tanggal dan mencatat ke buku.",
+     "Jika diperintah, dapat menata urut tanggal perkiraan melahirkan secara lengkap.",
+     "Tanpa diperintah pun, menata dengan menekan selisih tanggal perkiraan, dan mencatat susunan posisi ke buku catatan.",
+     "Memahami kaitan penataan dengan instruksi pemindahan, dan dapat mengajarkan pengaturan susunan dan pencatatan kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "early-preg-hold",
+    "name": "妊娠初期（35日以内）の移動除外",
+    "kanten": "交配日を確認して授精後35日以内の母豚をリストから外し、動かす場合は上司の許可を得られるか。",
+    "levels": [
+     "交配日を確認せず妊娠初期の母豚も動かし、胚死亡・流産のリスクを招く。",
+     "指示があれば外すが、交配日の確認漏れで妊娠初期の個体が混ざることがある。",
+     "指示があれば交配日を確認し、35日以内の母豚をひと通りリストから外せる。",
+     "指示がなくても交配日を必ず確認して外し、動かす必要があれば上司の許可を得る。",
+     "着床期の移動と流産の関係を理解し、リスト作成時の確認を新人に指導できる。"
+    ],
+    "name_en": "Excluding Early-Gestation Sows (Within 35 Days) from Moves",
+    "kanten_en": "Can they check mating dates, exclude sows within 35 days after insemination from the list, and get a supervisor's permission when they must be moved?",
+    "levels_en": [
+     "Moves even early-gestation sows without checking mating dates, risking embryo death and abortion.",
+     "With guidance can exclude them, but missed mating-date checks sometimes let early-gestation sows slip in.",
+     "With guidance can check mating dates and exclude sows within 35 days from the list through the basic procedure.",
+     "Independently always checks mating dates to exclude them, and gets a supervisor's permission when a move is necessary.",
+     "Understands how moves during implantation relate to abortion, and can teach new staff the checks when making the list."
+    ],
+    "name_vi": "Loại trừ khỏi di chuyển lợn nái đầu thai kỳ (trong vòng 35 ngày)",
+    "kanten_vi": "Có kiểm tra ngày giao phối, loại khỏi danh sách lợn nái trong vòng 35 ngày sau khi phối, và xin phép cấp trên khi cần di chuyển không.",
+    "levels_vi": [
+     "Không kiểm tra ngày giao phối, di chuyển cả lợn nái đầu thai kỳ, gây rủi ro chết phôi, sảy thai.",
+     "Nếu được chỉ thị thì loại ra, nhưng do sót kiểm tra ngày giao phối nên đôi khi vẫn lẫn con đầu thai kỳ.",
+     "Nếu được chỉ thị thì kiểm tra ngày giao phối và loại lợn nái trong vòng 35 ngày khỏi danh sách được cơ bản.",
+     "Dù không có chỉ thị vẫn luôn kiểm tra ngày giao phối để loại ra, và xin phép cấp trên nếu cần di chuyển.",
+     "Hiểu quan hệ giữa di chuyển trong giai đoạn phôi làm tổ và sảy thai, và có thể hướng dẫn người mới cách kiểm tra khi lập danh sách."
+    ],
+    "name_id": "Mengecualikan induk babi awal kebuntingan (dalam 35 hari) dari pemindahan",
+    "kanten_id": "Apakah memeriksa tanggal kawin, mengeluarkan dari daftar induk babi yang masih dalam 35 hari setelah inseminasi, dan meminta izin atasan jika harus memindahkannya?",
+    "levels_id": [
+     "Memindahkan induk babi awal kebuntingan tanpa memeriksa tanggal kawin, sehingga menimbulkan risiko kematian embrio dan keguguran.",
+     "Mengeluarkan jika diperintah, tetapi karena lalai memeriksa tanggal kawin, kadang masih tercampur induk babi awal kebuntingan.",
+     "Jika diperintah, dapat memeriksa tanggal kawin dan mengeluarkan induk babi dalam 35 hari dari daftar secara lengkap.",
+     "Tanpa diperintah pun, selalu memeriksa tanggal kawin untuk mengeluarkannya, dan meminta izin atasan jika perlu memindahkan.",
+     "Memahami hubungan pemindahan pada masa penempelan embrio dengan keguguran, dan dapat mengajarkan pemeriksaan saat membuat daftar kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "compatibility",
+    "name": "体格差・攻撃性への配慮",
+    "kanten": "極端に弱い・大きい母豚や攻撃的な個体を同じ並びに入れず、負傷を防げるか。",
+    "levels": [
+     "体格差・攻撃性を考えず収容し、負傷が出ても気にしない。",
+     "指示があれば配慮するが、体格差や攻撃性の見極めに漏れがある。",
+     "指示があれば極端に弱い・大きい母豚を分けてひと通り配置できる。",
+     "指示がなくても体格差や初産・経産を見て収容し、血が出るひどいケンカは隔離して報告する。",
+     "収容と負傷・ストレスの関係を理解し、相性を考えた配置を新人に指導できる。"
+    ],
+    "name_en": "Accounting for Size Differences and Aggression",
+    "kanten_en": "Can they keep extremely weak, oversized, or aggressive sows out of the same lineup and prevent injuries?",
+    "levels_en": [
+     "Houses sows without regard to size differences or aggression, and does not care even when injuries occur.",
+     "With guidance can take care, but misses judging size differences or aggression.",
+     "With guidance can separate extremely weak or oversized sows and complete the basic placement.",
+     "Independently houses sows with attention to size differences and parity, and isolates and reports severe fights that draw blood.",
+     "Understands how housing relates to injury and stress, and can teach new staff compatibility-based placement."
+    ],
+    "name_vi": "Chú ý chênh lệch thể trạng và tính hung dữ",
+    "kanten_vi": "Có tránh xếp lợn nái quá yếu, quá to hoặc con hung dữ vào cùng hàng, phòng bị thương không.",
+    "levels_vi": [
+     "Xếp lợn không xét chênh lệch thể trạng, tính hung dữ, có con bị thương cũng không quan tâm.",
+     "Nếu được chỉ thị thì chú ý, nhưng còn thiếu sót trong nhận biết chênh lệch thể trạng và tính hung dữ.",
+     "Nếu được chỉ thị thì tách riêng lợn nái quá yếu, quá to và sắp xếp được cơ bản.",
+     "Dù không có chỉ thị vẫn xem chênh lệch thể trạng, lứa đầu hay đã đẻ nhiều lứa khi xếp, và cách ly, báo cáo khi có đánh nhau nặng chảy máu.",
+     "Hiểu quan hệ giữa cách xếp với bị thương, stress, và có thể hướng dẫn người mới cách bố trí có xét đến sự hợp nhau."
+    ],
+    "name_id": "Memperhatikan beda ukuran badan dan sifat agresif",
+    "kanten_id": "Apakah tidak menempatkan induk babi yang sangat lemah, sangat besar, atau agresif dalam satu barisan, sehingga mencegah luka?",
+    "levels_id": [
+     "Menempatkan tanpa memikirkan beda ukuran badan dan sifat agresif, dan tidak peduli walaupun ada yang terluka.",
+     "Memperhatikan jika diperintah, tetapi sering lalai menilai beda ukuran badan dan sifat agresif.",
+     "Jika diperintah, dapat memisahkan induk babi yang sangat lemah atau sangat besar dan menempatkannya secara lengkap.",
+     "Tanpa diperintah pun, menempatkan dengan melihat beda ukuran badan dan induk beranak pertama atau sudah beranak, serta mengisolasi dan melaporkan perkelahian parah yang berdarah.",
+     "Memahami hubungan penempatan dengan luka dan stres, dan dapat mengajarkan penempatan yang memperhatikan kecocokan kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "calm-drive-safety",
+    "name": "追い板誘導と自分の安全確保",
+    "kanten": "追い板で1頭ずつ静かに誘導し、叩かず、壁との間に挟まれない位置と逃げ場を確保できるか。",
+    "levels": [
+     "複数頭を一度に追って叩き、壁との間に挟まれる危険な位置で作業する。",
+     "指示があれば追い板を使うが、急かしたり退避スペースの確保に漏れがある。",
+     "指示があれば追い板で1頭ずつひと通り静かに誘導できる。",
+     "指示がなくても叩かず豚のペースで誘導し、逃げ場を確保して挟まれを避ける。",
+     "豚の視界と動きの習性を理解し、安全な誘導と立ち位置を新人に指導できる。"
+    ],
+    "name_en": "Driving-Board Guidance and Securing Your Own Safety",
+    "kanten_en": "Can they guide sows quietly one at a time with a driving board, without hitting, while keeping a position and escape route that avoid being pinned against the wall?",
+    "levels_en": [
+     "Drives several sows at once while hitting them, and works in a dangerous position where they can be pinned against the wall.",
+     "With guidance uses the driving board, but sometimes rushes the sows or misses securing an escape space.",
+     "With guidance can guide sows quietly one at a time with the driving board through the basic procedure.",
+     "Independently guides at the pigs' pace without hitting, and secures an escape route to avoid being pinned.",
+     "Understands pigs' field of vision and movement habits, and can teach new staff safe guidance and standing positions."
+    ],
+    "name_vi": "Lùa bằng tấm chắn và bảo đảm an toàn cho bản thân",
+    "kanten_vi": "Có dùng tấm chắn lùa nhẹ nhàng từng con một, không đánh, giữ vị trí không bị kẹp giữa lợn và tường và bảo đảm đường thoát không.",
+    "levels_vi": [
+     "Dồn nhiều con cùng lúc và đánh lợn, làm việc ở vị trí nguy hiểm dễ bị kẹp giữa lợn và tường.",
+     "Nếu được chỉ thị thì dùng tấm chắn, nhưng có khi hối thúc lợn hoặc thiếu sót trong bảo đảm chỗ tránh.",
+     "Nếu được chỉ thị thì dùng tấm chắn lùa nhẹ nhàng từng con một được cơ bản.",
+     "Dù không có chỉ thị vẫn lùa theo nhịp của lợn, không đánh, bảo đảm đường thoát để tránh bị kẹp.",
+     "Hiểu tầm nhìn và tập tính di chuyển của lợn, và có thể hướng dẫn người mới cách lùa an toàn và vị trí đứng."
+    ],
+    "name_id": "Menggiring dengan papan penggiring dan menjaga keselamatan diri",
+    "kanten_id": "Apakah dapat menggiring dengan tenang satu per satu memakai papan penggiring, tanpa memukul, sambil menjaga posisi agar tidak terjepit ke dinding dan menyediakan jalan menghindar?",
+    "levels_id": [
+     "Menggiring beberapa ekor sekaligus sambil memukul, dan bekerja di posisi berbahaya yang bisa terjepit ke dinding.",
+     "Memakai papan penggiring jika diperintah, tetapi kadang memburu-buru babi atau lalai menyiapkan ruang menghindar.",
+     "Jika diperintah, dapat menggiring dengan tenang satu per satu memakai papan penggiring secara lengkap.",
+     "Tanpa diperintah pun, menggiring mengikuti langkah babi tanpa memukul, dan menyediakan jalan menghindar agar tidak terjepit.",
+     "Memahami jangkauan pandang dan kebiasaan gerak babi, dan dapat mengajarkan cara menggiring yang aman dan posisi berdiri kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "after-care",
+    "name": "移動後の水・エサ・カード確認",
+    "kanten": "収容後に飲水・エサ箱への到達を見届け、母豚カードを同時に移し、当日と翌日に見回れるか。",
+    "levels": [
+     "入れたら終わりにし、水・エサもカード移動も確認せず取り違えを招く。",
+     "指示があれば確認するが、カードの移し忘れや翌日の見回りに漏れがある。",
+     "指示があれば飲水・エサの確認とカードの移動をひと通りできる。",
+     "指示がなくても水・エサを見届けてカードを同時に移し、当日・翌日もケンカや食欲を見回る。",
+     "カード忘れが給餌ミスにつながることを理解し、移動後の確認を新人に指導できる。"
+    ],
+    "name_en": "Post-Move Checks of Water, Feed, and Cards",
+    "kanten_en": "Can they confirm each sow reaches water and the feed box after housing, move the sow card at the same time, and check on them that day and the next?",
+    "levels_en": [
+     "Considers the job done once sows are in, checking neither water and feed nor card moves, causing mix-ups.",
+     "With guidance can check, but sometimes forgets to move cards or misses the next day's rounds.",
+     "With guidance can check water and feed and move the cards through the basic procedure.",
+     "Independently confirms water and feed, moves the cards at the same time, and checks fighting and appetite that day and the next.",
+     "Understands that forgotten cards lead to feeding mistakes, and can teach new staff the post-move checks."
+    ],
+    "name_vi": "Kiểm tra nước, thức ăn, thẻ nái sau khi di chuyển",
+    "kanten_vi": "Sau khi xếp vào chuồng có xem lợn uống được nước, với tới máng ăn không, chuyển thẻ nái cùng lúc, và đi kiểm tra trong ngày và ngày hôm sau không.",
+    "levels_vi": [
+     "Cho lợn vào là xong, không kiểm tra nước, thức ăn, không chuyển thẻ, gây nhầm con.",
+     "Nếu được chỉ thị thì kiểm tra, nhưng có khi quên chuyển thẻ hoặc thiếu sót đi kiểm tra ngày hôm sau.",
+     "Nếu được chỉ thị thì kiểm tra nước uống, thức ăn và chuyển thẻ được cơ bản.",
+     "Dù không có chỉ thị vẫn xem lợn uống nước, ăn được, chuyển thẻ cùng lúc, và trong ngày, ngày hôm sau vẫn đi xem đánh nhau và mức ăn.",
+     "Hiểu việc quên thẻ dẫn đến cho ăn sai, và có thể hướng dẫn người mới cách kiểm tra sau di chuyển."
+    ],
+    "name_id": "Memeriksa air, pakan, dan kartu induk setelah pemindahan",
+    "kanten_id": "Apakah setelah dimasukkan memastikan babi mencapai air minum dan kotak pakan, memindahkan kartu induk pada saat yang sama, dan memeriksa keliling pada hari itu dan keesokan harinya?",
+    "levels_id": [
+     "Menganggap selesai begitu babi dimasukkan, tidak memeriksa air dan pakan maupun memindahkan kartu, sehingga terjadi tertukar.",
+     "Memeriksa jika diperintah, tetapi kadang lupa memindahkan kartu atau lalai memeriksa keliling keesokan harinya.",
+     "Jika diperintah, dapat memeriksa air minum dan pakan serta memindahkan kartu secara lengkap.",
+     "Tanpa diperintah pun, memastikan air dan pakan, memindahkan kartu pada saat yang sama, dan pada hari itu serta keesokan harinya memeriksa perkelahian dan nafsu makan.",
+     "Memahami bahwa lupa kartu menyebabkan kesalahan pemberian pakan, dan dapat mengajarkan pemeriksaan setelah pemindahan kepada karyawan baru."
+    ]
+   }
+  ],
+  "name_en": "Organizing the Sow Lineup",
+  "name_vi": "Sắp xếp lại vị trí lợn nái",
+  "name_id": "Menata ulang posisi induk babi",
+  "purposeShort_en": "Group sows for easier management and reduce fighting and stress",
+  "purposeShort_vi": "Gom lợn nái lại cho dễ quản lý, giảm đánh nhau và stress",
+  "purposeShort_id": "Mengelompokkan induk babi agar mudah dikelola, serta mengurangi perkelahian dan stres"
+ },
+ {
+  "id": "move-order",
+  "category": "facility",
+  "no": "No.10",
+  "name": "移動指示",
+  "purposeShort": "ピッグフローを滞らせず、豚にストレスをかけず安全に移動させる",
+  "gyomu": "10",
+  "aspects": [
+   {
+    "id": "count-handover",
+    "name": "移動指示の復唱確認と頭数照合",
+    "kanten": "どのグループを・何頭・どこからどこへを復唱して確認し、移動元と移動先で頭数を数えて一致を確かめられるか。",
+    "levels": [
+     "指示を確認せず「たぶんこれ」で動かし、頭数も数えず誤移動を招く。",
+     "指示があれば確認するが、復唱やあいまいな点の確認、頭数照合に漏れが多い。",
+     "指示があれば移動頭数・グループを確認し、移動元でひと通り頭数を数えられる。",
+     "指示がなくても復唱して確認し、移動先でも数えて照合、合わなければ探して報告する。",
+     "数が合うまで終わりにしない意味を理解し、指示確認と頭数照合を新人に指導できる。"
+    ],
+    "name_en": "Repeating Back Movement Orders and Verifying Head Counts",
+    "kanten_en": "Can they repeat back which group, how many head, and from where to where, and count the pigs at both origin and destination to confirm they match?",
+    "levels_en": [
+     "Moves pigs on a guess without confirming the order and without counting, causing wrong moves.",
+     "With guidance can confirm, but often misses repeating back, clarifying vague points, or verifying counts.",
+     "With guidance can confirm the head count and group and count the pigs at the origin through the basic procedure.",
+     "Independently repeats back to confirm, counts again at the destination to verify, and searches and reports when the numbers do not match.",
+     "Understands why the job is not done until the numbers match, and can teach new staff order confirmation and head-count verification."
+    ],
+    "name_vi": "Nhắc lại chỉ thị di chuyển và đối chiếu số con",
+    "kanten_vi": "Có nhắc lại để xác nhận nhóm nào, bao nhiêu con, từ đâu đến đâu, và đếm số con ở cả nơi đi lẫn nơi đến để kiểm tra khớp nhau không.",
+    "levels_vi": [
+     "Không xác nhận chỉ thị, di chuyển theo kiểu「chắc là con này」, không đếm số con, gây di chuyển nhầm.",
+     "Nếu được chỉ thị thì xác nhận, nhưng hay thiếu sót về nhắc lại, hỏi rõ điểm chưa rõ và đối chiếu số con.",
+     "Nếu được chỉ thị thì xác nhận số con, nhóm di chuyển và đếm số con ở nơi đi được cơ bản.",
+     "Dù không có chỉ thị vẫn nhắc lại để xác nhận, đếm và đối chiếu cả ở nơi đến, nếu không khớp thì tìm và báo cáo.",
+     "Hiểu ý nghĩa của việc chưa khớp số thì chưa xong, và có thể hướng dẫn người mới cách xác nhận chỉ thị và đối chiếu số con."
+    ],
+    "name_id": "Mengulang instruksi pemindahan dan mencocokkan jumlah ekor",
+    "kanten_id": "Apakah mengulang dengan suara untuk memastikan kelompok mana, berapa ekor, dari mana ke mana, serta menghitung jumlah ekor di tempat asal dan tujuan untuk memastikan cocok?",
+    "levels_id": [
+     "Memindahkan babi dengan menebak tanpa memastikan instruksi dan tanpa menghitung jumlah ekor, sehingga terjadi salah pindah.",
+     "Memastikan jika diperintah, tetapi sering lalai mengulang instruksi, menanyakan hal yang belum jelas, dan mencocokkan jumlah ekor.",
+     "Jika diperintah, dapat memastikan jumlah ekor dan kelompok yang dipindah serta menghitung jumlah ekor di tempat asal secara lengkap.",
+     "Tanpa diperintah pun, mengulang untuk memastikan, menghitung dan mencocokkan juga di tempat tujuan, dan jika tidak cocok mencari lalu melapor.",
+     "Memahami arti pekerjaan belum selesai sampai jumlahnya cocok, dan dapat mengajarkan konfirmasi instruksi dan pencocokan jumlah ekor kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "route-biosec",
+    "name": "通路確認と移動先の清浄性",
+    "kanten": "通路の段差・滑り・障害物を先に確認し、移動先の清掃・消毒完了を確かめて汚染搬入を防げるか。",
+    "levels": [
+     "通路を確認せず、清掃・消毒完了前の汚染豚舎に搬入する。",
+     "指示があれば通路を見るが、移動先の清浄性確認に漏れがある。",
+     "指示があれば通路の危険をひと通り確認できる。",
+     "指示がなくても通路を先に点検し、移動先の清掃・消毒完了を確かめてから移動する。",
+     "移動と防疫の関係を理解し、通路点検と清浄性確認を新人に指導できる。"
+    ],
+    "name_en": "Checking Routes and Destination Cleanliness",
+    "kanten_en": "Can they check the route in advance for steps, slippery spots, and obstacles, and confirm the destination's cleaning and disinfection are complete to prevent bringing in contamination?",
+    "levels_en": [
+     "Does not check the route and moves pigs into a contaminated barn before cleaning and disinfection are complete.",
+     "With guidance checks the route, but misses confirming the destination's cleanliness.",
+     "With guidance can check the route hazards through the basic procedure.",
+     "Independently inspects the route first and confirms the destination's cleaning and disinfection are complete before moving.",
+     "Understands the link between movement and biosecurity, and can teach new staff route inspection and cleanliness checks."
+    ],
+    "name_vi": "Kiểm tra lối đi và độ sạch của nơi chuyển đến",
+    "kanten_vi": "Có kiểm tra trước bậc, chỗ trơn, vật cản trên lối đi, xác nhận nơi chuyển đến đã vệ sinh, khử trùng xong để tránh mang ô nhiễm vào không.",
+    "levels_vi": [
+     "Không kiểm tra lối đi, đưa lợn vào chuồng ô nhiễm chưa vệ sinh, khử trùng xong.",
+     "Nếu được chỉ thị thì xem lối đi, nhưng còn thiếu sót trong kiểm tra độ sạch của nơi chuyển đến.",
+     "Nếu được chỉ thị thì kiểm tra chỗ nguy hiểm trên lối đi được cơ bản.",
+     "Dù không có chỉ thị vẫn kiểm tra lối đi trước, xác nhận nơi chuyển đến đã vệ sinh, khử trùng xong rồi mới di chuyển.",
+     "Hiểu quan hệ giữa di chuyển và phòng dịch, và có thể hướng dẫn người mới cách kiểm tra lối đi và độ sạch."
+    ],
+    "name_id": "Memeriksa jalur dan kebersihan tempat tujuan",
+    "kanten_id": "Apakah dapat memeriksa lebih dulu jalur dari tangga, licin, dan penghalang, serta memastikan tempat tujuan sudah selesai dibersihkan dan didisinfeksi agar tidak membawa masuk pencemaran?",
+    "levels_id": [
+     "Tidak memeriksa jalur, dan memasukkan babi ke kandang kotor yang belum selesai dibersihkan dan didisinfeksi.",
+     "Melihat jalur jika diperintah, tetapi sering lalai memastikan kebersihan tempat tujuan.",
+     "Jika diperintah, dapat memeriksa bahaya di jalur secara lengkap.",
+     "Tanpa diperintah pun, memeriksa jalur lebih dulu, dan memastikan tempat tujuan selesai dibersihkan dan didisinfeksi sebelum memindahkan.",
+     "Memahami hubungan pemindahan dengan biosekuriti, dan dapat mengajarkan pemeriksaan jalur dan kebersihan tujuan kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "sick-hold",
+    "name": "病豚・起立不能豚の移動中止",
+    "kanten": "立てない豚・明らかに具合の悪い豚を無理に動かさず、その場で指導係に報告できるか。",
+    "levels": [
+     "立てない豚も無理に追って動かし、悪化させても報告しない。",
+     "指示があれば止めるが、具合の悪い豚の見極めに漏れがある。",
+     "指示があれば病豚を移動から外し、ひと通り報告できる。",
+     "指示がなくても移動前に豚を見て病豚を外し、その場で指導係に報告する。",
+     "無理な移動が悪化を招くことを理解し、移動可否の判断を新人に指導できる。"
+    ],
+    "name_en": "Stopping Moves of Sick and Downed Pigs",
+    "kanten_en": "Can they avoid forcing pigs that cannot stand or are clearly unwell to move, and report to the trainer on the spot?",
+    "levels_en": [
+     "Forces even pigs that cannot stand to move, and does not report even when they get worse.",
+     "With guidance can hold them back, but misses spotting unwell pigs.",
+     "With guidance can exclude sick pigs from the move and report through the basic procedure.",
+     "Independently looks over the pigs before moving, excludes sick ones, and reports to the trainer on the spot.",
+     "Understands that forced moves worsen conditions, and can teach new staff how to judge whether a pig can be moved."
+    ],
+    "name_vi": "Ngừng di chuyển lợn bệnh, lợn không đứng dậy được",
+    "kanten_vi": "Có tránh ép di chuyển lợn không đứng dậy được, lợn rõ ràng yếu, và báo cáo ngay tại chỗ cho người hướng dẫn không.",
+    "levels_vi": [
+     "Cố lùa cả lợn không đứng dậy được, làm bệnh nặng thêm cũng không báo cáo.",
+     "Nếu được chỉ thị thì dừng lại, nhưng còn thiếu sót trong nhận biết lợn yếu.",
+     "Nếu được chỉ thị thì loại lợn bệnh khỏi việc di chuyển và báo cáo được cơ bản.",
+     "Dù không có chỉ thị vẫn xem lợn trước khi di chuyển, loại lợn bệnh ra và báo cáo ngay tại chỗ cho người hướng dẫn.",
+     "Hiểu việc ép di chuyển làm bệnh nặng thêm, và có thể hướng dẫn người mới cách phán đoán có nên di chuyển hay không."
+    ],
+    "name_id": "Menghentikan pemindahan babi sakit dan babi yang tidak bisa berdiri",
+    "kanten_id": "Apakah tidak memaksa memindahkan babi yang tidak bisa berdiri atau jelas tidak sehat, dan melaporkannya di tempat kepada pembimbing?",
+    "levels_id": [
+     "Memaksa menggiring bahkan babi yang tidak bisa berdiri, dan tidak melapor walaupun kondisinya memburuk.",
+     "Menghentikan jika diperintah, tetapi sering lalai mengenali babi yang tidak sehat.",
+     "Jika diperintah, dapat mengecualikan babi sakit dari pemindahan dan melapor secara lengkap.",
+     "Tanpa diperintah pun, memeriksa babi sebelum pemindahan, mengecualikan yang sakit, dan langsung melapor di tempat kepada pembimbing.",
+     "Memahami bahwa pemindahan paksa memperburuk kondisi, dan dapat mengajarkan penilaian boleh tidaknya memindahkan kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "calm-drive",
+    "name": "少頭数ずつの静かな誘導",
+    "kanten": "3〜5頭ずつ叩かず急かさず豚のペースで誘導し、止まったら離れて落ち着きを待てるか。",
+    "levels": [
+     "一度に大量に出して叩き・大声で追い、豚をパニックにさせる。",
+     "指示があれば少頭数で追うが、急かしたり無理に押すことがある。",
+     "指示があれば少頭数ずつ静かにひと通り誘導できる。",
+     "指示がなくても豚のペースで誘導し、止まったら少し離れて落ち着いてから再開する。",
+     "豚の視界と習性を理解し、パネルで一本道を作る静かな追い方を新人に指導できる。"
+    ],
+    "name_en": "Quiet Driving in Small Groups",
+    "kanten_en": "Can they drive 3-5 pigs at a time at the pigs' pace without hitting or rushing, and step back and wait for them to settle when they stop?",
+    "levels_en": [
+     "Lets out a large number at once, hitting and shouting, and throws the pigs into a panic.",
+     "With guidance drives small groups, but sometimes rushes or pushes the pigs.",
+     "With guidance can drive pigs quietly in small groups through the basic procedure.",
+     "Independently drives at the pigs' pace and, when they stop, steps back a little and resumes after they settle.",
+     "Understands pigs' vision and habits, and can teach new staff quiet driving that makes a single path with panels."
+    ],
+    "name_vi": "Lùa nhẹ nhàng theo từng nhóm nhỏ",
+    "kanten_vi": "Có lùa mỗi lần 3〜5 con theo nhịp của lợn, không đánh, không hối thúc, khi lợn dừng thì lùi ra chờ lợn bình tĩnh không.",
+    "levels_vi": [
+     "Thả ra một lúc quá nhiều con, vừa đánh vừa la lớn, làm lợn hoảng loạn.",
+     "Nếu được chỉ thị thì lùa theo nhóm nhỏ, nhưng có khi hối thúc hoặc đẩy ép lợn.",
+     "Nếu được chỉ thị thì lùa nhẹ nhàng theo từng nhóm nhỏ được cơ bản.",
+     "Dù không có chỉ thị vẫn lùa theo nhịp của lợn, khi lợn dừng thì lùi ra một chút, chờ bình tĩnh rồi mới tiếp tục.",
+     "Hiểu tầm nhìn và tập tính của lợn, và có thể hướng dẫn người mới cách lùa nhẹ nhàng dùng tấm chắn tạo một đường đi duy nhất."
+    ],
+    "name_id": "Menggiring dengan tenang sedikit demi sedikit",
+    "kanten_id": "Apakah dapat menggiring 3〜5 ekor sekaligus mengikuti langkah babi tanpa memukul dan memburu-buru, dan saat babi berhenti menjauh dulu menunggu babi tenang?",
+    "levels_id": [
+     "Mengeluarkan banyak sekaligus sambil memukul dan berteriak, sehingga babi panik.",
+     "Menggiring dalam kelompok kecil jika diperintah, tetapi kadang memburu-buru atau mendorong paksa.",
+     "Jika diperintah, dapat menggiring dengan tenang sedikit demi sedikit secara lengkap.",
+     "Tanpa diperintah pun, menggiring mengikuti langkah babi, dan saat babi berhenti menjauh sedikit lalu melanjutkan setelah babi tenang.",
+     "Memahami pandangan dan kebiasaan babi, dan dapat mengajarkan cara menggiring tenang dengan membuat satu jalur memakai papan kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "mix-watch",
+    "name": "混群後のケンカ観察と後始末",
+    "kanten": "混群後しばらくケンカを観察して血の出る咬傷を報告し、道具の洗浄・消毒と踏込消毒を守れるか。",
+    "levels": [
+     "混ぜたまま立ち去り、ケンカも見ず道具の消毒もしない。",
+     "指示があれば観察するが、咬傷の報告や道具の消毒に漏れがある。",
+     "指示があれば混群後の観察と道具の洗浄・消毒をひと通りできる。",
+     "指示がなくてもしばらく観察して血の出る咬傷を報告し、区域をまたげば長靴を消毒する。",
+     "咬傷が病気の入口になることを理解し、混群後の観察と防疫を新人に指導できる。"
+    ],
+    "name_en": "Watching Fights After Mixing and Cleanup Afterward",
+    "kanten_en": "Can they watch fights for a while after mixing, report bite wounds that draw blood, and keep to tool washing and disinfection and boot-dip disinfection?",
+    "levels_en": [
+     "Walks away right after mixing, neither watching fights nor disinfecting the tools.",
+     "With guidance can watch, but misses reporting bite wounds or disinfecting the tools.",
+     "With guidance can complete the basic post-mixing observation and tool washing and disinfection.",
+     "Independently watches for a while, reports bite wounds that draw blood, and disinfects boots when crossing between areas.",
+     "Understands that bite wounds are an entry point for disease, and can teach new staff post-mixing observation and biosecurity."
+    ],
+    "name_vi": "Quan sát đánh nhau sau khi trộn nhóm và dọn dẹp sau việc",
+    "kanten_vi": "Sau khi trộn nhóm có quan sát đánh nhau một lúc, báo cáo vết cắn chảy máu, và tuân thủ rửa, khử trùng dụng cụ và nhúng ủng khử trùng không.",
+    "levels_vi": [
+     "Trộn xong bỏ đi ngay, không xem đánh nhau, cũng không khử trùng dụng cụ.",
+     "Nếu được chỉ thị thì quan sát, nhưng còn thiếu sót trong báo cáo vết cắn và khử trùng dụng cụ.",
+     "Nếu được chỉ thị thì quan sát sau trộn nhóm và rửa, khử trùng dụng cụ được cơ bản.",
+     "Dù không có chỉ thị vẫn quan sát một lúc, báo cáo vết cắn chảy máu, và khử trùng ủng khi đi qua khu vực khác.",
+     "Hiểu vết cắn là cửa vào của bệnh, và có thể hướng dẫn người mới cách quan sát sau trộn nhóm và phòng dịch."
+    ],
+    "name_id": "Mengamati perkelahian setelah mencampur kelompok dan pembenahan sesudahnya",
+    "kanten_id": "Apakah setelah mencampur mengamati perkelahian beberapa saat, melaporkan luka gigitan yang berdarah, serta menaati pencucian dan disinfeksi alat dan disinfeksi celup sepatu bot?",
+    "levels_id": [
+     "Pergi begitu saja setelah mencampur, tidak mengamati perkelahian dan tidak mendisinfeksi alat.",
+     "Mengamati jika diperintah, tetapi sering lalai melaporkan luka gigitan dan mendisinfeksi alat.",
+     "Jika diperintah, dapat melakukan pengamatan setelah pencampuran serta pencucian dan disinfeksi alat secara lengkap.",
+     "Tanpa diperintah pun, mengamati beberapa saat, melaporkan luka gigitan yang berdarah, dan mendisinfeksi sepatu bot saat melintasi antar area.",
+     "Memahami bahwa luka gigitan menjadi pintu masuk penyakit, dan dapat mengajarkan pengamatan setelah pencampuran dan biosekuriti kepada karyawan baru."
+    ]
+   }
+  ],
+  "name_en": "Movement Orders",
+  "name_vi": "Chỉ thị di chuyển (di chuyển lợn)",
+  "name_id": "Instruksi pemindahan (memindahkan babi)",
+  "purposeShort_en": "Keep the pig flow moving and move pigs safely without stress",
+  "purposeShort_vi": "Không làm tắc luồng luân chuyển lợn (pig flow), di chuyển an toàn không gây stress cho lợn",
+  "purposeShort_id": "Menjaga alur pemindahan babi (pig flow) tetap lancar, dan memindahkan babi dengan aman tanpa membuat stres"
+ },
+ {
+  "id": "move-preg",
+  "category": "facility",
+  "no": "No.25",
+  "name": "妊娠舎→交配舎・育成舎 移動",
+  "purposeShort": "ピッグフローを守って次の舎へつなぐ",
+  "gyomu": "25",
+  "aspects": [
+   {
+    "id": "list-check",
+    "name": "移動リスト照合と妊娠初期除外",
+    "kanten": "個体番号・頭数・行き先をリストで照合し、交配後35日以内の妊娠豚の混入を防げるか。",
+    "levels": [
+     "リストを見ずに動かし、妊娠初期の豚を混ぜて流産のリスクを招く。",
+     "指示があれば照合するが、35日以内の混入チェックに漏れがある。",
+     "指示があれば個体番号・頭数・行き先をひと通り照合できる。",
+     "指示がなくてもリストと照合し、35日以内の妊娠豚が混ざっていないか必ず確認する。",
+     "着床期の移動リスクを理解し、リスト照合とマーキングの要点を新人に指導できる。"
+    ],
+    "name_en": "Verifying the Move List and Excluding Early Gestation",
+    "kanten_en": "Can they verify individual numbers, head counts, and destinations against the list, and keep out pregnant sows within 35 days after mating?",
+    "levels_en": [
+     "Moves pigs without looking at the list, mixing in early-gestation sows and risking abortion.",
+     "With guidance can verify, but misses checking for sows within 35 days slipping in.",
+     "With guidance can verify individual numbers, head counts, and destinations through the basic procedure.",
+     "Independently verifies against the list and always checks that no pregnant sows within 35 days are mixed in.",
+     "Understands the risks of moving during implantation, and can teach new staff the key points of list verification and marking."
+    ],
+    "name_vi": "Đối chiếu danh sách di chuyển và loại trừ đầu thai kỳ",
+    "kanten_vi": "Có đối chiếu số tai, số con, nơi đến với danh sách, và ngăn lẫn lợn mang thai trong vòng 35 ngày sau khi phối không.",
+    "levels_vi": [
+     "Di chuyển mà không xem danh sách, để lẫn lợn đầu thai kỳ, gây rủi ro sảy thai.",
+     "Nếu được chỉ thị thì đối chiếu, nhưng còn thiếu sót trong kiểm tra lẫn con trong vòng 35 ngày.",
+     "Nếu được chỉ thị thì đối chiếu số tai, số con, nơi đến được cơ bản.",
+     "Dù không có chỉ thị vẫn đối chiếu với danh sách, luôn kiểm tra xem có lẫn lợn mang thai trong vòng 35 ngày không.",
+     "Hiểu rủi ro di chuyển trong giai đoạn phôi làm tổ, và có thể hướng dẫn người mới các điểm chính của đối chiếu danh sách và đánh dấu."
+    ],
+    "name_id": "Mencocokkan daftar pemindahan dan mengecualikan awal kebuntingan",
+    "kanten_id": "Apakah mencocokkan nomor individu, jumlah ekor, dan tujuan dengan daftar, serta mencegah tercampurnya babi bunting dalam 35 hari setelah kawin?",
+    "levels_id": [
+     "Memindahkan tanpa melihat daftar, mencampurkan babi awal kebuntingan sehingga menimbulkan risiko keguguran.",
+     "Mencocokkan jika diperintah, tetapi sering lalai memeriksa tercampurnya induk dalam 35 hari.",
+     "Jika diperintah, dapat mencocokkan nomor individu, jumlah ekor, dan tujuan secara lengkap.",
+     "Tanpa diperintah pun, mencocokkan dengan daftar dan selalu memastikan tidak ada babi bunting dalam 35 hari yang tercampur.",
+     "Memahami risiko pemindahan pada masa penempelan embrio, dan dapat mengajarkan pokok pencocokan daftar dan penandaan kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "quiet-move",
+    "name": "斜め後ろからの静かな誘導",
+    "kanten": "母豚の斜め後ろに立ち追い板で視界をさえぎって少頭数ずつ誘導し、絶対に走らせず、止まったら待てるか。",
+    "levels": [
+     "一度に大量に追い出して走らせ、転倒・骨折の危険を招く。",
+     "指示があれば追うが、立ち位置や止まった時の対応に漏れがある。",
+     "指示があれば斜め後ろから追い板で視界をさえぎり、少頭数ずつひと通り誘導できる。",
+     "指示がなくても母豚のペースで歩かせ、止まったら小さく声をかけて待ち、横になったら無理に起こさない。",
+     "走らせると転倒・骨折につながることを理解し、静かな追い方を新人に指導できる。"
+    ],
+    "name_en": "Quiet Driving from Diagonally Behind",
+    "kanten_en": "Can they stand diagonally behind the sow, block her view with the driving board to guide small groups, never make them run, and wait when they stop?",
+    "levels_en": [
+     "Drives out a large number at once and makes them run, risking falls and fractures.",
+     "With guidance can drive, but misses the standing position or the response when sows stop.",
+     "With guidance can block the view with the driving board from diagonally behind and guide small groups through the basic procedure.",
+     "Independently lets sows walk at their own pace, waits with a soft word when they stop, and does not force one up when she lies down.",
+     "Understands that making sows run leads to falls and fractures, and can teach new staff quiet driving."
+    ],
+    "name_vi": "Lùa nhẹ nhàng từ chéo phía sau",
+    "kanten_vi": "Có đứng chéo phía sau lợn nái, dùng tấm chắn che tầm nhìn để lùa theo nhóm nhỏ, tuyệt đối không bắt chạy, và chờ khi lợn dừng không.",
+    "levels_vi": [
+     "Dồn ra một lúc quá nhiều con và bắt chạy, gây nguy cơ ngã, gãy xương.",
+     "Nếu được chỉ thị thì lùa, nhưng còn thiếu sót về vị trí đứng và cách xử lý khi lợn dừng.",
+     "Nếu được chỉ thị thì từ chéo phía sau dùng tấm chắn che tầm nhìn và lùa theo nhóm nhỏ được cơ bản.",
+     "Dù không có chỉ thị vẫn để lợn nái đi theo nhịp của nó, khi dừng thì nói nhỏ và chờ, khi lợn nằm xuống thì không ép đứng dậy.",
+     "Hiểu việc bắt chạy dẫn đến ngã, gãy xương, và có thể hướng dẫn người mới cách lùa nhẹ nhàng."
+    ],
+    "name_id": "Menggiring dengan tenang dari serong belakang",
+    "kanten_id": "Apakah berdiri serong di belakang induk babi, menutup pandangannya dengan papan penggiring untuk menggiring sedikit demi sedikit, sama sekali tidak membuatnya berlari, dan menunggu saat babi berhenti?",
+    "levels_id": [
+     "Mengeluarkan banyak sekaligus dan membuat babi berlari, sehingga menimbulkan bahaya jatuh dan patah tulang.",
+     "Menggiring jika diperintah, tetapi sering lalai soal posisi berdiri dan penanganan saat babi berhenti.",
+     "Jika diperintah, dapat menutup pandangan dengan papan penggiring dari serong belakang dan menggiring sedikit demi sedikit secara lengkap.",
+     "Tanpa diperintah pun, membiarkan induk babi berjalan sesuai langkahnya, saat berhenti menunggu sambil bersuara pelan, dan saat babi berbaring tidak memaksanya bangun.",
+     "Memahami bahwa membuat babi berlari menyebabkan jatuh dan patah tulang, dan dapat mengajarkan cara menggiring yang tenang kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "dest-check",
+    "name": "移動先の受け入れ準備と水・エサ確認",
+    "kanten": "移動先の豚房が空いて清掃・消毒済みか、給水ニップルから水が出るか・給餌器の位置を事前に確認し、入れた直後にも飲めているか見届けられるか。",
+    "levels": [
+     "受け入れ準備を確認せず搬入し、水が出ない豚房に入れても気づかない。",
+     "指示があれば確認するが、ニップルを押しての水確認や入れた直後の見届けに漏れがある。",
+     "指示があれば豚房の空き・清掃消毒と水・エサの位置をひと通り確認できる。",
+     "指示がなくても準備が整うまで移動を始めず、入れた直後も水が飲めているか見届ける。",
+     "受け入れ準備不足のリスクを理解し、移動先確認の要点を新人に指導できる。"
+    ],
+    "name_en": "Destination Readiness and Water and Feed Checks",
+    "kanten_en": "Can they check in advance that the destination pen is empty, cleaned, and disinfected, that water comes out of the drinking nipples, and where the feeder is, and confirm the sows can drink right after they are put in?",
+    "levels_en": [
+     "Moves pigs in without checking readiness, and does not notice even when the pen has no water.",
+     "With guidance can check, but misses pressing the nipples to test water or confirming right after the pigs are in.",
+     "With guidance can check pen availability, cleaning and disinfection, and the water and feed positions through the basic procedure.",
+     "Independently does not start the move until preparations are complete, and confirms the sows can drink right after they are in.",
+     "Understands the risks of inadequate destination preparation, and can teach new staff the key points of destination checks."
+    ],
+    "name_vi": "Chuẩn bị tiếp nhận ở nơi đến và kiểm tra nước, thức ăn",
+    "kanten_vi": "Có kiểm tra trước ô chuồng nơi đến đã trống, vệ sinh, khử trùng chưa, núm uống nước có chảy không, vị trí máng ăn, và ngay sau khi cho vào có xem lợn uống được nước không.",
+    "levels_vi": [
+     "Đưa lợn vào mà không kiểm tra việc chuẩn bị tiếp nhận, cho vào ô chuồng không có nước chảy cũng không nhận ra.",
+     "Nếu được chỉ thị thì kiểm tra, nhưng còn thiếu sót về ấn núm uống thử nước và xem lợn ngay sau khi cho vào.",
+     "Nếu được chỉ thị thì kiểm tra ô chuồng trống, vệ sinh khử trùng và vị trí nước, thức ăn được cơ bản.",
+     "Dù không có chỉ thị vẫn không bắt đầu di chuyển cho đến khi chuẩn bị xong, và ngay sau khi cho vào vẫn xem lợn có uống được nước không.",
+     "Hiểu rủi ro của việc chuẩn bị tiếp nhận chưa đầy đủ, và có thể hướng dẫn người mới các điểm chính khi kiểm tra nơi chuyển đến."
+    ],
+    "name_id": "Kesiapan penerimaan di tempat tujuan dan pemeriksaan air dan pakan",
+    "kanten_id": "Apakah memeriksa lebih dulu bahwa petak kandang tujuan kosong serta sudah dibersihkan dan didisinfeksi, air keluar dari nipple air minum, dan posisi tempat pakan, lalu segera setelah dimasukkan memastikan babi bisa minum?",
+    "levels_id": [
+     "Memasukkan babi tanpa memeriksa kesiapan penerimaan, dan tidak sadar walaupun memasukkan ke petak kandang yang airnya tidak keluar.",
+     "Memeriksa jika diperintah, tetapi sering lalai menekan nipple untuk menguji air dan memastikan segera setelah babi dimasukkan.",
+     "Jika diperintah, dapat memeriksa kekosongan petak kandang, pembersihan dan disinfeksi, serta posisi air dan pakan secara lengkap.",
+     "Tanpa diperintah pun, tidak memulai pemindahan sampai persiapan selesai, dan segera setelah dimasukkan memastikan babi bisa minum.",
+     "Memahami risiko persiapan penerimaan yang kurang, dan dapat mengajarkan pokok pemeriksaan tempat tujuan kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "biosec-mat",
+    "name": "舎間移動の防疫（消毒マット）",
+    "kanten": "舎間の消毒マットの液を確認・充填し、消毒済みの長靴で他群と接触しない動線を守れるか。",
+    "levels": [
+     "消毒マットが空でも素通りし、防疫を無視した動線で移動する。",
+     "指示があればマットを通るが、液の確認・充填や動線の意識に漏れがある。",
+     "指示があればマットの液を確認し、防疫手順をひと通り守れる。",
+     "指示がなくても液を確認・充填し、他群と接触しない動線で移動する。",
+     "舎間移動と病気の持ち込みの関係を理解し、防疫手順を新人に指導できる。"
+    ],
+    "name_en": "Biosecurity for Between-House Moves (Disinfection Mats)",
+    "kanten_en": "Can they check and refill the disinfectant in the mats between houses, and keep to a route that avoids contact with other groups in disinfected boots?",
+    "levels_en": [
+     "Walks straight past empty disinfection mats and moves along routes that ignore biosecurity.",
+     "With guidance steps on the mats, but misses checking and refilling the liquid or minding the route.",
+     "With guidance can check the mat liquid and follow the biosecurity steps through the basic procedure.",
+     "Independently checks and refills the liquid and moves along routes that avoid contact with other groups.",
+     "Understands how between-house moves relate to bringing in disease, and can teach new staff the biosecurity steps."
+    ],
+    "name_vi": "Phòng dịch khi di chuyển giữa các chuồng (thảm khử trùng)",
+    "kanten_vi": "Có kiểm tra, đổ thêm dung dịch cho thảm khử trùng giữa các chuồng, và đi ủng đã khử trùng theo đường đi không tiếp xúc với nhóm lợn khác không.",
+    "levels_vi": [
+     "Thảm khử trùng cạn cũng đi qua luôn, di chuyển theo đường đi bỏ qua phòng dịch.",
+     "Nếu được chỉ thị thì đi qua thảm, nhưng còn thiếu sót về kiểm tra, đổ thêm dung dịch và ý thức về đường đi.",
+     "Nếu được chỉ thị thì kiểm tra dung dịch của thảm và tuân thủ quy trình phòng dịch được cơ bản.",
+     "Dù không có chỉ thị vẫn kiểm tra, đổ thêm dung dịch và di chuyển theo đường đi không tiếp xúc với nhóm khác.",
+     "Hiểu quan hệ giữa di chuyển giữa các chuồng và việc mang bệnh vào, và có thể hướng dẫn người mới quy trình phòng dịch."
+    ],
+    "name_id": "Biosekuriti pemindahan antar kandang (matras disinfektan)",
+    "kanten_id": "Apakah memeriksa dan mengisi cairan matras disinfektan antar kandang, serta menjaga jalur yang tidak bersinggungan dengan kelompok lain dengan sepatu bot yang sudah didisinfeksi?",
+    "levels_id": [
+     "Melewati begitu saja matras disinfektan yang kosong, dan berpindah lewat jalur yang mengabaikan biosekuriti.",
+     "Melewati matras jika diperintah, tetapi sering lalai memeriksa dan mengisi cairan serta memperhatikan jalur.",
+     "Jika diperintah, dapat memeriksa cairan matras dan menaati prosedur biosekuriti secara lengkap.",
+     "Tanpa diperintah pun, memeriksa dan mengisi cairan, serta berpindah lewat jalur yang tidak bersinggungan dengan kelompok lain.",
+     "Memahami hubungan pemindahan antar kandang dengan masuknya penyakit, dan dapat mengajarkan prosedur biosekuriti kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "record-plate",
+    "name": "頭数照合と記録・プレート更新",
+    "kanten": "頭数をリストと照合し、移動日時・個体番号・移動元先を記録して豚房プレートも同時に更新できるか。",
+    "levels": [
+     "頭数も数えず記録もせず、古いプレートを残して取り違えを招く。",
+     "指示があれば記録するが、頭数照合やプレート更新に漏れがある。",
+     "指示があれば頭数を照合し、記録とプレート更新をひと通りできる。",
+     "指示がなくても照合して記録し、プレートを同時に更新して古い情報を残さない。",
+     "古い表示が取り違え・給餌ミスを招くことを理解し、記録と更新の徹底を新人に指導できる。"
+    ],
+    "name_en": "Head-Count Verification, Records, and Plate Updates",
+    "kanten_en": "Can they verify head counts against the list, record the date and time, individual numbers, and origin and destination, and update the pen plates at the same time?",
+    "levels_en": [
+     "Neither counts nor records, leaving old plates in place and causing mix-ups.",
+     "With guidance can record, but misses count verification or plate updates.",
+     "With guidance can verify head counts and complete the basic records and plate updates.",
+     "Independently verifies and records, updating the plates at the same time and leaving no old information behind.",
+     "Understands that old displays cause mix-ups and feeding mistakes, and can teach new staff thorough recording and updating."
+    ],
+    "name_vi": "Đối chiếu số con, ghi chép và cập nhật bảng thông tin",
+    "kanten_vi": "Có đối chiếu số con với danh sách, ghi ngày giờ di chuyển, số tai, nơi đi nơi đến, và cập nhật luôn bảng thông tin ở ô chuồng không.",
+    "levels_vi": [
+     "Không đếm số con, không ghi chép, để lại bảng cũ gây nhầm con.",
+     "Nếu được chỉ thị thì ghi chép, nhưng còn thiếu sót về đối chiếu số con và cập nhật bảng.",
+     "Nếu được chỉ thị thì đối chiếu số con, ghi chép và cập nhật bảng được cơ bản.",
+     "Dù không có chỉ thị vẫn đối chiếu, ghi chép, cập nhật bảng cùng lúc, không để lại thông tin cũ.",
+     "Hiểu bảng hiển thị cũ gây nhầm con, cho ăn sai, và có thể hướng dẫn người mới việc ghi chép và cập nhật triệt để."
+    ],
+    "name_id": "Pencocokan jumlah ekor, pencatatan, dan pembaruan papan informasi",
+    "kanten_id": "Apakah mencocokkan jumlah ekor dengan daftar, mencatat tanggal-jam pemindahan, nomor individu, asal dan tujuan, serta memperbarui papan petak kandang pada saat yang sama?",
+    "levels_id": [
+     "Tidak menghitung jumlah ekor dan tidak mencatat, meninggalkan papan lama sehingga terjadi tertukar.",
+     "Mencatat jika diperintah, tetapi sering lalai mencocokkan jumlah ekor dan memperbarui papan.",
+     "Jika diperintah, dapat mencocokkan jumlah ekor serta melakukan pencatatan dan pembaruan papan secara lengkap.",
+     "Tanpa diperintah pun, mencocokkan dan mencatat, memperbarui papan pada saat yang sama, dan tidak meninggalkan informasi lama.",
+     "Memahami bahwa tampilan lama menyebabkan tertukar dan salah pemberian pakan, dan dapat mengajarkan pencatatan dan pembaruan yang menyeluruh kepada karyawan baru."
+    ]
+   }
+  ],
+  "name_en": "Gestation House to Breeding/Grower House Movement",
+  "name_vi": "Di chuyển từ chuồng lợn nái mang thai → chuồng phối giống / chuồng hậu bị",
+  "name_id": "Pemindahan dari kandang bunting → kandang kawin / kandang babi pengganti",
+  "purposeShort_en": "Keep the pig flow and connect sows to the next house",
+  "purposeShort_vi": "Giữ đúng luồng luân chuyển lợn (pig flow), nối tiếp sang chuồng kế",
+  "purposeShort_id": "Menyambungkan ke kandang berikutnya dengan menjaga alur pemindahan babi (pig flow)"
+ },
+ {
+  "id": "scraper",
+  "category": "facility",
+  "no": "No.19",
+  "name": "スクレーパー動作確認",
+  "purposeShort": "除糞機能を正常に保ち、機械トラブルを早期発見して大故障を防ぐ",
+  "gyomu": "19",
+  "aspects": [
+   {
+    "id": "safety-power",
+    "name": "電源遮断など安全手順",
+    "kanten": "確認・清掃の前に必ず電源を切り、回転部・可動部に安全に触れられるか。",
+    "levels": [
+     "電源を切らずに点検・清掃し、回転部に触れて事故の危険を招く。",
+     "指示があれば電源を切るが、徹底が甘く危険な操作が残る。",
+     "指示があれば確認・清掃前に電源をひと通り切れる。",
+     "指示がなくても必ず電源を切ってから安全に点検・清掃する。",
+     "回転部の危険を理解し、電源遮断など安全手順を新人に指導できる。"
+    ],
+    "name_en": "Safety Procedures Including Power Shutoff",
+    "kanten_en": "Can they always cut the power before inspection and cleaning and touch rotating and moving parts safely?",
+    "levels_en": [
+     "Inspects and cleans without cutting the power, touching rotating parts and risking accidents.",
+     "With guidance cuts the power, but the habit is weak and unsafe actions remain.",
+     "With guidance can cut the power before inspection and cleaning as a basic routine.",
+     "Independently always cuts the power before inspecting and cleaning safely.",
+     "Understands the dangers of rotating parts, and can teach new staff safety procedures including power shutoff."
+    ],
+    "name_vi": "Quy trình an toàn như ngắt điện",
+    "kanten_vi": "Trước khi kiểm tra, vệ sinh có luôn ngắt điện, chạm vào bộ phận quay, bộ phận chuyển động một cách an toàn không.",
+    "levels_vi": [
+     "Không ngắt điện mà kiểm tra, vệ sinh, chạm vào bộ phận quay gây nguy cơ tai nạn.",
+     "Nếu được chỉ thị thì ngắt điện, nhưng chưa triệt để, vẫn còn thao tác nguy hiểm.",
+     "Nếu được chỉ thị thì ngắt điện trước khi kiểm tra, vệ sinh được cơ bản.",
+     "Dù không có chỉ thị vẫn luôn ngắt điện rồi mới kiểm tra, vệ sinh an toàn.",
+     "Hiểu nguy hiểm của bộ phận quay, và có thể hướng dẫn người mới quy trình an toàn như ngắt điện."
+    ],
+    "name_id": "Prosedur keselamatan seperti mematikan listrik",
+    "kanten_id": "Apakah selalu mematikan listrik sebelum pemeriksaan dan pembersihan, sehingga aman saat menyentuh bagian yang berputar atau bergerak?",
+    "levels_id": [
+     "Memeriksa dan membersihkan tanpa mematikan listrik, menyentuh bagian berputar, dan menimbulkan bahaya kecelakaan.",
+     "Mematikan listrik jika diperintah, tetapi tidak konsisten sehingga masih ada tindakan berbahaya.",
+     "Jika diperintah, dapat mematikan listrik sebelum pemeriksaan dan pembersihan secara lengkap.",
+     "Tanpa diperintah pun, selalu mematikan listrik lebih dulu, lalu memeriksa dan membersihkan dengan aman.",
+     "Memahami bahaya bagian yang berputar, dan dapat mengajarkan prosedur keselamatan seperti mematikan listrik kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "visual-clear",
+    "name": "刃・通り道の目視点検と異物除去",
+    "kanten": "刃の曲がり・欠けを端から端まで照らして確認し、通り道の糞のかたまり・異物を取り除けるか。",
+    "levels": [
+     "目視点検をせず、通り道の異物も放置して詰まり・故障を招く。",
+     "指示があれば見るが、刃の端までの確認や異物除去に漏れがある。",
+     "指示があれば懐中電灯で刃と通り道をひと通り点検し、異物を除去できる。",
+     "指示がなくても刃を端から端まで照らして確認し、異物を手袋をして取り除く。",
+     "異物が詰まり・故障につながることを理解し、目視点検の着眼点を新人に指導できる。"
+    ],
+    "name_en": "Visual Inspection of the Blade and Path, and Removing Foreign Objects",
+    "kanten_en": "Can they shine a light along the blade from end to end to check for bends and chips, and remove manure clumps and foreign objects from the path?",
+    "levels_en": [
+     "Skips visual inspection and leaves foreign objects in the path, causing clogs and breakdowns.",
+     "With guidance can look, but misses checking to the ends of the blade or removing foreign objects.",
+     "With guidance can inspect the blade and path with a flashlight and remove foreign objects through the basic routine.",
+     "Independently shines a light along the blade from end to end and removes foreign objects wearing gloves.",
+     "Understands that foreign objects lead to clogs and breakdowns, and can teach new staff the key points of visual inspection."
+    ],
+    "name_vi": "Kiểm tra bằng mắt lưỡi cào, đường chạy và loại bỏ dị vật",
+    "kanten_vi": "Có soi đèn kiểm tra lưỡi cào từ đầu đến cuối xem có cong, mẻ không, và loại bỏ cục phân, dị vật trên đường chạy không.",
+    "levels_vi": [
+     "Không kiểm tra bằng mắt, bỏ mặc dị vật trên đường chạy, gây tắc và hỏng máy.",
+     "Nếu được chỉ thị thì xem, nhưng còn thiếu sót về kiểm tra đến tận đầu lưỡi cào và loại bỏ dị vật.",
+     "Nếu được chỉ thị thì dùng đèn pin kiểm tra lưỡi cào, đường chạy và loại bỏ dị vật được cơ bản.",
+     "Dù không có chỉ thị vẫn soi đèn kiểm tra lưỡi cào từ đầu đến cuối và đeo găng tay loại bỏ dị vật.",
+     "Hiểu dị vật dẫn đến tắc, hỏng máy, và có thể hướng dẫn người mới các điểm cần xem khi kiểm tra bằng mắt."
+    ],
+    "name_id": "Pemeriksaan visual bilah dan jalur serta pembuangan benda asing",
+    "kanten_id": "Apakah menyorot bilah dari ujung ke ujung untuk memeriksa bengkok dan gumpil, serta membuang gumpalan kotoran dan benda asing di jalurnya?",
+    "levels_id": [
+     "Tidak melakukan pemeriksaan visual dan membiarkan benda asing di jalur, sehingga terjadi penyumbatan dan kerusakan.",
+     "Melihat jika diperintah, tetapi sering lalai memeriksa sampai ujung bilah dan membuang benda asing.",
+     "Jika diperintah, dapat memeriksa bilah dan jalur dengan senter serta membuang benda asing secara lengkap.",
+     "Tanpa diperintah pun, menyorot bilah dari ujung ke ujung dan membuang benda asing dengan memakai sarung tangan.",
+     "Memahami bahwa benda asing menyebabkan penyumbatan dan kerusakan, dan dapat mengajarkan titik perhatian pemeriksaan visual kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "run-check",
+    "name": "試運転での動きとかき出し確認",
+    "kanten": "試運転で止まり・引っ掛かり・遅れがないかを見て、通り道に糞が残っていないか確認できるか。",
+    "levels": [
+     "動作確認をせず、途中停止や糞の残りがあっても気づかない。",
+     "指示があれば動かすが、動きの遅れやかき残しの確認に漏れがある。",
+     "指示があれば試運転してスムーズな動きとかき出しをひと通り確認できる。",
+     "指示がなくても動く部分から体を離して試運転し、いつもとの動きの違いに早く気づく。",
+     "正常時の動作音・速さを覚えて比べる意味を理解し、試運転確認のコツを新人に指導できる。"
+    ],
+    "name_en": "Checking Movement and Scraping in a Test Run",
+    "kanten_en": "Can they watch a test run for stops, snags, and delays, and check that no manure is left in the path?",
+    "levels_en": [
+     "Does not check operation and does not notice mid-run stops or leftover manure.",
+     "With guidance can run it, but misses checking for slow movement or missed scraping.",
+     "With guidance can do a test run and check smooth movement and scraping through the basic routine.",
+     "Independently keeps clear of moving parts during test runs and quickly notices differences from the usual movement.",
+     "Understands why to memorize and compare the normal sound and speed, and can teach new staff the knack of test-run checks."
+    ],
+    "name_vi": "Chạy thử để kiểm tra chuyển động và việc cào phân",
+    "kanten_vi": "Có chạy thử để xem máy có dừng, vướng, chạy chậm không, và kiểm tra trên đường chạy còn sót phân không.",
+    "levels_vi": [
+     "Không kiểm tra hoạt động, máy dừng giữa chừng hay còn sót phân cũng không nhận ra.",
+     "Nếu được chỉ thị thì cho chạy, nhưng còn thiếu sót về kiểm tra chạy chậm và phân cào sót.",
+     "Nếu được chỉ thị thì chạy thử và kiểm tra máy chạy trơn tru, cào sạch được cơ bản.",
+     "Dù không có chỉ thị vẫn đứng cách xa bộ phận chuyển động khi chạy thử, và sớm nhận ra khác biệt so với chuyển động thường ngày.",
+     "Hiểu ý nghĩa của việc nhớ tiếng máy, tốc độ khi bình thường để so sánh, và có thể hướng dẫn người mới mẹo kiểm tra khi chạy thử."
+    ],
+    "name_id": "Uji jalan untuk memeriksa gerakan dan pengerukan kotoran",
+    "kanten_id": "Apakah saat uji jalan mengamati adanya berhenti, tersangkut, atau keterlambatan, dan memeriksa apakah masih ada kotoran tersisa di jalur?",
+    "levels_id": [
+     "Tidak memeriksa kerja mesin, dan tidak sadar walaupun mesin berhenti di tengah jalan atau kotoran tersisa.",
+     "Menjalankan jika diperintah, tetapi sering lalai memeriksa gerakan lambat dan kotoran yang belum terkeruk.",
+     "Jika diperintah, dapat melakukan uji jalan dan memeriksa gerakan lancar serta pengerukan secara lengkap.",
+     "Tanpa diperintah pun, menjauhkan badan dari bagian yang bergerak saat uji jalan, dan cepat menyadari perbedaan dari gerakan biasanya.",
+     "Memahami arti mengingat suara dan kecepatan normal untuk dibandingkan, dan dapat mengajarkan kiat pemeriksaan uji jalan kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "wear-report",
+    "name": "チェーン・ワイヤ点検と異常時の停止・報告",
+    "kanten": "チェーン・ワイヤの張り具合を手で押して確かめ、摩耗・錆を照らして点検し、異常があれば無理に動かさず自分で修理せず報告できるか。",
+    "levels": [
+     "張り・摩耗を見ずゆるみやすり減りを放置し、糞の滞留や大きな故障を招く。",
+     "指示があれば点検するが、たるみやすり減りの見極めに漏れがある。",
+     "指示があれば張り具合と摩耗・錆をひと通り点検し、メモを残せる。",
+     "指示がなくても毎回点検し、異常があれば無理に動かさず電源を切って報告する。",
+     "早期発見が大きな故障を防ぐことを理解し、点検の着眼点と異常時対応を新人に指導できる。"
+    ],
+    "name_en": "Chain and Wire Inspection, and Stopping and Reporting on Abnormality",
+    "kanten_en": "Can they press the chain and wire by hand to check tension, shine a light to inspect for wear and rust, and on any abnormality report it without forcing operation or repairing it themselves?",
+    "levels_en": [
+     "Ignores tension and wear, leaving slack and thinning parts, causing manure buildup and major breakdowns.",
+     "With guidance can inspect, but misses judging slack and thinning.",
+     "With guidance can inspect tension, wear, and rust and leave a note through the basic routine.",
+     "Independently inspects every time and, on any abnormality, cuts the power and reports instead of forcing operation.",
+     "Understands that early detection prevents major breakdowns, and can teach new staff inspection points and abnormality response."
+    ],
+    "name_vi": "Kiểm tra xích, dây cáp; dừng và báo cáo khi bất thường",
+    "kanten_vi": "Có ấn tay kiểm tra độ căng của xích, dây cáp, soi đèn kiểm tra mài mòn, gỉ sét, và khi có bất thường thì không cố cho chạy, không tự sửa mà báo cáo không.",
+    "levels_vi": [
+     "Không xem độ căng, mài mòn, bỏ mặc chỗ chùng, chỗ mòn, gây ứ đọng phân và hỏng lớn.",
+     "Nếu được chỉ thị thì kiểm tra, nhưng còn thiếu sót trong nhận biết chỗ chùng và chỗ mòn.",
+     "Nếu được chỉ thị thì kiểm tra độ căng, mài mòn, gỉ sét và ghi chú lại được cơ bản.",
+     "Dù không có chỉ thị vẫn kiểm tra mỗi lần, khi có bất thường thì không cố cho chạy mà ngắt điện và báo cáo.",
+     "Hiểu phát hiện sớm giúp tránh hỏng lớn, và có thể hướng dẫn người mới các điểm cần xem khi kiểm tra và cách xử lý bất thường."
+    ],
+    "name_id": "Pemeriksaan rantai dan kawat, berhenti dan melapor saat tidak normal",
+    "kanten_id": "Apakah menekan dengan tangan untuk memeriksa ketegangan rantai dan kawat, menyorot untuk memeriksa keausan dan karat, dan jika ada yang tidak normal melapor tanpa memaksakan jalan atau memperbaiki sendiri?",
+    "levels_id": [
+     "Tidak melihat ketegangan dan keausan, membiarkan bagian kendur dan menipis, sehingga kotoran menumpuk dan terjadi kerusakan besar.",
+     "Memeriksa jika diperintah, tetapi sering lalai menilai bagian kendur dan aus.",
+     "Jika diperintah, dapat memeriksa ketegangan, keausan, dan karat serta meninggalkan catatan secara lengkap.",
+     "Tanpa diperintah pun, memeriksa setiap kali, dan jika ada yang tidak normal mematikan listrik lalu melapor tanpa memaksakan jalan.",
+     "Memahami bahwa penemuan dini mencegah kerusakan besar, dan dapat mengajarkan titik pemeriksaan dan penanganan saat tidak normal kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "record-report",
+    "name": "点検結果の記録と具体的な報告",
+    "kanten": "「異常なし」でも点検記録用紙に記入し、異音の種類など異常の内容を具体的に伝えられるか。",
+    "levels": [
+     "点検しても記録を残さず、異常があっても内容を伝えない。",
+     "指示があれば記録するが、内容があいまいで抜け漏れが多い。",
+     "指示があれば異常なしを含めてひと通り記録できる。",
+     "指示がなくても毎回記録し、金属音・きしみ音など異音の種類を具体的に報告する。",
+     "具体的な報告が原因特定を早めることを理解し、記録と報告の書き方を新人に指導できる。"
+    ],
+    "name_en": "Recording Inspection Results and Reporting Concretely",
+    "kanten_en": "Can they fill in the inspection record sheet even for \"no abnormality,\" and describe abnormalities concretely, such as the type of unusual noise?",
+    "levels_en": [
+     "Leaves no record after inspecting, and does not describe abnormalities even when they occur.",
+     "With guidance can record, but the content is vague with many gaps.",
+     "With guidance can record everything including \"no abnormality\" through the basic routine.",
+     "Independently records every time and reports the type of unusual noise concretely, such as metallic or squeaking sounds.",
+     "Understands that concrete reports speed up finding the cause, and can teach new staff how to write records and reports."
+    ],
+    "name_vi": "Ghi chép kết quả kiểm tra và báo cáo cụ thể",
+    "kanten_vi": "Dù「không có bất thường」vẫn ghi vào phiếu ghi chép kiểm tra, và truyền đạt cụ thể nội dung bất thường như loại tiếng lạ không.",
+    "levels_vi": [
+     "Kiểm tra xong không ghi lại, có bất thường cũng không truyền đạt nội dung.",
+     "Nếu được chỉ thị thì ghi chép, nhưng nội dung mơ hồ, nhiều thiếu sót.",
+     "Nếu được chỉ thị thì ghi chép được cơ bản, kể cả khi không có bất thường.",
+     "Dù không có chỉ thị vẫn ghi chép mỗi lần, báo cáo cụ thể loại tiếng lạ như tiếng kim loại, tiếng cót két.",
+     "Hiểu báo cáo cụ thể giúp tìm nguyên nhân nhanh hơn, và có thể hướng dẫn người mới cách viết ghi chép và báo cáo."
+    ],
+    "name_id": "Mencatat hasil pemeriksaan dan melapor secara konkret",
+    "kanten_id": "Apakah mengisi lembar catatan pemeriksaan walaupun「tidak ada kelainan」, dan menyampaikan isi kelainan secara konkret seperti jenis suara aneh?",
+    "levels_id": [
+     "Tidak meninggalkan catatan setelah memeriksa, dan tidak menyampaikan isinya walaupun ada kelainan.",
+     "Mencatat jika diperintah, tetapi isinya samar dan banyak yang terlewat.",
+     "Jika diperintah, dapat mencatat secara lengkap termasuk saat tidak ada kelainan.",
+     "Tanpa diperintah pun, mencatat setiap kali, dan melaporkan jenis suara aneh secara konkret seperti suara logam atau derit.",
+     "Memahami bahwa laporan konkret mempercepat penentuan penyebab, dan dapat mengajarkan cara menulis catatan dan laporan kepada karyawan baru."
+    ]
+   }
+  ],
+  "name_en": "Manure Scraper Operation Check",
+  "name_vi": "Kiểm tra hoạt động máy cào phân",
+  "name_id": "Pemeriksaan kerja alat pengeruk kotoran",
+  "purposeShort_en": "Keep manure removal working, detect mechanical trouble early, and prevent major breakdowns",
+  "purposeShort_vi": "Giữ chức năng dọn phân hoạt động bình thường, phát hiện sớm trục trặc máy để tránh hỏng lớn",
+  "purposeShort_id": "Menjaga fungsi pembersihan kotoran tetap normal, menemukan gangguan mesin sejak dini, dan mencegah kerusakan besar"
+ },
+ {
+  "id": "fan-clean",
+  "category": "facility",
+  "no": "No.29",
+  "name": "ファン清掃",
+  "purposeShort": "換気能力を保ち、呼吸器トラブル・暑熱ストレスを防ぎ設備を長持ちさせる",
+  "gyomu": "29",
+  "aspects": [
+   {
+    "id": "power-off",
+    "name": "電源遮断と安全な清掃",
+    "kanten": "作業前に必ず電源を切り、モーター・配線に水をかけずに清掃できるか。",
+    "levels": [
+     "電源を切らずに清掃して回転部に接触し、モーターや配線に水をかける危険な作業をする。",
+     "指示があれば電源を切るが、水かけ回避などの徹底が甘い。",
+     "指示があれば電源を切り、羽根が完全に止まるのを待ってから作業できる。",
+     "指示がなくても電源を切り、モーターや配線を避けて安全に清掃する。",
+     "感電・巻き込みの危険を理解し、安全な清掃手順を新人に指導できる。"
+    ],
+    "name_en": "Power Shutoff and Safe Cleaning",
+    "kanten_en": "Can they always cut the power before work and clean without splashing water on motors and wiring?",
+    "levels_en": [
+     "Cleans without cutting the power, contacting rotating parts, and works dangerously by splashing water on motors and wiring.",
+     "With guidance cuts the power, but is lax about avoiding water splashes and the like.",
+     "With guidance can cut the power and wait until the blades stop completely before working.",
+     "Independently cuts the power and cleans safely while avoiding motors and wiring.",
+     "Understands the dangers of electric shock and entanglement, and can teach new staff safe cleaning procedures."
+    ],
+    "name_vi": "Ngắt điện và vệ sinh an toàn",
+    "kanten_vi": "Trước khi làm có luôn ngắt điện, vệ sinh mà không xịt nước vào mô-tơ, dây điện không.",
+    "levels_vi": [
+     "Không ngắt điện mà vệ sinh, chạm vào bộ phận quay, làm việc nguy hiểm như xịt nước vào mô-tơ, dây điện.",
+     "Nếu được chỉ thị thì ngắt điện, nhưng chưa triệt để trong việc tránh xịt nước v.v.",
+     "Nếu được chỉ thị thì ngắt điện và chờ cánh quạt dừng hẳn rồi mới làm.",
+     "Dù không có chỉ thị vẫn ngắt điện, tránh mô-tơ và dây điện, vệ sinh an toàn.",
+     "Hiểu nguy hiểm điện giật, bị cuốn kẹt, và có thể hướng dẫn người mới quy trình vệ sinh an toàn."
+    ],
+    "name_id": "Mematikan listrik dan membersihkan dengan aman",
+    "kanten_id": "Apakah selalu mematikan listrik sebelum bekerja, dan membersihkan tanpa menyiram air ke motor dan kabel?",
+    "levels_id": [
+     "Membersihkan tanpa mematikan listrik hingga menyentuh bagian berputar, dan bekerja berbahaya dengan menyiram air ke motor dan kabel.",
+     "Mematikan listrik jika diperintah, tetapi tidak konsisten menghindari siraman air.",
+     "Jika diperintah, dapat mematikan listrik dan menunggu baling-baling berhenti sepenuhnya sebelum bekerja.",
+     "Tanpa diperintah pun, mematikan listrik dan membersihkan dengan aman sambil menghindari motor dan kabel.",
+     "Memahami bahaya tersengat listrik dan terlilit, dan dapat mengajarkan urutan pembersihan yang aman kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "dry-first",
+    "name": "乾いた埃払いと羽根裏の洗浄",
+    "kanten": "水をかける前にシャッター・防鳥ネットの埃を乾いたまま払い、羽根の裏側まで汚れを落とせるか。",
+    "levels": [
+     "いきなり水をかけて埃を泥にし、羽根の裏の汚れも残したままにする。",
+     "指示があれば清掃するが、乾いた埃払いの先行や羽根裏の洗浄に漏れがある。",
+     "指示があれば埃を先に払い、羽根・シャッター・ネットをひと通り洗える。",
+     "指示がなくても乾いた状態から順に清掃し、羽根裏やこびりついた汚れまで落とす。",
+     "汚れと風量低下の関係を理解し、効率のよい清掃の順序を新人に指導できる。"
+    ],
+    "name_en": "Dry Dusting First and Washing Behind the Blades",
+    "kanten_en": "Can they dust the shutters and bird nets while still dry before applying water, and clean off the dirt down to the back of the blades?",
+    "levels_en": [
+     "Splashes water right away, turning dust into mud, and leaves the dirt on the back of the blades.",
+     "With guidance can clean, but misses dry dusting first or washing behind the blades.",
+     "With guidance can dust first and wash the blades, shutters, and nets through the basic routine.",
+     "Independently cleans in order starting from dry, removing even the dirt behind the blades and caked-on grime.",
+     "Understands how dirt relates to reduced airflow, and can teach new staff an efficient cleaning order."
+    ],
+    "name_vi": "Phủi bụi khô trước và rửa mặt sau cánh quạt",
+    "kanten_vi": "Trước khi xịt nước có phủi bụi cửa chớp, lưới chắn chim khi còn khô, và làm sạch chất bẩn đến tận mặt sau cánh quạt không.",
+    "levels_vi": [
+     "Xịt nước ngay làm bụi thành bùn, và để nguyên chất bẩn ở mặt sau cánh quạt.",
+     "Nếu được chỉ thị thì vệ sinh, nhưng còn thiếu sót về phủi bụi khô trước và rửa mặt sau cánh quạt.",
+     "Nếu được chỉ thị thì phủi bụi trước, rửa cánh quạt, cửa chớp, lưới được cơ bản.",
+     "Dù không có chỉ thị vẫn vệ sinh theo thứ tự từ lúc còn khô, làm sạch cả mặt sau cánh quạt và chất bẩn bám cứng.",
+     "Hiểu quan hệ giữa chất bẩn và giảm lưu lượng gió, và có thể hướng dẫn người mới trình tự vệ sinh hiệu quả."
+    ],
+    "name_id": "Membersihkan debu kering lebih dulu dan mencuci sisi belakang baling-baling",
+    "kanten_id": "Apakah sebelum menyiram air membersihkan debu penutup (shutter) dan jaring pencegah burung dalam keadaan kering, dan menghilangkan kotoran sampai sisi belakang baling-baling?",
+    "levels_id": [
+     "Langsung menyiram air sehingga debu menjadi lumpur, dan membiarkan kotoran di sisi belakang baling-baling.",
+     "Membersihkan jika diperintah, tetapi sering lalai mendahulukan pembersihan debu kering dan mencuci sisi belakang baling-baling.",
+     "Jika diperintah, dapat membersihkan debu lebih dulu dan mencuci baling-baling, penutup, dan jaring secara lengkap.",
+     "Tanpa diperintah pun, membersihkan berurutan mulai dari keadaan kering, sampai sisi belakang baling-baling dan kotoran yang menempel keras.",
+     "Memahami hubungan kotoran dengan turunnya aliran udara, dan dapat mengajarkan urutan pembersihan yang efisien kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "belt-check",
+    "name": "ファンベルトの張り・劣化点検",
+    "kanten": "指で押して1〜2cm沈む張りかを確かめ、ひび割れ・摩耗・ほつれを見つけて指導係に報告できるか。",
+    "levels": [
+     "ベルトを点検せず、劣化を放置して風量低下や故障を招く。",
+     "指示があれば見るが、張り具合やひび割れ・ほつれの見極めに漏れがある。",
+     "指示があれば指で押して張りを確かめ、傷みの有無をひと通り点検できる。",
+     "指示がなくても清掃のたびに点検し、ひび割れ・摩耗・ほつれがあれば交換が必要と報告する。",
+     "ベルトの寿命が1〜2年であることを踏まえ、劣化のサインと点検を新人に指導できる。"
+    ],
+    "name_en": "Inspecting Fan-Belt Tension and Deterioration",
+    "kanten_en": "Can they check that the belt sinks 1-2 cm when pressed with a finger, and find cracks, wear, and fraying and report them to the trainer?",
+    "levels_en": [
+     "Does not inspect the belt, leaving deterioration unattended and causing reduced airflow and breakdowns.",
+     "With guidance can look, but misses judging tension, cracks, and fraying.",
+     "With guidance can press with a finger to check tension and inspect for damage through the basic routine.",
+     "Independently inspects at every cleaning and reports that replacement is needed when there are cracks, wear, or fraying.",
+     "Knowing that belts last one to two years, can teach new staff the signs of deterioration and the inspection."
+    ],
+    "name_vi": "Kiểm tra độ căng và xuống cấp của dây curoa quạt",
+    "kanten_vi": "Có ấn ngón tay kiểm tra độ căng lún 1〜2cm không, phát hiện nứt, mòn, xơ và báo cáo cho người hướng dẫn không.",
+    "levels_vi": [
+     "Không kiểm tra dây curoa, bỏ mặc xuống cấp, gây giảm lưu lượng gió và hỏng máy.",
+     "Nếu được chỉ thị thì xem, nhưng còn thiếu sót trong nhận biết độ căng, nứt, xơ.",
+     "Nếu được chỉ thị thì ấn ngón tay kiểm tra độ căng và xem có hư hỏng không được cơ bản.",
+     "Dù không có chỉ thị vẫn kiểm tra mỗi lần vệ sinh, nếu có nứt, mòn, xơ thì báo cáo là cần thay.",
+     "Nắm được tuổi thọ dây curoa là 1〜2 năm, và có thể hướng dẫn người mới dấu hiệu xuống cấp và cách kiểm tra."
+    ],
+    "name_id": "Memeriksa ketegangan dan kerusakan sabuk (belt) kipas",
+    "kanten_id": "Apakah menekan dengan jari untuk memastikan ketegangan melesak 1〜2cm, serta menemukan retak, aus, dan serabut lalu melaporkannya kepada pembimbing?",
+    "levels_id": [
+     "Tidak memeriksa sabuk dan membiarkan kondisinya memburuk, sehingga aliran udara turun dan mesin rusak.",
+     "Melihat jika diperintah, tetapi sering lalai menilai ketegangan, retak, dan serabut.",
+     "Jika diperintah, dapat menekan dengan jari untuk memeriksa ketegangan dan memeriksa ada tidaknya kerusakan secara lengkap.",
+     "Tanpa diperintah pun, memeriksa setiap kali membersihkan, dan jika ada retak, aus, atau serabut melaporkan bahwa perlu diganti.",
+     "Dengan memahami bahwa umur sabuk 1〜2 tahun, dapat mengajarkan tanda kerusakan dan pemeriksaannya kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "restart-verify",
+    "name": "シャッター開閉と試運転確認",
+    "kanten": "シャッターが軽く開閉するか手で確かめ、水気が切れてから試運転して回転・風・異音を確認できるか。",
+    "levels": [
+     "洗いっぱなしで確認せず、動きの重さや異音があっても放置する。",
+     "指示があれば確認するが、開閉の重さや異音の聞き分けに漏れがある。",
+     "指示があれば水気が切れてから電源を入れ、回転と風の出をひと通り確認できる。",
+     "指示がなくても開閉・回転・風・異音を確かめ、キュルキュル音などに気づけば報告する。",
+     "動きの重さや異音が風量低下・故障のサインと理解し、確認の仕方を新人に指導できる。"
+    ],
+    "name_en": "Shutter Movement and Test-Run Checks",
+    "kanten_en": "Can they check by hand that the shutters open and close lightly, and test-run after the water has dried to check rotation, airflow, and unusual noise?",
+    "levels_en": [
+     "Leaves it as washed without checking, and ignores stiff movement and unusual noise.",
+     "With guidance can check, but misses noticing stiff movement or telling unusual noises apart.",
+     "With guidance can power on after the water has dried and check rotation and airflow through the basic routine.",
+     "Independently checks shutter movement, rotation, airflow, and noise, and reports squealing sounds and the like when noticed.",
+     "Understands that stiff movement and unusual noise are signs of reduced airflow and breakdowns, and can teach new staff how to check."
+    ],
+    "name_vi": "Đóng mở cửa chớp và kiểm tra chạy thử",
+    "kanten_vi": "Có dùng tay kiểm tra cửa chớp đóng mở nhẹ nhàng không, chờ ráo nước rồi chạy thử để kiểm tra quay, gió, tiếng lạ không.",
+    "levels_vi": [
+     "Rửa xong bỏ đó không kiểm tra, cửa nặng hay có tiếng lạ cũng mặc kệ.",
+     "Nếu được chỉ thị thì kiểm tra, nhưng còn thiếu sót trong nhận ra đóng mở nặng và phân biệt tiếng lạ.",
+     "Nếu được chỉ thị thì chờ ráo nước rồi bật điện, kiểm tra quay và gió thổi ra được cơ bản.",
+     "Dù không có chỉ thị vẫn kiểm tra đóng mở, quay, gió, tiếng lạ, nếu nghe tiếng rít v.v. thì báo cáo.",
+     "Hiểu chuyển động nặng, tiếng lạ là dấu hiệu giảm lưu lượng gió, hỏng máy, và có thể hướng dẫn người mới cách kiểm tra."
+    ],
+    "name_id": "Buka-tutup penutup (shutter) dan pemeriksaan uji jalan",
+    "kanten_id": "Apakah memeriksa dengan tangan bahwa penutup membuka-menutup dengan ringan, dan setelah airnya kering melakukan uji jalan untuk memeriksa putaran, angin, dan suara aneh?",
+    "levels_id": [
+     "Meninggalkan begitu saja setelah dicuci tanpa memeriksa, dan membiarkan gerakan berat maupun suara aneh.",
+     "Memeriksa jika diperintah, tetapi sering lalai menyadari buka-tutup yang berat dan membedakan suara aneh.",
+     "Jika diperintah, dapat menyalakan listrik setelah airnya kering dan memeriksa putaran serta keluarnya angin secara lengkap.",
+     "Tanpa diperintah pun, memeriksa buka-tutup, putaran, angin, dan suara aneh, dan melapor jika menyadari bunyi mencicit dan sejenisnya.",
+     "Memahami bahwa gerakan berat dan suara aneh adalah tanda turunnya aliran udara dan kerusakan, dan dapat mengajarkan cara memeriksanya kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "notify-record",
+    "name": "作業の周知と清掃記録・報告",
+    "kanten": "清掃前に指導係へ一言伝えてから電源を切り、清掃日と異音・破損などの気づきを記録・報告できるか。",
+    "levels": [
+     "誰にも伝えず勝手に電源を切り、清掃日も気づきも残さない。",
+     "指示があれば伝えて記録するが、気づきの報告に抜けが多い。",
+     "指示があれば作業前に周知し、清掃日と気づきをひと通り記録できる。",
+     "指示がなくても周知してから作業し、換気設定は変えずに異音・破損を記録・報告する。",
+     "周知と記録が事故・故障防止につながることを理解し、報告の要点を新人に指導できる。"
+    ],
+    "name_en": "Announcing the Work, and Cleaning Records and Reports",
+    "kanten_en": "Can they tell the trainer before cleaning and then cut the power, and record and report the cleaning date and findings such as unusual noise and damage?",
+    "levels_en": [
+     "Cuts the power on their own without telling anyone, leaving neither cleaning dates nor findings.",
+     "With guidance can inform and record, but often fails to report findings.",
+     "With guidance can announce before working and record the cleaning date and findings through the basic routine.",
+     "Independently announces before working, and records and reports unusual noise and damage without changing the ventilation settings.",
+     "Understands that announcements and records prevent accidents and breakdowns, and can teach new staff the key points of reporting."
+    ],
+    "name_vi": "Thông báo trước khi làm và ghi chép, báo cáo vệ sinh",
+    "kanten_vi": "Trước khi vệ sinh có báo một tiếng với người hướng dẫn rồi mới ngắt điện, và ghi chép, báo cáo ngày vệ sinh cùng những điều nhận thấy như tiếng lạ, hư hỏng không.",
+    "levels_vi": [
+     "Không báo ai, tự ý ngắt điện, không ghi lại ngày vệ sinh lẫn điều nhận thấy.",
+     "Nếu được chỉ thị thì báo và ghi chép, nhưng hay bỏ sót báo cáo điều nhận thấy.",
+     "Nếu được chỉ thị thì thông báo trước khi làm, ghi ngày vệ sinh và điều nhận thấy được cơ bản.",
+     "Dù không có chỉ thị vẫn thông báo rồi mới làm, không đổi cài đặt thông gió, ghi chép và báo cáo tiếng lạ, hư hỏng.",
+     "Hiểu việc thông báo và ghi chép giúp phòng tai nạn, hỏng hóc, và có thể hướng dẫn người mới các điểm chính khi báo cáo."
+    ],
+    "name_id": "Memberitahukan pekerjaan serta catatan dan laporan pembersihan",
+    "kanten_id": "Apakah sebelum membersihkan memberi tahu pembimbing lalu mematikan listrik, serta mencatat dan melaporkan tanggal pembersihan dan temuan seperti suara aneh dan kerusakan?",
+    "levels_id": [
+     "Mematikan listrik seenaknya tanpa memberi tahu siapa pun, dan tidak meninggalkan tanggal pembersihan maupun temuan.",
+     "Memberi tahu dan mencatat jika diperintah, tetapi sering terlewat melaporkan temuan.",
+     "Jika diperintah, dapat memberitahukan sebelum bekerja dan mencatat tanggal pembersihan serta temuan secara lengkap.",
+     "Tanpa diperintah pun, memberitahukan lebih dulu sebelum bekerja, dan mencatat serta melaporkan suara aneh dan kerusakan tanpa mengubah pengaturan ventilasi.",
+     "Memahami bahwa pemberitahuan dan pencatatan mencegah kecelakaan dan kerusakan, dan dapat mengajarkan pokok pelaporan kepada karyawan baru."
+    ]
+   }
+  ],
+  "name_en": "Fan Cleaning",
+  "name_vi": "Vệ sinh quạt",
+  "name_id": "Membersihkan kipas",
+  "purposeShort_en": "Maintain ventilation capacity, prevent respiratory trouble and heat stress, and extend equipment life",
+  "purposeShort_vi": "Duy trì năng lực thông gió, phòng bệnh hô hấp, stress do nóng và giúp thiết bị bền lâu",
+  "purposeShort_id": "Menjaga kemampuan ventilasi, mencegah gangguan pernapasan dan stres panas, serta membuat peralatan awet"
+ },
+ {
+  "id": "pad-tank",
+  "category": "facility",
+  "no": "No.30",
+  "name": "パドタンク清掃（夏季）",
+  "purposeShort": "クーリング性能を保ち、藻・細菌・悪臭を防ぎ設備を長持ちさせる",
+  "gyomu": "30",
+  "aspects": [
+   {
+    "id": "regular-clean",
+    "name": "定期清掃と藻・ぬめりの早期発見",
+    "kanten": "夏は週1〜2回の目安で清掃し、緑色の水・ぬめりを清掃のサインとして見逃さないか。作業前に電源を切り水を抜けるか。",
+    "levels": [
+     "清掃を怠って藻・ぬめりを発生させ、電源も切らずに作業する。",
+     "指示があれば清掃するが、頻度や電源遮断・排水の手順に漏れがある。",
+     "指示があれば電源を切り水を抜いて、ひと通り清掃できる。",
+     "指示がなくても目安の頻度で清掃し、緑色の水・ぬめりを見たら回数に関係なく清掃する。",
+     "クーリング性能と衛生の関係を理解し、定期清掃の手順とサインを新人に指導できる。"
+    ],
+    "name_en": "Regular Cleaning and Early Detection of Algae and Slime",
+    "kanten_en": "Can they clean about once or twice a week in summer and not overlook green water and slime as signs to clean? Can they cut the power and drain the water before work?",
+    "levels_en": [
+     "Neglects cleaning, letting algae and slime develop, and works without cutting the power.",
+     "With guidance can clean, but misses the frequency or the power-shutoff and draining steps.",
+     "With guidance can cut the power, drain the water, and clean through the basic routine.",
+     "Independently cleans at the standard frequency, and cleans regardless of the count whenever green water or slime appears.",
+     "Understands the link between cooling performance and hygiene, and can teach new staff the regular cleaning procedure and the signs."
+    ],
+    "name_vi": "Vệ sinh định kỳ và phát hiện sớm rêu tảo, nhớt",
+    "kanten_vi": "Mùa hè có vệ sinh theo mức chuẩn 1〜2 lần/tuần, không bỏ qua nước xanh, nhớt là dấu hiệu cần vệ sinh không. Trước khi làm có ngắt điện, xả nước không.",
+    "levels_vi": [
+     "Lười vệ sinh làm phát sinh rêu tảo, nhớt, làm việc mà không ngắt điện.",
+     "Nếu được chỉ thị thì vệ sinh, nhưng còn thiếu sót về tần suất và quy trình ngắt điện, xả nước.",
+     "Nếu được chỉ thị thì ngắt điện, xả nước và vệ sinh được cơ bản.",
+     "Dù không có chỉ thị vẫn vệ sinh theo tần suất chuẩn, thấy nước xanh, nhớt thì vệ sinh ngay không kể số lần.",
+     "Hiểu quan hệ giữa hiệu quả làm mát và vệ sinh, và có thể hướng dẫn người mới quy trình vệ sinh định kỳ và các dấu hiệu."
+    ],
+    "name_id": "Pembersihan berkala dan penemuan dini lumut dan lendir",
+    "kanten_id": "Apakah pada musim panas membersihkan dengan patokan 1〜2 kali seminggu, dan tidak melewatkan air hijau dan lendir sebagai tanda perlu dibersihkan? Apakah sebelum bekerja mematikan listrik dan membuang airnya?",
+    "levels_id": [
+     "Lalai membersihkan sehingga lumut dan lendir tumbuh, dan bekerja tanpa mematikan listrik.",
+     "Membersihkan jika diperintah, tetapi sering lalai soal frekuensi serta urutan mematikan listrik dan membuang air.",
+     "Jika diperintah, dapat mematikan listrik, membuang air, dan membersihkan secara lengkap.",
+     "Tanpa diperintah pun, membersihkan sesuai frekuensi patokan, dan begitu melihat air hijau atau lendir langsung membersihkan tanpa memandang jumlah kali.",
+     "Memahami hubungan kemampuan pendinginan dengan kebersihan, dan dapat mengajarkan urutan pembersihan berkala dan tanda-tandanya kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "soft-wash",
+    "name": "傷をつけないやさしい洗い方",
+    "kanten": "柔らかいブラシで底・角・水面の線をやさしくこすり、高圧洗浄機を使わずすすぎ水が透明になるまで洗えるか。",
+    "levels": [
+     "硬いブラシや高圧で強くこすり、タンクに傷をつけてかえって汚れやすくする。",
+     "指示があれば洗うが、力加減や底・角の洗い残しにムラがある。",
+     "指示があれば柔らかいブラシでやさしく、汚れやすい所をひと通り洗える。",
+     "指示がなくてもすすぎ水が透明になるまで洗い、高圧をかけずに仕上げる。",
+     "傷に汚れがたまる原理を理解し、タンクを傷めない洗い方を新人に指導できる。"
+    ],
+    "name_en": "Gentle Washing That Avoids Scratches",
+    "kanten_en": "Can they gently scrub the bottom, corners, and waterline with a soft brush, and wash without a pressure washer until the rinse water runs clear?",
+    "levels_en": [
+     "Scrubs hard with stiff brushes or high pressure, scratching the tank and making it dirtier more easily.",
+     "With guidance can wash, but is inconsistent in pressure and leaves the bottom and corners unwashed in places.",
+     "With guidance can wash the dirt-prone spots gently with a soft brush through the basic routine.",
+     "Independently washes until the rinse water runs clear and finishes without applying high pressure.",
+     "Understands why dirt collects in scratches, and can teach new staff washing that does not damage the tank."
+    ],
+    "name_vi": "Cách rửa nhẹ nhàng không làm xước",
+    "kanten_vi": "Có dùng bàn chải mềm chà nhẹ đáy, góc, vạch mực nước, không dùng máy rửa áp lực cao và rửa đến khi nước tráng trong suốt không.",
+    "levels_vi": [
+     "Chà mạnh bằng bàn chải cứng, áp lực cao, làm xước bể khiến bể càng dễ bẩn hơn.",
+     "Nếu được chỉ thị thì rửa, nhưng lực tay không đều, còn sót chỗ chưa rửa ở đáy, góc.",
+     "Nếu được chỉ thị thì dùng bàn chải mềm rửa nhẹ nhàng các chỗ dễ bẩn được cơ bản.",
+     "Dù không có chỉ thị vẫn rửa đến khi nước tráng trong suốt, hoàn thiện mà không dùng áp lực cao.",
+     "Hiểu nguyên lý chất bẩn tích trong vết xước, và có thể hướng dẫn người mới cách rửa không làm hỏng bể."
+    ],
+    "name_id": "Cara mencuci lembut tanpa menggores",
+    "kanten_id": "Apakah menggosok lembut dasar, sudut, dan garis batas air dengan sikat lembut, serta mencuci tanpa mesin cuci bertekanan tinggi sampai air bilasan menjadi jernih?",
+    "levels_id": [
+     "Menggosok keras dengan sikat kaku atau tekanan tinggi, menggores tangki sehingga justru lebih mudah kotor.",
+     "Mencuci jika diperintah, tetapi tekanannya tidak merata dan masih ada bagian dasar dan sudut yang terlewat.",
+     "Jika diperintah, dapat mencuci bagian yang mudah kotor secara lembut dengan sikat lembut secara lengkap.",
+     "Tanpa diperintah pun, mencuci sampai air bilasan jernih dan menyelesaikannya tanpa tekanan tinggi.",
+     "Memahami prinsip kotoran menumpuk di goresan, dan dapat mengajarkan cara mencuci yang tidak merusak tangki kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "filter-pipe",
+    "name": "フィルター・ポンプ・配管の点検",
+    "kanten": "フィルターの詰まりを除いて網の目まで洗い、ポンプ・配管の水漏れ・ゆるみを点検し、破れや異常を報告できるか。",
+    "levels": [
+     "タンクだけ洗って満足し、フィルターの詰まりを放置してポンプに過負荷をかける。",
+     "指示があれば点検するが、網の目の詰まりや配管の確認に漏れがある。",
+     "指示があればフィルターを洗い、ポンプ・配管をひと通り目視点検できる。",
+     "指示がなくても毎回一緒に点検し、破れ・水漏れがあれば自分で直さず報告する。",
+     "詰まりとポンプ故障の関係を理解し、フィルター・配管点検を新人に指導できる。"
+    ],
+    "name_en": "Inspecting the Filter, Pump, and Piping",
+    "kanten_en": "Can they clear filter clogs and wash until the mesh is visible, inspect the pump and piping for leaks and loose connections, and report tears and abnormalities?",
+    "levels_en": [
+     "Is satisfied with washing only the tank, leaving filter clogs and overloading the pump.",
+     "With guidance can inspect, but misses mesh clogs or the piping check.",
+     "With guidance can wash the filter and visually inspect the pump and piping through the basic routine.",
+     "Independently inspects them together every time, and reports tears and leaks instead of fixing them alone.",
+     "Understands how clogs relate to pump failure, and can teach new staff filter and piping inspection."
+    ],
+    "name_vi": "Kiểm tra lưới lọc, máy bơm, đường ống",
+    "kanten_vi": "Có loại bỏ chỗ tắc của lưới lọc, rửa đến rõ mắt lưới, kiểm tra rò rỉ nước, chỗ nối lỏng của máy bơm, đường ống, và báo cáo khi rách hay bất thường không.",
+    "levels_vi": [
+     "Chỉ rửa bể là hài lòng, bỏ mặc lưới lọc bị tắc làm máy bơm quá tải.",
+     "Nếu được chỉ thị thì kiểm tra, nhưng còn thiếu sót về chỗ tắc ở mắt lưới và kiểm tra đường ống.",
+     "Nếu được chỉ thị thì rửa lưới lọc, kiểm tra bằng mắt máy bơm, đường ống được cơ bản.",
+     "Dù không có chỉ thị vẫn kiểm tra cùng lúc mỗi lần, nếu có rách, rò rỉ nước thì không tự sửa mà báo cáo.",
+     "Hiểu quan hệ giữa tắc nghẽn và hỏng máy bơm, và có thể hướng dẫn người mới cách kiểm tra lưới lọc, đường ống."
+    ],
+    "name_id": "Memeriksa filter, pompa, dan pipa",
+    "kanten_id": "Apakah membuang sumbatan filter dan mencucinya sampai lubang saringan terlihat, memeriksa kebocoran air dan sambungan longgar pada pompa dan pipa, serta melaporkan sobek dan kelainan?",
+    "levels_id": [
+     "Puas hanya mencuci tangki, membiarkan filter tersumbat sehingga pompa bekerja berlebihan.",
+     "Memeriksa jika diperintah, tetapi sering lalai memeriksa sumbatan lubang saringan dan pipa.",
+     "Jika diperintah, dapat mencuci filter dan memeriksa pompa serta pipa secara visual dengan lengkap.",
+     "Tanpa diperintah pun, memeriksanya sekaligus setiap kali, dan jika ada sobek atau kebocoran melapor tanpa memperbaikinya sendiri.",
+     "Memahami hubungan penyumbatan dengan kerusakan pompa, dan dapat mengajarkan pemeriksaan filter dan pipa kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "refill-flow",
+    "name": "張り直しと均一な水回り確認",
+    "kanten": "決められた水位まできれいな水を張り直して再稼働し、パッド全体が均一に濡れるかを見届けられるか。",
+    "levels": [
+     "水を張って電源を入れたら立ち去り、パッドに乾いた部分があっても気づかない。",
+     "指示があれば確認するが、水位やパッドの濡れ具合の確認に漏れがある。",
+     "指示があれば水位まで張り直し、循環とパッドの濡れをひと通り確認できる。",
+     "指示がなくても循環開始まで見守り、一部だけ濡れない時は詰まりを疑って報告する。",
+     "均一な濡れと冷却効果の関係を理解し、再稼働確認の要点を新人に指導できる。"
+    ],
+    "name_en": "Refilling and Checking Even Water Flow",
+    "kanten_en": "Can they refill with clean water to the set level, restart the system, and confirm the whole pad gets wet evenly?",
+    "levels_en": [
+     "Walks away after filling and powering on, and does not notice dry patches on the pad.",
+     "With guidance can check, but misses the water level or how wet the pad is.",
+     "With guidance can refill to the set level and check circulation and pad wetting through the basic routine.",
+     "Independently watches until circulation starts, and when only part stays dry, suspects a clog and reports it.",
+     "Understands how even wetting relates to cooling effect, and can teach new staff the key points of restart checks."
+    ],
+    "name_vi": "Châm nước lại và kiểm tra nước chảy đều",
+    "kanten_vi": "Có châm nước sạch lại đến mực nước quy định, cho chạy lại, và xem toàn bộ tấm làm mát có ướt đều không.",
+    "levels_vi": [
+     "Châm nước, bật điện xong là bỏ đi, tấm làm mát có chỗ khô cũng không nhận ra.",
+     "Nếu được chỉ thị thì kiểm tra, nhưng còn thiếu sót về kiểm tra mực nước và độ ướt của tấm làm mát.",
+     "Nếu được chỉ thị thì châm lại đến mực nước, kiểm tra tuần hoàn và độ ướt của tấm làm mát được cơ bản.",
+     "Dù không có chỉ thị vẫn theo dõi đến khi bắt đầu tuần hoàn, khi chỉ một phần không ướt thì nghi bị tắc và báo cáo.",
+     "Hiểu quan hệ giữa ướt đều và hiệu quả làm mát, và có thể hướng dẫn người mới các điểm chính khi kiểm tra chạy lại."
+    ],
+    "name_id": "Mengisi ulang air dan memeriksa aliran air yang merata",
+    "kanten_id": "Apakah mengisi ulang air bersih sampai ketinggian yang ditentukan, menjalankan kembali, dan memastikan seluruh panel pendingin basah merata?",
+    "levels_id": [
+     "Pergi begitu saja setelah mengisi air dan menyalakan listrik, dan tidak sadar walaupun ada bagian panel yang kering.",
+     "Memeriksa jika diperintah, tetapi sering lalai memeriksa ketinggian air dan tingkat basah panel.",
+     "Jika diperintah, dapat mengisi ulang sampai ketinggian air dan memeriksa sirkulasi serta basahnya panel secara lengkap.",
+     "Tanpa diperintah pun, mengawasi sampai sirkulasi dimulai, dan jika hanya sebagian yang tidak basah mencurigai penyumbatan lalu melapor.",
+     "Memahami hubungan basah merata dengan efek pendinginan, dan dapat mengajarkan pokok pemeriksaan saat menjalankan kembali kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "record-heat",
+    "name": "記録・報告と夏場の自己管理",
+    "kanten": "清掃日と気づいた異常を記録・報告し、暑い時期は自分の熱中症にも注意して作業できるか。",
+    "levels": [
+     "清掃しても記録せず、体調が悪くても無理を続けて報告しない。",
+     "指示があれば記録するが、異常の報告や水分補給に漏れがある。",
+     "指示があれば清掃日と気づきをひと通り記録・報告できる。",
+     "指示がなくても次回がわかる記録を残し、こまめに水分をとって体調の異変はすぐ伝える。",
+     "記録が清掃サイクルの維持につながることを理解し、記録と夏場の安全を新人に指導できる。"
+    ],
+    "name_en": "Records, Reports, and Self-Care in Summer",
+    "kanten_en": "Can they record and report the cleaning date and any abnormalities noticed, and work while also watching out for their own heat stroke in hot weather?",
+    "levels_en": [
+     "Does not record after cleaning, and keeps pushing on without reporting even when feeling unwell.",
+     "With guidance can record, but misses reporting abnormalities or drinking enough water.",
+     "With guidance can record and report the cleaning date and findings through the basic routine.",
+     "Independently leaves records the next person can follow, drinks water frequently, and immediately reports any change in their own condition.",
+     "Understands that records keep the cleaning cycle going, and can teach new staff recording and summer safety."
+    ],
+    "name_vi": "Ghi chép, báo cáo và tự chăm sóc bản thân mùa hè",
+    "kanten_vi": "Có ghi chép, báo cáo ngày vệ sinh và bất thường nhận thấy, mùa nóng có chú ý cả sốc nhiệt của bản thân khi làm việc không.",
+    "levels_vi": [
+     "Vệ sinh xong không ghi chép, người mệt vẫn cố làm tiếp mà không báo cáo.",
+     "Nếu được chỉ thị thì ghi chép, nhưng còn thiếu sót về báo cáo bất thường và bổ sung nước.",
+     "Nếu được chỉ thị thì ghi chép, báo cáo ngày vệ sinh và điều nhận thấy được cơ bản.",
+     "Dù không có chỉ thị vẫn để lại ghi chép giúp biết lần sau, uống nước thường xuyên và báo ngay khi cơ thể có dấu hiệu lạ.",
+     "Hiểu ghi chép giúp duy trì chu kỳ vệ sinh, và có thể hướng dẫn người mới việc ghi chép và an toàn mùa hè."
+    ],
+    "name_id": "Catatan, laporan, dan menjaga diri pada musim panas",
+    "kanten_id": "Apakah mencatat dan melaporkan tanggal pembersihan dan kelainan yang disadari, serta pada musim panas bekerja sambil mewaspadai sengatan panas pada diri sendiri?",
+    "levels_id": [
+     "Tidak mencatat walaupun sudah membersihkan, dan terus memaksakan diri tanpa melapor walaupun badan tidak sehat.",
+     "Mencatat jika diperintah, tetapi sering lalai melaporkan kelainan dan minum air yang cukup.",
+     "Jika diperintah, dapat mencatat dan melaporkan tanggal pembersihan serta temuan secara lengkap.",
+     "Tanpa diperintah pun, meninggalkan catatan yang menjelaskan jadwal berikutnya, sering minum air, dan segera memberi tahu jika kondisi badan berubah.",
+     "Memahami bahwa catatan menjaga siklus pembersihan, dan dapat mengajarkan pencatatan dan keselamatan musim panas kepada karyawan baru."
+    ]
+   }
+  ],
+  "name_en": "Pad Tank Cleaning (Summer)",
+  "name_vi": "Vệ sinh bể nước của tấm làm mát (pad tank) — mùa hè",
+  "name_id": "Membersihkan tangki air panel pendingin (pad tank) — musim panas",
+  "purposeShort_en": "Maintain cooling performance, prevent algae, bacteria, and odor, and extend equipment life",
+  "purposeShort_vi": "Duy trì hiệu quả làm mát, phòng rêu tảo, vi khuẩn, mùi hôi và giúp thiết bị bền lâu",
+  "purposeShort_id": "Menjaga kemampuan pendinginan, mencegah lumut, bakteri, dan bau busuk, serta membuat peralatan awet"
+ },
+ {
+  "id": "feed-switch",
+  "category": "facility",
+  "no": "No.20",
+  "name": "エサスイッチ",
+  "purposeShort": "給餌を安定させ、ムダな飼料を減らし機械トラブルを防ぐ",
+  "gyomu": "20",
+  "aspects": [
+   {
+    "id": "switch-position",
+    "name": "スイッチ位置と異常時の停止",
+    "kanten": "自動・手動・切の位置を確認し、ホッパー空・詰まり・異音時はすぐオフにできるか。",
+    "levels": [
+     "スイッチ位置を確認せず、ホッパー空や詰まり・異音があってもオフにしない。",
+     "指示があれば位置を確認するが、異常時の停止対応に漏れがある。",
+     "指示があれば自動・手動・切の位置をひと通り確認できる。",
+     "指示がなくても位置を確認し、ホッパー空・詰まり・異音時はすぐオフにする。",
+     "給餌設備のトラブルを理解し、スイッチ操作と異常時対応を新人に指導できる。"
+    ],
+    "name_en": "Switch Position and Stopping on Abnormality",
+    "kanten_en": "Can they confirm the auto/manual/off position and switch off immediately when the hopper is empty, clogged, or making abnormal noise?",
+    "levels_en": [
+     "Does not confirm the switch position and does not switch off even when the hopper is empty, clogged, or making abnormal noise.",
+     "With guidance can confirm the position, but misses stopping the machine on abnormality.",
+     "With guidance can confirm the auto/manual/off position through the basic routine.",
+     "Independently confirms the position and switches off immediately on an empty hopper, clogging, or abnormal noise.",
+     "Understands feeding-equipment troubles, and can teach new staff switch operation and abnormality response."
+    ],
+    "name_vi": "Vị trí công tắc và dừng khi bất thường",
+    "kanten_vi": "Có kiểm tra vị trí tự động / bằng tay / tắt, khi phễu chứa cám rỗng, bị tắc hoặc có tiếng lạ thì tắt ngay không.",
+    "levels_vi": [
+     "Không kiểm tra vị trí công tắc, phễu rỗng, bị tắc hay có tiếng lạ cũng không tắt.",
+     "Nếu được chỉ thị thì kiểm tra vị trí, nhưng còn thiếu sót trong xử lý dừng khi bất thường.",
+     "Nếu được chỉ thị thì kiểm tra vị trí tự động / bằng tay / tắt được cơ bản.",
+     "Dù không có chỉ thị vẫn kiểm tra vị trí, khi phễu rỗng, bị tắc, có tiếng lạ thì tắt ngay.",
+     "Hiểu các trục trặc của thiết bị cho ăn, và có thể hướng dẫn người mới cách thao tác công tắc và xử lý khi bất thường."
+    ],
+    "name_id": "Posisi sakelar dan mematikan saat tidak normal",
+    "kanten_id": "Apakah memeriksa posisi otomatis / manual / mati, dan segera mematikan saat corong pakan (hopper) kosong, tersumbat, atau berbunyi aneh?",
+    "levels_id": [
+     "Tidak memeriksa posisi sakelar, dan tidak mematikan walaupun corong pakan kosong, tersumbat, atau berbunyi aneh.",
+     "Memeriksa posisi jika diperintah, tetapi sering lalai mematikan saat tidak normal.",
+     "Jika diperintah, dapat memeriksa posisi otomatis / manual / mati secara lengkap.",
+     "Tanpa diperintah pun, memeriksa posisi, dan segera mematikan saat corong pakan kosong, tersumbat, atau berbunyi aneh.",
+     "Memahami gangguan pada peralatan pemberian pakan, dan dapat mengajarkan pengoperasian sakelar dan penanganan saat tidak normal kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "label-stock",
+    "name": "飼料の種類・残量の事前確認",
+    "kanten": "ホッパーの飼料をラベルと照合し、のぞき窓や側面を叩いた音で残量を確かめてから運転できるか。",
+    "levels": [
+     "ラベルも残量も確認せず運転し、飼料の種類違いや空運転を招く。",
+     "指示があれば確認するが、声出し照合や残量の見極めに漏れがある。",
+     "指示があればラベル照合と残量確認をひと通りできる。",
+     "指示がなくても豚舎名と飼料名を声に出して照合し、残量を確かめてから動かす。",
+     "種類違いが消化不良を招くことを理解し、飼料確認の徹底を新人に指導できる。"
+    ],
+    "name_en": "Checking Feed Type and Remaining Amount in Advance",
+    "kanten_en": "Can they match the feed in the hopper against the label, and check the remaining amount through the sight window or by tapping the side before running?",
+    "levels_en": [
+     "Runs without checking the label or the remaining amount, causing wrong feed types and dry running.",
+     "With guidance can check, but misses reading aloud to match or judging the remaining amount.",
+     "With guidance can match the label and check the remaining amount through the basic routine.",
+     "Independently reads the barn name and feed name aloud to match them, and checks the remaining amount before running.",
+     "Understands that wrong feed types cause digestive upsets, and can teach new staff thorough feed checks."
+    ],
+    "name_vi": "Kiểm tra trước loại thức ăn và lượng còn lại",
+    "kanten_vi": "Có đối chiếu thức ăn trong phễu với nhãn, kiểm tra lượng còn lại qua cửa sổ quan sát hoặc tiếng gõ vào thành rồi mới cho chạy không.",
+    "levels_vi": [
+     "Không kiểm tra nhãn lẫn lượng còn lại mà cho chạy, gây nhầm loại thức ăn và chạy không tải.",
+     "Nếu được chỉ thị thì kiểm tra, nhưng còn thiếu sót về đọc to đối chiếu và ước lượng lượng còn lại.",
+     "Nếu được chỉ thị thì đối chiếu nhãn và kiểm tra lượng còn lại được cơ bản.",
+     "Dù không có chỉ thị vẫn đọc to tên chuồng và tên thức ăn để đối chiếu, kiểm tra lượng còn lại rồi mới cho chạy.",
+     "Hiểu nhầm loại thức ăn gây rối loạn tiêu hóa, và có thể hướng dẫn người mới việc kiểm tra thức ăn triệt để."
+    ],
+    "name_id": "Memeriksa lebih dulu jenis pakan dan sisa jumlahnya",
+    "kanten_id": "Apakah mencocokkan pakan di corong dengan label, dan memastikan sisa jumlahnya lewat jendela pengintai atau bunyi ketukan pada dinding sebelum menjalankan?",
+    "levels_id": [
+     "Menjalankan tanpa memeriksa label maupun sisa jumlah, sehingga jenis pakan tertukar dan mesin berjalan kosong.",
+     "Memeriksa jika diperintah, tetapi sering lalai mencocokkan dengan suara keras dan memperkirakan sisa jumlah.",
+     "Jika diperintah, dapat mencocokkan label dan memeriksa sisa jumlah secara lengkap.",
+     "Tanpa diperintah pun, membaca keras nama kandang dan nama pakan untuk mencocokkan, dan memastikan sisa jumlah sebelum menjalankan.",
+     "Memahami bahwa jenis pakan yang tertukar menyebabkan gangguan pencernaan, dan dapat mengajarkan pemeriksaan pakan yang menyeluruh kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "bridging",
+    "name": "ブリッジング詰まりの安全対処",
+    "kanten": "満杯なのに飼料が落ちない時にブリッジングを疑い、必ずスイッチを切ってから叩く・突くで対処できるか。",
+    "levels": [
+     "動かしたまま詰まりに手を出し、直らなくても報告しない。",
+     "指示があれば対処するが、先に電源を切る手順や報告に漏れがある。",
+     "指示があればスイッチを切ってから外から叩く対処をひと通りできる。",
+     "指示がなくてもブリッジングを疑って安全に対処し、直らなければ無理せず報告する。",
+     "飼料がアーチ状に固まる仕組みを理解し、安全な対処手順を新人に指導できる。"
+    ],
+    "name_en": "Safe Handling of Bridging Clogs",
+    "kanten_en": "Can they suspect bridging when feed does not drop despite a full hopper, and always switch off before tapping or poking to clear it?",
+    "levels_en": [
+     "Reaches into the clog with the machine still running, and does not report even when it cannot be fixed.",
+     "With guidance can handle it, but misses cutting the power first or reporting.",
+     "With guidance can switch off and then tap from the outside through the basic procedure.",
+     "Independently suspects bridging, handles it safely, and reports without forcing it when it cannot be fixed.",
+     "Understands how feed cakes into an arch, and can teach new staff the safe handling procedure."
+    ],
+    "name_vi": "Xử lý an toàn tắc do bridging",
+    "kanten_vi": "Khi phễu đầy mà thức ăn không rơi xuống có nghi bridging, nhất định tắt công tắc trước rồi mới gõ, chọc để xử lý không.",
+    "levels_vi": [
+     "Máy đang chạy vẫn thò tay xử lý chỗ tắc, không sửa được cũng không báo cáo.",
+     "Nếu được chỉ thị thì xử lý, nhưng còn thiếu sót về bước ngắt điện trước và báo cáo.",
+     "Nếu được chỉ thị thì tắt công tắc rồi gõ từ bên ngoài để xử lý được cơ bản.",
+     "Dù không có chỉ thị vẫn nghi bridging và xử lý an toàn, không sửa được thì không cố mà báo cáo.",
+     "Hiểu cơ chế thức ăn vón thành vòm, và có thể hướng dẫn người mới quy trình xử lý an toàn."
+    ],
+    "name_id": "Penanganan aman sumbatan bridging",
+    "kanten_id": "Apakah mencurigai bridging saat pakan tidak jatuh padahal penuh, dan selalu mematikan sakelar lebih dulu sebelum mengetuk atau menusuk untuk mengatasinya?",
+    "levels_id": [
+     "Menangani sumbatan saat mesin masih berjalan, dan tidak melapor walaupun tidak bisa diperbaiki.",
+     "Menangani jika diperintah, tetapi sering lalai mematikan listrik lebih dulu dan melapor.",
+     "Jika diperintah, dapat mematikan sakelar lalu mengetuk dari luar untuk mengatasinya secara lengkap.",
+     "Tanpa diperintah pun, mencurigai bridging dan menanganinya dengan aman, dan jika tidak berhasil melapor tanpa memaksakan.",
+     "Memahami mekanisme pakan menggumpal membentuk lengkungan, dan dapat mengajarkan prosedur penanganan yang aman kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "trough-watch",
+    "name": "トラフ量と食べ具合の見回り",
+    "kanten": "底がうっすら見える目安でトラフ量を確かめ、残餌や切り替え中の下痢に気づいて報告できるか。",
+    "levels": [
+     "給餌後の見回りをせず、山盛り・空のトラフや残餌を放置する。",
+     "指示があれば見回るが、量の目安や糞の状態の確認に漏れがある。",
+     "指示があれば1房ずつのぞき、トラフ量と残餌をひと通り確認できる。",
+     "指示がなくても給餌後に見回り、残餌や下痢の増加に気づいてすぐ報告する。",
+     "残餌が体調不良のサインと理解し、トラフ量の目安と観察を新人に指導できる。"
+    ],
+    "name_en": "Checking Trough Amounts and How Well Pigs Eat",
+    "kanten_en": "Can they check trough amounts by the guide of the bottom being faintly visible, and notice and report leftover feed and diarrhea during feed changes?",
+    "levels_en": [
+     "Skips rounds after feeding, leaving heaped or empty troughs and leftover feed.",
+     "With guidance can make rounds, but misses the amount guide or checking manure condition.",
+     "With guidance can look into each pen and check trough amounts and leftover feed through the basic routine.",
+     "Independently makes rounds after feeding and immediately reports leftover feed and increases in diarrhea when noticed.",
+     "Understands that leftover feed is a sign of poor condition, and can teach new staff the trough-amount guide and observation."
+    ],
+    "name_vi": "Đi kiểm tra lượng thức ăn trong máng và mức ăn",
+    "kanten_vi": "Có kiểm tra lượng trong máng theo mức chuẩn「nhìn thấy mờ mờ đáy máng」, nhận ra và báo cáo thức ăn thừa, tiêu chảy trong lúc đổi cám không.",
+    "levels_vi": [
+     "Không đi kiểm tra sau khi cho ăn, bỏ mặc máng đầy ụ, máng rỗng và thức ăn thừa.",
+     "Nếu được chỉ thị thì đi kiểm tra, nhưng còn thiếu sót về mức chuẩn lượng thức ăn và kiểm tra tình trạng phân.",
+     "Nếu được chỉ thị thì nhìn từng ô chuồng, kiểm tra lượng trong máng và thức ăn thừa được cơ bản.",
+     "Dù không có chỉ thị vẫn đi kiểm tra sau khi cho ăn, nhận ra thức ăn thừa, tiêu chảy tăng và báo cáo ngay.",
+     "Hiểu thức ăn thừa là dấu hiệu sức khỏe kém, và có thể hướng dẫn người mới mức chuẩn lượng trong máng và cách quan sát."
+    ],
+    "name_id": "Memeriksa keliling jumlah pakan di tempat pakan dan nafsu makan",
+    "kanten_id": "Apakah memeriksa jumlah pakan di tempat pakan dengan patokan dasarnya terlihat samar, serta menyadari dan melaporkan pakan sisa dan diare selama pergantian pakan?",
+    "levels_id": [
+     "Tidak memeriksa keliling setelah pemberian pakan, membiarkan tempat pakan menggunung atau kosong serta pakan sisa.",
+     "Memeriksa keliling jika diperintah, tetapi sering lalai soal patokan jumlah dan memeriksa kondisi kotoran.",
+     "Jika diperintah, dapat melihat satu per satu petak kandang serta memeriksa jumlah di tempat pakan dan pakan sisa secara lengkap.",
+     "Tanpa diperintah pun, memeriksa keliling setelah pemberian pakan, dan segera melapor begitu menyadari pakan sisa atau diare yang bertambah.",
+     "Memahami bahwa pakan sisa adalah tanda kondisi kurang sehat, dan dapat mengajarkan patokan jumlah di tempat pakan dan pengamatan kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "timer-record",
+    "name": "タイマー変更後の動作確認と記録",
+    "kanten": "設定変更は決められた人が行い、タイマー変更後は動作確認し、切り替え日を記録できるか。",
+    "levels": [
+     "権限のない者が設定を変え、変更後の動作確認もせず切り替え日も記録しない。",
+     "指示があれば確認するが、動作確認や記録に漏れがある。",
+     "指示があればタイマー変更後の動作をひと通り確認できる。",
+     "指示がなくても変更後に実際に1回動かして確認し、切り替え開始日と内容を記録する。",
+     "設定変更と給餌事故の関係を理解し、動作確認と記録の徹底を新人に指導できる。"
+    ],
+    "name_en": "Operation Check and Recording After Timer Changes",
+    "kanten_en": "Can they leave setting changes to designated staff, verify operation after timer changes, and record the changeover date?",
+    "levels_en": [
+     "Unauthorized staff change the settings, with no operation check afterward and no record of the changeover date.",
+     "With guidance can check, but misses the operation check or the record.",
+     "With guidance can verify operation after a timer change through the basic routine.",
+     "Independently runs the system once after changes to verify, and records the changeover start date and details.",
+     "Understands how setting changes relate to feeding accidents, and can teach new staff thorough operation checks and recording."
+    ],
+    "name_vi": "Kiểm tra hoạt động sau khi đổi hẹn giờ và ghi chép",
+    "kanten_vi": "Việc đổi cài đặt có do người được quy định làm, sau khi đổi hẹn giờ có kiểm tra hoạt động và ghi lại ngày chuyển đổi không.",
+    "levels_vi": [
+     "Người không có quyền đổi cài đặt, sau khi đổi không kiểm tra hoạt động, cũng không ghi ngày chuyển đổi.",
+     "Nếu được chỉ thị thì kiểm tra, nhưng còn thiếu sót về kiểm tra hoạt động và ghi chép.",
+     "Nếu được chỉ thị thì kiểm tra hoạt động sau khi đổi hẹn giờ được cơ bản.",
+     "Dù không có chỉ thị vẫn cho chạy thử 1 lần sau khi đổi để kiểm tra, và ghi lại ngày bắt đầu chuyển đổi cùng nội dung.",
+     "Hiểu quan hệ giữa đổi cài đặt và sự cố cho ăn, và có thể hướng dẫn người mới việc kiểm tra hoạt động và ghi chép triệt để."
+    ],
+    "name_id": "Memeriksa kerja setelah mengubah timer dan mencatatnya",
+    "kanten_id": "Apakah perubahan pengaturan hanya dilakukan orang yang ditunjuk, kerja mesin diperiksa setelah timer diubah, dan tanggal penggantian dicatat?",
+    "levels_id": [
+     "Orang tanpa wewenang mengubah pengaturan, tidak memeriksa kerja mesin setelah diubah, dan tidak mencatat tanggal penggantian.",
+     "Memeriksa jika diperintah, tetapi sering lalai memeriksa kerja mesin dan mencatat.",
+     "Jika diperintah, dapat memeriksa kerja mesin setelah timer diubah secara lengkap.",
+     "Tanpa diperintah pun, menjalankan mesin satu kali setelah perubahan untuk memastikan, dan mencatat tanggal mulai penggantian beserta isinya.",
+     "Memahami hubungan perubahan pengaturan dengan kecelakaan pemberian pakan, dan dapat mengajarkan pemeriksaan kerja mesin dan pencatatan kepada karyawan baru."
+    ]
+   }
+  ],
+  "name_en": "Feed Switch",
+  "name_vi": "Công tắc cấp cám (vận hành cho ăn tự động)",
+  "name_id": "Sakelar pakan (pengoperasian pemberian pakan otomatis)",
+  "purposeShort_en": "Keep feeding stable, reduce feed waste, and prevent mechanical trouble",
+  "purposeShort_vi": "Giữ việc cho ăn ổn định, giảm lãng phí thức ăn và phòng trục trặc máy",
+  "purposeShort_id": "Menstabilkan pemberian pakan, mengurangi pakan terbuang, dan mencegah gangguan mesin"
+ }
+]

@@ -1,0 +1,424 @@
+[
+  {
+    "id": "cull-ship",
+    "category": "shipping",
+    "no": "No.22",
+    "name": "廃豚出荷（母豚出し）",
+    "purposeShort": "繁殖群を計画的に更新し、母豚に無理をさせず安全に出荷する",
+    "gyomu": "22",
+    "aspects": [
+      {
+        "id": "cull-select",
+        "name": "リスト照合とマーキング",
+        "kanten": "廃豚リストと耳標番号を上長と照合し、対象豚に見分けやすくマーキングして取り違えを防げるか。",
+        "levels": [
+          "リストと耳標を照合せずマーキングも曖昧で、対象外の豚と取り違えても気づかない。",
+          "指示があれば照合・マーキングするが、耳標の読み違いや印の不明瞭さが残り、確認は他者まかせ。",
+          "指示があればリストと耳標を1頭ずつ突き合わせ、背中に大きくはっきりマーキングできる。",
+          "指示がなくても上長とリストを確認してから照合・マーキングし、番号の不一致に気づけばその場で確かめる。",
+          "取り違え・誤出荷が起きやすい場面を理解し、照合とマーキングの手順を新人に指導できる。"
+        ],
+        "name_en": "List Verification and Marking",
+        "name_vi": "Đối chiếu danh sách và đánh dấu",
+        "name_id": "Pencocokan daftar dan penandaan",
+        "kanten_en": "Can they verify the cull list against ear tag numbers with their supervisor, mark the target pigs clearly, and prevent mix-ups?",
+        "kanten_vi": "Có đối chiếu danh sách lợn loại thải và số thẻ tai với cấp trên, đánh dấu dễ nhận biết lên lợn cần xuất để phòng nhầm lẫn không.",
+        "kanten_id": "Apakah mencocokkan daftar babi afkir dan nomor tanda telinga bersama atasan, menandai babi sasaran agar mudah dibedakan, dan mencegah tertukar?",
+        "levels_en": [
+          "Does not verify the list against ear tags, marks vaguely, and does not notice even when a non-target pig is mixed up.",
+          "With guidance can verify and mark, but misreads ear tags or leaves unclear marks, and leaves checking to others.",
+          "With guidance can match the list and ear tags one pig at a time and mark the back large and clearly.",
+          "Independently confirms the list with the supervisor before verifying and marking, and checks any number mismatch on the spot.",
+          "Understands the situations where mix-ups and wrong shipments tend to occur, and can teach new staff the verification and marking procedure."
+        ],
+        "levels_vi": [
+          "Không đối chiếu danh sách với thẻ tai, đánh dấu cũng mập mờ, lợn ngoài danh sách bị nhầm cũng không nhận ra.",
+          "Nếu được chỉ thị thì đối chiếu, đánh dấu, nhưng còn đọc nhầm thẻ tai, dấu không rõ, và phó mặc việc kiểm tra cho người khác.",
+          "Nếu được chỉ thị thì đối chiếu danh sách với thẻ tai từng con một, đánh dấu to và rõ lên lưng được.",
+          "Dù không có chỉ thị vẫn xác nhận danh sách với cấp trên rồi mới đối chiếu, đánh dấu; nhận thấy số không khớp thì kiểm tra ngay tại chỗ.",
+          "Hiểu những tình huống dễ xảy ra nhầm lẫn, xuất nhầm, và có thể hướng dẫn người mới trình tự đối chiếu và đánh dấu."
+        ],
+        "levels_id": [
+          "Tidak mencocokkan daftar dengan tanda telinga, penandaan pun kabur, dan tidak sadar walau tertukar dengan babi di luar sasaran.",
+          "Mencocokkan dan menandai jika diperintah, tetapi masih salah baca tanda telinga atau tandanya tidak jelas, dan menyerahkan pengecekan kepada orang lain.",
+          "Jika diperintah, dapat mencocokkan daftar dan tanda telinga satu per satu ekor, lalu menandai punggung dengan besar dan jelas.",
+          "Tanpa diperintah pun, memastikan daftar bersama atasan sebelum mencocokkan dan menandai, dan jika menyadari nomor tidak cocok langsung memeriksanya di tempat.",
+          "Memahami situasi yang mudah menimbulkan tertukar atau salah kirim, dan dapat mengajarkan prosedur pencocokan dan penandaan kepada karyawan baru."
+        ]
+      },
+      {
+        "id": "welfare-law",
+        "name": "歩様確認と法令遵守",
+        "kanten": "歩けない・立てない豚は出荷せず、出荷前に体調・歩様を確認し、絶食時も水を止めないか。",
+        "levels": [
+          "歩けない豚を出荷し、体調・歩様の確認も絶食時の給水も怠る。",
+          "指示があれば確認するが、歩様の見極めや給水管理に漏れがある。",
+          "指示があれば体調・歩様をひと通り確認して出荷できる。",
+          "指示がなくても歩けない豚を除外し、絶食時も水を止めずに安全に出荷する。",
+          "と畜場法・輸送指針を理解し、アニマルウェルフェアに配慮した出荷を新人に指導できる。"
+        ],
+        "name_en": "Gait Checks and Legal Compliance",
+        "name_vi": "Kiểm tra dáng đi và tuân thủ pháp luật",
+        "name_id": "Memeriksa cara berjalan dan menaati peraturan",
+        "kanten_en": "Can they refuse to ship pigs that cannot walk or stand, check condition and gait before shipping, and keep water available during fasting?",
+        "kanten_vi": "Có không xuất lợn không đi được, không đứng được; trước khi xuất kiểm tra thể trạng, dáng đi; khi nhịn ăn không cắt nước không.",
+        "kanten_id": "Apakah tidak mengirim babi yang tidak bisa berjalan atau berdiri, memeriksa kondisi tubuh dan cara berjalan sebelum pengiriman, dan tidak menghentikan air minum saat puasa?",
+        "levels_en": [
+          "Ships pigs that cannot walk, and neglects condition and gait checks and water supply during fasting.",
+          "With guidance can check, but misses judging gait or managing water supply.",
+          "With guidance can check condition and gait and ship through the basic procedure.",
+          "Independently excludes pigs that cannot walk and ships safely with water kept available during fasting.",
+          "Understands the Slaughterhouse Act and transport guidelines, and can teach new staff welfare-conscious shipping."
+        ],
+        "levels_vi": [
+          "Xuất cả lợn không đi được, lơ là kiểm tra thể trạng, dáng đi và cấp nước khi nhịn ăn.",
+          "Nếu được chỉ thị thì kiểm tra, nhưng còn thiếu sót về nhận biết dáng đi và quản lý cấp nước.",
+          "Nếu được chỉ thị thì kiểm tra thể trạng, dáng đi và xuất chuồng được cơ bản.",
+          "Dù không có chỉ thị vẫn loại trừ lợn không đi được, không cắt nước khi nhịn ăn, xuất chuồng an toàn.",
+          "Hiểu luật về lò mổ và hướng dẫn vận chuyển của Nhật Bản, và có thể hướng dẫn người mới cách xuất chuồng có quan tâm đến phúc lợi động vật (welfare)."
+        ],
+        "levels_id": [
+          "Mengirim babi yang tidak bisa berjalan, dan lalai memeriksa kondisi tubuh dan cara berjalan serta memberi air minum saat puasa.",
+          "Memeriksa jika diperintah, tetapi sering lalai menilai cara berjalan dan mengelola air minum.",
+          "Jika diperintah, dapat memeriksa kondisi tubuh dan cara berjalan secara lengkap lalu mengirim.",
+          "Tanpa diperintah pun, menyisihkan babi yang tidak bisa berjalan, dan mengirim dengan aman tanpa menghentikan air minum saat puasa.",
+          "Memahami undang-undang rumah potong hewan dan pedoman pengangkutan, dan dapat mengajarkan pengiriman yang memperhatikan kesejahteraan hewan kepada karyawan baru."
+        ]
+      },
+      {
+        "id": "withdrawal-double",
+        "name": "休薬期間のダブルチェック",
+        "kanten": "投薬記録を正本に、全対象豚の休薬期間経過を2人でダブルチェックし、「たぶん大丈夫」で出さないか。",
+        "levels": [
+          "投薬記録を見ずに「たぶん大丈夫」で出荷しようとし、休薬期間中の豚が混ざっても気づかない。",
+          "指示があれば記録を見るが、確認が1人だけになったり対象豚の一部を見落としたりする。",
+          "指示があれば投薬記録に基づき、全対象豚の休薬期間経過を2人で確認できる。",
+          "指示がなくてもダブルチェックを徹底し、記憶で決めず、疑わしい豚はその場で上長に確認して出荷から外す。",
+          "休薬期間中の出荷が法律違反であることを理解し、記録に基づくダブルチェックの方法を新人に指導できる。"
+        ],
+        "name_en": "Double-Checking Withdrawal Periods",
+        "name_vi": "Hai người cùng kiểm tra thời gian ngừng thuốc",
+        "name_id": "Pengecekan ganda masa henti obat",
+        "kanten_en": "Can they use the medication records as the authoritative source, double-check with two people that all target pigs have passed their withdrawal periods, and never ship on a \"probably fine\"?",
+        "kanten_vi": "Có lấy sổ ghi chép dùng thuốc làm căn cứ chính, 2 người cùng kiểm tra kỹ rằng mọi con lợn cần xuất đã qua hết thời gian ngừng thuốc, không xuất theo kiểu \"chắc là ổn\" không.",
+        "kanten_id": "Apakah menjadikan catatan pemberian obat sebagai acuan resmi, melakukan pengecekan ganda oleh 2 orang bahwa semua babi sasaran sudah melewati masa henti obat, dan tidak mengirim dengan \"mungkin aman\"?",
+        "levels_en": [
+          "Tries to ship on a \"probably fine\" without looking at the medication records, and does not notice pigs still in withdrawal mixed in.",
+          "With guidance can look at the records, but the check ends up with one person only or misses some of the target pigs.",
+          "With guidance can confirm with two people, based on the medication records, that all target pigs have passed their withdrawal periods.",
+          "Independently enforces the double check, never decides from memory, and on the spot confirms doubtful pigs with the supervisor and excludes them from shipping.",
+          "Understands that shipping during the withdrawal period is against the law, and can teach new staff the record-based double-check method."
+        ],
+        "levels_vi": [
+          "Định xuất chuồng theo kiểu \"chắc là ổn\" mà không xem sổ ghi chép dùng thuốc, lợn còn trong thời gian ngừng thuốc lẫn vào cũng không nhận ra.",
+          "Nếu được chỉ thị thì xem sổ ghi chép, nhưng có khi chỉ 1 người kiểm tra hoặc bỏ sót một phần lợn cần xuất.",
+          "Nếu được chỉ thị thì dựa vào sổ ghi chép dùng thuốc, 2 người cùng xác nhận được rằng mọi con lợn cần xuất đã qua hết thời gian ngừng thuốc.",
+          "Dù không có chỉ thị vẫn kiểm tra kỹ bằng 2 người, không quyết định theo trí nhớ; con đáng ngờ thì hỏi cấp trên ngay tại chỗ và loại khỏi danh sách xuất.",
+          "Hiểu rằng xuất chuồng lợn còn trong thời gian ngừng thuốc là vi phạm pháp luật, và có thể hướng dẫn người mới cách 2 người cùng kiểm tra dựa trên sổ ghi chép."
+        ],
+        "levels_id": [
+          "Mencoba mengirim dengan \"mungkin aman\" tanpa melihat catatan pemberian obat, dan tidak sadar ada babi yang masih dalam masa henti obat ikut tercampur.",
+          "Melihat catatan jika diperintah, tetapi pengecekan kadang hanya oleh 1 orang atau melewatkan sebagian babi sasaran.",
+          "Jika diperintah, dapat memastikan oleh 2 orang berdasarkan catatan pemberian obat bahwa semua babi sasaran sudah melewati masa henti obat.",
+          "Tanpa diperintah pun, menjalankan pengecekan ganda dengan ketat, tidak memutuskan dari ingatan; babi yang meragukan langsung dikonfirmasi ke atasan di tempat dan dikeluarkan dari pengiriman.",
+          "Memahami bahwa mengirim babi dalam masa henti obat melanggar hukum, dan dapat mengajarkan cara pengecekan ganda berdasarkan catatan kepada karyawan baru."
+        ]
+      },
+      {
+        "id": "fast-notify",
+        "name": "絶食開始と通路・積み込み場所の準備",
+        "kanten": "前日夕方の給餌停止で絶食を始め（目安は出荷12〜18時間前）、通路と積み込み場所の清掃・障害物や滑る場所の確認まで準備できるか。",
+        "levels": [
+          "絶食を始めず満腹のまま出荷させようとし、通路の準備もせずに豚を通す。",
+          "指示があれば準備するが、絶食開始の時期がずれたり、通路の障害物や滑る場所を見落としたりする。",
+          "指示があれば前日夕方に給餌を止め、通路と積み込み場所を清掃して仕切り板・追い込み板を用意できる。",
+          "指示がなくても出荷12〜18時間前を目安に絶食を管理し、通路を自分で歩いて滑りやすい所がないか確かめてから作業に入る。",
+          "絶食が輸送中の糞尿を減らし処理をスムーズにする理由を理解し、出荷前日の準備を新人に指導できる。"
+        ],
+        "name_en": "Starting Fasting and Preparing the Aisle and Loading Area",
+        "name_vi": "Bắt đầu nhịn ăn và chuẩn bị lối đi, chỗ chất lợn lên xe",
+        "name_id": "Memulai puasa dan menyiapkan lorong serta tempat pemuatan",
+        "kanten_en": "Can they start fasting by stopping the evening feed the day before (guideline: 12-18 hours before shipping), and prepare through cleaning the aisle and loading area and checking for obstacles and slippery spots?",
+        "kanten_vi": "Có bắt đầu nhịn ăn bằng cách ngừng cho ăn bữa chiều hôm trước (khoảng 12〜18 tiếng trước khi xuất), và chuẩn bị đến cả việc dọn sạch lối đi, chỗ chất lợn lên xe, kiểm tra vật cản và chỗ trơn trượt không.",
+        "kanten_id": "Apakah memulai puasa dengan menghentikan pakan sore hari sebelumnya (patokan 12〜18 jam sebelum pengiriman), dan menyiapkan sampai membersihkan lorong dan tempat pemuatan serta memeriksa penghalang dan tempat licin?",
+        "levels_en": [
+          "Tries to ship pigs on a full stomach without starting fasting, and moves them through an unprepared aisle.",
+          "With guidance can prepare, but mistimes the start of fasting or overlooks obstacles and slippery spots in the aisle.",
+          "With guidance can stop feeding on the previous evening, clean the aisle and loading area, and set out partition boards and pig boards.",
+          "Independently manages fasting to the 12-18 hours-before-shipping guideline, and walks the aisle personally to check for slippery spots before starting work.",
+          "Understands why fasting reduces manure and urine during transport and smooths processing, and can teach new staff the day-before-shipping preparation."
+        ],
+        "levels_vi": [
+          "Không cho nhịn ăn, định xuất lợn khi còn no, cho lợn đi qua lối đi chưa chuẩn bị gì.",
+          "Nếu được chỉ thị thì chuẩn bị, nhưng có khi lệch thời điểm bắt đầu nhịn ăn, hoặc bỏ sót vật cản và chỗ trơn trên lối đi.",
+          "Nếu được chỉ thị thì ngừng cho ăn chiều hôm trước, dọn sạch lối đi và chỗ chất lợn lên xe, chuẩn bị được tấm ngăn và tấm lùa.",
+          "Dù không có chỉ thị vẫn quản lý nhịn ăn theo mốc 12〜18 tiếng trước khi xuất, tự đi thử lối đi để kiểm tra chỗ trơn trượt rồi mới bắt đầu làm.",
+          "Hiểu lý do nhịn ăn giúp giảm phân và nước tiểu khi vận chuyển, giúp xử lý thuận lợi, và có thể hướng dẫn người mới việc chuẩn bị ngày trước khi xuất."
+        ],
+        "levels_id": [
+          "Tidak memulai puasa dan mencoba mengirim babi dalam keadaan kenyang, serta melewatkan babi di lorong tanpa persiapan.",
+          "Menyiapkan jika diperintah, tetapi waktu mulai puasa meleset, atau melewatkan penghalang dan tempat licin di lorong.",
+          "Jika diperintah, dapat menghentikan pakan sore hari sebelumnya, membersihkan lorong dan tempat pemuatan, serta menyiapkan papan penyekat dan papan penggiring.",
+          "Tanpa diperintah pun, mengelola puasa dengan patokan 12〜18 jam sebelum pengiriman, dan berjalan sendiri menyusuri lorong untuk memeriksa tempat licin sebelum mulai bekerja.",
+          "Memahami alasan puasa mengurangi kotoran dan air seni saat pengangkutan serta memperlancar proses, dan dapat mengajarkan persiapan sehari sebelum pengiriman kepada karyawan baru."
+        ]
+      },
+      {
+        "id": "load-verify-disinfect",
+        "name": "積み込み・頭数照合と出荷後消毒",
+        "kanten": "追い込み板で静かに積み込み、頭数・耳標を出荷伝票と照合して記録し、車両が触れた場所を消毒できるか。",
+        "levels": [
+          "豚を追い回して積み込み、頭数照合も出荷後の消毒もせず放置する。",
+          "指示があれば積み込むが、伝票との照合や車両が触れた場所の消毒に抜けが多い。",
+          "指示があれば静かに積み込み、頭数・耳標を伝票と照合し、通路と積み込み場所を消毒できる。",
+          "指示がなくても照合の不一致をその場で解消してから出発させ、記録と車両接触部の消毒まで自分で完結する。",
+          "出荷トラックが病気を持ち込むリスクを理解し、積み込みから消毒までの流れを新人に指導できる。"
+        ],
+        "name_en": "Loading, Head-Count Verification, and Post-Shipping Disinfection",
+        "name_vi": "Chất lợn lên xe, đối chiếu số con và khử trùng sau xuất chuồng",
+        "name_id": "Pemuatan, pencocokan jumlah ekor, dan disinfeksi setelah pengiriman",
+        "kanten_en": "Can they load quietly with a pig board, verify head count and ear tags against the shipping slip and record them, and disinfect the places the vehicle touched?",
+        "kanten_vi": "Có dùng tấm lùa chất lợn lên xe nhẹ nhàng, đối chiếu số con và thẻ tai với phiếu xuất chuồng rồi ghi lại, khử trùng chỗ xe chạm vào không.",
+        "kanten_id": "Apakah memuat dengan tenang memakai papan penggiring, mencocokkan jumlah ekor dan tanda telinga dengan surat pengiriman lalu mencatatnya, dan mendisinfeksi tempat yang tersentuh kendaraan?",
+        "levels_en": [
+          "Chases pigs around while loading, and leaves the job without head-count verification or post-shipping disinfection.",
+          "With guidance can load, but often misses the check against the slip or the disinfection of places the vehicle touched.",
+          "With guidance can load quietly, verify head count and ear tags against the slip, and disinfect the aisle and loading area.",
+          "Independently resolves any verification mismatch on the spot before letting the truck leave, and completes the recording and the disinfection of vehicle-contact spots by themselves.",
+          "Understands the risk of the shipping truck bringing in disease, and can teach new staff the flow from loading to disinfection."
+        ],
+        "levels_vi": [
+          "Rượt đuổi lợn khi chất lên xe, bỏ mặc không đối chiếu số con, không khử trùng sau khi xuất.",
+          "Nếu được chỉ thị thì chất lợn lên xe, nhưng còn nhiều thiếu sót về đối chiếu với phiếu và khử trùng chỗ xe chạm vào.",
+          "Nếu được chỉ thị thì chất lợn nhẹ nhàng, đối chiếu số con và thẻ tai với phiếu, khử trùng được lối đi và chỗ chất lợn lên xe.",
+          "Dù không có chỉ thị vẫn giải quyết chỗ không khớp ngay tại chỗ rồi mới cho xe đi, tự hoàn tất cả việc ghi chép và khử trùng chỗ xe chạm vào.",
+          "Hiểu rủi ro xe xuất chuồng mang mầm bệnh vào trại, và có thể hướng dẫn người mới quy trình từ chất lợn lên xe đến khử trùng."
+        ],
+        "levels_id": [
+          "Mengejar-ngejar babi saat memuat, dan meninggalkan pekerjaan tanpa mencocokkan jumlah ekor maupun disinfeksi setelah pengiriman.",
+          "Memuat jika diperintah, tetapi sering lalai mencocokkan dengan surat pengiriman dan mendisinfeksi tempat yang tersentuh kendaraan.",
+          "Jika diperintah, dapat memuat dengan tenang, mencocokkan jumlah ekor dan tanda telinga dengan surat pengiriman, serta mendisinfeksi lorong dan tempat pemuatan.",
+          "Tanpa diperintah pun, menyelesaikan ketidakcocokan hasil pencocokan di tempat sebelum truk berangkat, dan menuntaskan sendiri pencatatan serta disinfeksi bagian yang tersentuh kendaraan.",
+          "Memahami risiko truk pengiriman membawa masuk penyakit, dan dapat mengajarkan alur dari pemuatan sampai disinfeksi kepada karyawan baru."
+        ]
+      }
+    ],
+    "name_en": "Cull Sow Shipping",
+    "name_vi": "Xuất chuồng lợn loại thải (đưa lợn nái đi)",
+    "name_id": "Pengiriman babi afkir (mengeluarkan induk babi)",
+    "purposeShort_en": "Renew the breeding herd systematically and ship sows safely without overstraining them",
+    "purposeShort_vi": "Đổi mới đàn sinh sản có kế hoạch, xuất chuồng an toàn không ép lợn nái quá sức",
+    "purposeShort_id": "Memperbarui kelompok induk secara terencana, dan mengirim dengan aman tanpa memaksa induk babi"
+  },
+  {
+    "id": "cull-move",
+    "category": "shipping",
+    "no": "No.23",
+    "name": "育成舎へ廃豚移動",
+    "purposeShort": "出荷前管理を円滑にする",
+    "gyomu": "23",
+    "aspects": [
+      {
+        "id": "move-pre-check",
+        "name": "移動前の照合と歩様確認",
+        "kanten": "耳標をリストと照合し、1頭ずつ立たせて歩様を見て、歩けない・呼吸が荒い豚を移動から外し報告できるか。",
+        "levels": [
+          "照合も歩様確認もせずに追い始め、歩けない豚を無理に動かして放置する。",
+          "指示があれば確認するが、耳標の照合や歩様の見極めに漏れがあり、報告は他者まかせ。",
+          "指示があればリストと1頭ずつ照合し、歩様を確認して異常な豚を移動から外し報告できる。",
+          "指示がなくても移動前の確認を徹底し、治療中・休薬期間中の豚が混ざっていないかも指導係と確認する。",
+          "歩けない豚を動かす危険と出荷できない理由を理解し、移動前確認のやり方を新人に指導できる。"
+        ],
+        "name_en": "Pre-Move Verification and Gait Checks",
+        "name_vi": "Đối chiếu và kiểm tra dáng đi trước khi chuyển",
+        "name_id": "Pencocokan dan pemeriksaan cara berjalan sebelum pemindahan",
+        "kanten_en": "Can they verify ear tags against the list, stand each pig up to check its gait, and exclude pigs that cannot walk or are breathing hard from the move and report them?",
+        "kanten_vi": "Có đối chiếu thẻ tai với danh sách, cho từng con đứng dậy để xem dáng đi, loại con không đi được hoặc thở gấp khỏi việc di chuyển và báo cáo không.",
+        "kanten_id": "Apakah mencocokkan tanda telinga dengan daftar, membuat setiap babi berdiri untuk melihat cara jalannya, mengeluarkan babi yang tidak bisa berjalan atau napasnya cepat dari pemindahan, dan melaporkannya?",
+        "levels_en": [
+          "Starts driving pigs without verification or gait checks, forces pigs that cannot walk to move, and leaves them.",
+          "With guidance can check, but misses ear-tag verification or judging gait, and leaves reporting to others.",
+          "With guidance can verify against the list one pig at a time, check gait, and exclude and report abnormal pigs.",
+          "Independently enforces pre-move checks, and also confirms with the trainer that no pigs under treatment or in withdrawal are mixed in.",
+          "Understands the danger of moving pigs that cannot walk and why they cannot be shipped, and can teach new staff the pre-move check."
+        ],
+        "levels_vi": [
+          "Bắt đầu lùa mà không đối chiếu, không kiểm tra dáng đi, ép con lợn không đi được phải di chuyển rồi bỏ mặc.",
+          "Nếu được chỉ thị thì kiểm tra, nhưng còn thiếu sót về đối chiếu thẻ tai và nhận biết dáng đi, phó mặc việc báo cáo cho người khác.",
+          "Nếu được chỉ thị thì đối chiếu với danh sách từng con một, kiểm tra dáng đi, loại con bất thường khỏi việc di chuyển và báo cáo được.",
+          "Dù không có chỉ thị vẫn kiểm tra kỹ trước khi chuyển, và xác nhận với người hướng dẫn xem có lẫn lợn đang điều trị hoặc đang trong thời gian ngừng thuốc không.",
+          "Hiểu nguy hiểm khi bắt lợn không đi được phải di chuyển và lý do không thể xuất chuồng, và có thể hướng dẫn người mới cách kiểm tra trước khi chuyển."
+        ],
+        "levels_id": [
+          "Mulai menggiring tanpa pencocokan maupun pemeriksaan cara berjalan, memaksa babi yang tidak bisa berjalan untuk pindah, lalu membiarkannya.",
+          "Memeriksa jika diperintah, tetapi masih lalai mencocokkan tanda telinga dan menilai cara berjalan, serta menyerahkan pelaporan kepada orang lain.",
+          "Jika diperintah, dapat mencocokkan dengan daftar satu per satu ekor, memeriksa cara berjalan, lalu mengeluarkan babi yang abnormal dari pemindahan dan melaporkannya.",
+          "Tanpa diperintah pun, menjalankan pemeriksaan sebelum pemindahan dengan ketat, dan juga memastikan bersama pembimbing bahwa tidak ada babi yang sedang diobati atau dalam masa henti obat ikut tercampur.",
+          "Memahami bahaya memindahkan babi yang tidak bisa berjalan dan alasan babi itu tidak boleh dikirim, dan dapat mengajarkan cara pemeriksaan sebelum pemindahan kepada karyawan baru."
+        ]
+      },
+      {
+        "id": "route-setup",
+        "name": "移動ルートと受け入れ豚房の準備",
+        "kanten": "受け入れ豚房の空きと給水を確かめ、扉・ゲートで一本道を作り、通路の障害物・滑る場所を先に片付けられるか。",
+        "levels": [
+          "準備をせずに追い始め、豚が抜け出したり滑って転んだりしても気にしない。",
+          "指示があれば準備するが、扉の閉め忘れや滑る場所の見落としが多い。",
+          "指示があれば扉・ゲートを先に全部セットし、障害物と滑る場所を片付けてから豚を通せる。",
+          "指示がなくても受け入れ豚房の空きと給水まで確かめ、ルートを自分で歩いて危険箇所を先に直す。",
+          "転倒・脱走が起きやすい箇所を理解し、ルート準備の段取りを新人に指導できる。"
+        ],
+        "name_en": "Preparing the Route and the Receiving Pen",
+        "name_vi": "Chuẩn bị đường di chuyển và ô chuồng tiếp nhận",
+        "name_id": "Menyiapkan rute pemindahan dan petak kandang penerima",
+        "kanten_en": "Can they confirm the receiving pen is empty with water flowing, make a single path with doors and gates, and clear obstacles and slippery spots in the aisle beforehand?",
+        "kanten_vi": "Có kiểm tra ô chuồng tiếp nhận còn trống và nước uống chảy tốt, dùng cửa và cổng tạo thành đường một chiều, dọn trước vật cản và chỗ trơn trên lối đi không.",
+        "kanten_id": "Apakah memastikan petak kandang penerima kosong dan air minum mengalir, membuat jalur satu arah dengan pintu dan gerbang, serta membereskan lebih dulu penghalang dan tempat licin di lorong?",
+        "levels_en": [
+          "Starts driving pigs without preparation, and does not care when pigs escape or slip and fall.",
+          "With guidance can prepare, but often forgets to close doors or overlooks slippery spots.",
+          "With guidance can set all doors and gates first and clear obstacles and slippery spots before moving pigs through.",
+          "Independently confirms the receiving pen's vacancy and water supply, and walks the route personally to fix hazard spots beforehand.",
+          "Understands the spots where falls and escapes tend to occur, and can teach new staff how to set up the route."
+        ],
+        "levels_vi": [
+          "Bắt đầu lùa mà không chuẩn bị, lợn xổng ra hay trượt ngã cũng không quan tâm.",
+          "Nếu được chỉ thị thì chuẩn bị, nhưng hay quên đóng cửa và bỏ sót chỗ trơn.",
+          "Nếu được chỉ thị thì cài đặt trước tất cả cửa và cổng, dọn vật cản và chỗ trơn rồi mới cho lợn đi qua được.",
+          "Dù không có chỉ thị vẫn kiểm tra đến cả ô chuồng tiếp nhận còn trống và nước uống, tự đi thử đường di chuyển để sửa trước chỗ nguy hiểm.",
+          "Hiểu những chỗ dễ xảy ra ngã và xổng chuồng, và có thể hướng dẫn người mới cách sắp xếp chuẩn bị đường di chuyển."
+        ],
+        "levels_id": [
+          "Mulai menggiring tanpa persiapan, dan tidak peduli walau babi lolos atau terpeleset dan jatuh.",
+          "Menyiapkan jika diperintah, tetapi sering lupa menutup pintu dan melewatkan tempat licin.",
+          "Jika diperintah, dapat mengatur dulu semua pintu dan gerbang, membereskan penghalang dan tempat licin, baru melewatkan babi.",
+          "Tanpa diperintah pun, memastikan sampai kekosongan petak kandang penerima dan air minumnya, serta berjalan sendiri menyusuri rute untuk memperbaiki titik berbahaya lebih dulu.",
+          "Memahami titik-titik yang mudah menimbulkan babi jatuh atau lolos, dan dapat mengajarkan urutan penyiapan rute kepada karyawan baru."
+        ]
+      },
+      {
+        "id": "drive-safety",
+        "name": "追い板の使い方と自身の安全確保",
+        "kanten": "追い板で後ろ斜めから3〜5頭ずつ静かに追い、興奮したら待ち、自分の逃げ道を常に確保できるか。",
+        "levels": [
+          "叩く・大声・追い回しで豚を暴れさせ、壁際に立って挟まれそうになっても気づかない。",
+          "指示があれば追い板を使うが、一度に動かす頭数が多すぎたり、立ち位置が危なかったりする。",
+          "指示があれば3〜5頭ずつ静かに追い、逃げ道を確保した立ち位置で移動できる。",
+          "指示がなくても豚が興奮したら無理せず10〜15分待って再開し、突進には追い板を盾にして安全によける。",
+          "豚の視界をさえぎって方向をつくる原理を理解し、安全な追い方を新人に指導できる。"
+        ],
+        "name_en": "Using the Pig Board and Keeping Yourself Safe",
+        "name_vi": "Cách dùng tấm chắn lùa lợn và bảo đảm an toàn cho bản thân",
+        "name_id": "Cara memakai papan penggiring dan menjaga keselamatan diri",
+        "kanten_en": "Can they drive pigs quietly with the pig board from diagonally behind, 3-5 at a time, wait when pigs get agitated, and always keep an escape route for themselves?",
+        "kanten_vi": "Có dùng tấm chắn lùa nhẹ nhàng từng 3〜5 con từ phía sau chếch bên hông, lợn kích động thì chờ, và luôn giữ đường thoát cho bản thân không.",
+        "kanten_id": "Apakah menggiring dengan tenang 3〜5 ekor sekali jalan memakai papan penggiring dari belakang agak menyamping, menunggu jika babi panik, dan selalu menjaga jalur keluar untuk diri sendiri?",
+        "levels_en": [
+          "Makes pigs panic by hitting, shouting, and chasing, and stands against the wall without noticing they are about to be pinned.",
+          "With guidance can use the pig board, but moves too many pigs at once or stands in dangerous positions.",
+          "With guidance can drive pigs quietly 3-5 at a time, standing where an escape route is secured.",
+          "Independently waits 10-15 minutes without forcing when pigs get agitated before resuming, and safely dodges charges using the pig board as a shield.",
+          "Understands the principle of blocking the pig's view to create direction, and can teach new staff safe driving."
+        ],
+        "levels_vi": [
+          "Đánh, la lớn, rượt đuổi làm lợn hoảng loạn, đứng sát tường sắp bị kẹp cũng không nhận ra.",
+          "Nếu được chỉ thị thì dùng tấm chắn, nhưng có khi lùa một lần quá nhiều con, hoặc đứng ở vị trí nguy hiểm.",
+          "Nếu được chỉ thị thì lùa nhẹ nhàng từng 3〜5 con, di chuyển ở vị trí đứng có giữ đường thoát.",
+          "Dù không có chỉ thị vẫn không ép khi lợn kích động, chờ 10〜15 phút rồi mới tiếp tục; lợn lao tới thì dùng tấm chắn làm khiên né an toàn.",
+          "Hiểu nguyên lý che tầm nhìn của lợn để tạo hướng đi, và có thể hướng dẫn người mới cách lùa an toàn."
+        ],
+        "levels_id": [
+          "Membuat babi mengamuk dengan memukul, berteriak, dan mengejar-ngejar, serta berdiri rapat ke dinding tanpa sadar hampir terjepit.",
+          "Memakai papan penggiring jika diperintah, tetapi kadang memindahkan terlalu banyak ekor sekaligus atau posisi berdirinya berbahaya.",
+          "Jika diperintah, dapat menggiring dengan tenang 3〜5 ekor sekali jalan, pada posisi berdiri yang menjaga jalur keluar.",
+          "Tanpa diperintah pun, saat babi panik tidak memaksa, menunggu 10〜15 menit lalu melanjutkan; jika diseruduk, menghindar dengan aman memakai papan penggiring sebagai perisai.",
+          "Memahami prinsip menutupi pandangan babi untuk mengarahkan jalannya, dan dapat mengajarkan cara menggiring yang aman kepada karyawan baru."
+        ]
+      },
+      {
+        "id": "isolation-move",
+        "name": "他群との接触回避（隔離）",
+        "kanten": "廃豚を他群と接触させず、柵ごしに鼻が触れ合わない空き豚房を選び、感染を広げない移動ができるか。",
+        "levels": [
+          "他群と鼻が触れ合う豚房に平気で入れ、廃豚を他の群のそばに置いても気にしない。",
+          "指示があれば他群から離すが、柵ごしの鼻の接触までは意識が回らない。",
+          "指示があれば他の豚と柵ごしに鼻が触れ合わない空き豚房を選び、他群と接触させずに移動できる。",
+          "指示がなくても移動の時間帯（夕方〜夜はけんかが減る）など農場の決まりを確かめて動き、接触の恐れがあれば先に指導係に相談する。",
+          "柵ごしの接触や共用通路の糞が感染拡大のもとになることを理解し、廃豚の隔離の考え方を新人に指導できる。"
+        ],
+        "name_en": "Avoiding Contact with Other Groups (Isolation)",
+        "name_vi": "Tránh tiếp xúc với nhóm khác (cách ly)",
+        "name_id": "Menghindari kontak dengan kelompok lain (isolasi)",
+        "kanten_en": "Can they keep cull sows from contacting other groups, choose an empty pen where noses cannot touch through the fence, and move without spreading infection?",
+        "kanten_vi": "Có không để lợn loại thải tiếp xúc với nhóm khác, chọn ô chuồng trống nơi mũi không chạm nhau qua hàng rào, di chuyển mà không làm lây lan bệnh không.",
+        "kanten_id": "Apakah tidak membiarkan babi afkir kontak dengan kelompok lain, memilih petak kandang kosong yang hidungnya tidak bisa saling bersentuhan lewat pagar, dan memindahkan tanpa menyebarkan penyakit?",
+        "levels_en": [
+          "Casually puts pigs into pens where noses touch other groups, and does not care about leaving cull sows near other groups.",
+          "With guidance can keep them away from other groups, but does not think as far as nose contact through the fence.",
+          "With guidance can choose an empty pen where noses cannot touch other pigs through the fence and move without contact with other groups.",
+          "Independently checks farm rules such as the moving time slot (fights decrease from evening to night) before acting, and consults the trainer first when contact seems possible.",
+          "Understands that contact through fences and manure in shared aisles can spread infection, and can teach new staff the thinking behind cull-sow isolation."
+        ],
+        "levels_vi": [
+          "Thản nhiên cho lợn vào ô chuồng nơi mũi chạm với nhóm khác, đặt lợn loại thải cạnh đàn khác cũng không quan tâm.",
+          "Nếu được chỉ thị thì tách khỏi nhóm khác, nhưng chưa để ý đến việc chạm mũi qua hàng rào.",
+          "Nếu được chỉ thị thì chọn ô chuồng trống nơi mũi không chạm với lợn khác qua hàng rào, di chuyển được mà không cho tiếp xúc với nhóm khác.",
+          "Dù không có chỉ thị vẫn kiểm tra quy định của trại như khung giờ di chuyển (chiều tối〜ban đêm ít đánh nhau) rồi mới làm; nếu e ngại có tiếp xúc thì hỏi ý kiến người hướng dẫn trước.",
+          "Hiểu rằng chạm nhau qua hàng rào và phân trên lối đi chung là nguồn lây lan bệnh, và có thể hướng dẫn người mới cách suy nghĩ về cách ly lợn loại thải."
+        ],
+        "levels_id": [
+          "Dengan santai memasukkan babi ke petak yang hidungnya bisa bersentuhan dengan kelompok lain, dan tidak peduli menempatkan babi afkir di dekat kelompok lain.",
+          "Menjauhkan dari kelompok lain jika diperintah, tetapi belum memikirkan sampai sentuhan hidung lewat pagar.",
+          "Jika diperintah, dapat memilih petak kandang kosong yang hidungnya tidak bersentuhan dengan babi lain lewat pagar, dan memindahkan tanpa kontak dengan kelompok lain.",
+          "Tanpa diperintah pun, memastikan aturan peternakan seperti waktu pemindahan (sore〜malam perkelahian berkurang) sebelum bertindak, dan jika ada risiko kontak, berkonsultasi dulu dengan pembimbing.",
+          "Memahami bahwa sentuhan lewat pagar dan kotoran di lorong bersama menjadi sumber penyebaran penyakit, dan dapat mengajarkan cara berpikir isolasi babi afkir kepada karyawan baru."
+        ]
+      },
+      {
+        "id": "finish-record-disinfect",
+        "name": "収容後の確認・記録と消毒",
+        "kanten": "扉を確実に閉めて給水を確かめ、耳標・頭数をその場で記録し、通路清掃と追い板・長靴の消毒までできるか。",
+        "levels": [
+          "扉や給水を確かめず、記録も残さず、通路の糞や使った追い板もそのまま放置する。",
+          "指示があれば行うが、ニップル給水の確認や消毒に抜けが多く、記録も後回しにする。",
+          "指示があれば扉・給水を確認し、耳標・頭数をその場で記録し、追い板と長靴を消毒できる。",
+          "指示がなくても記録をリストと照合して数を合わせ、通路の清掃・消毒までを移動作業の一部として完結する。",
+          "廃豚から他群へ病気が広がる経路を理解し、収容後の確認から消毒までの流れを新人に指導できる。"
+        ],
+        "name_en": "Post-Housing Checks, Recording, and Disinfection",
+        "name_vi": "Kiểm tra, ghi chép và khử trùng sau khi đưa lợn vào chuồng",
+        "name_id": "Pemeriksaan, pencatatan, dan disinfeksi setelah babi masuk kandang",
+        "kanten_en": "Can they close the door securely, check the water supply, record ear tags and head count on the spot, and follow through with aisle cleaning and disinfecting the pig board and boots?",
+        "kanten_vi": "Có đóng chặt cửa, kiểm tra nước uống, ghi ngay tại chỗ số thẻ tai và số con, làm đến cả việc quét dọn lối đi và khử trùng tấm chắn, ủng không.",
+        "kanten_id": "Apakah menutup pintu dengan rapat, memeriksa air minum, mencatat tanda telinga dan jumlah ekor di tempat, serta menuntaskan pembersihan lorong dan disinfeksi papan penggiring serta sepatu bot?",
+        "levels_en": [
+          "Does not check the door or water supply, leaves no records, and abandons the manure in the aisle and the used pig board as they are.",
+          "With guidance can do the work, but often misses checking the nipple drinker or disinfecting, and puts off recording.",
+          "With guidance can check the door and water supply, record ear tags and head count on the spot, and disinfect the pig board and boots.",
+          "Independently verifies records against the list to match the numbers, and completes aisle cleaning and disinfection as part of the moving job.",
+          "Understands the routes by which disease spreads from cull sows to other groups, and can teach new staff the flow from post-housing checks to disinfection."
+        ],
+        "levels_vi": [
+          "Không kiểm tra cửa và nước uống, không ghi chép, bỏ mặc phân trên lối đi và tấm chắn đã dùng.",
+          "Nếu được chỉ thị thì làm, nhưng còn nhiều thiếu sót về kiểm tra núm uống và khử trùng, việc ghi chép cũng để sau.",
+          "Nếu được chỉ thị thì kiểm tra cửa và nước uống, ghi ngay tại chỗ số thẻ tai và số con, khử trùng được tấm chắn và ủng.",
+          "Dù không có chỉ thị vẫn đối chiếu ghi chép với danh sách để khớp số, hoàn tất cả việc quét dọn và khử trùng lối đi như một phần của công việc di chuyển.",
+          "Hiểu đường lây bệnh từ lợn loại thải sang các đàn khác, và có thể hướng dẫn người mới quy trình từ kiểm tra sau khi vào chuồng đến khử trùng."
+        ],
+        "levels_id": [
+          "Tidak memeriksa pintu dan air minum, tidak meninggalkan catatan, dan membiarkan begitu saja kotoran di lorong serta papan penggiring yang dipakai.",
+          "Melakukannya jika diperintah, tetapi sering lalai memeriksa nipel air minum dan mendisinfeksi, serta menunda pencatatan.",
+          "Jika diperintah, dapat memeriksa pintu dan air minum, mencatat tanda telinga dan jumlah ekor di tempat, serta mendisinfeksi papan penggiring dan sepatu bot.",
+          "Tanpa diperintah pun, mencocokkan catatan dengan daftar agar jumlahnya sesuai, dan menuntaskan pembersihan serta disinfeksi lorong sebagai bagian dari pekerjaan pemindahan.",
+          "Memahami jalur penyebaran penyakit dari babi afkir ke kelompok lain, dan dapat mengajarkan alur dari pemeriksaan setelah masuk kandang sampai disinfeksi kepada karyawan baru."
+        ]
+      }
+    ],
+    "name_en": "Moving Cull Sows to the Grower House",
+    "name_vi": "Chuyển lợn loại thải sang chuồng lợn choai",
+    "name_id": "Memindahkan babi afkir ke kandang grower",
+    "purposeShort_en": "Keep pre-shipping management running smoothly",
+    "purposeShort_vi": "Giúp việc quản lý trước xuất chuồng thuận lợi",
+    "purposeShort_id": "Melancarkan pengelolaan sebelum pengiriman"
+  }
+]

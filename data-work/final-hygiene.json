@@ -1,0 +1,1901 @@
+[
+ {
+  "id": "dung-removal",
+  "category": "hygiene",
+  "no": "No.12",
+  "name": "除フン",
+  "purposeShort": "病気・有害ガスを減らし豚の健康を守り、糞から異常を早期発見する",
+  "gyomu": "12",
+  "aspects": [
+   {
+    "id": "order",
+    "name": "除糞→洗浄→消毒の順序",
+    "kanten": "先に糞を取り除いてから洗浄・消毒する順序を守り、汚れの上から消毒しないか。",
+    "levels": [
+     "汚れが残ったまま消毒し、順序を守らず効果を半減させても気にしない。",
+     "指示があれば糞を取るが、洗浄・消毒の順序や仕上がりの確認に漏れが多い。",
+     "指示があれば先に糞を取り、その後に洗浄・消毒する順序をひと通り守れる。",
+     "指示がなくても順序を守り、汚れが残ると消毒が効かないことを踏まえて確実に除糞する。",
+     "汚れと消毒効果の関係を理解し、決められた頻度・タイミングと順序を新人に指導できる。"
+    ],
+    "name_en": "Order of manure removal, washing, then disinfection",
+    "name_vi": "Thứ tự dọn phân → rửa → khử trùng",
+    "name_id": "Urutan bersihkan kotoran → cuci → disinfeksi",
+    "kanten_en": "Do they follow the order of removing manure first, then washing and disinfecting, and avoid disinfecting over dirt?",
+    "kanten_vi": "Có giữ thứ tự lấy phân đi trước rồi mới rửa và khử trùng, không khử trùng đè lên chỗ bẩn không.",
+    "kanten_id": "Apakah mematuhi urutan membersihkan kotoran dulu baru mencuci dan mendisinfeksi, dan tidak mendisinfeksi di atas kotoran.",
+    "levels_en": [
+     "Disinfects over remaining dirt, ignoring the correct order and not caring that this halves the effect.",
+     "With guidance, removes manure, but often skips steps in the washing and disinfection order and fails to check the result.",
+     "With guidance, can adequately follow the order of removing manure first, then washing and disinfecting.",
+     "Independently follows the order and removes manure thoroughly, knowing that disinfection does not work over remaining dirt.",
+     "Understands the relationship between dirt and disinfection efficacy, and can teach new staff the prescribed frequency, timing, and order."
+    ],
+    "levels_vi": [
+     "Khử trùng khi chỗ bẩn còn nguyên, không giữ thứ tự làm hiệu quả giảm một nửa cũng không quan tâm.",
+     "Nếu có chỉ dẫn thì lấy phân, nhưng hay bỏ sót thứ tự rửa, khử trùng và việc kiểm tra kết quả.",
+     "Nếu có chỉ dẫn thì giữ được cơ bản thứ tự lấy phân trước, sau đó rửa và khử trùng.",
+     "Không cần chỉ dẫn cũng giữ thứ tự, dọn phân kỹ vì biết rằng còn bẩn thì khử trùng không có tác dụng.",
+     "Hiểu quan hệ giữa chỗ bẩn và hiệu quả khử trùng, và có thể hướng dẫn người mới tần suất, thời điểm quy định và thứ tự làm."
+    ],
+    "levels_id": [
+     "Mendisinfeksi dengan kotoran masih menempel, tidak peduli walau urutan dilanggar dan efeknya berkurang setengah.",
+     "Jika ada instruksi bisa membersihkan kotoran, tetapi sering lalai soal urutan cuci-disinfeksi dan memeriksa hasil akhirnya.",
+     "Jika ada instruksi, bisa mematuhi urutan secara garis besar: bersihkan kotoran dulu, lalu cuci dan disinfeksi.",
+     "Tanpa instruksi pun, mematuhi urutan dan membersihkan kotoran dengan pasti, karena tahu disinfeksi tidak bekerja jika kotoran masih tersisa.",
+     "Memahami hubungan kotoran dengan efek disinfeksi, dan bisa mengajari karyawan baru frekuensi, waktu, dan urutan yang ditentukan."
+    ]
+   },
+   {
+    "id": "underfloor",
+    "name": "床下・ピット・残渣の確認",
+    "kanten": "床下やピットまで定期的に確認し、スクレーパー動作後の残渣を目視で確かめられるか。",
+    "levels": [
+     "床下・ピットを確認せず、スクレーパー後の残渣も見ずに次工程へ進む。",
+     "指示があれば見えるところは確認するが、床下・ピットの点検に漏れが多い。",
+     "指示があれば床下やピットをひと通り確認できる。",
+     "指示がなくても床下・ピットを定期的に確認し、スクレーパー後の残渣を目視で確かめる。",
+     "残渣滞留のリスクを理解し、見落としやすい箇所の点検を新人に指導できる。"
+    ],
+    "name_en": "Checking underfloor areas, pits, and residue",
+    "name_vi": "Kiểm tra dưới sàn, hố chứa phân và phân sót lại",
+    "name_id": "Pemeriksaan bawah lantai, pit, dan sisa kotoran",
+    "kanten_en": "Can they regularly check underfloor areas and pits, and visually confirm residue after the scraper has run?",
+    "kanten_vi": "Có kiểm tra định kỳ cả dưới sàn và hố chứa phân, nhìn tận mắt phân còn sót sau khi máy cào phân chạy không.",
+    "kanten_id": "Apakah memeriksa sampai bawah lantai dan pit secara berkala, dan memeriksa dengan mata sisa kotoran setelah alat pengeruk kotoran bekerja.",
+    "levels_en": [
+     "Does not check underfloor areas or pits, and moves to the next task without looking at residue after the scraper.",
+     "With guidance, checks visible areas, but often misses underfloor and pit inspections.",
+     "With guidance, can adequately check underfloor areas and pits.",
+     "Independently checks underfloor areas and pits regularly and visually confirms residue after the scraper.",
+     "Understands the risks of residue accumulation and can teach new staff how to inspect easily overlooked spots."
+    ],
+    "levels_vi": [
+     "Không kiểm tra dưới sàn và hố chứa phân, cũng không nhìn phân sót sau khi máy cào phân chạy mà chuyển sang việc tiếp theo.",
+     "Nếu có chỉ dẫn thì kiểm tra chỗ nhìn thấy được, nhưng hay bỏ sót việc kiểm tra dưới sàn và hố chứa phân.",
+     "Nếu có chỉ dẫn thì kiểm tra được cơ bản dưới sàn và hố chứa phân.",
+     "Không cần chỉ dẫn cũng kiểm tra định kỳ dưới sàn và hố chứa phân, nhìn tận mắt phân còn sót sau khi máy cào phân chạy.",
+     "Hiểu nguy cơ khi phân ứ đọng, và có thể hướng dẫn người mới cách kiểm tra những chỗ dễ bỏ sót."
+    ],
+    "levels_id": [
+     "Tidak memeriksa bawah lantai dan pit, dan lanjut ke pekerjaan berikutnya tanpa melihat sisa kotoran setelah alat pengeruk bekerja.",
+     "Jika ada instruksi bisa memeriksa bagian yang terlihat, tetapi sering lalai memeriksa bawah lantai dan pit.",
+     "Jika ada instruksi, bisa memeriksa bawah lantai dan pit secara garis besar.",
+     "Tanpa instruksi pun, memeriksa bawah lantai dan pit secara berkala, dan memeriksa dengan mata sisa kotoran setelah alat pengeruk bekerja.",
+     "Memahami risiko kotoran yang menumpuk, dan bisa mengajari karyawan baru pemeriksaan tempat-tempat yang mudah terlewat."
+    ]
+   },
+   {
+    "id": "dung-observation",
+    "name": "糞の観察と異常便の即報告",
+    "kanten": "糞の色・かたさを見て、血便・水様下痢・黒色便などを豚房番号つきですぐ報告できるか。",
+    "levels": [
+     "糞を見ずに掃除だけで終わらせ、血便や下痢があっても気づかず放置する。",
+     "指示されれば糞を見るが、異常便の見分けや豚房番号の記録に漏れが多い。",
+     "指示があれば糞の色・かたさを確認し、異常便を見つけたら豚房番号を控えて報告できる。",
+     "指示がなくても除フンを健康チェックととらえ、血便・水様下痢・黒色便を早期に見つけて即報告する。",
+     "正常便と異常便の見分けと報告の優先度を理解し、「迷ったら報告」の姿勢を新人に指導できる。"
+    ],
+    "name_en": "Observing manure and immediately reporting abnormal feces",
+    "name_vi": "Quan sát phân và báo cáo ngay phân bất thường",
+    "name_id": "Pengamatan kotoran dan segera melaporkan kotoran abnormal",
+    "kanten_en": "Can they look at the color and firmness of the manure and immediately report bloody stool, watery diarrhea, black stool, and the like with the pen number?",
+    "kanten_vi": "Có nhìn màu và độ cứng của phân, báo cáo ngay phân có máu, tiêu chảy nước, phân màu đen... kèm số ô chuồng không.",
+    "kanten_id": "Apakah melihat warna dan kekerasan kotoran, dan segera melaporkan kotoran berdarah, diare cair, kotoran berwarna hitam, dll. beserta nomor petak kandang.",
+    "levels_en": [
+     "Finishes with just cleaning without looking at the manure, and leaves bloody stool or diarrhea unnoticed.",
+     "Looks at the manure when instructed, but often fails to distinguish abnormal feces and record the pen number.",
+     "With guidance, checks the color and firmness of the manure, and can note the pen number and report when abnormal feces are found.",
+     "Independently treats manure removal as a health check, finding bloody stool, watery diarrhea, and black stool early and reporting immediately.",
+     "Understands how to distinguish normal from abnormal feces and the priority of reporting, and can teach new staff the attitude of \"when in doubt, report\"."
+    ],
+    "levels_vi": [
+     "Chỉ dọn dẹp cho xong mà không nhìn phân, có phân có máu hay tiêu chảy cũng không nhận ra mà bỏ mặc.",
+     "Nếu được chỉ dẫn thì nhìn phân, nhưng hay bỏ sót việc phân biệt phân bất thường và ghi số ô chuồng.",
+     "Nếu có chỉ dẫn thì kiểm tra màu và độ cứng của phân, khi thấy phân bất thường thì ghi số ô chuồng và báo cáo được.",
+     "Không cần chỉ dẫn cũng coi việc dọn phân là kiểm tra sức khỏe, phát hiện sớm phân có máu, tiêu chảy nước, phân màu đen và báo cáo ngay.",
+     "Hiểu cách phân biệt phân bình thường và phân bất thường cùng mức ưu tiên báo cáo, và có thể hướng dẫn người mới thái độ \"phân vân thì báo cáo\"."
+    ],
+    "levels_id": [
+     "Hanya menyelesaikan bersih-bersih tanpa melihat kotoran, dan membiarkan kotoran berdarah atau diare tanpa menyadarinya.",
+     "Jika disuruh bisa melihat kotoran, tetapi sering lalai membedakan kotoran abnormal dan mencatat nomor petak kandang.",
+     "Jika ada instruksi, bisa memeriksa warna dan kekerasan kotoran, dan jika menemukan kotoran abnormal bisa mencatat nomor petak kandang lalu melaporkannya.",
+     "Tanpa instruksi pun, menganggap pembersihan kotoran sebagai pemeriksaan kesehatan, menemukan lebih awal kotoran berdarah, diare cair, dan kotoran hitam lalu segera melaporkannya.",
+     "Memahami cara membedakan kotoran normal dan abnormal serta prioritas pelaporan, dan bisa mengajari karyawan baru sikap \"jika ragu, laporkan\"."
+    ]
+   },
+   {
+    "id": "pit-scraper-safety",
+    "name": "ピット・除糞機の安全確保",
+    "kanten": "ピットをのぞきこまず、自動スクレーパーには電源を切り周囲へ声かけしてから近づけるか。",
+    "levels": [
+     "動いているスクレーパーに近づき、ピットの中をのぞきこむなど危険な行動を平気でする。",
+     "指示があれば注意するが、電源の切り忘れや周囲への声かけを忘れることが多い。",
+     "指示があれば電源を切ってから点検し、ピットに入らない決まりをひと通り守れる。",
+     "指示がなくても電源を切って周囲に声をかけ、ピットの有害ガスを踏まえて絶対に立ち入らない。",
+     "巻き込まれ事故と有害ガス・救助の二次被害の危険を理解し、安全手順を新人に指導できる。"
+    ],
+    "name_en": "Safety around pits and manure removal equipment",
+    "name_vi": "Bảo đảm an toàn với hố chứa phân và máy dọn phân",
+    "name_id": "Menjaga keselamatan di sekitar pit dan alat pembersih kotoran",
+    "kanten_en": "Can they avoid peering into the pit, and approach the automatic scraper only after switching off the power and calling out to those around?",
+    "kanten_vi": "Có tránh cúi nhìn vào hố chứa phân, và chỉ lại gần máy cào phân tự động sau khi tắt nguồn điện và lên tiếng báo cho người xung quanh không.",
+    "kanten_id": "Apakah tidak menjenguk ke dalam pit, dan hanya mendekati alat pengeruk otomatis setelah mematikan listrik dan memberi tahu orang di sekitar.",
+    "levels_en": [
+     "Approaches the scraper while it is running and casually does dangerous things such as peering into the pit.",
+     "With guidance, takes care, but often forgets to switch off the power or call out to those around.",
+     "With guidance, switches off the power before inspecting and can adequately follow the rule of not entering the pit.",
+     "Independently switches off the power, calls out to those around, and never enters the pit, mindful of its harmful gases.",
+     "Understands the dangers of entanglement accidents, harmful gases, and secondary harm during rescue, and can teach new staff the safety procedures."
+    ],
+    "levels_vi": [
+     "Lại gần máy cào phân đang chạy, thản nhiên làm những hành động nguy hiểm như cúi nhìn vào trong hố chứa phân.",
+     "Nếu có chỉ dẫn thì chú ý, nhưng thường quên tắt nguồn điện và quên lên tiếng báo cho người xung quanh.",
+     "Nếu có chỉ dẫn thì tắt nguồn điện rồi mới kiểm tra, giữ được cơ bản quy định không vào hố chứa phân.",
+     "Không cần chỉ dẫn cũng tắt nguồn điện và lên tiếng báo cho người xung quanh, tuyệt đối không vào hố chứa phân vì biết có khí độc hại.",
+     "Hiểu nguy cơ tai nạn bị cuốn vào máy, khí độc hại và tai nạn thứ cấp khi cứu hộ, và có thể hướng dẫn người mới quy trình an toàn."
+    ],
+    "levels_id": [
+     "Mendekati alat pengeruk yang sedang berjalan, dan dengan santai melakukan tindakan berbahaya seperti menjenguk ke dalam pit.",
+     "Jika ada instruksi bisa berhati-hati, tetapi sering lupa mematikan listrik dan memberi tahu orang di sekitar.",
+     "Jika ada instruksi, bisa mematikan listrik dulu baru memeriksa, dan mematuhi secara garis besar aturan tidak masuk ke pit.",
+     "Tanpa instruksi pun, mematikan listrik dan memberi tahu orang di sekitar, serta sama sekali tidak masuk ke pit karena sadar akan gas berbahayanya.",
+     "Memahami bahaya kecelakaan terseret mesin, gas berbahaya, dan korban kedua saat penyelamatan, dan bisa mengajari karyawan baru prosedur keselamatan."
+    ]
+   },
+   {
+    "id": "tool-dedicated",
+    "name": "豚舎専用道具の管理",
+    "kanten": "道具をその豚舎専用で使い、作業後に洗って同じ豚舎の置き場へ戻し、持ち出さないか。",
+    "levels": [
+     "道具を洗わず放置し、他の豚舎へ平気で持ち出して病原体を運ぶ危険を作る。",
+     "指示があれば片づけるが、道具の洗浄や専用ルールの徹底に漏れが多い。",
+     "指示があれば道具を洗い、同じ豚舎の置き場にひと通り戻せる。",
+     "指示がなくても専用道具のルールを守り、洗浄して定位置に戻し、破損に気づけば報告する。",
+     "道具の共用が病原体を運ぶ仕組みを理解し、豚舎専用管理の徹底を新人に指導できる。"
+    ],
+    "name_en": "Managing barn-dedicated tools",
+    "name_vi": "Quản lý dụng cụ chuyên dùng của từng chuồng",
+    "name_id": "Pengelolaan alat khusus per kandang",
+    "kanten_en": "Do they use tools only in their dedicated barn, wash them after work, return them to that barn's storage place, and never take them out?",
+    "kanten_vi": "Có dùng dụng cụ chuyên cho chuồng đó, sau khi làm xong rửa sạch và trả về chỗ để của cùng chuồng, không mang ra ngoài không.",
+    "kanten_id": "Apakah memakai alat khusus untuk kandang itu saja, mencucinya setelah bekerja, mengembalikannya ke tempat penyimpanan kandang yang sama, dan tidak membawanya keluar.",
+    "levels_en": [
+     "Leaves tools unwashed and casually takes them to other barns, creating the risk of carrying pathogens.",
+     "With guidance, tidies up, but often fails to wash tools and observe the dedicated-use rules.",
+     "With guidance, washes tools and can adequately return them to the same barn's storage place.",
+     "Independently follows the dedicated-tool rules, washes and returns tools to their fixed places, and reports any damage noticed.",
+     "Understands how sharing tools carries pathogens, and can teach new staff thorough barn-dedicated management."
+    ],
+    "levels_vi": [
+     "Bỏ mặc dụng cụ không rửa, thản nhiên mang sang chuồng khác, tạo nguy cơ mang mầm bệnh đi.",
+     "Nếu có chỉ dẫn thì dọn dẹp, nhưng hay bỏ sót việc rửa dụng cụ và giữ nghiêm quy tắc chuyên dùng.",
+     "Nếu có chỉ dẫn thì rửa dụng cụ, trả được cơ bản về chỗ để của cùng chuồng.",
+     "Không cần chỉ dẫn cũng giữ quy tắc dụng cụ chuyên dùng, rửa sạch và trả về đúng vị trí, nếu thấy hỏng hóc thì báo cáo.",
+     "Hiểu cơ chế dùng chung dụng cụ làm mang mầm bệnh đi, và có thể hướng dẫn người mới việc quản lý chuyên dùng theo chuồng."
+    ],
+    "levels_id": [
+     "Membiarkan alat tanpa dicuci, dengan santai membawanya ke kandang lain, dan menciptakan bahaya membawa bibit penyakit.",
+     "Jika ada instruksi bisa membereskan, tetapi sering lalai mencuci alat dan mematuhi aturan alat khusus.",
+     "Jika ada instruksi, bisa mencuci alat dan mengembalikannya secara garis besar ke tempat penyimpanan kandang yang sama.",
+     "Tanpa instruksi pun, mematuhi aturan alat khusus, mencuci dan mengembalikannya ke tempat tetap, dan melaporkan jika menyadari ada kerusakan.",
+     "Memahami mekanisme pemakaian alat bersama yang membawa bibit penyakit, dan bisa mengajari karyawan baru pengelolaan alat khusus per kandang."
+    ]
+   }
+  ],
+  "name_en": "Manure removal",
+  "name_vi": "Dọn phân",
+  "name_id": "Membersihkan kotoran",
+  "purposeShort_en": "Reduce disease and harmful gases to protect pig health, and detect abnormalities early from the manure",
+  "purposeShort_vi": "Giảm bệnh và khí độc hại, bảo vệ sức khỏe lợn, phát hiện sớm bất thường qua phân",
+  "purposeShort_id": "Mengurangi penyakit dan gas berbahaya untuk menjaga kesehatan babi, dan menemukan kelainan lebih awal dari kotoran"
+ },
+ {
+  "id": "five-s",
+  "category": "hygiene",
+  "no": "No.31",
+  "name": "5S清掃",
+  "purposeShort": "衛生レベルを底上げし、作業をやりやすくし、設備トラブルを早く見つける",
+  "gyomu": "31",
+  "aspects": [
+   {
+    "id": "fixed-place",
+    "name": "定位置管理の徹底",
+    "kanten": "物の置き場所を決めて守り、使った物を元の場所に戻せるか。",
+    "levels": [
+     "置き場所を決めず、使った物を元に戻さないまま放置する。",
+     "指示があれば片づけるが、元の場所に戻さないことが多い。",
+     "指示があれば決められた置き場所に物を戻せる。",
+     "指示がなくても定位置を守り、乱れがあれば自分で整える。",
+     "定位置管理がミス削減につながることを理解し、置き場所のルールづくりを新人に指導できる。"
+    ],
+    "name_en": "Thorough fixed-location management",
+    "name_vi": "Giữ nghiêm việc để đồ đúng vị trí quy định",
+    "name_id": "Menjalankan pengaturan tempat tetap",
+    "kanten_en": "Can they set and observe fixed storage locations, returning items to their place after use?",
+    "kanten_vi": "Có quy định chỗ để đồ và giữ đúng, dùng xong trả đồ về chỗ cũ không.",
+    "kanten_id": "Apakah menentukan dan mematuhi tempat menyimpan barang, dan mengembalikan barang yang dipakai ke tempat semula.",
+    "levels_en": [
+     "Does not set storage locations and leaves used items lying around without returning them.",
+     "With guidance, tidies up, but often fails to return items to their original place.",
+     "With guidance, can return items to their designated locations.",
+     "Independently keeps to the fixed locations and straightens things up on their own when they are out of order.",
+     "Understands that fixed-location management reduces mistakes, and can teach new staff how to establish storage rules."
+    ],
+    "levels_vi": [
+     "Không quy định chỗ để đồ, dùng xong không trả về chỗ cũ mà bỏ mặc.",
+     "Nếu có chỉ dẫn thì dọn dẹp, nhưng thường không trả đồ về chỗ cũ.",
+     "Nếu có chỉ dẫn thì trả được đồ về chỗ để quy định.",
+     "Không cần chỉ dẫn cũng giữ đúng vị trí quy định, nếu có xáo trộn thì tự mình sắp xếp lại.",
+     "Hiểu việc quản lý vị trí cố định giúp giảm sai sót, và có thể hướng dẫn người mới cách đặt quy tắc chỗ để đồ."
+    ],
+    "levels_id": [
+     "Tidak menentukan tempat penyimpanan, dan membiarkan barang yang dipakai tanpa dikembalikan ke tempatnya.",
+     "Jika ada instruksi bisa membereskan, tetapi sering tidak mengembalikan barang ke tempat semula.",
+     "Jika ada instruksi, bisa mengembalikan barang ke tempat penyimpanan yang ditentukan.",
+     "Tanpa instruksi pun, mematuhi tempat tetap, dan jika ada yang berantakan merapikannya sendiri.",
+     "Memahami bahwa pengaturan tempat tetap mengurangi kesalahan, dan bisa mengajari karyawan baru cara membuat aturan tempat penyimpanan."
+    ]
+   },
+   {
+    "id": "standard-abnormal",
+    "name": "きれいさの基準共有と異常発見",
+    "kanten": "「基準のきれいさ」を共有し、清掃を形式で終わらせず設備の異常発見につなげられるか。",
+    "levels": [
+     "基準があいまいで人により差が出て、チェックリストを形式的に埋めるだけで異常に気づかない。",
+     "指示があれば清掃するが、基準の共有や異常発見への意識が薄い。",
+     "指示があれば仕上がりを基準の写真と見比べ、決めた基準に沿ってひと通り清掃できる。",
+     "指示がなくても基準のきれいさを意識し、清掃しながら設備トラブルの兆候に気づく。",
+     "5Sを異常の早期発見に結びつけ、基準の共有と継続の仕組みを新人に指導できる。"
+    ],
+    "name_en": "Sharing cleanliness standards and finding abnormalities",
+    "name_vi": "Chia sẻ tiêu chuẩn sạch sẽ và phát hiện bất thường",
+    "name_id": "Berbagi standar kebersihan dan menemukan kelainan",
+    "kanten_en": "Can they share a common cleanliness standard and use cleaning to detect equipment abnormalities rather than treating it as a formality?",
+    "kanten_vi": "Có chia sẻ \"tiêu chuẩn sạch sẽ\" chung, không làm vệ sinh cho có hình thức mà gắn với việc phát hiện bất thường của thiết bị không.",
+    "kanten_id": "Apakah berbagi \"standar kebersihan\" bersama, dan tidak menjadikan bersih-bersih sekadar formalitas tetapi menghubungkannya dengan penemuan kelainan peralatan.",
+    "levels_en": [
+     "Standards are vague and vary by person; fills in checklists as a formality and misses abnormalities.",
+     "With guidance, cleans, but has little awareness of shared standards or abnormality detection.",
+     "With guidance, compares the finish with the standard photo and can clean adequately according to the agreed standard.",
+     "Independently keeps the cleanliness standard in mind and notices early signs of equipment trouble while cleaning.",
+     "Connects 5S to early detection of abnormalities, and can teach new staff how to share standards and keep the practice going."
+    ],
+    "levels_vi": [
+     "Tiêu chuẩn mơ hồ nên mỗi người làm một kiểu, chỉ điền bảng kiểm cho có hình thức mà không nhận ra bất thường.",
+     "Nếu có chỉ dẫn thì làm vệ sinh, nhưng ý thức về chia sẻ tiêu chuẩn và phát hiện bất thường còn yếu.",
+     "Nếu có chỉ dẫn thì so sánh kết quả với ảnh tiêu chuẩn, làm vệ sinh được cơ bản theo tiêu chuẩn đã định.",
+     "Không cần chỉ dẫn cũng ý thức về tiêu chuẩn sạch sẽ, vừa làm vệ sinh vừa nhận ra dấu hiệu sự cố của thiết bị.",
+     "Gắn 5S với việc phát hiện sớm bất thường, và có thể hướng dẫn người mới cách chia sẻ tiêu chuẩn và duy trì lâu dài."
+    ],
+    "levels_id": [
+     "Standarnya tidak jelas sehingga hasil tiap orang berbeda, hanya mengisi daftar periksa sebagai formalitas dan tidak menyadari kelainan.",
+     "Jika ada instruksi bisa bersih-bersih, tetapi kesadaran akan berbagi standar dan menemukan kelainan masih lemah.",
+     "Jika ada instruksi, bisa membandingkan hasil akhir dengan foto standar dan bersih-bersih secara garis besar sesuai standar yang ditetapkan.",
+     "Tanpa instruksi pun, sadar akan standar kebersihan, dan sambil bersih-bersih menyadari tanda-tanda masalah peralatan.",
+     "Bisa menghubungkan 5S dengan penemuan kelainan lebih awal, dan bisa mengajari karyawan baru cara berbagi standar dan menjaga kelangsungannya."
+    ]
+   },
+   {
+    "id": "sort-discard",
+    "name": "整理（不要物の処分判断）",
+    "kanten": "不要物を見つけて処分し、捨てていいか迷う物は自己判断せず先輩に確認できるか。",
+    "levels": [
+     "不要物が放置されていても気にせず、必要な物を自己判断で勝手に捨てることもある。",
+     "指示があれば不要物を捨てるが、見て回りに漏れが多く、迷う物の確認をしない。",
+     "指示があれば通路や豚舎を見て回って不要物を処分し、迷う物は先輩に確認できる。",
+     "指示がなくても不要物に気づいて処分し、判断に迷う物は必ず確認してから捨てる。",
+     "整理が作業性と衛生の土台になることを理解し、要・不要の判断基準を新人に指導できる。"
+    ],
+    "name_en": "Sorting (deciding what to discard)",
+    "name_vi": "Sàng lọc (phán đoán xử lý đồ không cần)",
+    "name_id": "Ringkas (menilai pembuangan barang tak perlu)",
+    "kanten_en": "Can they find and dispose of unneeded items, and check with a senior instead of self-judging when unsure whether something may be discarded?",
+    "kanten_vi": "Có tìm và xử lý đồ không cần, với đồ phân vân không biết bỏ được không thì không tự quyết mà hỏi người đi trước không.",
+    "kanten_id": "Apakah menemukan dan membuang barang yang tidak perlu, dan untuk barang yang diragukan boleh dibuang atau tidak, bertanya kepada senior alih-alih memutuskan sendiri.",
+    "levels_en": [
+     "Does not care that unneeded items are left lying around, and sometimes discards needed items on their own judgment.",
+     "With guidance, discards unneeded items, but often misses areas when looking around and does not check on doubtful items.",
+     "With guidance, walks around the aisles and barns to dispose of unneeded items, and can check doubtful items with a senior.",
+     "Independently notices and disposes of unneeded items, and always checks before discarding anything they are unsure about.",
+     "Understands that sorting underpins workability and hygiene, and can teach new staff the criteria for judging what is needed and what is not."
+    ],
+    "levels_vi": [
+     "Đồ không cần bị bỏ mặc cũng không quan tâm, có khi còn tự ý vứt cả đồ cần dùng.",
+     "Nếu có chỉ dẫn thì vứt đồ không cần, nhưng hay bỏ sót khi đi xem quanh và không hỏi về đồ còn phân vân.",
+     "Nếu có chỉ dẫn thì đi xem quanh lối đi và chuồng để xử lý đồ không cần, đồ phân vân thì hỏi được người đi trước.",
+     "Không cần chỉ dẫn cũng nhận ra đồ không cần và xử lý, đồ khó phán đoán thì nhất định hỏi rồi mới vứt.",
+     "Hiểu việc sàng lọc là nền tảng cho hiệu quả làm việc và vệ sinh, và có thể hướng dẫn người mới tiêu chí phán đoán cần hay không cần."
+    ],
+    "levels_id": [
+     "Tidak peduli walau barang tak perlu dibiarkan berserakan, dan kadang membuang barang yang diperlukan atas keputusan sendiri.",
+     "Jika ada instruksi bisa membuang barang tak perlu, tetapi sering ada yang terlewat saat berkeliling dan tidak menanyakan barang yang diragukan.",
+     "Jika ada instruksi, bisa berkeliling lorong dan kandang untuk membuang barang tak perlu, dan menanyakan barang yang diragukan kepada senior.",
+     "Tanpa instruksi pun, menyadari dan membuang barang tak perlu, dan untuk barang yang meragukan selalu bertanya dulu sebelum membuang.",
+     "Memahami bahwa ringkas menjadi dasar kelancaran kerja dan kebersihan, dan bisa mengajari karyawan baru kriteria menilai perlu atau tidaknya barang."
+    ]
+   },
+   {
+    "id": "priority-spots",
+    "name": "汚れやすい場所の重点清掃",
+    "kanten": "排水口・餌箱の裏・飲水器の下を重点的に清掃し、排水口の詰まりを取り除けるか。",
+    "levels": [
+     "見えやすい所だけ掃き、排水口や餌箱の裏の飼料カス・糞を残したまま終える。",
+     "指示があれば掃除するが、餌箱の裏側や排水口の詰まり確認に漏れが多い。",
+     "指示があれば排水口・餌箱まわり・飲水器の下をひと通り重点清掃できる。",
+     "指示がなくても汚れやすい場所を重点的に清掃し、排水口の詰まりを見つけて取り除く。",
+     "飼料カスがハエの発生源、詰まりが病原体の温床になることを理解し、重点箇所を新人に指導できる。"
+    ],
+    "name_en": "Focused cleaning of spots that get dirty easily",
+    "name_vi": "Vệ sinh trọng điểm những chỗ dễ bẩn",
+    "name_id": "Pembersihan intensif tempat yang mudah kotor",
+    "kanten_en": "Can they focus their cleaning on drains, the backs of feed boxes, and under drinkers, and clear blockages in the drains?",
+    "kanten_vi": "Có vệ sinh kỹ miệng cống thoát nước, mặt sau máng ăn, dưới vòi uống nước, và lấy được rác làm tắc cống không.",
+    "kanten_id": "Apakah membersihkan secara khusus saluran pembuangan, bagian belakang kotak pakan, dan bawah tempat minum, serta bisa menyingkirkan sumbatan di saluran pembuangan.",
+    "levels_en": [
+     "Sweeps only the visible areas and finishes leaving feed residue and manure in the drains and behind the feed boxes.",
+     "With guidance, cleans, but often misses the backs of feed boxes and checking drains for blockages.",
+     "With guidance, can adequately give focused cleaning to drains, around the feed boxes, and under the drinkers.",
+     "Independently focuses cleaning on spots that get dirty easily, and finds and clears blockages in the drains.",
+     "Understands that feed residue breeds flies and blockages become hotbeds for pathogens, and can teach new staff the priority spots."
+    ],
+    "levels_vi": [
+     "Chỉ quét chỗ dễ nhìn thấy, kết thúc mà vẫn để sót cặn thức ăn và phân ở cống thoát nước và mặt sau máng ăn.",
+     "Nếu có chỉ dẫn thì lau dọn, nhưng hay bỏ sót mặt sau máng ăn và việc kiểm tra cống có tắc không.",
+     "Nếu có chỉ dẫn thì vệ sinh trọng điểm được cơ bản miệng cống, xung quanh máng ăn và dưới vòi uống nước.",
+     "Không cần chỉ dẫn cũng vệ sinh kỹ những chỗ dễ bẩn, phát hiện và lấy rác làm tắc cống thoát nước.",
+     "Hiểu cặn thức ăn là nguồn phát sinh ruồi và chỗ tắc là ổ mầm bệnh, và có thể hướng dẫn người mới những chỗ trọng điểm."
+    ],
+    "levels_id": [
+     "Hanya menyapu bagian yang mudah terlihat, dan selesai dengan meninggalkan sisa pakan dan kotoran di saluran pembuangan dan belakang kotak pakan.",
+     "Jika ada instruksi bisa membersihkan, tetapi sering lalai memeriksa bagian belakang kotak pakan dan sumbatan saluran pembuangan.",
+     "Jika ada instruksi, bisa membersihkan secara garis besar saluran pembuangan, sekitar kotak pakan, dan bawah tempat minum.",
+     "Tanpa instruksi pun, membersihkan secara intensif tempat yang mudah kotor, serta menemukan dan menyingkirkan sumbatan saluran pembuangan.",
+     "Memahami bahwa sisa pakan menjadi sumber lalat dan sumbatan menjadi sarang bibit penyakit, dan bisa mengajari karyawan baru titik-titik prioritas."
+    ]
+   },
+   {
+    "id": "honest-checklist",
+    "name": "チェックリストの正直な記録",
+    "kanten": "実際に清掃した場所だけをチェックリストに記録し、やっていない所にチェックを入れないか。",
+    "levels": [
+     "やっていない場所にもチェックを入れ、記録上「完了」でも実態が伴わない。",
+     "指示されれば記録するが、記入漏れや実施とのずれが多い。",
+     "指示があれば実際にやった場所だけをチェックリストにひと通り記録できる。",
+     "指示がなくても実施内容を正確に記録し、できなかった場所は理由とあわせて引き継ぐ。",
+     "形式的なチェックが問題の見逃しを生むことを理解し、正直な記録の意味を新人に指導できる。"
+    ],
+    "name_en": "Honest checklist records",
+    "name_vi": "Ghi chép trung thực bảng kiểm tra",
+    "name_id": "Pencatatan daftar periksa secara jujur",
+    "kanten_en": "Do they record on the checklist only the places actually cleaned, without checking off places they have not done?",
+    "kanten_vi": "Có chỉ ghi vào bảng kiểm tra những chỗ đã thực sự vệ sinh, không đánh dấu vào chỗ chưa làm không.",
+    "kanten_id": "Apakah mencatat di daftar periksa hanya tempat yang benar-benar dibersihkan, dan tidak mencentang tempat yang belum dikerjakan.",
+    "levels_en": [
+     "Checks off even places not done, so the record says \"completed\" while reality does not match.",
+     "Records when instructed, but with many omissions and gaps from what was actually done.",
+     "With guidance, can adequately record on the checklist only the places actually done.",
+     "Independently records what was done accurately, and hands over any places not done together with the reason.",
+     "Understands that box-ticking leads to problems being overlooked, and can teach new staff the meaning of honest records."
+    ],
+    "levels_vi": [
+     "Đánh dấu cả vào chỗ chưa làm, trên giấy tờ là \"hoàn thành\" nhưng thực tế không đúng như vậy.",
+     "Nếu được chỉ dẫn thì ghi chép, nhưng hay bỏ sót và lệch với việc đã thực hiện.",
+     "Nếu có chỉ dẫn thì ghi được cơ bản vào bảng kiểm tra chỉ những chỗ đã thực sự làm.",
+     "Không cần chỉ dẫn cũng ghi chính xác nội dung đã làm, chỗ chưa làm được thì bàn giao kèm lý do.",
+     "Hiểu việc đánh dấu hình thức làm bỏ sót vấn đề, và có thể hướng dẫn người mới ý nghĩa của ghi chép trung thực."
+    ],
+    "levels_id": [
+     "Mencentang juga tempat yang belum dikerjakan, sehingga catatan tertulis \"selesai\" padahal kenyataannya tidak.",
+     "Jika disuruh bisa mencatat, tetapi banyak yang terlewat dan tidak sesuai dengan yang dikerjakan.",
+     "Jika ada instruksi, bisa mencatat secara garis besar di daftar periksa hanya tempat yang benar-benar dikerjakan.",
+     "Tanpa instruksi pun, mencatat isi pekerjaan dengan akurat, dan menyerahterimakan tempat yang belum bisa dikerjakan beserta alasannya.",
+     "Memahami bahwa pencentangan sekadar formalitas membuat masalah terlewat, dan bisa mengajari karyawan baru arti pencatatan yang jujur."
+    ]
+   }
+  ],
+  "name_en": "5S cleaning",
+  "name_vi": "Vệ sinh 5S (Sàng lọc - Sắp xếp - Sạch sẽ - Săn sóc - Sẵn sàng)",
+  "name_id": "Kebersihan 5S (Ringkas - Rapi - Resik - Rawat - Rajin)",
+  "purposeShort_en": "Raise the overall hygiene level, make work easier, and detect equipment trouble early",
+  "purposeShort_vi": "Nâng cao mức vệ sinh, làm việc dễ hơn, phát hiện sớm sự cố thiết bị",
+  "purposeShort_id": "Menaikkan tingkat kebersihan, membuat pekerjaan lebih mudah, dan menemukan masalah peralatan lebih cepat"
+ },
+ {
+  "id": "treatment",
+  "category": "hygiene",
+  "no": "No.04",
+  "name": "治療",
+  "purposeShort": "体調の悪い豚を早く回復させ、悪化と感染拡大を防ぐ",
+  "gyomu": "04",
+  "aspects": [
+   {
+    "id": "withdrawal",
+    "name": "休薬期間の確認と治療豚の識別",
+    "kanten": "使用薬剤の休薬期間を確認し、治療豚を確実に識別して出荷から除外できるか。",
+    "levels": [
+     "休薬期間を確認せず、治療豚の識別もあいまいで、休薬中の豚を誤って出荷する危険がある。",
+     "指示があれば休薬を確認するが、治療豚の識別や記録に漏れが多い。",
+     "指示があれば休薬期間を確認し、治療豚を識別してひと通り管理できる。",
+     "指示がなくても休薬期間を必ず確認し、治療豚を明確に識別して出荷から除外する。",
+     "残留違反の重大さを理解し、休薬管理と個体識別の仕組みを新人に指導できる。"
+    ],
+    "name_en": "Checking withdrawal periods and identifying treated pigs",
+    "name_vi": "Kiểm tra thời gian ngừng thuốc và nhận biết lợn đang điều trị",
+    "name_id": "Pemeriksaan masa henti obat dan penandaan babi yang diobati",
+    "kanten_en": "Can they check the withdrawal period of each drug used, reliably identify treated pigs, and exclude them from shipment?",
+    "kanten_vi": "Có kiểm tra thời gian ngừng thuốc của thuốc đang dùng, đánh dấu rõ lợn đang điều trị và loại khỏi danh sách xuất chuồng không.",
+    "kanten_id": "Apakah memeriksa masa henti obat dari obat yang dipakai, menandai babi yang diobati dengan pasti, dan mengeluarkannya dari pengiriman.",
+    "levels_en": [
+     "Does not check withdrawal periods; identification of treated pigs is vague, risking mistaken shipment of pigs still in withdrawal.",
+     "With guidance, checks withdrawal periods, but often fails to identify or record treated pigs.",
+     "With guidance, checks withdrawal periods and can adequately identify and manage treated pigs.",
+     "Independently always checks withdrawal periods, clearly identifies treated pigs, and excludes them from shipment.",
+     "Understands the seriousness of residue violations, and can teach new staff systems for withdrawal management and individual identification."
+    ],
+    "levels_vi": [
+     "Không kiểm tra thời gian ngừng thuốc, đánh dấu lợn đang điều trị cũng mơ hồ, có nguy cơ xuất chuồng nhầm lợn đang trong thời gian ngừng thuốc.",
+     "Nếu có chỉ dẫn thì kiểm tra việc ngừng thuốc, nhưng hay bỏ sót việc đánh dấu và ghi chép lợn đang điều trị.",
+     "Nếu có chỉ dẫn thì kiểm tra thời gian ngừng thuốc, đánh dấu lợn đang điều trị và quản lý được cơ bản.",
+     "Không cần chỉ dẫn cũng luôn kiểm tra thời gian ngừng thuốc, đánh dấu rõ lợn đang điều trị và loại khỏi việc xuất chuồng.",
+     "Hiểu mức độ nghiêm trọng của vi phạm tồn dư thuốc, và có thể hướng dẫn người mới cách quản lý ngừng thuốc và nhận dạng từng con."
+    ],
+    "levels_id": [
+     "Tidak memeriksa masa henti obat, penandaan babi yang diobati juga tidak jelas, sehingga ada bahaya mengirim babi yang masih dalam masa henti obat.",
+     "Jika ada instruksi bisa memeriksa masa henti obat, tetapi sering lalai menandai dan mencatat babi yang diobati.",
+     "Jika ada instruksi, bisa memeriksa masa henti obat, menandai babi yang diobati, dan mengelolanya secara garis besar.",
+     "Tanpa instruksi pun, selalu memeriksa masa henti obat, menandai babi yang diobati dengan jelas, dan mengeluarkannya dari pengiriman.",
+     "Memahami seriusnya pelanggaran residu obat, dan bisa mengajari karyawan baru sistem pengelolaan masa henti obat dan identifikasi individu."
+    ]
+   },
+   {
+    "id": "protocol",
+    "name": "指示・用法の遵守と針の本数管理",
+    "kanten": "決められたやり方・指示を守り、注射針の本数を管理して紛失・混入を防げるか。",
+    "levels": [
+     "自己判断でやり方を変え、注射針の本数管理もせず紛失・混入の危険を放置する。",
+     "指示があれば従うが、用法の徹底や針の本数確認に漏れがある。",
+     "指示があれば決められたやり方・指示に従い、針の本数をひと通り確認できる。",
+     "指示がなくても用法を守り、注射針の本数管理を徹底して紛失・混入を防ぐ。",
+     "自己判断で薬ややり方を変える危険と針混入の重大さを理解し、正しい治療手順を新人に指導できる。"
+    ],
+    "name_en": "Following instructions and dosage, and needle count management",
+    "name_vi": "Tuân thủ chỉ dẫn, cách dùng thuốc và quản lý số kim tiêm",
+    "name_id": "Mematuhi instruksi dan aturan pakai serta pengelolaan jumlah jarum",
+    "kanten_en": "Can they follow prescribed methods and instructions, and manage the number of needles to prevent loss and contamination?",
+    "kanten_vi": "Có giữ đúng cách làm và chỉ dẫn quy định, quản lý số lượng kim tiêm để tránh mất kim và kim lẫn vào thịt không.",
+    "kanten_id": "Apakah mematuhi cara dan instruksi yang ditentukan, dan mengelola jumlah jarum suntik untuk mencegah hilang atau masuk ke tubuh babi.",
+    "levels_en": [
+     "Changes methods on their own judgment and does not manage needle counts, leaving the risk of loss and contamination unaddressed.",
+     "With guidance, complies, but is inconsistent about following dosage instructions and checking needle counts.",
+     "With guidance, follows the prescribed methods and instructions and can adequately check needle counts.",
+     "Independently follows the dosage instructions and rigorously manages needle counts to prevent loss and contamination.",
+     "Understands the danger of changing drugs or methods on one's own judgment and the seriousness of needle contamination, and can teach new staff correct treatment procedures."
+    ],
+    "levels_vi": [
+     "Tự ý thay đổi cách làm, không quản lý số kim tiêm, bỏ mặc nguy cơ mất kim và kim lẫn vào thịt.",
+     "Nếu có chỉ dẫn thì làm theo, nhưng có bỏ sót việc giữ đúng cách dùng thuốc và kiểm số kim.",
+     "Nếu có chỉ dẫn thì làm theo đúng cách và chỉ dẫn quy định, kiểm được cơ bản số kim tiêm.",
+     "Không cần chỉ dẫn cũng giữ đúng cách dùng thuốc, quản lý chặt số kim tiêm để tránh mất và lẫn kim.",
+     "Hiểu nguy cơ khi tự ý thay đổi thuốc hay cách làm và mức nghiêm trọng của việc kim lẫn vào thịt, và có thể hướng dẫn người mới quy trình điều trị đúng."
+    ],
+    "levels_id": [
+     "Mengubah cara sesuka hati, tidak mengelola jumlah jarum suntik, dan membiarkan bahaya jarum hilang atau masuk ke tubuh babi.",
+     "Jika ada instruksi bisa mengikuti, tetapi sering lalai mematuhi aturan pakai dan memeriksa jumlah jarum.",
+     "Jika ada instruksi, bisa mengikuti cara dan instruksi yang ditentukan, serta memeriksa jumlah jarum secara garis besar.",
+     "Tanpa instruksi pun, mematuhi aturan pakai dan mengelola jumlah jarum suntik dengan ketat untuk mencegah hilang atau masuk ke tubuh babi.",
+     "Memahami bahaya mengubah obat atau cara atas keputusan sendiri dan seriusnya jarum yang masuk ke tubuh babi, dan bisa mengajari karyawan baru urutan pengobatan yang benar."
+    ]
+   },
+   {
+    "id": "identify-track",
+    "name": "治療記録のその場記入",
+    "kanten": "「いつ・どの豚に・何の薬を・どれだけ・誰が」を後回しにせず、その場で記録簿に書けるか。",
+    "levels": [
+     "治療しても記録を書かず、後から投薬経過を追えない状態にする。",
+     "指示されれば記録するが、後回しにして薬剤名・投与量・日付の記入漏れが多い。",
+     "指示があれば「いつ・どの豚に・何の薬を・どれだけ・誰が」をひと通り記録できる。",
+     "指示がなくても治療したその場で漏れなく記録し、記入漏れに気づけば自分で確かめて直す。",
+     "後書きが記入漏れを生み休薬管理・治療評価を狂わせることを理解し、その場記録を新人に指導できる。"
+    ],
+    "name_en": "On-the-spot treatment records",
+    "name_vi": "Ghi sổ điều trị ngay tại chỗ",
+    "name_id": "Pencatatan pengobatan langsung di tempat",
+    "kanten_en": "Can they write \"when, which pig, what drug, how much, by whom\" in the record book on the spot, without putting it off?",
+    "kanten_vi": "Có ghi ngay tại chỗ vào sổ ghi chép \"khi nào, con lợn nào, thuốc gì, bao nhiêu, ai làm\" mà không để sau không.",
+    "kanten_id": "Apakah bisa menulis di buku catatan langsung di tempat \"kapan, babi yang mana, obat apa, berapa banyak, oleh siapa\" tanpa menundanya.",
+    "levels_en": [
+     "Treats pigs without writing records, leaving the medication course untraceable later.",
+     "Records when instructed, but puts it off and often omits the drug name, dose, and date.",
+     "With guidance, can adequately record \"when, which pig, what drug, how much, by whom\".",
+     "Independently records completely on the spot right after treating, and when noticing an omission, verifies and corrects it themselves.",
+     "Understands that writing records later creates omissions and disrupts withdrawal management and treatment evaluation, and can teach new staff on-the-spot recording."
+    ],
+    "levels_vi": [
+     "Điều trị xong không ghi chép, làm cho sau này không theo dõi lại được quá trình dùng thuốc.",
+     "Nếu được chỉ dẫn thì ghi chép, nhưng để sau nên hay bỏ sót tên thuốc, liều lượng, ngày tháng.",
+     "Nếu có chỉ dẫn thì ghi được cơ bản \"khi nào, con lợn nào, thuốc gì, bao nhiêu, ai làm\".",
+     "Không cần chỉ dẫn cũng ghi đầy đủ ngay tại chỗ sau khi điều trị, nếu thấy ghi sót thì tự kiểm tra và sửa lại.",
+     "Hiểu việc ghi sau sinh ra bỏ sót và làm sai lệch quản lý ngừng thuốc, đánh giá điều trị, và có thể hướng dẫn người mới việc ghi ngay tại chỗ."
+    ],
+    "levels_id": [
+     "Mengobati tanpa menulis catatan, sehingga perjalanan pengobatan tidak bisa ditelusuri kemudian.",
+     "Jika disuruh bisa mencatat, tetapi menundanya sehingga sering lupa mengisi nama obat, dosis, dan tanggal.",
+     "Jika ada instruksi, bisa mencatat secara garis besar \"kapan, babi yang mana, obat apa, berapa banyak, oleh siapa\".",
+     "Tanpa instruksi pun, mencatat lengkap langsung di tempat setelah mengobati, dan jika menyadari ada yang terlewat, memeriksanya sendiri lalu memperbaikinya.",
+     "Memahami bahwa mencatat belakangan menimbulkan kelalaian dan mengacaukan pengelolaan masa henti obat serta evaluasi pengobatan, dan bisa mengajari karyawan baru pencatatan langsung di tempat."
+    ]
+   },
+   {
+    "id": "early-detect",
+    "name": "体調不良豚の発見と報告",
+    "kanten": "食欲・耳の垂れ・動き・呼吸・糞のサインで不調豚を見つけ、耳標番号を控えて報告できるか。",
+    "levels": [
+     "体調不良のサインに気づかず見過ごし、見つけても報告せず自分の判断で薬を使おうとする。",
+     "指示されれば豚を見るが、サインの見落としが多く、耳標番号の控えや報告が不確実。",
+     "指示があれば不調のサインを確認し、迷ったら体温を測って耳標番号とともに報告できる。",
+     "指示がなくても見回りで不調豚を早期に見つけ、耳標番号・症状を控えて報告し治療指示を受ける。",
+     "早期発見が治療成績を左右することを理解し、体調不良のサインの見方を新人に指導できる。"
+    ],
+    "name_en": "Finding and reporting unwell pigs",
+    "name_vi": "Phát hiện và báo cáo lợn có sức khỏe kém",
+    "name_id": "Menemukan dan melaporkan babi yang tidak sehat",
+    "kanten_en": "Can they spot unwell pigs from signs in appetite, drooping ears, movement, breathing, and manure, and note the ear tag number and report?",
+    "kanten_vi": "Có phát hiện lợn không khỏe qua dấu hiệu ăn uống, tai cụp, cử động, hô hấp, phân, ghi lại số thẻ tai và báo cáo không.",
+    "kanten_id": "Apakah bisa menemukan babi yang tidak sehat dari tanda nafsu makan, telinga terkulai, gerakan, napas, dan kotoran, lalu mencatat nomor tanda telinga dan melaporkannya.",
+    "levels_en": [
+     "Overlooks signs of poor condition, and even when finding one, does not report and tries to use drugs on their own judgment.",
+     "Looks at the pigs when instructed, but misses many signs, and noting the ear tag number and reporting are unreliable.",
+     "With guidance, checks for signs of illness, and when unsure, can take the temperature and report together with the ear tag number.",
+     "Independently finds unwell pigs early during rounds, notes the ear tag number and symptoms, reports, and receives treatment instructions.",
+     "Understands that early detection determines treatment outcomes, and can teach new staff how to read the signs of poor condition."
+    ],
+    "levels_vi": [
+     "Không nhận ra dấu hiệu sức khỏe kém mà bỏ qua, có thấy cũng không báo cáo mà định tự ý dùng thuốc.",
+     "Nếu được chỉ dẫn thì nhìn lợn, nhưng hay bỏ sót dấu hiệu, việc ghi số thẻ tai và báo cáo không chắc chắn.",
+     "Nếu có chỉ dẫn thì kiểm tra dấu hiệu không khỏe, khi phân vân thì đo thân nhiệt và báo cáo kèm số thẻ tai.",
+     "Không cần chỉ dẫn cũng phát hiện sớm lợn không khỏe khi đi kiểm tra, ghi số thẻ tai và triệu chứng, báo cáo và nhận chỉ thị điều trị.",
+     "Hiểu việc phát hiện sớm quyết định kết quả điều trị, và có thể hướng dẫn người mới cách nhìn dấu hiệu sức khỏe kém."
+    ],
+    "levels_id": [
+     "Melewatkan tanda-tanda kondisi buruk tanpa menyadarinya, dan walau menemukannya tidak melapor melainkan mencoba memakai obat atas keputusan sendiri.",
+     "Jika disuruh bisa melihat babi, tetapi banyak tanda yang terlewat, dan pencatatan nomor tanda telinga serta pelaporannya tidak pasti.",
+     "Jika ada instruksi, bisa memeriksa tanda-tanda tidak sehat, dan jika ragu mengukur suhu tubuh lalu melaporkannya beserta nomor tanda telinga.",
+     "Tanpa instruksi pun, menemukan babi yang tidak sehat lebih awal saat berkeliling, mencatat nomor tanda telinga dan gejalanya, melapor, dan menerima instruksi pengobatan.",
+     "Memahami bahwa penemuan dini menentukan hasil pengobatan, dan bisa mengajari karyawan baru cara melihat tanda-tanda kondisi yang buruk."
+    ]
+   },
+   {
+    "id": "isolation-order",
+    "name": "隔離と感染拡大防止の作業順",
+    "kanten": "重症・下痢の豚を隔離し、世話は健康豚の後に回し、病豚に触れた後は手指消毒できるか。",
+    "levels": [
+     "病豚と健康豚を区別せずに触り、隔離もせず感染を広げる危険を放置する。",
+     "指示があれば隔離するが、作業順や手指消毒の徹底に漏れが多い。",
+     "指示があれば病豚を隔離ペンに移し、健康豚の後に世話をする順序をひと通り守れる。",
+     "指示がなくても隔離と作業順を守り、病豚に触れた後は手指消毒してから健康豚に触る。",
+     "作業順と手指消毒が感染拡大を防ぐ理由を理解し、病豚の扱い方を新人に指導できる。"
+    ],
+    "name_en": "Isolation and work order to prevent infection spread",
+    "name_vi": "Cách ly và thứ tự làm việc để chống lây lan",
+    "name_id": "Isolasi dan urutan kerja untuk mencegah penyebaran infeksi",
+    "kanten_en": "Can they isolate severely ill or diarrheic pigs, care for them after the healthy pigs, and disinfect their hands after touching sick pigs?",
+    "kanten_vi": "Có cách ly lợn bệnh nặng, lợn tiêu chảy, chăm sóc chúng sau lợn khỏe, và khử trùng tay sau khi chạm vào lợn bệnh không.",
+    "kanten_id": "Apakah mengisolasi babi yang sakit parah atau diare, mengurusnya setelah babi sehat, dan mendisinfeksi tangan setelah menyentuh babi sakit.",
+    "levels_en": [
+     "Touches sick and healthy pigs without distinction, does not isolate, and leaves the risk of spreading infection unaddressed.",
+     "With guidance, isolates, but often fails to keep the work order and hand disinfection.",
+     "With guidance, moves sick pigs to the isolation pen and can adequately keep the order of caring for them after the healthy pigs.",
+     "Independently keeps the isolation and work order, and disinfects their hands after touching sick pigs before touching healthy ones.",
+     "Understands why work order and hand disinfection prevent infection spread, and can teach new staff how to handle sick pigs."
+    ],
+    "levels_vi": [
+     "Chạm vào lợn bệnh và lợn khỏe không phân biệt, cũng không cách ly, bỏ mặc nguy cơ làm lây lan bệnh.",
+     "Nếu có chỉ dẫn thì cách ly, nhưng hay bỏ sót việc giữ thứ tự làm việc và khử trùng tay.",
+     "Nếu có chỉ dẫn thì chuyển lợn bệnh sang ô cách ly, giữ được cơ bản thứ tự chăm sóc sau lợn khỏe.",
+     "Không cần chỉ dẫn cũng giữ việc cách ly và thứ tự làm việc, sau khi chạm lợn bệnh thì khử trùng tay rồi mới chạm lợn khỏe.",
+     "Hiểu lý do thứ tự làm việc và khử trùng tay ngăn được lây lan, và có thể hướng dẫn người mới cách xử lý lợn bệnh."
+    ],
+    "levels_id": [
+     "Menyentuh babi sakit dan sehat tanpa membedakan, tidak mengisolasi, dan membiarkan bahaya penyebaran infeksi.",
+     "Jika ada instruksi bisa mengisolasi, tetapi sering lalai menjaga urutan kerja dan disinfeksi tangan.",
+     "Jika ada instruksi, bisa memindahkan babi sakit ke petak isolasi dan mematuhi secara garis besar urutan mengurusnya setelah babi sehat.",
+     "Tanpa instruksi pun, menjaga isolasi dan urutan kerja, dan setelah menyentuh babi sakit mendisinfeksi tangan dulu sebelum menyentuh babi sehat.",
+     "Memahami alasan urutan kerja dan disinfeksi tangan mencegah penyebaran infeksi, dan bisa mengajari karyawan baru cara menangani babi sakit."
+    ]
+   }
+  ],
+  "name_en": "Treatment",
+  "name_vi": "Điều trị",
+  "name_id": "Pengobatan",
+  "purposeShort_en": "Help sick pigs recover quickly and prevent deterioration and spread of infection",
+  "purposeShort_vi": "Giúp lợn ốm hồi phục nhanh, ngăn bệnh nặng thêm và lây lan",
+  "purposeShort_id": "Memulihkan babi yang sakit dengan cepat, mencegah kondisi memburuk dan penyebaran infeksi"
+ },
+ {
+  "id": "sow-vaccine",
+  "category": "hygiene",
+  "no": "No.06",
+  "name": "母豚ワクチン接種",
+  "purposeShort": "母豚と子豚を守る免疫をつけ、農場の免疫レベルをそろえる",
+  "gyomu": "06",
+  "aspects": [
+   {
+    "id": "schedule",
+    "name": "日齢・スケジュールの遵守",
+    "kanten": "決められた日齢・スケジュールで確実に接種し、打ち漏れを作らないか。",
+    "levels": [
+     "スケジュールを守らず、自分の判断で接種日を前後させて免疫を不十分にする。",
+     "指示があれば接種するが、対象や時期の確認に漏れがある。",
+     "指示があれば決められた日齢・スケジュールでひと通り接種できる。",
+     "指示がなくてもスケジュール表で対象と時期を確認して接種し、打ち漏れを防ぐ。",
+     "早すぎても遅すぎても効かないことを理解し、スケジュール管理を新人に指導できる。"
+    ],
+    "name_en": "Following age and vaccination schedule",
+    "name_vi": "Giữ đúng tuổi ngày và lịch tiêm",
+    "name_id": "Mematuhi umur dan jadwal",
+    "kanten_en": "Can they vaccinate reliably at the prescribed age and schedule without missing any animals?",
+    "kanten_vi": "Có tiêm chắc chắn theo đúng tuổi ngày và lịch quy định, không để sót con chưa tiêm không.",
+    "kanten_id": "Apakah menyuntik vaksin dengan pasti sesuai umur dan jadwal yang ditentukan, tanpa ada yang terlewat.",
+    "levels_en": [
+     "Ignores the schedule and shifts vaccination dates on their own judgment, resulting in insufficient immunity.",
+     "With guidance, vaccinates, but is inconsistent about confirming target animals and timing.",
+     "With guidance, can adequately vaccinate at the prescribed age and schedule.",
+     "Independently confirms the target animals and timing on the schedule sheet before vaccinating, preventing missed injections.",
+     "Understands that vaccinating too early or too late does not work, and can teach new staff schedule management."
+    ],
+    "levels_vi": [
+     "Không giữ lịch tiêm, tự ý xê dịch ngày tiêm làm miễn dịch không đủ.",
+     "Nếu có chỉ dẫn thì tiêm, nhưng có bỏ sót việc kiểm tra đối tượng và thời điểm.",
+     "Nếu có chỉ dẫn thì tiêm được cơ bản theo đúng tuổi ngày và lịch quy định.",
+     "Không cần chỉ dẫn cũng xem bảng lịch để kiểm tra đối tượng và thời điểm rồi tiêm, phòng sót con chưa tiêm.",
+     "Hiểu tiêm quá sớm hay quá muộn đều không có tác dụng, và có thể hướng dẫn người mới cách quản lý lịch tiêm."
+    ],
+    "levels_id": [
+     "Tidak mematuhi jadwal, menggeser tanggal penyuntikan atas keputusan sendiri sehingga kekebalan tidak cukup.",
+     "Jika ada instruksi bisa menyuntik, tetapi sering lalai memeriksa sasaran dan waktunya.",
+     "Jika ada instruksi, bisa menyuntik secara garis besar sesuai umur dan jadwal yang ditentukan.",
+     "Tanpa instruksi pun, memeriksa sasaran dan waktunya di tabel jadwal sebelum menyuntik, dan mencegah ada yang terlewat.",
+     "Memahami bahwa menyuntik terlalu cepat atau terlalu lambat tidak akan bekerja, dan bisa mengajari karyawan baru pengelolaan jadwal."
+    ]
+   },
+   {
+    "id": "vaccine-handling",
+    "name": "ワクチンの取り扱いと針交換",
+    "kanten": "生ワクチンは溶解後すぐ使い切り、不活化は当日中に使い、針を頭ごとに交換できるか。",
+    "levels": [
+     "溶解後の保管時間を超過し、注射針を使い回して感染リスクを高める。",
+     "指示があれば取り扱うが、使い切りの時間管理や針交換に漏れがある。",
+     "指示があれば生ワクチンを溶解後すぐ使い、針をひと通り交換できる。",
+     "指示がなくても溶解後の時間を守って使い切り、針を頭ごとに交換する。",
+     "ワクチンの失活や針使い回しのリスクを理解し、正しい取り扱いを新人に指導できる。"
+    ],
+    "name_en": "Vaccine handling and needle changes",
+    "name_vi": "Cách xử lý vắc-xin và thay kim tiêm",
+    "name_id": "Penanganan vaksin dan penggantian jarum",
+    "kanten_en": "Can they use live vaccines immediately after reconstitution, use inactivated vaccines within the day, and change needles for each animal?",
+    "kanten_vi": "Vắc-xin sống có dùng hết ngay sau khi pha, vắc-xin bất hoạt dùng trong ngày, và thay kim theo từng con không.",
+    "kanten_id": "Apakah vaksin hidup dihabiskan segera setelah dilarutkan, vaksin inaktif dipakai pada hari yang sama, dan jarum diganti setiap ekor.",
+    "levels_en": [
+     "Exceeds the storage time after reconstitution and reuses needles, raising infection risk.",
+     "With guidance, handles vaccines, but is inconsistent about use-by time management and needle changes.",
+     "With guidance, uses live vaccines promptly after reconstitution and can adequately change needles.",
+     "Independently observes the time limit after reconstitution, uses vaccines up, and changes the needle for each animal.",
+     "Understands the risks of vaccine inactivation and needle reuse, and can teach new staff correct handling."
+    ],
+    "levels_vi": [
+     "Để quá thời gian bảo quản sau khi pha, dùng lại kim tiêm làm tăng nguy cơ lây nhiễm.",
+     "Nếu có chỉ dẫn thì xử lý được, nhưng có bỏ sót việc quản lý thời gian dùng hết và thay kim.",
+     "Nếu có chỉ dẫn thì dùng vắc-xin sống ngay sau khi pha, thay kim được cơ bản.",
+     "Không cần chỉ dẫn cũng giữ đúng thời gian sau khi pha và dùng hết, thay kim theo từng con.",
+     "Hiểu nguy cơ vắc-xin mất hiệu lực và dùng lại kim, và có thể hướng dẫn người mới cách xử lý đúng."
+    ],
+    "levels_id": [
+     "Melewati batas waktu penyimpanan setelah vaksin dilarutkan, dan memakai jarum suntik bergantian sehingga menaikkan risiko infeksi.",
+     "Jika ada instruksi bisa menangani, tetapi sering lalai mengelola batas waktu pemakaian dan mengganti jarum.",
+     "Jika ada instruksi, bisa memakai vaksin hidup segera setelah dilarutkan dan mengganti jarum secara garis besar.",
+     "Tanpa instruksi pun, mematuhi batas waktu setelah pelarutan dan menghabiskannya, serta mengganti jarum setiap ekor.",
+     "Memahami risiko vaksin kehilangan daya dan pemakaian jarum bergantian, dan bisa mengajari karyawan baru penanganan yang benar."
+    ]
+   },
+   {
+    "id": "condition-check",
+    "name": "対象母豚の体調確認と接種可否",
+    "kanten": "接種前に1頭ずつ体調を見て、発熱・食欲不振・下痢の母豚はリストから外して報告できるか。",
+    "levels": [
+     "体調を見ずに全頭へ打ち、明らかに具合の悪い母豚にも接種してしまう。",
+     "指示があれば体調を見るが、確認が形式的でリストから外す判断や報告を他者まかせにする。",
+     "指示があれば対象を1頭ずつ確認し、体調不良の母豚を外して上長に報告できる。",
+     "指示がなくても接種前の体調確認を欠かさず、外した母豚の回復後の接種まで気を配る。",
+     "体調不良時の接種が免疫と母豚に及ぼす影響を理解し、接種可否の見極めを新人に指導できる。"
+    ],
+    "name_en": "Checking each sow's condition and fitness for vaccination",
+    "name_vi": "Kiểm tra sức khỏe lợn nái và quyết định tiêm hay không",
+    "name_id": "Pemeriksaan kondisi induk babi sasaran dan boleh-tidaknya divaksin",
+    "kanten_en": "Can they check each sow's condition before vaccinating, and remove sows with fever, poor appetite, or diarrhea from the list and report them?",
+    "kanten_vi": "Trước khi tiêm có xem sức khỏe từng con, đưa lợn nái bị sốt, kém ăn, tiêu chảy ra khỏi danh sách và báo cáo không.",
+    "kanten_id": "Apakah memeriksa kondisi tiap ekor sebelum menyuntik, dan mengeluarkan induk babi yang demam, kurang nafsu makan, atau diare dari daftar lalu melaporkannya.",
+    "levels_en": [
+     "Vaccinates every animal without checking condition, injecting even sows that are clearly unwell.",
+     "With guidance, looks at their condition, but the check is a formality and leaves the removal decision and reporting to others.",
+     "With guidance, checks the target sows one by one, and can remove unwell sows and report to the supervisor.",
+     "Independently never skips the pre-vaccination condition check, and follows up so removed sows are vaccinated after recovery.",
+     "Understands how vaccinating unwell sows affects immunity and the sows themselves, and can teach new staff how to judge fitness for vaccination."
+    ],
+    "levels_vi": [
+     "Không xem sức khỏe mà tiêm hết cả đàn, tiêm cả cho lợn nái rõ ràng đang ốm.",
+     "Nếu có chỉ dẫn thì xem sức khỏe, nhưng kiểm tra cho có hình thức, việc quyết định loại khỏi danh sách và báo cáo thì phó mặc người khác.",
+     "Nếu có chỉ dẫn thì kiểm tra từng con đối tượng, loại lợn nái sức khỏe kém ra và báo cáo được cấp trên.",
+     "Không cần chỉ dẫn cũng không bỏ qua việc kiểm tra sức khỏe trước khi tiêm, còn để tâm đến việc tiêm lại cho lợn nái bị loại sau khi hồi phục.",
+     "Hiểu ảnh hưởng của việc tiêm khi sức khỏe kém đến miễn dịch và lợn nái, và có thể hướng dẫn người mới cách nhận định tiêm được hay không."
+    ],
+    "levels_id": [
+     "Menyuntik semua ekor tanpa melihat kondisinya, bahkan menyuntik induk babi yang jelas-jelas sedang sakit.",
+     "Jika ada instruksi bisa melihat kondisinya, tetapi pemeriksaannya sekadar formalitas dan menyerahkan keputusan mengeluarkan dari daftar serta pelaporannya kepada orang lain.",
+     "Jika ada instruksi, bisa memeriksa sasaran satu per satu, mengeluarkan induk babi yang tidak sehat, dan melaporkannya ke atasan.",
+     "Tanpa instruksi pun, tidak pernah melewatkan pemeriksaan kondisi sebelum penyuntikan, dan memperhatikan sampai penyuntikan ulang induk babi yang dikeluarkan setelah pulih.",
+     "Memahami pengaruh penyuntikan saat kondisi buruk terhadap kekebalan dan induk babi, dan bisa mengajari karyawan baru cara menilai boleh-tidaknya divaksin."
+    ]
+   },
+   {
+    "id": "injection-site",
+    "name": "接種部位と保定・注入手技",
+    "kanten": "耳の付け根の後ろの首の筋肉へ90度で素早く刺してゆっくり注入し、無理な保定をしないか。",
+    "levels": [
+     "腰やお尻に打つ・浅く刺すなど部位と手技が不正確で、動く母豚に無理をして危険を作る。",
+     "指示があれば打てるが、刺す角度や部位が安定せず、母豚が動いた時の対応が不確実。",
+     "指示があれば首の筋肉に90度で刺してゆっくり注入し、落ち着いた時をねらってひと通り接種できる。",
+     "指示がなくても正しい部位・角度を守り、母豚が動いたら手を止め、危ない時は2人や保定具で安全に行う。",
+     "浅打ちで効果が落ちる理由と針刺し事故の危険を理解し、部位と保定のコツを新人に指導できる。"
+    ],
+    "name_en": "Injection site, restraint, and injection technique",
+    "name_vi": "Vị trí tiêm, cách giữ lợn và thao tác tiêm",
+    "name_id": "Lokasi suntik, cara memegang, dan teknik penyuntikan",
+    "kanten_en": "Do they insert the needle quickly at 90 degrees into the neck muscle behind the base of the ear, inject slowly, and avoid forcing the restraint?",
+    "kanten_vi": "Có đâm kim nhanh, góc 90 độ vào cơ cổ phía sau gốc tai, bơm thuốc từ từ, và không cố giữ lợn một cách gượng ép không.",
+    "kanten_id": "Apakah menusukkan jarum dengan cepat pada sudut 90 derajat ke otot leher di belakang pangkal telinga, menyuntikkan perlahan, dan tidak memaksakan pemegangannya.",
+    "levels_en": [
+     "Injects in the wrong place such as the back or rump, inserts shallowly, and forces things with a moving sow, creating danger.",
+     "With guidance, can inject, but the angle and site are inconsistent, and their response when the sow moves is unreliable.",
+     "With guidance, inserts at 90 degrees into the neck muscle, injects slowly, and can adequately vaccinate by aiming for calm moments.",
+     "Independently keeps the correct site and angle, stops when the sow moves, and when it is dangerous, works safely in pairs or with restraint equipment.",
+     "Understands why shallow injections reduce effectiveness and the danger of needlestick accidents, and can teach new staff the knack of site and restraint."
+    ],
+    "levels_vi": [
+     "Tiêm vào lưng hay mông, đâm nông... vị trí và thao tác không chính xác, cố làm với lợn nái đang cựa quậy nên tạo ra nguy hiểm.",
+     "Nếu có chỉ dẫn thì tiêm được, nhưng góc đâm và vị trí không ổn định, cách xử lý khi lợn nái cựa quậy không chắc chắn.",
+     "Nếu có chỉ dẫn thì đâm 90 độ vào cơ cổ, bơm thuốc từ từ, chọn lúc lợn bình tĩnh và tiêm được cơ bản.",
+     "Không cần chỉ dẫn cũng giữ đúng vị trí và góc tiêm, lợn nái cựa quậy thì dừng tay, khi nguy hiểm thì làm 2 người hoặc dùng dụng cụ giữ lợn để an toàn.",
+     "Hiểu lý do tiêm nông làm giảm hiệu quả và nguy cơ tai nạn kim đâm vào người, và có thể hướng dẫn người mới bí quyết về vị trí tiêm và cách giữ lợn."
+    ],
+    "levels_id": [
+     "Menyuntik di pinggang atau pantat, menusuk dangkal — lokasi dan tekniknya tidak tepat, dan memaksakan diri pada induk babi yang bergerak sehingga menimbulkan bahaya.",
+     "Jika ada instruksi bisa menyuntik, tetapi sudut dan lokasi tusukan tidak stabil, dan penanganan saat induk babi bergerak tidak pasti.",
+     "Jika ada instruksi, bisa menusuk 90 derajat ke otot leher, menyuntikkan perlahan, dan menyuntik secara garis besar dengan memilih saat babi tenang.",
+     "Tanpa instruksi pun, menjaga lokasi dan sudut yang benar, berhenti saat induk babi bergerak, dan jika berbahaya bekerja berdua atau memakai alat fiksasi agar aman.",
+     "Memahami alasan suntikan dangkal menurunkan efek dan bahaya kecelakaan tertusuk jarum, dan bisa mengajari karyawan baru kiat lokasi suntik dan cara memegang."
+    ]
+   },
+   {
+    "id": "record-observe",
+    "name": "その場での記録と接種後の観察",
+    "kanten": "個体番号・ワクチン名・ロット・量をその場で記録し、接種後30分〜1時間の異常を観察できるか。",
+    "levels": [
+     "記録を後回しにして漏らし、接種後の豚も見ずに立ち去る。",
+     "指示されれば記録するが、ロット番号などの記入漏れが多く、接種後の観察も不十分。",
+     "指示があれば打ったその場で記録し、接種後のぐったり・呼吸困難がないかひと通り観察できる。",
+     "指示がなくてもその場で漏れなく記録し、アナフィラキシーの兆候や40℃以上の高熱を見つけたらすぐ連絡する。",
+     "後書きが二重接種・打ち漏れを生むことと副反応の見分けを理解し、記録と観察を新人に指導できる。"
+    ],
+    "name_en": "On-the-spot records and post-vaccination observation",
+    "name_vi": "Ghi chép ngay tại chỗ và quan sát sau tiêm",
+    "name_id": "Pencatatan langsung di tempat dan pengamatan setelah penyuntikan",
+    "kanten_en": "Can they record the animal number, vaccine name, lot, and dose on the spot, and observe for abnormalities for 30 minutes to 1 hour after vaccination?",
+    "kanten_vi": "Có ghi ngay tại chỗ số hiệu con, tên vắc-xin, số lô, liều lượng, và quan sát bất thường trong 30 phút〜1 tiếng sau tiêm không.",
+    "kanten_id": "Apakah mencatat langsung di tempat nomor individu, nama vaksin, lot, dan dosis, serta mengamati kelainan selama 30 menit〜1 jam setelah penyuntikan.",
+    "levels_en": [
+     "Puts off recording and misses entries, and walks away without watching the pigs after vaccination.",
+     "Records when instructed, but often omits the lot number and other entries, and post-vaccination observation is insufficient.",
+     "With guidance, records on the spot right after injecting, and can adequately observe for limpness or breathing difficulty afterward.",
+     "Independently records completely on the spot, and contacts someone immediately upon finding signs of anaphylaxis or a fever of 40°C or higher.",
+     "Understands that writing records later causes double or missed injections and how to recognize adverse reactions, and can teach new staff recording and observation."
+    ],
+    "levels_vi": [
+     "Để việc ghi chép lại sau nên bỏ sót, tiêm xong cũng không nhìn lợn mà bỏ đi.",
+     "Nếu được chỉ dẫn thì ghi chép, nhưng hay bỏ sót số lô..., việc quan sát sau tiêm cũng chưa đủ.",
+     "Nếu có chỉ dẫn thì ghi ngay tại chỗ sau khi tiêm, quan sát được cơ bản xem có con nào lả đi, khó thở không.",
+     "Không cần chỉ dẫn cũng ghi đầy đủ ngay tại chỗ, thấy dấu hiệu sốc phản vệ hay sốt cao trên 40℃ thì liên lạc ngay.",
+     "Hiểu việc ghi sau sinh ra tiêm trùng, sót tiêm và cách nhận biết phản ứng phụ, và có thể hướng dẫn người mới việc ghi chép và quan sát."
+    ],
+    "levels_id": [
+     "Menunda pencatatan sehingga ada yang terlewat, dan pergi begitu saja tanpa melihat babi setelah disuntik.",
+     "Jika disuruh bisa mencatat, tetapi sering lupa mengisi nomor lot dan lainnya, dan pengamatan setelah penyuntikan juga kurang.",
+     "Jika ada instruksi, bisa mencatat langsung di tempat setelah menyuntik, dan mengamati secara garis besar apakah ada yang lemas atau sesak napas.",
+     "Tanpa instruksi pun, mencatat lengkap langsung di tempat, dan segera menghubungi jika menemukan tanda anafilaksis atau demam tinggi 40℃ ke atas.",
+     "Memahami bahwa mencatat belakangan menimbulkan suntikan ganda atau terlewat serta cara mengenali reaksi samping, dan bisa mengajari karyawan baru pencatatan dan pengamatan."
+    ]
+   }
+  ],
+  "name_en": "Sow vaccination",
+  "name_vi": "Tiêm vắc-xin cho lợn nái",
+  "name_id": "Vaksinasi induk babi",
+  "purposeShort_en": "Build immunity that protects sows and piglets, and even out the farm's immunity level",
+  "purposeShort_vi": "Tạo miễn dịch bảo vệ lợn nái và lợn con, làm đồng đều mức miễn dịch của trại",
+  "purposeShort_id": "Membangun kekebalan yang melindungi induk babi dan anak babi, dan menyeragamkan tingkat kekebalan peternakan"
+ },
+ {
+  "id": "csf-vaccine",
+  "category": "hygiene",
+  "no": "No.41",
+  "name": "CSF（豚熱）子ワクチン接種",
+  "purposeShort": "子豚の免疫を立ち上げ、豚熱の発生・死亡と経済被害を防ぐ",
+  "gyomu": "41",
+  "aspects": [
+   {
+    "id": "maternal-antibody",
+    "name": "移行抗体を考えた接種日齢",
+    "kanten": "移行抗体を考慮し、決められた日齢で接種して免疫獲得の失敗を防げるか。",
+    "levels": [
+     "移行抗体を考えず、抗体の高い時期に接種して免疫獲得を失敗させる。",
+     "指示があれば接種するが、対象の日齢確認に漏れがあり、日をずらすことの影響を知らない。",
+     "指示があれば決められた日齢でひと通り接種できる。",
+     "指示がなくても移行抗体を考えた日齢で接種し、確実な免疫獲得を意識する。",
+     "移行抗体が残るうちに打つと効かないことを理解し、決められた日齢を守る理由を新人に指導できる。"
+    ],
+    "name_en": "Vaccination age accounting for maternal antibodies",
+    "name_vi": "Tuổi ngày tiêm có tính đến kháng thể mẹ truyền",
+    "name_id": "Umur penyuntikan yang mempertimbangkan antibodi dari induk",
+    "kanten_en": "Can they take maternal antibodies into account and vaccinate at the prescribed age to prevent immunization failure?",
+    "kanten_vi": "Có tính đến kháng thể mẹ truyền, tiêm đúng tuổi ngày quy định để tránh thất bại trong việc tạo miễn dịch không.",
+    "kanten_id": "Apakah mempertimbangkan antibodi dari induk (antibodi maternal) dan menyuntik pada umur yang ditentukan, sehingga mencegah gagalnya pembentukan kekebalan.",
+    "levels_en": [
+     "Ignores maternal antibodies and vaccinates while antibody levels are high, causing immunization failure.",
+     "With guidance, vaccinates, but is inconsistent about confirming the target age in days and does not know the effect of shifting the date.",
+     "With guidance, can adequately vaccinate at the prescribed age.",
+     "Independently vaccinates at an age that accounts for maternal antibodies, keeping reliable immunization in mind.",
+     "Understands that vaccinating while maternal antibodies remain does not work, and can teach new staff the reason for keeping to the prescribed age."
+    ],
+    "levels_vi": [
+     "Không nghĩ đến kháng thể mẹ truyền, tiêm vào thời kỳ kháng thể còn cao làm việc tạo miễn dịch thất bại.",
+     "Nếu có chỉ dẫn thì tiêm, nhưng có bỏ sót việc kiểm tra tuổi ngày của đối tượng, không biết ảnh hưởng của việc xê dịch ngày tiêm.",
+     "Nếu có chỉ dẫn thì tiêm được cơ bản theo đúng tuổi ngày quy định.",
+     "Không cần chỉ dẫn cũng tiêm ở tuổi ngày có tính đến kháng thể mẹ truyền, ý thức việc tạo miễn dịch chắc chắn.",
+     "Hiểu tiêm khi kháng thể mẹ truyền còn lại sẽ không có tác dụng, và có thể hướng dẫn người mới lý do phải giữ đúng tuổi ngày quy định."
+    ],
+    "levels_id": [
+     "Tidak memikirkan antibodi dari induk, menyuntik saat antibodi masih tinggi sehingga pembentukan kekebalan gagal.",
+     "Jika ada instruksi bisa menyuntik, tetapi sering lalai memeriksa umur hari sasaran dan tidak tahu pengaruh menggeser tanggalnya.",
+     "Jika ada instruksi, bisa menyuntik secara garis besar pada umur yang ditentukan.",
+     "Tanpa instruksi pun, menyuntik pada umur yang mempertimbangkan antibodi dari induk, dan sadar akan pembentukan kekebalan yang pasti.",
+     "Memahami bahwa menyuntik selagi antibodi dari induk masih tersisa tidak akan bekerja, dan bisa mengajari karyawan baru alasan mematuhi umur hari yang ditentukan."
+    ]
+   },
+   {
+    "id": "no-miss",
+    "name": "全頭接種と記録",
+    "kanten": "「寄せる→打つ→印→反対側→頭数照合」を守り、打ち漏れなく全頭接種して記録を残せるか。",
+    "levels": [
+     "子豚を寄せずに打ち始め、マーキングも頭数照合もせず「たぶん打った」で先に進む。",
+     "指示があれば接種するが、マーキングや豚房ごとの頭数照合に漏れが多い。",
+     "指示があれば寄せる→打つ→印→反対側→照合の流れをひと通り守り、記録できる。",
+     "指示がなくても毎豚房で流れを徹底し、数が合わなければ全頭を見直して印のない豚を探して打つ。",
+     "打ち漏れが防疫上の穴になることを理解し、全頭接種の流れと記録の徹底を新人に指導できる。"
+    ],
+    "name_en": "Whole-herd vaccination and records",
+    "name_vi": "Tiêm đủ cả đàn và ghi chép",
+    "name_id": "Penyuntikan semua ekor dan pencatatan",
+    "kanten_en": "Can they follow \"gather, inject, mark, other side, count check\", vaccinate every animal without misses, and keep records?",
+    "kanten_vi": "Có giữ trình tự \"dồn lợn → tiêm → đánh dấu → phía đối diện → đối chiếu số con\", tiêm đủ cả đàn không sót và để lại ghi chép không.",
+    "kanten_id": "Apakah mematuhi alur \"kumpulkan → suntik → tandai → sisi seberang → cocokkan jumlah ekor\", menyuntik semua ekor tanpa terlewat, dan meninggalkan catatan.",
+    "levels_en": [
+     "Starts injecting without gathering the piglets, does no marking or count checking, and moves on with \"probably injected\".",
+     "With guidance, vaccinates, but often fails at marking and per-pen count checks.",
+     "With guidance, can adequately follow the flow of gather, inject, mark, other side, check, and keep records.",
+     "Independently keeps the flow in every pen, and if the numbers do not match, rechecks all pigs to find and inject the unmarked ones.",
+     "Understands that missed injections become holes in biosecurity, and can teach new staff the whole-herd vaccination flow and thorough record-keeping."
+    ],
+    "levels_vi": [
+     "Không dồn lợn con lại mà bắt đầu tiêm, không đánh dấu cũng không đối chiếu số con, cứ \"chắc là tiêm rồi\" mà làm tiếp.",
+     "Nếu có chỉ dẫn thì tiêm, nhưng hay bỏ sót việc đánh dấu và đối chiếu số con theo từng ô chuồng.",
+     "Nếu có chỉ dẫn thì giữ được cơ bản trình tự dồn → tiêm → đánh dấu → phía đối diện → đối chiếu, và ghi chép được.",
+     "Không cần chỉ dẫn cũng giữ nghiêm trình tự ở từng ô chuồng, nếu số không khớp thì xem lại cả đàn, tìm con chưa có dấu để tiêm.",
+     "Hiểu con sót tiêm là lỗ hổng trong phòng dịch, và có thể hướng dẫn người mới trình tự tiêm đủ cả đàn và việc ghi chép nghiêm túc."
+    ],
+    "levels_id": [
+     "Mulai menyuntik tanpa mengumpulkan anak babi, tidak menandai dan tidak mencocokkan jumlah ekor, lalu lanjut dengan \"mungkin sudah disuntik\".",
+     "Jika ada instruksi bisa menyuntik, tetapi sering lalai menandai dan mencocokkan jumlah ekor per petak kandang.",
+     "Jika ada instruksi, bisa mematuhi secara garis besar alur kumpulkan → suntik → tandai → sisi seberang → cocokkan, dan mencatatnya.",
+     "Tanpa instruksi pun, menjalankan alur itu di setiap petak kandang, dan jika jumlahnya tidak cocok memeriksa ulang semua babi untuk mencari yang belum bertanda dan menyuntiknya.",
+     "Memahami bahwa penyuntikan yang terlewat menjadi lubang biosekuriti, dan bisa mengajari karyawan baru alur penyuntikan semua ekor dan pencatatan yang menyeluruh."
+    ]
+   },
+   {
+    "id": "restraint-team",
+    "name": "保定・連携と確実な筋注",
+    "kanten": "両後脚で保定し、2人1組の声かけで連携して、首の筋肉へ90度で確実に接種できるか。",
+    "levels": [
+     "片脚で持ち上げる・無理に押さえて暴れさせるなど危険な保定をし、浅く刺して筋肉に届かない。",
+     "指示があれば保定・接種するが、声かけや役割分担が不十分で、部位や角度が安定しない。",
+     "指示があれば両後脚で頭を下に保定し、耳の付け根の後ろの首の筋肉へ90度でひと通り接種できる。",
+     "指示がなくても保定係・接種係で声をかけ合い、豚が暴れたら仕切り直して安全・確実に筋注する。",
+     "片脚保定が関節を痛めることと浅打ちのリスクを理解し、保定と連携のコツを新人に指導できる。"
+    ],
+    "name_en": "Restraint, teamwork, and reliable intramuscular injection",
+    "name_vi": "Giữ lợn, phối hợp và tiêm bắp chắc chắn",
+    "name_id": "Pemegangan, kerja sama, dan suntikan intramuskular yang pasti",
+    "kanten_en": "Can they restrain by both hind legs, coordinate in pairs by calling out, and inject reliably at 90 degrees into the neck muscle?",
+    "kanten_vi": "Có giữ lợn bằng cả hai chân sau, phối hợp theo cặp 2 người bằng cách lên tiếng gọi nhau, và tiêm chắc chắn góc 90 độ vào cơ cổ không.",
+    "kanten_id": "Apakah memegang dengan kedua kaki belakang, bekerja sama berpasangan sambil saling memberi aba-aba, dan menyuntik dengan pasti pada sudut 90 derajat ke otot leher.",
+    "levels_en": [
+     "Restrains dangerously — lifting by one leg or forcing pigs down until they struggle — and inserts shallowly so the needle does not reach the muscle.",
+     "With guidance, restrains and injects, but calling out and role-sharing are insufficient, and the site and angle are inconsistent.",
+     "With guidance, restrains by both hind legs with the head down, and can adequately inject at 90 degrees into the neck muscle behind the base of the ear.",
+     "Independently calls back and forth between the restrainer and injector, and when a pig struggles, resets and gives the intramuscular injection safely and reliably.",
+     "Understands that one-leg restraint damages the joints and the risks of shallow injection, and can teach new staff the knack of restraint and teamwork."
+    ],
+    "levels_vi": [
+     "Giữ lợn nguy hiểm như nhấc bằng một chân, đè ép làm lợn giãy giụa, đâm nông nên kim không tới cơ.",
+     "Nếu có chỉ dẫn thì giữ và tiêm được, nhưng việc lên tiếng gọi nhau và phân vai chưa đủ, vị trí và góc tiêm không ổn định.",
+     "Nếu có chỉ dẫn thì giữ bằng cả hai chân sau cho đầu hướng xuống, tiêm được cơ bản góc 90 độ vào cơ cổ phía sau gốc tai.",
+     "Không cần chỉ dẫn cũng gọi nhau giữa người giữ và người tiêm, lợn giãy thì làm lại từ đầu, tiêm bắp an toàn và chắc chắn.",
+     "Hiểu giữ bằng một chân sẽ làm hỏng khớp và nguy cơ của tiêm nông, và có thể hướng dẫn người mới bí quyết giữ lợn và phối hợp."
+    ],
+    "levels_id": [
+     "Memegang dengan cara berbahaya seperti mengangkat dengan satu kaki atau menekan paksa sampai meronta, dan menusuk dangkal sehingga tidak sampai ke otot.",
+     "Jika ada instruksi bisa memegang dan menyuntik, tetapi aba-aba dan pembagian peran kurang, sehingga lokasi dan sudutnya tidak stabil.",
+     "Jika ada instruksi, bisa memegang dengan kedua kaki belakang dengan kepala di bawah, dan menyuntik secara garis besar pada sudut 90 derajat ke otot leher di belakang pangkal telinga.",
+     "Tanpa instruksi pun, saling memberi aba-aba antara pemegang dan penyuntik, dan jika babi meronta, mengulang dari awal lalu menyuntik intramuskular dengan aman dan pasti.",
+     "Memahami bahwa memegang dengan satu kaki merusak sendi dan risiko suntikan dangkal, dan bisa mengajari karyawan baru kiat memegang dan bekerja sama."
+    ]
+   },
+   {
+    "id": "needle-mgmt",
+    "name": "針の本数照合・交換・針刺し対応",
+    "kanten": "針の本数を作業前後で照合し、1腹ごとに交換し、針折れ・針刺し時に正しく対応できるか。",
+    "levels": [
+     "本数を数えず古い針を使い続け、リキャップするなど針折れ・針刺しの危険を放置する。",
+     "指示があれば数えるが、照合や1腹ごとの交換、シャープスコンテナへの廃棄に漏れがある。",
+     "指示があれば本数を記録・照合し、1腹ごとに交換してシャープスコンテナにひと通り廃棄できる。",
+     "指示がなくても本数管理を徹底し、針折れ疑いはその豚に印をつけて即報告、針刺し時は流水で洗って報告する。",
+     "針残留が食肉混入の重大事故になることを理解し、本数管理と事故対応を新人に指導できる。"
+    ],
+    "name_en": "Needle count checks, changes, and needlestick response",
+    "name_vi": "Đối chiếu số kim, thay kim và xử lý khi bị kim đâm",
+    "name_id": "Pencocokan jumlah jarum, penggantian, dan penanganan tertusuk jarum",
+    "kanten_en": "Can they check needle counts before and after work, change needles for each litter, and respond correctly to needle breakage or needlestick?",
+    "kanten_vi": "Có đối chiếu số kim trước và sau khi làm, thay kim theo từng ổ lợn con, và xử lý đúng khi kim gãy hoặc bị kim đâm không.",
+    "kanten_id": "Apakah mencocokkan jumlah jarum sebelum dan sesudah bekerja, mengganti jarum setiap kelompok anak babi seinduk, dan menangani dengan benar saat jarum patah atau tertusuk jarum.",
+    "levels_en": [
+     "Does not count needles, keeps using old ones, and recaps them, leaving the dangers of breakage and needlestick unaddressed.",
+     "With guidance, counts, but is inconsistent about checking, changing needles per litter, and disposal into the sharps container.",
+     "With guidance, records and checks the counts, changes needles per litter, and can adequately dispose of them into the sharps container.",
+     "Independently manages the counts rigorously; on suspected needle breakage, marks that pig and reports immediately, and on needlestick, washes under running water and reports.",
+     "Understands that a retained needle becomes a serious meat-contamination accident, and can teach new staff count management and accident response."
+    ],
+    "levels_vi": [
+     "Không đếm số kim, dùng mãi kim cũ, còn đậy lại nắp kim..., bỏ mặc nguy cơ gãy kim và bị kim đâm.",
+     "Nếu có chỉ dẫn thì đếm, nhưng có bỏ sót việc đối chiếu, thay kim theo từng ổ và bỏ kim vào hộp đựng kim (sharps container).",
+     "Nếu có chỉ dẫn thì ghi và đối chiếu số kim, thay theo từng ổ và bỏ được cơ bản vào hộp đựng kim.",
+     "Không cần chỉ dẫn cũng quản lý chặt số kim, nghi gãy kim thì đánh dấu con lợn đó và báo ngay, bị kim đâm thì rửa dưới vòi nước chảy rồi báo cáo.",
+     "Hiểu kim sót lại trong cơ thể là sự cố nghiêm trọng lẫn vào thịt, và có thể hướng dẫn người mới cách quản lý số kim và xử lý sự cố."
+    ],
+    "levels_id": [
+     "Tidak menghitung jumlah jarum, terus memakai jarum lama, dan memasang kembali tutup jarum, membiarkan bahaya jarum patah dan tertusuk jarum.",
+     "Jika ada instruksi bisa menghitung, tetapi sering lalai mencocokkan, mengganti jarum per kelompok seinduk, dan membuangnya ke wadah jarum bekas (sharps container).",
+     "Jika ada instruksi, bisa mencatat dan mencocokkan jumlah, mengganti per kelompok seinduk, dan membuangnya secara garis besar ke wadah jarum bekas.",
+     "Tanpa instruksi pun, mengelola jumlah jarum dengan ketat; jika dicurigai jarum patah, menandai babi itu dan segera melapor, dan jika tertusuk jarum, mencucinya di air mengalir lalu melapor.",
+     "Memahami bahwa jarum yang tertinggal menjadi kecelakaan serius berupa masuknya jarum ke daging, dan bisa mengajari karyawan baru pengelolaan jumlah jarum dan penanganan kecelakaan."
+    ]
+   },
+   {
+    "id": "cold-chain",
+    "name": "ワクチンの冷蔵管理と品質確認",
+    "kanten": "2〜8℃の冷蔵保管を守り、期限切れ・変色・沈殿のあるワクチンは使わず報告できるか。",
+    "levels": [
+     "常温に放置したり期限や外観を見ずに使い、効かないワクチンを打つ危険を作る。",
+     "指示があれば冷蔵庫から出し入れするが、期限・変色・沈殿の確認に漏れが多い。",
+     "指示があれば使用直前に取り出し、薬品名・期限・外観をひと通り確認して使える。",
+     "指示がなくても冷蔵管理を守り、異常のあるワクチンは使わずに報告して交換する。",
+     "温度逸脱で失活する仕組みを理解し、冷蔵管理と品質確認の要点を新人に指導できる。"
+    ],
+    "name_en": "Vaccine refrigeration and quality checks",
+    "name_vi": "Bảo quản lạnh vắc-xin và kiểm tra chất lượng",
+    "name_id": "Penyimpanan dingin vaksin dan pemeriksaan mutu",
+    "kanten_en": "Do they keep refrigerated storage at 2-8°C, and not use but report vaccines that are expired, discolored, or have sediment?",
+    "kanten_vi": "Có giữ bảo quản lạnh 2〜8℃, không dùng vắc-xin hết hạn, đổi màu, có cặn mà báo cáo không.",
+    "kanten_id": "Apakah menjaga penyimpanan dingin 2〜8℃, dan tidak memakai vaksin yang kedaluwarsa, berubah warna, atau berendapan melainkan melaporkannya.",
+    "levels_en": [
+     "Leaves vaccines at room temperature or uses them without checking the expiry date and appearance, creating the risk of injecting ineffective vaccines.",
+     "With guidance, takes vaccines in and out of the refrigerator, but often fails to check expiry, discoloration, and sediment.",
+     "With guidance, takes vaccines out just before use and can adequately check the product name, expiry date, and appearance before using.",
+     "Independently keeps the refrigeration rules, and does not use abnormal vaccines but reports and replaces them.",
+     "Understands how temperature deviations inactivate vaccines, and can teach new staff the key points of refrigeration and quality checks."
+    ],
+    "levels_vi": [
+     "Để vắc-xin ở nhiệt độ thường, dùng mà không xem hạn và bề ngoài, tạo nguy cơ tiêm vắc-xin không còn tác dụng.",
+     "Nếu có chỉ dẫn thì lấy ra cất vào tủ lạnh, nhưng hay bỏ sót việc kiểm tra hạn, đổi màu, cặn.",
+     "Nếu có chỉ dẫn thì lấy ra ngay trước khi dùng, kiểm tra được cơ bản tên thuốc, hạn dùng, bề ngoài rồi mới dùng.",
+     "Không cần chỉ dẫn cũng giữ việc bảo quản lạnh, vắc-xin có bất thường thì không dùng mà báo cáo để đổi.",
+     "Hiểu cơ chế vắc-xin mất hiệu lực khi nhiệt độ lệch chuẩn, và có thể hướng dẫn người mới các điểm chính của bảo quản lạnh và kiểm tra chất lượng."
+    ],
+    "levels_id": [
+     "Membiarkan vaksin di suhu ruang atau memakainya tanpa melihat tanggal kedaluwarsa dan penampilannya, menciptakan bahaya menyuntikkan vaksin yang tidak bekerja.",
+     "Jika ada instruksi bisa mengeluarkan dan memasukkan ke kulkas, tetapi sering lalai memeriksa kedaluwarsa, perubahan warna, dan endapan.",
+     "Jika ada instruksi, bisa mengeluarkannya tepat sebelum dipakai dan memeriksa secara garis besar nama obat, kedaluwarsa, dan penampilannya sebelum dipakai.",
+     "Tanpa instruksi pun, menjaga penyimpanan dingin, dan tidak memakai vaksin yang abnormal melainkan melaporkannya untuk diganti.",
+     "Memahami mekanisme vaksin kehilangan daya karena penyimpangan suhu, dan bisa mengajari karyawan baru poin penting penyimpanan dingin dan pemeriksaan mutu."
+    ]
+   }
+  ],
+  "name_en": "CSF (classical swine fever) piglet vaccination",
+  "name_vi": "Tiêm vắc-xin CSF (dịch tả lợn cổ điển) cho lợn con",
+  "name_id": "Vaksinasi CSF (demam babi klasik) untuk anak babi",
+  "purposeShort_en": "Establish piglet immunity and prevent CSF outbreaks, deaths, and economic damage",
+  "purposeShort_vi": "Tạo miễn dịch cho lợn con, phòng bệnh dịch tả lợn phát sinh, chết và thiệt hại kinh tế",
+  "purposeShort_id": "Membangun kekebalan anak babi, mencegah kejadian dan kematian demam babi klasik serta kerugian ekonomi"
+ },
+ {
+  "id": "washing",
+  "category": "hygiene",
+  "no": "No.40",
+  "name": "洗浄（離乳後）",
+  "purposeShort": "汚れと病原体を物理的に落とし、消毒が効く状態を作り舎内をリセットする",
+  "gyomu": "40",
+  "aspects": [
+   {
+    "id": "wash-order",
+    "name": "除糞→洗浄→乾燥→消毒の順序",
+    "kanten": "除糞→洗浄→乾燥→消毒の決められた順序を守り、有機物を残したまま消毒しないか。",
+    "levels": [
+     "有機物が残った状態で消毒薬を散布し、乾燥不十分のまま次ロットを入れる。",
+     "指示があれば洗浄するが、順序や乾燥の徹底に漏れが多い。",
+     "指示があれば除糞→洗浄→乾燥→消毒の順序をひと通り守れる。",
+     "指示がなくても順序を守り、有機物を落としてから消毒し、十分に乾燥させる。",
+     "有機物残存が消毒を無効化することを理解し、洗浄・乾燥の徹底を新人に指導できる。"
+    ],
+    "name_en": "Order of manure removal, washing, drying, then disinfection",
+    "name_vi": "Thứ tự dọn phân → rửa → làm khô → khử trùng",
+    "name_id": "Urutan bersihkan kotoran → cuci → keringkan → disinfeksi",
+    "kanten_en": "Do they follow the prescribed order of manure removal, washing, drying, then disinfection, and avoid disinfecting over remaining organic matter?",
+    "kanten_vi": "Có giữ đúng thứ tự quy định dọn phân → rửa → làm khô → khử trùng, không khử trùng khi chất hữu cơ còn sót không.",
+    "kanten_id": "Apakah mematuhi urutan yang ditentukan bersihkan kotoran → cuci → keringkan → disinfeksi, dan tidak mendisinfeksi selagi bahan organik masih tersisa.",
+    "levels_en": [
+     "Sprays disinfectant over remaining organic matter and brings in the next lot without sufficient drying.",
+     "With guidance, washes, but often skips steps in the order and fails to dry thoroughly.",
+     "With guidance, can adequately follow the order of manure removal, washing, drying, then disinfection.",
+     "Independently follows the order, removes organic matter before disinfecting, and dries thoroughly.",
+     "Understands that remaining organic matter neutralizes disinfection, and can teach new staff thorough washing and drying."
+    ],
+    "levels_vi": [
+     "Phun thuốc khử trùng khi chất hữu cơ còn sót, đưa lứa lợn mới vào khi chuồng chưa khô đủ.",
+     "Nếu có chỉ dẫn thì rửa, nhưng hay bỏ sót thứ tự và việc làm khô kỹ.",
+     "Nếu có chỉ dẫn thì giữ được cơ bản thứ tự dọn phân → rửa → làm khô → khử trùng.",
+     "Không cần chỉ dẫn cũng giữ đúng thứ tự, loại bỏ chất hữu cơ trước rồi mới khử trùng, làm khô đầy đủ.",
+     "Hiểu chất hữu cơ còn sót làm khử trùng mất tác dụng, và có thể hướng dẫn người mới việc rửa và làm khô kỹ."
+    ],
+    "levels_id": [
+     "Menyemprotkan disinfektan dalam keadaan bahan organik masih tersisa, dan memasukkan kelompok berikutnya selagi belum kering.",
+     "Jika ada instruksi bisa mencuci, tetapi sering lalai mematuhi urutan dan pengeringan menyeluruh.",
+     "Jika ada instruksi, bisa mematuhi urutan secara garis besar: bersihkan kotoran → cuci → keringkan → disinfeksi.",
+     "Tanpa instruksi pun, mematuhi urutan, menghilangkan bahan organik dulu baru mendisinfeksi, dan mengeringkan dengan cukup.",
+     "Memahami bahwa bahan organik yang tersisa membuat disinfeksi tidak berguna, dan bisa mengajari karyawan baru pentingnya pencucian dan pengeringan menyeluruh."
+    ]
+   },
+   {
+    "id": "hidden-spots",
+    "name": "隅・溝・裏側の重点洗浄",
+    "kanten": "隅・溝・エサ箱・スノコ裏など汚れが溜まりやすい見えにくい場所を重点的に洗えるか。",
+    "levels": [
+     "見えやすい所だけ洗い、隅・溝・スノコ裏などの汚れを残す。",
+     "指示があれば洗うが、見えにくい場所の洗浄に漏れが多い。",
+     "指示があれば汚れが溜まりやすい場所をひと通り洗える。",
+     "指示がなくても隅・溝・スノコ裏まで重点的に洗い、汚れを残さない。",
+     "見えにくい場所の病原残存リスクを理解し、重点洗浄の着眼点を新人に指導できる。"
+    ],
+    "name_en": "Focused washing of corners, grooves, and undersides",
+    "name_vi": "Rửa kỹ góc, rãnh và mặt sau",
+    "name_id": "Pencucian intensif sudut, parit, dan bagian belakang",
+    "kanten_en": "Can they focus on hard-to-see spots where dirt accumulates — corners, grooves, feed boxes, and the undersides of slats?",
+    "kanten_vi": "Có rửa kỹ những chỗ khó nhìn thấy, dễ đọng bẩn như góc, rãnh, máng ăn, mặt sau sàn khe không.",
+    "kanten_id": "Apakah bisa mencuci secara intensif tempat-tempat tersembunyi yang mudah menumpuk kotoran seperti sudut, parit, kotak pakan, dan bagian bawah lantai slat.",
+    "levels_en": [
+     "Washes only visible areas, leaving dirt in corners, grooves, and under the slats.",
+     "With guidance, washes, but often misses hard-to-see spots.",
+     "With guidance, can adequately wash the spots where dirt accumulates.",
+     "Independently focuses on corners, grooves, and slat undersides, leaving no dirt behind.",
+     "Understands the risk of pathogens surviving in hard-to-see spots, and can teach new staff where to focus the washing."
+    ],
+    "levels_vi": [
+     "Chỉ rửa chỗ dễ nhìn thấy, để sót bẩn ở góc, rãnh, mặt sau sàn khe.",
+     "Nếu có chỉ dẫn thì rửa, nhưng hay bỏ sót việc rửa những chỗ khó nhìn thấy.",
+     "Nếu có chỉ dẫn thì rửa được cơ bản những chỗ dễ đọng bẩn.",
+     "Không cần chỉ dẫn cũng rửa kỹ đến tận góc, rãnh, mặt sau sàn khe, không để sót bẩn.",
+     "Hiểu nguy cơ mầm bệnh còn sót ở những chỗ khó nhìn thấy, và có thể hướng dẫn người mới các điểm cần chú ý khi rửa kỹ."
+    ],
+    "levels_id": [
+     "Hanya mencuci bagian yang mudah terlihat, meninggalkan kotoran di sudut, parit, dan bawah lantai slat.",
+     "Jika ada instruksi bisa mencuci, tetapi sering lalai mencuci tempat yang sulit terlihat.",
+     "Jika ada instruksi, bisa mencuci secara garis besar tempat-tempat yang mudah menumpuk kotoran.",
+     "Tanpa instruksi pun, mencuci intensif sampai sudut, parit, dan bawah lantai slat tanpa meninggalkan kotoran.",
+     "Memahami risiko bibit penyakit yang tersisa di tempat yang sulit terlihat, dan bisa mengajari karyawan baru titik fokus pencucian intensif."
+    ]
+   },
+   {
+    "id": "allout-safety",
+    "name": "オールアウト確認と洗浄時の安全",
+    "kanten": "豚が1頭も残っていないことを記録と突き合わせ、電源を切りノズルを人に向けず作業できるか。",
+    "levels": [
+     "豚の残留を確かめずに洗い始め、回っているファンに水をかけたりノズルを人に向けたりする。",
+     "指示があれば確認するが、記録との突き合わせや電源の切り忘れが多い。",
+     "指示があれば全豚房を歩いて残留ゼロを確かめ、電源を切り防護具を着けてひと通り作業できる。",
+     "指示がなくてもオールアウトを記録と照合してから始め、感電・高圧水の危険を避けて安全に洗う。",
+     "高圧水が皮膚を切る力を持つことと感電の危険を理解し、洗浄の安全手順を新人に指導できる。"
+    ],
+    "name_en": "All-out confirmation and safety during washing",
+    "name_vi": "Xác nhận đã chuyển hết lợn (all-out) và an toàn khi rửa",
+    "name_id": "Konfirmasi kandang kosong (all-out) dan keselamatan saat mencuci",
+    "kanten_en": "Can they verify against the records that not a single pig remains, switch off the power, and work without pointing the nozzle at people?",
+    "kanten_vi": "Có đối chiếu với ghi chép để chắc chắn không còn con lợn nào, tắt nguồn điện, và làm việc không chĩa vòi phun vào người không.",
+    "kanten_id": "Apakah mencocokkan dengan catatan bahwa tidak ada satu ekor babi pun yang tersisa, mematikan listrik, dan bekerja tanpa mengarahkan nozel ke orang.",
+    "levels_en": [
+     "Starts washing without checking for remaining pigs, sprays water on running fans, and points the nozzle at people.",
+     "With guidance, checks, but often skips verifying against records and forgets to switch off the power.",
+     "With guidance, walks all pens to confirm zero pigs remain, switches off the power, and can adequately work in protective gear.",
+     "Independently verifies the all-out against records before starting, and washes safely, avoiding the dangers of electric shock and high-pressure water.",
+     "Understands that high-pressure water can cut skin and the danger of electric shock, and can teach new staff the safety procedures for washing."
+    ],
+    "levels_vi": [
+     "Không kiểm tra còn lợn sót hay không đã bắt đầu rửa, xịt nước vào quạt đang quay, chĩa vòi phun vào người.",
+     "Nếu có chỉ dẫn thì kiểm tra, nhưng hay bỏ sót việc đối chiếu với ghi chép và quên tắt nguồn điện.",
+     "Nếu có chỉ dẫn thì đi hết các ô chuồng để chắc chắn không còn con nào, tắt nguồn điện, đeo đồ bảo hộ và làm được cơ bản.",
+     "Không cần chỉ dẫn cũng đối chiếu việc chuyển hết lợn với ghi chép rồi mới bắt đầu, tránh nguy cơ điện giật và nước áp lực cao để rửa an toàn.",
+     "Hiểu nước áp lực cao đủ mạnh để cắt da và nguy cơ điện giật, và có thể hướng dẫn người mới quy trình an toàn khi rửa."
+    ],
+    "levels_id": [
+     "Mulai mencuci tanpa memastikan tidak ada babi tersisa, menyiram kipas yang sedang berputar, dan mengarahkan nozel ke orang.",
+     "Jika ada instruksi bisa memeriksa, tetapi sering lupa mencocokkan dengan catatan dan mematikan listrik.",
+     "Jika ada instruksi, bisa berjalan memeriksa semua petak kandang untuk memastikan nol babi tersisa, mematikan listrik, dan bekerja secara garis besar dengan alat pelindung.",
+     "Tanpa instruksi pun, mencocokkan kandang kosong dengan catatan sebelum mulai, dan mencuci dengan aman menghindari bahaya sengatan listrik dan air bertekanan tinggi.",
+     "Memahami bahwa air bertekanan tinggi bisa melukai kulit dan bahaya sengatan listrik, dan bisa mengajari karyawan baru prosedur keselamatan pencucian."
+    ]
+   },
+   {
+    "id": "soak-rinse",
+    "name": "洗浄剤の浸漬と完全すすぎ",
+    "kanten": "洗浄剤を規定濃度で20〜30分浸漬させ、すすぎ後に白い紙で汚れ残りを確認できるか。",
+    "levels": [
+     "浸漬を待たずに洗い始め、すすぎも不十分で洗剤や汚れを残したまま終える。",
+     "指示があれば洗浄剤を使うが、浸漬時間の確保やすすぎの徹底に漏れが多い。",
+     "指示があれば規定濃度で浸漬させ、すすいだ後に白い紙でひと通り確認できる。",
+     "指示がなくても浸漬時間を確保して効率よく洗い、紙に汚れが付けばもう一度洗い直す。",
+     "浸漬が汚れを浮かせる仕組みと残留洗剤が子豚に害になることを理解し、確認法を新人に指導できる。"
+    ],
+    "name_en": "Detergent soaking and complete rinsing",
+    "name_vi": "Ngâm chất tẩy rửa và xối sạch hoàn toàn",
+    "name_id": "Perendaman deterjen dan pembilasan tuntas",
+    "kanten_en": "Can they soak with detergent at the prescribed concentration for 20-30 minutes, and after rinsing, check for remaining dirt with white paper?",
+    "kanten_vi": "Có ngâm chất tẩy rửa theo nồng độ quy định 20〜30 phút, sau khi xối dùng giấy trắng kiểm tra bẩn còn sót không.",
+    "kanten_id": "Apakah merendam dengan deterjen pada konsentrasi yang ditentukan selama 20〜30 menit, dan setelah membilas memeriksa sisa kotoran dengan kertas putih.",
+    "levels_en": [
+     "Starts washing without waiting for the soak, rinses insufficiently, and finishes leaving detergent and dirt behind.",
+     "With guidance, uses detergent, but often fails to secure the soaking time and rinse thoroughly.",
+     "With guidance, soaks at the prescribed concentration and can adequately check with white paper after rinsing.",
+     "Independently secures the soaking time to wash efficiently, and rewashes if dirt sticks to the paper.",
+     "Understands how soaking lifts dirt and that residual detergent harms piglets, and can teach new staff the checking method."
+    ],
+    "levels_vi": [
+     "Không chờ ngâm đã bắt đầu rửa, xối cũng không đủ, kết thúc mà còn sót chất tẩy và bẩn.",
+     "Nếu có chỉ dẫn thì dùng chất tẩy rửa, nhưng hay bỏ sót việc bảo đảm thời gian ngâm và xối kỹ.",
+     "Nếu có chỉ dẫn thì ngâm theo nồng độ quy định, sau khi xối kiểm tra được cơ bản bằng giấy trắng.",
+     "Không cần chỉ dẫn cũng bảo đảm thời gian ngâm để rửa hiệu quả, giấy còn dính bẩn thì rửa lại lần nữa.",
+     "Hiểu cơ chế ngâm làm chất bẩn nổi lên và chất tẩy còn sót gây hại cho lợn con, và có thể hướng dẫn người mới cách kiểm tra."
+    ],
+    "levels_id": [
+     "Mulai mencuci tanpa menunggu perendaman, membilas tidak cukup, dan selesai dengan meninggalkan deterjen dan kotoran.",
+     "Jika ada instruksi bisa memakai deterjen, tetapi sering lalai memastikan waktu perendaman dan membilas dengan tuntas.",
+     "Jika ada instruksi, bisa merendam pada konsentrasi yang ditentukan dan memeriksa secara garis besar dengan kertas putih setelah membilas.",
+     "Tanpa instruksi pun, memastikan waktu perendaman agar mencuci dengan efisien, dan mencuci ulang jika kotoran menempel di kertas.",
+     "Memahami mekanisme perendaman mengangkat kotoran dan bahwa sisa deterjen berbahaya bagi anak babi, dan bisa mengajari karyawan baru cara memeriksanya."
+    ]
+   },
+   {
+    "id": "dry-next-lot",
+    "name": "乾燥時間の確保と次ロット準備",
+    "kanten": "洗浄後・消毒後の乾燥時間を確保し、温度設定・飲水器・保温灯を確認して受け入れ準備できるか。",
+    "levels": [
+     "乾燥を待たずに次工程へ進み、次ロットの準備もせずに子豚を迎えさせる。",
+     "指示があれば乾燥させるが、時間の確保や飲水器・保温灯の確認に漏れが多い。",
+     "指示があれば決められた乾燥時間を確保し、温度・飲水・保温灯をひと通り確認できる。",
+     "指示がなくても季節に応じて乾燥時間を延ばし、換気で乾燥を早め、受け入れ準備の不備を直す。",
+     "湿ったままの消毒が効かない理由と空舎期間の意味を理解し、乾燥と準備の要点を新人に指導できる。"
+    ],
+    "name_en": "Securing drying time and preparing for the next lot",
+    "name_vi": "Bảo đảm thời gian làm khô và chuẩn bị cho lứa tiếp theo",
+    "name_id": "Memastikan waktu pengeringan dan persiapan kelompok berikutnya",
+    "kanten_en": "Can they secure drying time after washing and after disinfection, and prepare for intake by checking the temperature setting, drinkers, and heat lamps?",
+    "kanten_vi": "Có bảo đảm thời gian làm khô sau khi rửa và sau khi khử trùng, kiểm tra cài đặt nhiệt độ, vòi uống nước, đèn sưởi để chuẩn bị đón lợn không.",
+    "kanten_id": "Apakah memastikan waktu pengeringan setelah mencuci dan setelah disinfeksi, serta menyiapkan penerimaan dengan memeriksa pengaturan suhu, alat minum, dan lampu penghangat.",
+    "levels_en": [
+     "Moves to the next step without waiting for drying, and lets piglets come in without preparing for the next lot.",
+     "With guidance, dries, but often fails to secure the time and check the drinkers and heat lamps.",
+     "With guidance, secures the prescribed drying time and can adequately check the temperature, water, and heat lamps.",
+     "Independently extends drying time according to the season, speeds up drying with ventilation, and fixes any gaps in the intake preparation.",
+     "Understands why disinfection does not work while wet and the meaning of the empty-barn period, and can teach new staff the key points of drying and preparation."
+    ],
+    "levels_vi": [
+     "Không chờ khô đã chuyển sang bước tiếp theo, cũng không chuẩn bị cho lứa mới mà để đón lợn con vào.",
+     "Nếu có chỉ dẫn thì làm khô, nhưng hay bỏ sót việc bảo đảm thời gian và kiểm tra vòi uống nước, đèn sưởi.",
+     "Nếu có chỉ dẫn thì bảo đảm thời gian làm khô quy định, kiểm tra được cơ bản nhiệt độ, nước uống, đèn sưởi.",
+     "Không cần chỉ dẫn cũng kéo dài thời gian làm khô theo mùa, thông gió để khô nhanh hơn, và sửa những thiếu sót trong chuẩn bị đón lợn.",
+     "Hiểu lý do khử trùng không có tác dụng khi còn ướt và ý nghĩa của thời gian để trống chuồng, và có thể hướng dẫn người mới các điểm chính của làm khô và chuẩn bị."
+    ],
+    "levels_id": [
+     "Lanjut ke langkah berikutnya tanpa menunggu kering, dan membiarkan anak babi masuk tanpa persiapan kelompok berikutnya.",
+     "Jika ada instruksi bisa mengeringkan, tetapi sering lalai memastikan waktunya dan memeriksa alat minum serta lampu penghangat.",
+     "Jika ada instruksi, bisa memastikan waktu pengeringan yang ditentukan dan memeriksa secara garis besar suhu, air minum, dan lampu penghangat.",
+     "Tanpa instruksi pun, memperpanjang waktu pengeringan sesuai musim, mempercepat pengeringan dengan ventilasi, dan memperbaiki kekurangan persiapan penerimaan.",
+     "Memahami alasan disinfeksi tidak bekerja selagi basah dan arti masa kandang kosong, dan bisa mengajari karyawan baru poin penting pengeringan dan persiapan."
+    ]
+   }
+  ],
+  "name_en": "Washing (post-weaning)",
+  "name_vi": "Rửa chuồng (sau cai sữa)",
+  "name_id": "Mencuci kandang (setelah sapih)",
+  "purposeShort_en": "Physically remove dirt and pathogens, create conditions where disinfection works, and reset the barn",
+  "purposeShort_vi": "Loại bỏ chất bẩn và mầm bệnh bằng cách rửa, tạo trạng thái để khử trùng có tác dụng, làm mới lại chuồng",
+  "purposeShort_id": "Menghilangkan kotoran dan bibit penyakit secara fisik, membuat kondisi agar disinfeksi bekerja, dan mereset bagian dalam kandang"
+ },
+ {
+  "id": "disinfect",
+  "category": "hygiene",
+  "no": "No.15",
+  "name": "消毒",
+  "purposeShort": "病原体を入れない・広げない・持ち出さず、農場の防疫レベルを保つ",
+  "gyomu": "15",
+  "aspects": [
+   {
+    "id": "concentration",
+    "name": "濃度・量・接触時間の遵守",
+    "kanten": "決められた濃度・量・接触時間を守り、目分量の希釈をしないか。",
+    "levels": [
+     "希釈濃度を目分量で調整し、接触時間も守らず規定を外す。",
+     "指示があれば希釈するが、濃度や接触時間の管理に漏れが多い。",
+     "指示があれば決められた濃度・量・接触時間をひと通り守れる。",
+     "指示がなくても正確に希釈し、接触時間を確保してから乾燥させる。",
+     "薬剤ごとの特性と濃度・接触時間の意味を理解し、正しい消毒を新人に指導できる。"
+    ],
+    "name_en": "Following concentration, volume, and contact time",
+    "name_vi": "Giữ đúng nồng độ, lượng và thời gian tiếp xúc",
+    "name_id": "Mematuhi konsentrasi, jumlah, dan waktu kontak",
+    "kanten_en": "Do they follow the prescribed concentration, volume, and contact time, without diluting by eye?",
+    "kanten_vi": "Có giữ đúng nồng độ, lượng và thời gian tiếp xúc quy định, không pha loãng theo ước lượng bằng mắt không.",
+    "kanten_id": "Apakah mematuhi konsentrasi, jumlah, dan waktu kontak yang ditentukan, dan tidak mengencerkan dengan kira-kira.",
+    "levels_en": [
+     "Adjusts dilution by eye and ignores contact times, deviating from the standards.",
+     "With guidance, dilutes, but often fails to manage concentration and contact time.",
+     "With guidance, can adequately follow the prescribed concentration, volume, and contact time.",
+     "Independently dilutes accurately and secures the contact time before allowing surfaces to dry.",
+     "Understands each chemical's characteristics and the meaning of concentration and contact time, and can teach new staff correct disinfection."
+    ],
+    "levels_vi": [
+     "Pha loãng theo ước lượng bằng mắt, không giữ thời gian tiếp xúc, làm sai quy định.",
+     "Nếu có chỉ dẫn thì pha loãng, nhưng hay bỏ sót việc quản lý nồng độ và thời gian tiếp xúc.",
+     "Nếu có chỉ dẫn thì giữ được cơ bản nồng độ, lượng và thời gian tiếp xúc quy định.",
+     "Không cần chỉ dẫn cũng pha loãng chính xác, bảo đảm thời gian tiếp xúc rồi mới làm khô.",
+     "Hiểu đặc tính từng loại thuốc và ý nghĩa của nồng độ, thời gian tiếp xúc, và có thể hướng dẫn người mới cách khử trùng đúng."
+    ],
+    "levels_id": [
+     "Mengatur konsentrasi pengenceran dengan kira-kira, tidak mematuhi waktu kontak, dan keluar dari ketentuan.",
+     "Jika ada instruksi bisa mengencerkan, tetapi sering lalai mengelola konsentrasi dan waktu kontak.",
+     "Jika ada instruksi, bisa mematuhi secara garis besar konsentrasi, jumlah, dan waktu kontak yang ditentukan.",
+     "Tanpa instruksi pun, mengencerkan dengan akurat, memastikan waktu kontak tercapai, lalu membiarkannya kering.",
+     "Memahami sifat tiap bahan disinfektan serta arti konsentrasi dan waktu kontak, dan bisa mengajari karyawan baru cara disinfeksi yang benar."
+    ]
+   },
+   {
+    "id": "clean-first-ppe",
+    "name": "汚れ除去の徹底と防護具着用",
+    "kanten": "汚れを先に落としてから消毒し、防護マスク・ゴーグルを着けて曝露を防げるか。",
+    "levels": [
+     "有機物が残った面に散布して消毒剤を不活化させ、防護具も着けず薬剤に曝露する。",
+     "指示があれば汚れを落とすが、防護具の着用や汚れ除去の徹底に漏れがある。",
+     "指示があれば汚れを落としてから消毒し、防護具をひと通り着用できる。",
+     "指示がなくても汚れを確実に落としてから消毒し、防護具を着けて安全に作業する。",
+     "有機物による不活化と薬剤曝露の危険を理解し、汚れ除去と防護の徹底を新人に指導できる。"
+    ],
+    "name_en": "Thorough dirt removal first and wearing protective gear",
+    "name_vi": "Loại bỏ bẩn kỹ trước và đeo đồ bảo hộ",
+    "name_id": "Menghilangkan kotoran dengan tuntas dan memakai alat pelindung",
+    "kanten_en": "Can they remove dirt before disinfecting, and wear a protective mask and goggles to prevent chemical exposure?",
+    "kanten_vi": "Có loại bỏ chất bẩn trước rồi mới khử trùng, đeo khẩu trang và kính bảo hộ để tránh phơi nhiễm thuốc không.",
+    "kanten_id": "Apakah menghilangkan kotoran dulu baru mendisinfeksi, dan memakai masker pelindung serta kacamata pelindung agar tidak terpapar bahan kimia.",
+    "levels_en": [
+     "Sprays onto surfaces with organic matter, inactivating the disinfectant, and works without protective gear, exposing themselves to chemicals.",
+     "With guidance, removes dirt, but is inconsistent about wearing protective gear and removing dirt thoroughly.",
+     "With guidance, removes dirt before disinfecting and can adequately wear protective gear.",
+     "Independently removes dirt thoroughly before disinfecting and works safely in protective gear.",
+     "Understands inactivation by organic matter and the dangers of chemical exposure, and can teach new staff thorough dirt removal and protection."
+    ],
+    "levels_vi": [
+     "Phun lên bề mặt còn chất hữu cơ làm thuốc khử trùng mất tác dụng, không đeo đồ bảo hộ nên bị phơi nhiễm thuốc.",
+     "Nếu có chỉ dẫn thì loại bỏ bẩn, nhưng có bỏ sót việc đeo đồ bảo hộ và việc làm sạch kỹ.",
+     "Nếu có chỉ dẫn thì loại bỏ bẩn trước rồi mới khử trùng, đeo được cơ bản đồ bảo hộ.",
+     "Không cần chỉ dẫn cũng loại bỏ bẩn chắc chắn trước khi khử trùng, đeo đồ bảo hộ và làm việc an toàn.",
+     "Hiểu chất hữu cơ làm thuốc mất tác dụng và nguy hiểm khi phơi nhiễm thuốc, và có thể hướng dẫn người mới việc làm sạch và bảo hộ kỹ."
+    ],
+    "levels_id": [
+     "Menyemprot ke permukaan yang masih ada bahan organik sehingga disinfektan tidak bekerja, dan terpapar bahan kimia karena tidak memakai alat pelindung.",
+     "Jika ada instruksi bisa menghilangkan kotoran, tetapi sering lalai memakai alat pelindung dan menghilangkan kotoran dengan tuntas.",
+     "Jika ada instruksi, bisa menghilangkan kotoran dulu baru mendisinfeksi, dan memakai alat pelindung secara garis besar.",
+     "Tanpa instruksi pun, menghilangkan kotoran dengan pasti sebelum mendisinfeksi, dan bekerja dengan aman memakai alat pelindung.",
+     "Memahami disinfektan yang tidak bekerja karena bahan organik dan bahaya paparan bahan kimia, dan bisa mengajari karyawan baru pentingnya menghilangkan kotoran dan perlindungan diri."
+    ]
+   },
+   {
+    "id": "dry-both",
+    "name": "洗浄後・消毒後の乾燥徹底",
+    "kanten": "ぬれた面に消毒せず洗浄後にしっかり乾かし、消毒後も乾いてから豚を入れられるか。",
+    "levels": [
+     "ぬれたままの面に消毒液をまき、湿ったままの豚房に豚を入れても気にしない。",
+     "指示があれば乾かすが、乾燥時間の確保や乾き具合の確認に漏れが多い。",
+     "指示があれば洗浄後・消毒後それぞれの乾燥をひと通り確保できる。",
+     "指示がなくても換気扇を使って乾燥を早め、完全に乾いたのを確かめてから豚を入れる。",
+     "ぬれた面では薬剤が薄まり湿気で病原体が増えることを理解し、乾燥の要点を新人に指導できる。"
+    ],
+    "name_en": "Thorough drying after washing and after disinfection",
+    "name_vi": "Làm khô kỹ sau khi rửa và sau khi khử trùng",
+    "name_id": "Pengeringan menyeluruh setelah mencuci dan setelah disinfeksi",
+    "kanten_en": "Do they avoid disinfecting wet surfaces by drying well after washing, and put pigs in only after it has dried following disinfection?",
+    "kanten_vi": "Có không khử trùng lên bề mặt còn ướt mà làm khô kỹ sau khi rửa, và sau khi khử trùng cũng chờ khô rồi mới cho lợn vào không.",
+    "kanten_id": "Apakah tidak mendisinfeksi permukaan yang basah melainkan mengeringkannya dengan baik setelah mencuci, dan memasukkan babi hanya setelah kering sesudah disinfeksi.",
+    "levels_en": [
+     "Sprays disinfectant on still-wet surfaces, and does not care about putting pigs into a still-damp pen.",
+     "With guidance, dries, but often fails to secure drying time and check how dry it is.",
+     "With guidance, can adequately secure drying both after washing and after disinfection.",
+     "Independently speeds up drying with the ventilation fans and puts pigs in only after confirming everything is completely dry.",
+     "Understands that wet surfaces dilute the chemical and dampness lets pathogens multiply, and can teach new staff the key points of drying."
+    ],
+    "levels_vi": [
+     "Phun thuốc khử trùng lên bề mặt còn ướt, cho lợn vào ô chuồng còn ẩm cũng không quan tâm.",
+     "Nếu có chỉ dẫn thì làm khô, nhưng hay bỏ sót việc bảo đảm thời gian khô và kiểm tra độ khô.",
+     "Nếu có chỉ dẫn thì bảo đảm được cơ bản việc làm khô sau khi rửa và sau khi khử trùng.",
+     "Không cần chỉ dẫn cũng dùng quạt thông gió để khô nhanh hơn, chắc chắn đã khô hoàn toàn rồi mới cho lợn vào.",
+     "Hiểu bề mặt ướt làm thuốc bị loãng và ẩm ướt làm mầm bệnh sinh sôi, và có thể hướng dẫn người mới các điểm chính của việc làm khô."
+    ],
+    "levels_id": [
+     "Menyemprotkan cairan disinfektan ke permukaan yang masih basah, dan tidak peduli memasukkan babi ke petak kandang yang masih lembap.",
+     "Jika ada instruksi bisa mengeringkan, tetapi sering lalai memastikan waktu pengeringan dan memeriksa tingkat keringnya.",
+     "Jika ada instruksi, bisa memastikan secara garis besar pengeringan setelah mencuci maupun setelah disinfeksi.",
+     "Tanpa instruksi pun, mempercepat pengeringan dengan kipas ventilasi, dan memasukkan babi hanya setelah memastikan benar-benar kering.",
+     "Memahami bahwa permukaan basah mengencerkan bahan kimia dan kelembapan membuat bibit penyakit berkembang biak, dan bisa mengajari karyawan baru poin penting pengeringan."
+    ]
+   },
+   {
+    "id": "no-mix-accident",
+    "name": "消毒剤の混合禁止と事故時対応",
+    "kanten": "消毒剤を絶対に混ぜず1種類ずつ使い、目に入ったら流水15分以上洗って報告できるか。",
+    "levels": [
+     "消毒剤を混ぜたり、薬液が目や皮膚についても洗わず放置したりする。",
+     "指示があれば守るが、混合禁止の理由を知らず、事故時の対応も不確実。",
+     "指示があれば1種類ずつ使い、目に入った時は流水で15分以上洗って報告する対応をひと通りできる。",
+     "指示がなくても混合禁止を徹底し、はね防止に水を先に入れるなど安全に扱い、事故時は即対応・報告する。",
+     "混合で危険なガスが出る仕組みを理解し、薬剤の安全な扱いと事故対応を新人に指導できる。"
+    ],
+    "name_en": "No mixing of disinfectants and accident response",
+    "name_vi": "Cấm pha trộn thuốc khử trùng và xử lý khi có sự cố",
+    "name_id": "Larangan mencampur disinfektan dan penanganan kecelakaan",
+    "kanten_en": "Do they never mix disinfectants, using one type at a time, and if any gets in the eyes, rinse under running water for at least 15 minutes and report?",
+    "kanten_vi": "Có tuyệt đối không pha trộn thuốc khử trùng, dùng từng loại một, nếu vào mắt thì rửa dưới vòi nước chảy trên 15 phút và báo cáo không.",
+    "kanten_id": "Apakah sama sekali tidak mencampur disinfektan, memakainya satu jenis demi satu jenis, dan jika masuk ke mata mencucinya di air mengalir minimal 15 menit lalu melapor.",
+    "levels_en": [
+     "Mixes disinfectants, and leaves chemical solution on the eyes or skin without washing it off.",
+     "With guidance, complies, but does not know why mixing is forbidden, and their accident response is unreliable.",
+     "With guidance, uses one type at a time, and can adequately respond by rinsing under running water for at least 15 minutes and reporting when it gets in the eyes.",
+     "Independently enforces the no-mixing rule, handles chemicals safely such as putting water in first to prevent splashing, and responds and reports immediately in an accident.",
+     "Understands how mixing produces dangerous gases, and can teach new staff safe chemical handling and accident response."
+    ],
+    "levels_vi": [
+     "Pha trộn thuốc khử trùng, thuốc dính vào mắt hay da cũng không rửa mà bỏ mặc.",
+     "Nếu có chỉ dẫn thì tuân theo, nhưng không biết lý do cấm pha trộn, cách xử lý khi có sự cố cũng không chắc chắn.",
+     "Nếu có chỉ dẫn thì dùng từng loại một, khi vào mắt thì làm được cơ bản việc rửa dưới vòi nước chảy trên 15 phút và báo cáo.",
+     "Không cần chỉ dẫn cũng giữ nghiêm việc cấm pha trộn, thao tác an toàn như cho nước vào trước để tránh bắn thuốc, khi có sự cố thì xử lý và báo cáo ngay.",
+     "Hiểu cơ chế sinh ra khí nguy hiểm khi pha trộn, và có thể hướng dẫn người mới cách dùng thuốc an toàn và xử lý sự cố."
+    ],
+    "levels_id": [
+     "Mencampur disinfektan, dan membiarkan cairan kimia yang mengenai mata atau kulit tanpa mencucinya.",
+     "Jika ada instruksi bisa mematuhi, tetapi tidak tahu alasan larangan mencampur, dan penanganan saat kecelakaan juga tidak pasti.",
+     "Jika ada instruksi, bisa memakai satu jenis demi satu jenis, dan saat masuk ke mata bisa melakukan secara garis besar penanganan mencuci di air mengalir minimal 15 menit lalu melapor.",
+     "Tanpa instruksi pun, menjalankan larangan mencampur dengan ketat, menangani dengan aman seperti memasukkan air dulu untuk mencegah percikan, dan saat kecelakaan segera menangani dan melapor.",
+     "Memahami mekanisme munculnya gas berbahaya karena pencampuran, dan bisa mengajari karyawan baru penanganan bahan kimia yang aman dan penanganan kecelakaan."
+    ]
+   },
+   {
+    "id": "footbath-record",
+    "name": "踏み込み消毒槽の管理と実施記録",
+    "kanten": "出入口の消毒槽の薬液を確認して汚れ・不足なら交換・補充し、実施場所と薬剤を記録できるか。",
+    "levels": [
+     "消毒槽が汚れていても放置し、どこに何をまいたかの記録も残さない。",
+     "指示されれば交換・記録するが、確認の頻度や記入内容に漏れが多い。",
+     "指示があれば消毒槽の薬液をひと通り確認・交換し、実施場所と消毒剤を記録できる。",
+     "指示がなくても消毒槽を日常的に点検して汚れたら交換し、実施内容を漏れなく記録する。",
+     "汚れた薬液は効果が落ちることを理解し、消毒槽の管理と記録の習慣を新人に指導できる。"
+    ],
+    "name_en": "Footbath management and implementation records",
+    "name_vi": "Quản lý hố khử trùng chân và ghi chép thực hiện",
+    "name_id": "Pengelolaan bak celup disinfektan kaki dan pencatatan pelaksanaan",
+    "kanten_en": "Can they check the solution in the entrance footbaths, replace or refill it when dirty or low, and record the places treated and the chemicals used?",
+    "kanten_vi": "Có kiểm tra dung dịch trong hố khử trùng ở cửa ra vào, bẩn hay thiếu thì thay mới, bổ sung, và ghi lại nơi đã khử trùng và thuốc đã dùng không.",
+    "kanten_id": "Apakah memeriksa cairan di bak celup disinfektan pintu masuk, menggantinya atau menambahkannya jika kotor atau kurang, dan mencatat tempat pelaksanaan serta disinfektan yang dipakai.",
+    "levels_en": [
+     "Leaves the footbath dirty, and keeps no record of where and what was applied.",
+     "Replaces and records when instructed, but the checking frequency and entries are often lacking.",
+     "With guidance, can adequately check and replace the footbath solution, and record the places treated and the disinfectant.",
+     "Independently inspects the footbaths daily, replaces the solution when dirty, and records everything done without omission.",
+     "Understands that dirty solution loses its effect, and can teach new staff the habit of footbath management and record-keeping."
+    ],
+    "levels_vi": [
+     "Hố khử trùng bẩn cũng bỏ mặc, cũng không ghi lại đã phun gì ở đâu.",
+     "Nếu được chỉ dẫn thì thay và ghi chép, nhưng hay bỏ sót tần suất kiểm tra và nội dung ghi.",
+     "Nếu có chỉ dẫn thì kiểm tra, thay được cơ bản dung dịch trong hố khử trùng, và ghi lại nơi thực hiện và thuốc khử trùng.",
+     "Không cần chỉ dẫn cũng kiểm tra hố khử trùng hằng ngày, bẩn thì thay, và ghi chép đầy đủ nội dung đã làm.",
+     "Hiểu dung dịch bẩn sẽ giảm tác dụng, và có thể hướng dẫn người mới thói quen quản lý hố khử trùng và ghi chép."
+    ],
+    "levels_id": [
+     "Membiarkan bak celup yang kotor, dan tidak meninggalkan catatan di mana dan apa yang disemprotkan.",
+     "Jika disuruh bisa mengganti dan mencatat, tetapi frekuensi pemeriksaan dan isi catatannya sering kurang.",
+     "Jika ada instruksi, bisa memeriksa dan mengganti cairan bak celup secara garis besar, serta mencatat tempat pelaksanaan dan disinfektannya.",
+     "Tanpa instruksi pun, memeriksa bak celup setiap hari, menggantinya jika kotor, dan mencatat lengkap semua yang dilakukan.",
+     "Memahami bahwa cairan yang kotor kehilangan efeknya, dan bisa mengajari karyawan baru kebiasaan mengelola bak celup dan mencatat."
+    ]
+   }
+  ],
+  "name_en": "Disinfection",
+  "name_vi": "Khử trùng",
+  "name_id": "Disinfeksi",
+  "purposeShort_en": "Keep pathogens out, contained, and off the farm, maintaining the farm's biosecurity level",
+  "purposeShort_vi": "Không cho mầm bệnh vào, không làm lan rộng, không mang ra ngoài, giữ mức phòng dịch của trại",
+  "purposeShort_id": "Tidak memasukkan, tidak menyebarkan, dan tidak membawa keluar bibit penyakit, menjaga tingkat biosekuriti peternakan"
+ },
+ {
+  "id": "lime",
+  "category": "hygiene",
+  "no": "No.44",
+  "name": "石灰散布",
+  "purposeShort": "農場出入口に防疫バリアを作り、病原体の侵入・拡散を抑える",
+  "gyomu": "44",
+  "aspects": [
+   {
+    "id": "moisture",
+    "name": "水分と散布量の管理",
+    "kanten": "地面が白く見える量を目安に、乾いた地面には先に水をまいてから散布できるか。",
+    "levels": [
+     "乾いた地面にそのまま散布し、量の目安も守らず消毒効果を出せない。",
+     "指示があれば散布するが、地面を湿らせることや量の管理に漏れがある。",
+     "指示があれば地面が白く見える量を目安にひと通り散布できる。",
+     "指示がなくても乾いた地面には先に水をまいてから散布し、白さの劣化を見て定期的に補充する。",
+     "石灰は水分がないと効かないことを理解し、散布量と補充の管理を新人に指導できる。"
+    ],
+    "name_en": "Managing moisture and application amount",
+    "name_vi": "Quản lý nước và lượng rắc",
+    "name_id": "Pengelolaan air dan jumlah taburan",
+    "kanten_en": "Can they use visible whitening of the ground as the amount guide, and on dry ground, sprinkle water first before spreading?",
+    "kanten_vi": "Có lấy lượng đủ để mặt đất nhìn thấy trắng làm chuẩn, và với mặt đất khô thì tưới nước trước rồi mới rắc không.",
+    "kanten_id": "Apakah memakai patokan tanah terlihat putih, dan pada tanah yang kering menyiramkan air dulu sebelum menabur.",
+    "levels_en": [
+     "Spreads lime on dry ground as-is and ignores the amount guideline, achieving no disinfectant effect.",
+     "With guidance, spreads lime, but is inconsistent about wetting the ground and managing the amount.",
+     "With guidance, can adequately spread lime using visible whitening of the ground as the amount guide.",
+     "Independently sprinkles water first on dry ground before spreading, and replenishes regularly by watching the whiteness fade.",
+     "Understands that lime does not work without moisture, and can teach new staff how to manage application amounts and replenishment."
+    ],
+    "levels_vi": [
+     "Rắc thẳng lên mặt đất khô, cũng không giữ lượng chuẩn nên không có tác dụng khử trùng.",
+     "Nếu có chỉ dẫn thì rắc, nhưng có bỏ sót việc làm ẩm mặt đất và quản lý lượng rắc.",
+     "Nếu có chỉ dẫn thì rắc được cơ bản với lượng đủ để mặt đất nhìn thấy trắng.",
+     "Không cần chỉ dẫn cũng tưới nước trước lên mặt đất khô rồi mới rắc, nhìn độ trắng phai đi để bổ sung định kỳ.",
+     "Hiểu vôi không có nước thì không có tác dụng, và có thể hướng dẫn người mới cách quản lý lượng rắc và bổ sung."
+    ],
+    "levels_id": [
+     "Menabur begitu saja di tanah kering, tidak mematuhi patokan jumlah, sehingga efek disinfeksi tidak keluar.",
+     "Jika ada instruksi bisa menabur, tetapi sering lalai membasahi tanah dan mengelola jumlahnya.",
+     "Jika ada instruksi, bisa menabur secara garis besar dengan patokan tanah terlihat putih.",
+     "Tanpa instruksi pun, menyiramkan air dulu ke tanah kering sebelum menabur, dan menambah taburan secara berkala dengan melihat pudarnya warna putih.",
+     "Memahami bahwa kapur tidak bekerja tanpa air, dan bisa mengajari karyawan baru pengelolaan jumlah taburan dan penambahannya."
+    ]
+   },
+   {
+    "id": "wind-safety",
+    "name": "風向き確認と防護",
+    "kanten": "風向きを確認して粉末飛散を防ぎ、人・豚にかからないよう防護具を着けて散布できるか。",
+    "levels": [
+     "風向きを確認せず粉末を飛散させ、防護具も着けず呼吸器障害や周辺苦情を招く。",
+     "指示があれば注意するが、風向き確認や防護具着用に漏れがある。",
+     "指示があれば人・豚に直接かからないようひと通り注意して散布できる。",
+     "指示がなくても風向きを確認して飛散を防ぎ、防護具を着けて安全に散布する。",
+     "飛散による健康被害・苦情のリスクを理解し、安全な散布方法を新人に指導できる。"
+    ],
+    "name_en": "Checking wind direction and protection",
+    "name_vi": "Kiểm tra hướng gió và bảo hộ",
+    "name_id": "Pemeriksaan arah angin dan perlindungan diri",
+    "kanten_en": "Can they check the wind direction to prevent powder drift, and wear protective gear so the lime does not land on people or pigs?",
+    "kanten_vi": "Có kiểm tra hướng gió để tránh bột bay tán, đeo đồ bảo hộ và rắc sao cho không dính vào người và lợn không.",
+    "kanten_id": "Apakah memeriksa arah angin untuk mencegah bubuk beterbangan, dan bisa menabur dengan memakai alat pelindung agar tidak mengenai orang dan babi.",
+    "levels_en": [
+     "Scatters powder without checking wind direction and works without protective gear, causing respiratory harm and neighborhood complaints.",
+     "With guidance, takes care, but is inconsistent about checking wind direction and wearing protective gear.",
+     "With guidance, can spread lime with adequate care to keep it off people and pigs.",
+     "Independently checks wind direction to prevent drift and spreads lime safely in protective gear.",
+     "Understands the health and complaint risks of powder drift, and can teach new staff safe spreading methods."
+    ],
+    "levels_vi": [
+     "Không kiểm tra hướng gió làm bột bay tán, không đeo đồ bảo hộ, gây hại đường hô hấp và khiếu nại từ xung quanh.",
+     "Nếu có chỉ dẫn thì chú ý, nhưng có bỏ sót việc kiểm tra hướng gió và đeo đồ bảo hộ.",
+     "Nếu có chỉ dẫn thì rắc được với sự chú ý cơ bản để không dính trực tiếp vào người và lợn.",
+     "Không cần chỉ dẫn cũng kiểm tra hướng gió để tránh bay tán, đeo đồ bảo hộ và rắc an toàn.",
+     "Hiểu nguy cơ hại sức khỏe và khiếu nại do bột bay tán, và có thể hướng dẫn người mới cách rắc an toàn."
+    ],
+    "levels_id": [
+     "Menabur tanpa memeriksa arah angin sehingga bubuk beterbangan, tidak memakai alat pelindung sehingga menyebabkan gangguan pernapasan dan keluhan warga sekitar.",
+     "Jika ada instruksi bisa berhati-hati, tetapi sering lalai memeriksa arah angin dan memakai alat pelindung.",
+     "Jika ada instruksi, bisa menabur dengan cukup hati-hati agar tidak langsung mengenai orang dan babi.",
+     "Tanpa instruksi pun, memeriksa arah angin untuk mencegah bubuk beterbangan, dan menabur dengan aman memakai alat pelindung.",
+     "Memahami risiko gangguan kesehatan dan keluhan akibat bubuk beterbangan, dan bisa mengajari karyawan baru cara menabur yang aman."
+    ]
+   },
+   {
+    "id": "weather-stock",
+    "name": "天候と在庫の事前確認",
+    "kanten": "天気予報を見て雨の近い時間帯を避け、袋の残量を確認して不足を事前に報告できるか。",
+    "levels": [
+     "天気も在庫も確認せず、雨の直前にまいて流したり、石灰切れで作業を止めたりする。",
+     "指示があれば確認するが、天候の判断や残量の見方が不確実で報告も遅れがち。",
+     "指示があれば天気予報と袋の残量をひと通り確認してから作業に入れる。",
+     "指示がなくても雨の近い散布を避けて時間帯を選び、在庫不足に気づいたら作業前に報告する。",
+     "雨で流れると効果が薄れることを理解し、天候判断と在庫管理の段取りを新人に指導できる。"
+    ],
+    "name_en": "Checking the weather and stock in advance",
+    "name_vi": "Kiểm tra trước thời tiết và tồn kho",
+    "name_id": "Pemeriksaan cuaca dan stok sebelumnya",
+    "kanten_en": "Can they check the weather forecast to avoid times when rain is near, check the amount left in the bags, and report shortages in advance?",
+    "kanten_vi": "Có xem dự báo thời tiết để tránh khung giờ sắp mưa, xem lượng còn lại trong bao và báo trước khi thiếu không.",
+    "kanten_id": "Apakah melihat prakiraan cuaca untuk menghindari jam yang hampir hujan, memeriksa sisa di karung, dan melaporkan kekurangan sebelumnya.",
+    "levels_en": [
+     "Checks neither the weather nor the stock, spreading lime just before rain washes it away, or halting work by running out of lime.",
+     "With guidance, checks, but their weather judgment and reading of the remaining amount are unreliable, and reporting tends to be late.",
+     "With guidance, can adequately check the weather forecast and the amount left in the bags before starting work.",
+     "Independently avoids spreading when rain is near by choosing the time, and reports before work upon noticing a stock shortage.",
+     "Understands that rain washing the lime away weakens its effect, and can teach new staff the routine of weather judgment and stock management."
+    ],
+    "levels_vi": [
+     "Không kiểm tra cả thời tiết lẫn tồn kho, rắc ngay trước mưa làm vôi trôi mất, hoặc hết vôi phải dừng việc.",
+     "Nếu có chỉ dẫn thì kiểm tra, nhưng phán đoán thời tiết và cách xem lượng còn lại không chắc chắn, báo cáo cũng hay chậm.",
+     "Nếu có chỉ dẫn thì kiểm tra được cơ bản dự báo thời tiết và lượng còn lại trong bao rồi mới vào việc.",
+     "Không cần chỉ dẫn cũng tránh rắc khi sắp mưa bằng cách chọn khung giờ, thấy thiếu tồn kho thì báo trước khi làm.",
+     "Hiểu vôi bị mưa trôi sẽ giảm tác dụng, và có thể hướng dẫn người mới cách sắp xếp việc phán đoán thời tiết và quản lý tồn kho."
+    ],
+    "levels_id": [
+     "Tidak memeriksa cuaca maupun stok, menabur tepat sebelum hujan sehingga hanyut, atau menghentikan pekerjaan karena kapur habis.",
+     "Jika ada instruksi bisa memeriksa, tetapi penilaian cuaca dan cara melihat sisa stok tidak pasti, dan pelaporannya cenderung terlambat.",
+     "Jika ada instruksi, bisa memeriksa secara garis besar prakiraan cuaca dan sisa di karung sebelum mulai bekerja.",
+     "Tanpa instruksi pun, memilih waktu untuk menghindari menabur saat hampir hujan, dan melapor sebelum bekerja jika menyadari stok kurang.",
+     "Memahami bahwa kapur yang hanyut oleh hujan berkurang efeknya, dan bisa mengajari karyawan baru pengaturan penilaian cuaca dan pengelolaan stok."
+    ]
+   },
+   {
+    "id": "even-spread",
+    "name": "均一散布と仕上がり確認",
+    "kanten": "山にせずうすく広くまき、散布後に見回って白く均一か・通行の支障がないか確認できるか。",
+    "levels": [
+     "一か所に山盛りにするなどムラだらけにまき、仕上がりを見ずに終える。",
+     "指示があればまくが、まきムラが多く、散布後の見回りをしない。",
+     "指示があればうすく広くまき、散布後に全体をひと通り見回って確認できる。",
+     "指示がなくても均一に散布し、まきムラを見つけてまき足し、石灰乳はよくかくはんして詰まりを防ぐ。",
+     "白さが効果の目安になることを理解し、均一にまくコツと確認の仕方を新人に指導できる。"
+    ],
+    "name_en": "Even spreading and finish checks",
+    "name_vi": "Rắc đều và kiểm tra kết quả",
+    "name_id": "Penaburan merata dan pemeriksaan hasil akhir",
+    "kanten_en": "Can they spread thinly and widely without making piles, and after spreading, walk around to check it is evenly white and does not obstruct passage?",
+    "kanten_vi": "Có rắc mỏng và rộng, không vun thành đống, sau khi rắc đi kiểm tra xem đã trắng đều chưa, có cản trở đi lại không.",
+    "kanten_id": "Apakah menabur tipis dan lebar tanpa menumpuknya, dan setelah menabur berkeliling memeriksa apakah putih merata dan tidak mengganggu lalu lintas.",
+    "levels_en": [
+     "Spreads unevenly, such as piling it up in one spot, and finishes without looking at the result.",
+     "With guidance, spreads, but with much unevenness, and does not walk around afterward.",
+     "With guidance, spreads thinly and widely, and can adequately walk around the whole area to check afterward.",
+     "Independently spreads evenly, finds and tops up uneven spots, and stirs lime milk well to prevent clogging.",
+     "Understands that whiteness is the guide to effectiveness, and can teach new staff the knack of spreading evenly and how to check."
+    ],
+    "levels_vi": [
+     "Rắc loang lổ như vun thành đống một chỗ, kết thúc mà không nhìn kết quả.",
+     "Nếu có chỉ dẫn thì rắc, nhưng rắc không đều nhiều chỗ, không đi kiểm tra sau khi rắc.",
+     "Nếu có chỉ dẫn thì rắc mỏng và rộng, sau khi rắc đi kiểm tra được cơ bản toàn bộ.",
+     "Không cần chỉ dẫn cũng rắc đều, phát hiện chỗ chưa đều để rắc bổ sung, sữa vôi thì khuấy kỹ để tránh tắc.",
+     "Hiểu độ trắng là thước đo hiệu quả, và có thể hướng dẫn người mới bí quyết rắc đều và cách kiểm tra."
+    ],
+    "levels_id": [
+     "Menabur tidak merata seperti menumpuknya di satu tempat, dan selesai tanpa melihat hasilnya.",
+     "Jika ada instruksi bisa menabur, tetapi banyak yang tidak merata dan tidak berkeliling setelah menabur.",
+     "Jika ada instruksi, bisa menabur tipis dan lebar, dan setelahnya berkeliling memeriksa keseluruhan secara garis besar.",
+     "Tanpa instruksi pun, menabur merata, menemukan bagian yang belum rata dan menaburinya lagi, serta mengaduk rata susu kapur untuk mencegah tersumbat.",
+     "Memahami bahwa warna putih menjadi patokan efektivitas, dan bisa mengajari karyawan baru kiat menabur merata dan cara memeriksanya."
+    ]
+   },
+   {
+    "id": "skin-storage",
+    "name": "皮膚付着時の対応と石灰の保管",
+    "kanten": "皮膚についたらすぐ大量の水で洗い流し、残った石灰は袋を閉じて湿気を避けて保管できるか。",
+    "levels": [
+     "皮膚についても洗わず放置し、袋を開けたまま雨ざらしにして石灰を劣化させる。",
+     "指示があれば対応するが、洗い流しが不十分で、袋の閉め忘れや保管場所のミスが多い。",
+     "指示があれば付着時に大量の水で洗い、袋の口を閉じて湿気のない場所にひと通り保管できる。",
+     "指示がなくても付着時は即座に洗って赤み・痛みがあれば報告し、保管状態まで自分で確かめる。",
+     "消石灰の強アルカリ性による化学熱傷の危険を理解し、応急対応と保管を新人に指導できる。"
+    ],
+    "name_en": "Response to skin contact and lime storage",
+    "name_vi": "Xử lý khi vôi dính da và bảo quản vôi",
+    "name_id": "Penanganan saat kapur mengenai kulit dan penyimpanan kapur",
+    "kanten_en": "Can they immediately rinse with plenty of water when lime gets on the skin, and store leftover lime with the bag closed, away from moisture?",
+    "kanten_vi": "Vôi dính da có rửa trôi ngay bằng nhiều nước, vôi còn thừa có đóng miệng bao và bảo quản tránh ẩm không.",
+    "kanten_id": "Apakah segera membilas dengan banyak air jika kapur mengenai kulit, dan menyimpan sisa kapur dengan karung tertutup jauh dari lembap.",
+    "levels_en": [
+     "Leaves lime on the skin without washing, and leaves bags open in the rain, letting the lime degrade.",
+     "With guidance, responds, but rinsing is insufficient, and often forgets to close the bags or stores them in the wrong place.",
+     "With guidance, washes with plenty of water when lime gets on the skin, and can adequately store the bags closed in a dry place.",
+     "Independently washes immediately on contact, reports any redness or pain, and checks the storage condition themselves.",
+     "Understands the danger of chemical burns from the strong alkalinity of slaked lime, and can teach new staff first-aid response and storage."
+    ],
+    "levels_vi": [
+     "Vôi dính da cũng không rửa mà bỏ mặc, để bao mở phơi mưa làm vôi xuống cấp.",
+     "Nếu có chỉ dẫn thì xử lý, nhưng rửa chưa đủ, hay quên đóng miệng bao và để sai chỗ bảo quản.",
+     "Nếu có chỉ dẫn thì khi dính vôi rửa bằng nhiều nước, đóng miệng bao và bảo quản được cơ bản ở nơi không ẩm.",
+     "Không cần chỉ dẫn cũng rửa ngay khi dính vôi, có đỏ hay đau thì báo cáo, tự mình kiểm tra cả tình trạng bảo quản.",
+     "Hiểu nguy cơ bỏng hóa chất do tính kiềm mạnh của vôi bột, và có thể hướng dẫn người mới cách sơ cứu và bảo quản."
+    ],
+    "levels_id": [
+     "Membiarkan kapur di kulit tanpa mencucinya, dan membiarkan karung terbuka kena hujan sehingga kapur rusak.",
+     "Jika ada instruksi bisa menangani, tetapi pembilasannya kurang, dan sering lupa menutup karung atau salah tempat penyimpanan.",
+     "Jika ada instruksi, bisa mencuci dengan banyak air saat terkena, menutup mulut karung, dan menyimpannya secara garis besar di tempat yang tidak lembap.",
+     "Tanpa instruksi pun, langsung mencuci saat terkena, melapor jika ada kemerahan atau nyeri, dan memeriksa sendiri sampai kondisi penyimpanannya.",
+     "Memahami bahaya luka bakar kimia karena sifat basa kuat kapur, dan bisa mengajari karyawan baru penanganan darurat dan penyimpanannya."
+    ]
+   }
+  ],
+  "name_en": "Lime spreading",
+  "name_vi": "Rắc vôi bột (khử trùng bằng vôi)",
+  "name_id": "Menaburkan kapur (disinfeksi dengan kapur)",
+  "purposeShort_en": "Create a biosecurity barrier at farm entrances and suppress pathogen entry and spread",
+  "purposeShort_vi": "Tạo hàng rào phòng dịch ở lối ra vào trại, ngăn mầm bệnh xâm nhập và lan rộng",
+  "purposeShort_id": "Membuat penghalang biosekuriti di pintu masuk-keluar peternakan, menekan masuk dan menyebarnya bibit penyakit"
+ },
+ {
+  "id": "carcass",
+  "category": "hygiene",
+  "no": "No.37",
+  "name": "死獣回収",
+  "purposeShort": "病原体の拡散と悪臭・害獣被害を防ぎ、法令を守る",
+  "gyomu": "37",
+  "aspects": [
+   {
+    "id": "prompt-storage",
+    "name": "速やかな回収と専用保管",
+    "kanten": "死亡確認後すぐに回収し、豚房内に放置せず専用の保管場所へ入れられるか。",
+    "levels": [
+     "死体を豚房内に放置し、他の豚が接触して感染源になっても気にしない。",
+     "指示があれば回収するが、回収の遅れや保管場所の管理に漏れがある。",
+     "指示があれば死亡確認後にひと通り回収し、専用保管場所へ入れられる。",
+     "指示がなくても速やかに回収して専用場所へ入れ、感染源化を防ぐ。",
+     "死体放置の感染リスクを理解し、速やかな回収・保管の手順を新人に指導できる。"
+    ],
+    "name_en": "Prompt collection and dedicated storage",
+    "name_vi": "Thu gom nhanh và cất giữ ở nơi chuyên dùng",
+    "name_id": "Pengumpulan segera dan penyimpanan khusus",
+    "kanten_en": "Can they collect carcasses immediately after confirming death, without leaving them in the pen, and place them in dedicated storage?",
+    "kanten_vi": "Sau khi xác nhận lợn chết có thu gom ngay, không để trong ô chuồng mà đưa vào nơi cất giữ chuyên dùng không.",
+    "kanten_id": "Apakah segera mengumpulkan setelah kematian dipastikan, tidak membiarkannya di dalam petak kandang, dan memasukkannya ke tempat penyimpanan khusus.",
+    "levels_en": [
+     "Leaves carcasses in the pen and does not care that other pigs touch them and they become an infection source.",
+     "With guidance, collects carcasses, but collection is delayed and storage management is inconsistent.",
+     "With guidance, can adequately collect carcasses after confirming death and place them in dedicated storage.",
+     "Independently collects carcasses promptly and moves them to the dedicated area, preventing them from becoming an infection source.",
+     "Understands the infection risk of leaving carcasses, and can teach new staff the procedures for prompt collection and storage."
+    ],
+    "levels_vi": [
+     "Để xác lợn trong ô chuồng, lợn khác chạm vào thành nguồn lây nhiễm cũng không quan tâm.",
+     "Nếu có chỉ dẫn thì thu gom, nhưng có chậm trễ và bỏ sót việc quản lý nơi cất giữ.",
+     "Nếu có chỉ dẫn thì thu gom được cơ bản sau khi xác nhận lợn chết, đưa vào nơi cất giữ chuyên dùng.",
+     "Không cần chỉ dẫn cũng thu gom nhanh và đưa vào nơi chuyên dùng, ngăn xác trở thành nguồn lây nhiễm.",
+     "Hiểu nguy cơ lây nhiễm khi để xác lợn, và có thể hướng dẫn người mới quy trình thu gom, cất giữ nhanh chóng."
+    ],
+    "levels_id": [
+     "Membiarkan bangkai di dalam petak kandang, dan tidak peduli walau babi lain menyentuhnya dan menjadi sumber infeksi.",
+     "Jika ada instruksi bisa mengumpulkan, tetapi sering terlambat mengumpulkan dan lalai mengelola tempat penyimpanan.",
+     "Jika ada instruksi, bisa mengumpulkan secara garis besar setelah kematian dipastikan, dan memasukkannya ke tempat penyimpanan khusus.",
+     "Tanpa instruksi pun, segera mengumpulkan dan memasukkannya ke tempat khusus, sehingga mencegahnya menjadi sumber infeksi.",
+     "Memahami risiko infeksi dari bangkai yang dibiarkan, dan bisa mengajari karyawan baru urutan pengumpulan dan penyimpanan yang cepat."
+    ]
+   },
+   {
+    "id": "law-record",
+    "name": "法令遵守と死亡記録",
+    "kanten": "堆肥混入などの違法処理を避け、感染症疑いは自己判断せず、死亡状況を記録できるか。",
+    "levels": [
+     "死亡子豚を堆肥に混入するなど違法な処理をし、記録も残さない。",
+     "指示されれば記録するが、法令の理解が浅く記録に漏れが多い。",
+     "指示があれば専用処理へ回し、死亡状況をひと通り記録できる。",
+     "指示がなくても法令に沿って処理し、感染症疑いは自己判断せず、死亡日・頭数・原因を記録する。",
+     "化製場法・廃棄物処理法の要点を理解し、正しい処理と記録を新人に指導できる。"
+    ],
+    "name_en": "Legal compliance and mortality records",
+    "name_vi": "Tuân thủ pháp luật và ghi chép lợn chết",
+    "name_id": "Kepatuhan peraturan dan pencatatan kematian",
+    "kanten_en": "Can they avoid illegal disposal such as mixing into compost, not self-judge suspected infectious diseases, and record the circumstances of death?",
+    "kanten_vi": "Có tránh xử lý trái pháp luật như trộn vào phân ủ, không tự phán đoán khi nghi bệnh truyền nhiễm, và ghi chép được tình trạng chết không.",
+    "kanten_id": "Apakah menghindari pemrosesan ilegal seperti mencampur ke kompos, tidak memutuskan sendiri jika dicurigai penyakit menular, dan bisa mencatat keadaan kematian.",
+    "levels_en": [
+     "Disposes of carcasses illegally, such as mixing dead piglets into compost, and keeps no records.",
+     "Records when instructed, but has a shallow understanding of the law and many recording omissions.",
+     "With guidance, sends carcasses to dedicated disposal and can adequately record the circumstances of death.",
+     "Independently disposes of carcasses in accordance with the law, never self-judges suspected infectious diseases, and records the date, number, and cause of death.",
+     "Understands the key points of the rendering plant and waste disposal laws, and can teach new staff correct disposal and record-keeping."
+    ],
+    "levels_vi": [
+     "Xử lý trái pháp luật như trộn lợn con chết vào phân ủ, cũng không để lại ghi chép.",
+     "Nếu được chỉ dẫn thì ghi chép, nhưng hiểu biết pháp luật còn nông, hay bỏ sót ghi chép.",
+     "Nếu có chỉ dẫn thì chuyển sang xử lý chuyên dùng, ghi chép được cơ bản tình trạng chết.",
+     "Không cần chỉ dẫn cũng xử lý theo pháp luật, nghi bệnh truyền nhiễm thì không tự phán đoán, ghi chép ngày chết, số con, nguyên nhân.",
+     "Hiểu các điểm chính của luật về cơ sở xử lý xác động vật (化製場法) và luật xử lý chất thải (廃棄物処理法), và có thể hướng dẫn người mới cách xử lý và ghi chép đúng."
+    ],
+    "levels_id": [
+     "Melakukan pemrosesan ilegal seperti mencampur anak babi yang mati ke kompos, dan tidak meninggalkan catatan.",
+     "Jika disuruh bisa mencatat, tetapi pemahaman peraturannya dangkal dan catatannya banyak yang terlewat.",
+     "Jika ada instruksi, bisa menyerahkan ke pemrosesan khusus dan mencatat keadaan kematian secara garis besar.",
+     "Tanpa instruksi pun, memproses sesuai peraturan, tidak memutuskan sendiri jika dicurigai penyakit menular, dan mencatat tanggal kematian, jumlah ekor, dan penyebabnya.",
+     "Memahami poin-poin undang-undang pengolahan bangkai dan pengelolaan limbah (peraturan Jepang), dan bisa mengajari karyawan baru pemrosesan dan pencatatan yang benar."
+    ]
+   },
+   {
+    "id": "infect-signs",
+    "name": "感染症サインの察知と作業停止",
+    "kanten": "短期間の複数死・紫黒斑・血便・血泡を見たら死体を動かさず作業を止めて即報告できるか。",
+    "levels": [
+     "感染症のサインを見ずに死体を動かし、疑わしい状況でも自己判断で処理を進める。",
+     "指示があればサインを見るが、見分けが不確実で報告の判断を他者まかせにする。",
+     "指示があれば感染症のサインをひと通り確認し、見つけたら動かさず上司と獣医に報告できる。",
+     "指示がなくても回収前に必ずサインを確認し、疑いがあれば作業を止めて即報告し指示を待つ。",
+     "法定伝染病疑い時の届出や剖検の必要性を理解し、止めるべき状況の見極めを新人に指導できる。"
+    ],
+    "name_en": "Detecting infectious disease signs and stopping work",
+    "name_vi": "Nhận biết dấu hiệu bệnh truyền nhiễm và dừng công việc",
+    "name_id": "Mengenali tanda penyakit menular dan menghentikan pekerjaan",
+    "kanten_en": "Can they stop work without moving the carcass and report immediately upon seeing multiple deaths in a short period, purple-black patches, bloody stool, or bloody foam?",
+    "kanten_vi": "Khi thấy nhiều con chết trong thời gian ngắn, vết tím đen, phân có máu, bọt máu, có dừng công việc mà không di chuyển xác và báo cáo ngay không.",
+    "kanten_id": "Apakah saat melihat beberapa kematian dalam waktu singkat, bercak ungu kehitaman, kotoran berdarah, atau busa berdarah, bisa menghentikan pekerjaan tanpa memindahkan bangkai dan segera melapor.",
+    "levels_en": [
+     "Moves carcasses without looking for infectious disease signs, and proceeds with disposal on their own judgment even in suspicious situations.",
+     "With guidance, looks at the signs, but cannot distinguish them reliably and leaves the reporting decision to others.",
+     "With guidance, can adequately check for infectious disease signs, and upon finding them, report to the supervisor and veterinarian without moving the carcass.",
+     "Independently always checks for the signs before collection, and when there is suspicion, stops work, reports immediately, and waits for instructions.",
+     "Understands the need for notification and necropsy when a notifiable disease is suspected, and can teach new staff how to recognize situations where work must stop."
+    ],
+    "levels_vi": [
+     "Không nhìn dấu hiệu bệnh truyền nhiễm mà di chuyển xác, tình huống đáng ngờ cũng tự ý tiến hành xử lý.",
+     "Nếu có chỉ dẫn thì nhìn dấu hiệu, nhưng phân biệt không chắc chắn, việc quyết định báo cáo thì phó mặc người khác.",
+     "Nếu có chỉ dẫn thì kiểm tra được cơ bản dấu hiệu bệnh truyền nhiễm, thấy thì không di chuyển mà báo cáo cấp trên và bác sĩ thú y.",
+     "Không cần chỉ dẫn cũng nhất định kiểm tra dấu hiệu trước khi thu gom, có nghi ngờ thì dừng việc, báo ngay và chờ chỉ thị.",
+     "Hiểu sự cần thiết của việc khai báo và mổ khám khi nghi bệnh truyền nhiễm theo luật định, và có thể hướng dẫn người mới cách nhận định tình huống phải dừng lại."
+    ],
+    "levels_id": [
+     "Memindahkan bangkai tanpa melihat tanda penyakit menular, dan tetap memprosesnya atas keputusan sendiri walau situasinya mencurigakan.",
+     "Jika ada instruksi bisa melihat tandanya, tetapi tidak bisa membedakannya dengan pasti dan menyerahkan keputusan pelaporan kepada orang lain.",
+     "Jika ada instruksi, bisa memeriksa secara garis besar tanda penyakit menular, dan jika menemukannya, melapor ke atasan dan dokter hewan tanpa memindahkan bangkai.",
+     "Tanpa instruksi pun, selalu memeriksa tandanya sebelum mengumpulkan, dan jika ada kecurigaan, menghentikan pekerjaan, segera melapor, dan menunggu instruksi.",
+     "Memahami perlunya pelaporan resmi dan bedah bangkai saat dicurigai penyakit menular yang wajib dilaporkan, dan bisa mengajari karyawan baru cara menilai situasi yang harus dihentikan."
+    ]
+   },
+   {
+    "id": "ppe-disinfect",
+    "name": "防護具着用と回収後の消毒",
+    "kanten": "厚手手袋・マスクを着け素手で触らず、死体のあった場所・道具を消毒し手洗いできるか。",
+    "levels": [
+     "素手で死体にさわり、跡地や道具も消毒せずそのまま他の豚の作業に移る。",
+     "指示があれば手袋を着けるが、跡地の消毒や道具の洗浄・手指消毒に漏れが多い。",
+     "指示があれば防護具を着けて回収し、跡地・道具の消毒と手洗い・手指消毒をひと通りできる。",
+     "指示がなくても防護具と消毒を徹底し、手指消毒を終えてから他の豚にさわる。",
+     "豚丹毒など人にうつる病気の危険を理解し、防護と消毒の手順を新人に指導できる。"
+    ],
+    "name_en": "Wearing protective gear and disinfection after collection",
+    "name_vi": "Đeo đồ bảo hộ và khử trùng sau khi thu gom",
+    "name_id": "Memakai alat pelindung dan disinfeksi setelah pengumpulan",
+    "kanten_en": "Can they wear thick gloves and a mask, never touch with bare hands, disinfect the spot where the carcass was and the tools, and wash their hands?",
+    "kanten_vi": "Có đeo găng tay dày, khẩu trang, không chạm bằng tay trần, khử trùng chỗ có xác và dụng cụ, rồi rửa tay không.",
+    "kanten_id": "Apakah memakai sarung tangan tebal dan masker, tidak menyentuh dengan tangan kosong, mendisinfeksi tempat bekas bangkai dan alatnya, lalu mencuci tangan.",
+    "levels_en": [
+     "Touches carcasses with bare hands, and moves on to work with other pigs without disinfecting the spot or the tools.",
+     "With guidance, wears gloves, but often fails to disinfect the spot, wash the tools, and disinfect their hands.",
+     "With guidance, collects in protective gear, and can adequately disinfect the spot and tools and wash and disinfect their hands.",
+     "Independently keeps protective gear and disinfection thorough, and touches other pigs only after finishing hand disinfection.",
+     "Understands the danger of diseases transmissible to humans such as erysipelas, and can teach new staff the protection and disinfection procedures."
+    ],
+    "levels_vi": [
+     "Chạm vào xác bằng tay trần, chỗ cũ và dụng cụ cũng không khử trùng mà chuyển luôn sang việc với lợn khác.",
+     "Nếu có chỉ dẫn thì đeo găng tay, nhưng hay bỏ sót việc khử trùng chỗ cũ, rửa dụng cụ và khử trùng tay.",
+     "Nếu có chỉ dẫn thì đeo đồ bảo hộ để thu gom, làm được cơ bản việc khử trùng chỗ cũ, dụng cụ và rửa tay, khử trùng tay.",
+     "Không cần chỉ dẫn cũng giữ nghiêm đồ bảo hộ và khử trùng, khử trùng tay xong mới chạm vào lợn khác.",
+     "Hiểu nguy cơ những bệnh lây sang người như bệnh đóng dấu lợn, và có thể hướng dẫn người mới quy trình bảo hộ và khử trùng."
+    ],
+    "levels_id": [
+     "Menyentuh bangkai dengan tangan kosong, dan langsung pindah mengurus babi lain tanpa mendisinfeksi bekas tempatnya dan alatnya.",
+     "Jika ada instruksi bisa memakai sarung tangan, tetapi sering lalai mendisinfeksi bekas tempatnya, mencuci alat, dan mendisinfeksi tangan.",
+     "Jika ada instruksi, bisa mengumpulkan dengan alat pelindung, dan melakukan secara garis besar disinfeksi bekas tempat dan alat serta cuci tangan dan disinfeksi tangan.",
+     "Tanpa instruksi pun, menjalankan alat pelindung dan disinfeksi dengan menyeluruh, dan menyentuh babi lain hanya setelah selesai disinfeksi tangan.",
+     "Memahami bahaya penyakit yang menular ke manusia seperti erisipelas babi, dan bisa mengajari karyawan baru prosedur perlindungan dan disinfeksi."
+    ]
+   },
+   {
+    "id": "confirm-herdwatch",
+    "name": "死亡確認と同居豚の観察",
+    "kanten": "呼吸・反応を見て死亡を確かめ、同じ豚房の豚の元気・食欲・呼吸・皮膚色を観察できるか。",
+    "levels": [
+     "動かない＝死亡と決めつけて弱った豚を運ぼうとし、同居豚の様子も見ない。",
+     "指示があれば確認するが、死亡確認が不確実で、同居豚の観察も形だけになる。",
+     "指示があれば呼吸と反応で死亡をひと通り確かめ、同居豚の様子を見て回れる。",
+     "指示がなくても死亡を慎重に確かめ、同居豚の異常の兆候を早期に見つけて報告する。",
+     "突然死の病気が群れに広がりやすいことを理解し、確認と観察の着眼点を新人に指導できる。"
+    ],
+    "name_en": "Confirming death and observing pen mates",
+    "name_vi": "Xác nhận lợn chết và quan sát lợn cùng ô chuồng",
+    "name_id": "Memastikan kematian dan mengamati babi sekandang",
+    "kanten_en": "Can they confirm death by checking breathing and responses, and observe the liveliness, appetite, breathing, and skin color of the pigs in the same pen?",
+    "kanten_vi": "Có nhìn hô hấp và phản ứng để chắc chắn lợn đã chết, quan sát độ khỏe, ăn uống, hô hấp, màu da của lợn cùng ô chuồng không.",
+    "kanten_id": "Apakah memastikan kematian dengan melihat napas dan reaksinya, dan mengamati kelincahan, nafsu makan, napas, serta warna kulit babi di petak kandang yang sama.",
+    "levels_en": [
+     "Assumes not moving means dead and tries to carry off weakened pigs, and does not look at the pen mates.",
+     "With guidance, checks, but the death confirmation is unreliable and the observation of pen mates is only a formality.",
+     "With guidance, can adequately confirm death by breathing and responses, and go around observing the pen mates.",
+     "Independently confirms death carefully, and finds and reports early signs of abnormality in the pen mates.",
+     "Understands that diseases causing sudden death spread easily through the herd, and can teach new staff the key points of confirmation and observation."
+    ],
+    "levels_vi": [
+     "Cho rằng không cử động = đã chết nên định mang cả lợn đang yếu đi, cũng không nhìn lợn cùng ô.",
+     "Nếu có chỉ dẫn thì kiểm tra, nhưng việc xác nhận chết không chắc chắn, quan sát lợn cùng ô cũng chỉ cho có hình thức.",
+     "Nếu có chỉ dẫn thì xác nhận được cơ bản lợn chết qua hô hấp và phản ứng, đi xem được tình trạng lợn cùng ô.",
+     "Không cần chỉ dẫn cũng xác nhận lợn chết một cách thận trọng, phát hiện sớm dấu hiệu bất thường của lợn cùng ô và báo cáo.",
+     "Hiểu những bệnh gây chết đột ngột dễ lan trong đàn, và có thể hướng dẫn người mới các điểm cần chú ý khi xác nhận và quan sát."
+    ],
+    "levels_id": [
+     "Menganggap tidak bergerak = mati dan mencoba mengangkut babi yang lemah, dan tidak melihat keadaan babi sekandang.",
+     "Jika ada instruksi bisa memeriksa, tetapi pemastian kematiannya tidak pasti dan pengamatan babi sekandang hanya formalitas.",
+     "Jika ada instruksi, bisa memastikan kematian secara garis besar dari napas dan reaksi, dan berkeliling melihat keadaan babi sekandang.",
+     "Tanpa instruksi pun, memastikan kematian dengan hati-hati, dan menemukan lebih awal tanda kelainan pada babi sekandang lalu melaporkannya.",
+     "Memahami bahwa penyakit penyebab kematian mendadak mudah menyebar di kawanan, dan bisa mengajari karyawan baru titik perhatian dalam pemastian dan pengamatan."
+    ]
+   }
+  ],
+  "name_en": "Dead pig collection",
+  "name_vi": "Thu gom lợn chết",
+  "name_id": "Pengumpulan babi mati",
+  "purposeShort_en": "Prevent pathogen spread, odor, and pest damage, and comply with the law",
+  "purposeShort_vi": "Ngăn mầm bệnh lan rộng, mùi hôi và thú hại, tuân thủ pháp luật",
+  "purposeShort_id": "Mencegah penyebaran bibit penyakit, bau busuk, dan kerusakan oleh hewan liar, serta mematuhi peraturan"
+ }
+]

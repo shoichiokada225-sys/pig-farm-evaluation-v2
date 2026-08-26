@@ -1,0 +1,846 @@
+[
+  {
+    "id": "daily-report",
+    "category": "record",
+    "no": "No.05",
+    "name": "日報記入",
+    "purposeShort": "豚の状態を記録して病気を早期発見し、成績を数字で残し改善に役立てる",
+    "gyomu": "05",
+    "aspects": [
+      {
+        "id": "accurate-timely",
+        "name": "その場での正確な記録",
+        "kanten": "記憶頼りのまとめ書きを避け、その場で事実と数字を正確に記録できるか。",
+        "levels": [
+          "記憶頼りで後からまとめ書きし、数値の単位ズレなど不正確な記録をする。",
+          "指示があれば記録するが、まとめ書きや単位ズレが多い。",
+          "指示があればその場で事実と数字をひと通り正確に記録できる。",
+          "指示がなくてもその場で正確に記録し、単位や数値を確かめる。",
+          "記録の正確さが早期発見・改善に不可欠と理解し、正確な記入を新人に指導できる。"
+        ],
+        "name_en": "Accurate On-the-Spot Recording",
+        "kanten_en": "Can they avoid batch-writing from memory and record facts and figures accurately on the spot?",
+        "levels_en": [
+          "Batch-writes later from memory and makes inaccurate records such as unit mismatches in figures.",
+          "With guidance can record, but often batch-writes and mismatches units.",
+          "With guidance can record facts and figures accurately on the spot through the basic routine.",
+          "Independently records accurately on the spot and double-checks units and figures.",
+          "Understands that accurate records are essential to early detection and improvement, and can teach new staff accurate entry."
+        ],
+        "name_vi": "Ghi chính xác ngay tại chỗ",
+        "kanten_vi": "Có tránh ghi gộp sau bằng trí nhớ, ghi sự việc và con số chính xác ngay tại chỗ không.",
+        "levels_vi": [
+          "Dựa vào trí nhớ, ghi gộp sau, ghi không chính xác như lệch đơn vị của số liệu.",
+          "Nếu được chỉ thị thì ghi, nhưng hay ghi gộp và lệch đơn vị.",
+          "Nếu được chỉ thị thì ghi sự việc, con số chính xác ngay tại chỗ được cơ bản.",
+          "Dù không có chỉ thị vẫn ghi chính xác ngay tại chỗ, kiểm tra lại đơn vị và con số.",
+          "Hiểu tính chính xác của ghi chép là không thể thiếu cho phát hiện sớm và cải thiện, và có thể hướng dẫn người mới cách ghi chính xác."
+        ],
+        "name_id": "Mencatat dengan tepat di tempat",
+        "kanten_id": "Apakah menghindari menulis rangkuman dari ingatan, dan dapat mencatat fakta dan angka dengan tepat di tempat kerja?",
+        "levels_id": [
+          "Menulis rangkuman belakangan dari ingatan, dan membuat catatan tidak tepat seperti satuan angka yang keliru.",
+          "Mencatat jika diperintah, tetapi sering menulis rangkuman belakangan dan salah satuan.",
+          "Jika diperintah, dapat mencatat fakta dan angka dengan tepat di tempat secara lengkap.",
+          "Tanpa diperintah pun, mencatat dengan tepat di tempat, dan memastikan satuan dan angkanya.",
+          "Memahami bahwa ketepatan catatan penting untuk penemuan dini dan perbaikan, dan dapat mengajarkan pengisian yang tepat kepada karyawan baru."
+        ]
+      },
+      {
+        "id": "shared-rule-use",
+        "name": "共通ルールでの記入と活用",
+        "kanten": "全員が同じルールで書き、書くだけで終わらせず見返して活用できるか。治療豚情報を漏らさないか。",
+        "levels": [
+          "自己流で書き、治療豚の薬剤名・投与量・開始日を記入せず休薬管理を抜けさせる。",
+          "指示があれば共通ルールで書くが、活用や治療豚情報の記入に漏れがある。",
+          "指示があれば共通ルールに沿ってひと通り記入できる。",
+          "指示がなくても共通ルールで書き、治療豚情報を漏らさず、記録を見返して活用する。",
+          "記録の共有と活用の意義を理解し、共通ルールと活用方法を新人に指導できる。"
+        ],
+        "name_en": "Writing by Shared Rules and Putting Records to Use",
+        "kanten_en": "Can everyone write by the same rules, review and use the records rather than just writing them, and never omit treated-pig information?",
+        "levels_en": [
+          "Writes in a personal style and omits drug names, doses, and start dates for treated pigs, breaking withdrawal management.",
+          "With guidance writes by shared rules, but misses using the records or entering treated-pig information.",
+          "With guidance can complete entries following the shared rules.",
+          "Independently writes by shared rules, never omits treated-pig information, and reviews and uses the records.",
+          "Understands the value of sharing and using records, and can teach new staff the shared rules and how to use records."
+        ],
+        "name_vi": "Ghi theo quy tắc chung và sử dụng ghi chép",
+        "kanten_vi": "Mọi người có ghi theo cùng một quy tắc, không chỉ ghi mà còn xem lại để sử dụng không. Có bỏ sót thông tin lợn đang điều trị không.",
+        "levels_vi": [
+          "Ghi theo kiểu riêng, không ghi tên thuốc, liều lượng, ngày bắt đầu của lợn điều trị, làm hổng quản lý thời gian ngừng thuốc.",
+          "Nếu được chỉ thị thì ghi theo quy tắc chung, nhưng còn thiếu sót về sử dụng và ghi thông tin lợn điều trị.",
+          "Nếu được chỉ thị thì ghi theo quy tắc chung được cơ bản.",
+          "Dù không có chỉ thị vẫn ghi theo quy tắc chung, không bỏ sót thông tin lợn điều trị, xem lại và sử dụng ghi chép.",
+          "Hiểu ý nghĩa của việc chia sẻ và sử dụng ghi chép, và có thể hướng dẫn người mới quy tắc chung và cách sử dụng."
+        ],
+        "name_id": "Mengisi dengan aturan bersama dan memanfaatkannya",
+        "kanten_id": "Apakah semua orang menulis dengan aturan yang sama, tidak berhenti pada sekadar menulis tetapi membacanya kembali dan memanfaatkannya? Apakah data babi yang diobati tidak terlewat?",
+        "levels_id": [
+          "Menulis dengan gaya sendiri, tidak mengisi nama obat, dosis, dan tanggal mulai untuk babi yang diobati, sehingga pengelolaan masa henti obat bolong.",
+          "Menulis dengan aturan bersama jika diperintah, tetapi sering lalai memanfaatkan dan mengisi data babi yang diobati.",
+          "Jika diperintah, dapat mengisi sesuai aturan bersama secara lengkap.",
+          "Tanpa diperintah pun, menulis dengan aturan bersama, tidak melewatkan data babi yang diobati, dan membaca kembali catatan untuk dimanfaatkan.",
+          "Memahami arti berbagi dan memanfaatkan catatan, dan dapat mengajarkan aturan bersama dan cara memanfaatkannya kepada karyawan baru."
+        ]
+      },
+      {
+        "id": "headcount-balance",
+        "name": "頭数変動の検算",
+        "kanten": "前日頭数±移動＋分娩子豚−死亡−出荷の式で検算し、合わないとき当日中に原因を調べられるか。",
+        "levels": [
+          "頭数変動を書かず、計算が合わなくても気にせず放置する。",
+          "指示があれば頭数を書くが、検算をせず、不一致も他者に指摘されるまで気づかない。",
+          "指示があれば式で検算し、合わないことに自分で気づける。",
+          "指示がなくても毎日検算し、合わないときは当日中に記入漏れ・数え間違いなどの原因を調べる。",
+          "先延ばしが原因特定を難しくすると理解し、検算と当日中の原因調査を新人に指導できる。"
+        ],
+        "name_en": "Verifying Head-Count Changes",
+        "kanten_en": "Can they verify using the formula previous-day count ± transfers + farrowed piglets − deaths − shipments, and investigate the cause the same day when it does not balance?",
+        "levels_en": [
+          "Does not record head-count changes and leaves mismatched calculations without concern.",
+          "With guidance records head counts, but skips verification and misses mismatches until others point them out.",
+          "With guidance can verify with the formula and notice by themselves when it does not balance.",
+          "Independently verifies every day and, when it does not balance, investigates causes such as missed entries or miscounts the same day.",
+          "Understands that postponing makes cause identification difficult, and can teach new staff verification and same-day cause investigation."
+        ],
+        "name_vi": "Kiểm lại biến động số đầu con",
+        "kanten_vi": "Có kiểm lại bằng công thức: số đầu con hôm trước ± chuyển đàn + lợn con mới đẻ − chết − xuất chuồng, và khi không khớp có tìm nguyên nhân ngay trong ngày không.",
+        "levels_vi": [
+          "Không ghi biến động số đầu con, tính không khớp cũng không quan tâm và bỏ mặc.",
+          "Nếu được chỉ thị thì ghi số đầu con, nhưng không kiểm lại, sai lệch cũng không nhận ra cho đến khi người khác chỉ ra.",
+          "Nếu được chỉ thị thì kiểm lại bằng công thức, tự nhận ra khi không khớp.",
+          "Dù không có chỉ thị vẫn kiểm lại hằng ngày, khi không khớp thì tìm nguyên nhân như sót ghi, đếm nhầm ngay trong ngày.",
+          "Hiểu việc trì hoãn làm khó xác định nguyên nhân, và có thể hướng dẫn người mới việc kiểm lại và tìm nguyên nhân trong ngày."
+        ],
+        "name_id": "Menghitung ulang perubahan jumlah ekor",
+        "kanten_id": "Apakah dapat menghitung ulang dengan rumus: jumlah ekor hari sebelumnya ± perpindahan + anak babi lahir − mati − pengiriman, dan mencari penyebabnya pada hari itu juga jika tidak cocok?",
+        "levels_id": [
+          "Tidak mencatat perubahan jumlah ekor, dan tidak peduli walau perhitungannya tidak cocok.",
+          "Mencatat jumlah ekor jika diperintah, tetapi tidak menghitung ulang, dan tidak menyadari ketidakcocokan sampai ditunjukkan orang lain.",
+          "Jika diperintah, dapat menghitung ulang dengan rumus dan menyadari sendiri bila tidak cocok.",
+          "Tanpa diperintah pun, menghitung ulang setiap hari, dan bila tidak cocok mencari penyebabnya seperti catatan terlewat atau salah hitung pada hari itu juga.",
+          "Memahami bahwa menunda membuat penyebab sulit ditemukan, dan dapat mengajarkan penghitungan ulang serta pencarian penyebab pada hari yang sama kepada karyawan baru."
+        ]
+      },
+      {
+        "id": "detail-findings",
+        "name": "死亡・異常の具体的な記述",
+        "kanten": "死亡・異常を「死亡1頭」で済ませず、場所・番号・時間・症状まで具体的に書けるか。",
+        "levels": [
+          "死亡や異常があっても書かない、または「特に問題なし」で済ませて放置する。",
+          "指示があれば書くが、「なんか具合が悪そう」式のあいまいな表現が多く項目に抜けがある。",
+          "指示があれば場所・個体番号・時間・症状をひと通り具体的に書ける。",
+          "指示がなくても推定体重や外見の様子まで書き、残餌増加などの小さな気づきも記録する。",
+          "記述が後の原因究明の手がかりになると理解し、具体的な書き方を新人に指導できる。"
+        ],
+        "name_en": "Specific Description of Deaths and Abnormalities",
+        "kanten_en": "Can they describe deaths and abnormalities specifically down to place, number, time, and symptoms, instead of settling for \"1 death\"?",
+        "levels_en": [
+          "Does not write up deaths or abnormalities, or dismisses them as \"no particular problem\".",
+          "With guidance writes, but uses many vague expressions like \"seems somehow unwell\" and leaves items missing.",
+          "With guidance can write place, individual number, time, and symptoms specifically through the basic routine.",
+          "Independently writes down to estimated weight and outward appearance, and records small findings such as increased leftover feed.",
+          "Understands that descriptions become clues for later cause investigation, and can teach new staff specific writing."
+        ],
+        "name_vi": "Mô tả cụ thể về chết và bất thường",
+        "kanten_vi": "Có viết cụ thể đến nơi, số hiệu, thời gian, triệu chứng, thay vì chỉ ghi \"chết 1 con\" không.",
+        "levels_vi": [
+          "Có chết hay bất thường cũng không ghi, hoặc chỉ ghi \"không có vấn đề gì\" rồi bỏ mặc.",
+          "Nếu được chỉ thị thì ghi, nhưng nhiều cách viết mơ hồ kiểu \"hình như hơi yếu\" và còn sót mục.",
+          "Nếu được chỉ thị thì ghi cụ thể được cơ bản nơi, số hiệu cá thể, thời gian, triệu chứng.",
+          "Dù không có chỉ thị vẫn ghi đến cả trọng lượng ước tính, dáng vẻ bên ngoài, và ghi lại cả những phát hiện nhỏ như thức ăn thừa tăng.",
+          "Hiểu mô tả sẽ là manh mối để tìm nguyên nhân sau này, và có thể hướng dẫn người mới cách viết cụ thể."
+        ],
+        "name_id": "Uraian yang rinci tentang kematian dan kelainan",
+        "kanten_id": "Apakah dapat menulis secara rinci sampai tempat, nomor, waktu, dan gejala, bukan hanya \"mati 1 ekor\"?",
+        "levels_id": [
+          "Walau ada kematian atau kelainan tidak menulisnya, atau hanya menulis \"tidak ada masalah\" lalu membiarkannya.",
+          "Menulis jika diperintah, tetapi banyak ungkapan samar seperti \"sepertinya kurang sehat\" dan ada bagian yang terlewat.",
+          "Jika diperintah, dapat menulis tempat, nomor individu, waktu, dan gejala secara rinci dan lengkap.",
+          "Tanpa diperintah pun, menulis sampai perkiraan bobot dan penampilan luar, serta mencatat temuan kecil seperti sisa pakan yang bertambah.",
+          "Memahami bahwa uraian menjadi petunjuk untuk mencari penyebab di kemudian hari, dan dapat mengajarkan cara menulis yang rinci kepada karyawan baru."
+        ]
+      },
+      {
+        "id": "trend-report",
+        "name": "前日比較と急変の報告",
+        "kanten": "前日までの日報と数字を比べ、死亡や治療頭数の急変・設備不具合を上長へ報告できるか。",
+        "levels": [
+          "過去の日報と比べず、死亡数が急に増えても気づかず報告もしない。",
+          "指示があれば比べるが、急変の見落としが多く、報告するかは他者まかせ。",
+          "指示があれば前日までの数字と比べ、急に変わった項目を報告できる。",
+          "指示がなくても毎日比較し、急変や設備不具合を報告した相手まで日報に残す。",
+          "週ごとの推移を見て対策につなげる意義を理解し、比較と報告の要点を新人に指導できる。"
+        ],
+        "name_en": "Comparing with Previous Days and Reporting Sudden Changes",
+        "kanten_en": "Can they compare figures with daily reports up to the previous day, and report sudden changes in deaths or treated-pig counts and equipment trouble to a supervisor?",
+        "levels_en": [
+          "Does not compare with past daily reports, and neither notices nor reports sudden rises in deaths.",
+          "With guidance compares, but often overlooks sudden changes and leaves reporting to others.",
+          "With guidance can compare with figures up to the previous day and report items that changed suddenly.",
+          "Independently compares every day, and records in the daily report even whom they reported sudden changes and equipment trouble to.",
+          "Understands the value of watching weekly trends to build countermeasures, and can teach new staff the key points of comparison and reporting."
+        ],
+        "name_vi": "So sánh với hôm trước và báo cáo thay đổi đột ngột",
+        "kanten_vi": "Có so sánh con số với nhật ký công việc đến hôm trước, và báo cáo cấp trên khi số chết, số con điều trị thay đổi đột ngột hoặc thiết bị trục trặc không.",
+        "levels_vi": [
+          "Không so sánh với nhật ký trước đây, số chết tăng đột ngột cũng không nhận ra và không báo cáo.",
+          "Nếu được chỉ thị thì so sánh, nhưng hay bỏ sót thay đổi đột ngột, việc báo cáo thì phó mặc người khác.",
+          "Nếu được chỉ thị thì so sánh với con số đến hôm trước, báo cáo được mục thay đổi đột ngột.",
+          "Dù không có chỉ thị vẫn so sánh hằng ngày, ghi vào nhật ký cả người mình đã báo cáo về thay đổi đột ngột, trục trặc thiết bị.",
+          "Hiểu ý nghĩa của việc xem diễn biến theo tuần để đưa ra đối sách, và có thể hướng dẫn người mới điểm chính của so sánh và báo cáo."
+        ],
+        "name_id": "Membandingkan dengan hari sebelumnya dan melaporkan perubahan mendadak",
+        "kanten_id": "Apakah dapat membandingkan angka dengan laporan harian sampai hari sebelumnya, dan melaporkan kepada atasan perubahan mendadak jumlah kematian atau jumlah yang diobati serta gangguan peralatan?",
+        "levels_id": [
+          "Tidak membandingkan dengan laporan harian sebelumnya, tidak menyadari dan tidak melaporkan walau jumlah kematian naik mendadak.",
+          "Membandingkan jika diperintah, tetapi sering melewatkan perubahan mendadak, dan urusan melapor diserahkan kepada orang lain.",
+          "Jika diperintah, dapat membandingkan dengan angka sampai hari sebelumnya dan melaporkan hal yang berubah mendadak.",
+          "Tanpa diperintah pun, membandingkan setiap hari, dan mencatat di laporan harian sampai kepada siapa perubahan mendadak atau gangguan peralatan dilaporkan.",
+          "Memahami arti melihat perkembangan mingguan untuk menyusun penanggulangan, dan dapat mengajarkan pokok perbandingan dan pelaporan kepada karyawan baru."
+        ]
+      }
+    ],
+    "name_en": "Daily Report Entry",
+    "name_vi": "Ghi nhật ký công việc",
+    "name_id": "Mengisi laporan harian",
+    "purposeShort_en": "Record pig conditions for early disease detection and keep performance in numbers for improvement",
+    "purposeShort_vi": "Ghi lại tình trạng lợn để phát hiện bệnh sớm, lưu thành tích bằng con số để phục vụ cải thiện",
+    "purposeShort_id": "Mencatat keadaan babi untuk menemukan penyakit sejak dini, dan menyimpan hasil kerja dalam angka untuk perbaikan"
+  },
+  {
+    "id": "plate",
+    "category": "record",
+    "no": "No.07",
+    "name": "プレート作成",
+    "purposeShort": "個体・群をすぐ見分けられるようにし、ワクチン・治療・休薬中を示す",
+    "gyomu": "07",
+    "aspects": [
+      {
+        "id": "update",
+        "name": "最新状態への更新と旧プレート処理",
+        "kanten": "情報を最新に保ち、分娩後の作成忘れや、差し替え時の古いプレートの残存を防げるか。",
+        "levels": [
+          "分娩後に作成し忘れ、差し替え時も古いプレートを廃棄せず誤情報を残す。",
+          "指示があれば更新するが、作成忘れや旧プレート処理に漏れがある。",
+          "指示があれば情報をひと通り最新に更新できる。",
+          "指示がなくても分娩後すぐ作成し、差し替え時は古いプレートを確実に廃棄する。",
+          "情報の鮮度が個体管理に直結すると理解し、更新と旧プレート処理を新人に指導できる。"
+        ],
+        "name_en": "Keeping Plates Current and Disposing of Old Ones",
+        "kanten_en": "Can they keep information current, avoiding missed plate creation after farrowing and old plates left behind after replacement?",
+        "levels_en": [
+          "Forgets to create plates after farrowing and leaves old plates undiscarded at replacement, keeping wrong information posted.",
+          "With guidance can update, but misses plate creation or old-plate disposal.",
+          "With guidance can update information to the current state through the basic routine.",
+          "Independently creates plates right after farrowing and reliably discards old plates at replacement.",
+          "Understands that information freshness directly affects individual management, and can teach new staff updating and old-plate disposal."
+        ],
+        "name_vi": "Cập nhật trạng thái mới nhất và xử lý thẻ cũ",
+        "kanten_vi": "Có giữ thông tin luôn mới nhất, tránh quên làm thẻ sau khi đẻ, tránh để sót thẻ cũ khi thay thẻ không.",
+        "levels_vi": [
+          "Quên làm thẻ sau khi đẻ, khi thay cũng không bỏ thẻ cũ, để lại thông tin sai.",
+          "Nếu được chỉ thị thì cập nhật, nhưng còn thiếu sót về quên làm thẻ và xử lý thẻ cũ.",
+          "Nếu được chỉ thị thì cập nhật thông tin lên mới nhất được cơ bản.",
+          "Dù không có chỉ thị vẫn làm thẻ ngay sau khi đẻ, khi thay thì bỏ chắc chắn thẻ cũ.",
+          "Hiểu độ mới của thông tin liên quan trực tiếp đến quản lý cá thể, và có thể hướng dẫn người mới việc cập nhật và xử lý thẻ cũ."
+        ],
+        "name_id": "Memperbarui ke keadaan terkini dan membuang kartu lama",
+        "kanten_id": "Apakah dapat menjaga informasi tetap terkini, tidak lupa membuat kartu setelah melahirkan, dan tidak membiarkan kartu lama tertinggal saat penggantian?",
+        "levels_id": [
+          "Lupa membuat kartu setelah melahirkan, dan saat penggantian tidak membuang kartu lama sehingga informasi salah tertinggal.",
+          "Memperbarui jika diperintah, tetapi sering lupa membuat dan lalai menangani kartu lama.",
+          "Jika diperintah, dapat memperbarui informasi ke keadaan terkini secara lengkap.",
+          "Tanpa diperintah pun, segera membuat setelah melahirkan, dan saat penggantian pasti membuang kartu lama.",
+          "Memahami bahwa kesegaran informasi langsung memengaruhi pengelolaan individu, dan dapat mengajarkan pembaruan dan penanganan kartu lama kepada karyawan baru."
+        ]
+      },
+      {
+        "id": "readable",
+        "name": "誰にでも分かる表記・色分けルールの遵守",
+        "kanten": "誰が見ても分かる表記にし、農場の色分け・略語ルールに従い、自分の判断で色や略語を作らないか。",
+        "levels": [
+          "担当者ごとに書式が異なり、自分の判断で色や略語を作って後任者が判読できない。",
+          "指示があれば書くが、表記の統一や色分けルールの適用に漏れがある。",
+          "指示があれば決められた書式と色分けルールに沿ってひと通り作成できる。",
+          "指示がなくても誰でも分かる統一表記で書き、迷う略語は勝手に作らず指導係に確認する。",
+          "表記統一の意義を理解し、分かりやすいプレート作成を新人に指導できる。"
+        ],
+        "name_en": "Notation Anyone Can Read and Following Color-Coding Rules",
+        "kanten_en": "Can they use notation anyone can understand, follow the farm's color-coding and abbreviation rules, and avoid inventing colors or abbreviations on their own judgment?",
+        "levels_en": [
+          "Uses formats that differ by person and invents colors and abbreviations on their own, so successors cannot read the plates.",
+          "With guidance writes, but misses unifying notation and applying the color-coding rules.",
+          "With guidance can create plates following the set format and color-coding rules through the basic routine.",
+          "Independently writes in unified notation anyone can read, and checks uncertain abbreviations with the trainer instead of inventing them.",
+          "Understands the value of unified notation, and can teach new staff how to make clear plates."
+        ],
+        "name_vi": "Cách ghi ai cũng hiểu và tuân thủ quy tắc phân màu",
+        "kanten_vi": "Có ghi sao cho ai nhìn cũng hiểu, theo quy tắc phân màu, viết tắt của trại, không tự ý tạo màu hay chữ viết tắt không.",
+        "levels_vi": [
+          "Mỗi người ghi một kiểu, tự ý tạo màu và chữ viết tắt khiến người kế nhiệm không đọc được.",
+          "Nếu được chỉ thị thì ghi, nhưng còn thiếu sót về thống nhất cách ghi và áp dụng quy tắc phân màu.",
+          "Nếu được chỉ thị thì làm được cơ bản theo mẫu và quy tắc phân màu đã định.",
+          "Dù không có chỉ thị vẫn ghi thống nhất ai cũng hiểu, chữ viết tắt còn phân vân thì không tự tạo mà hỏi người hướng dẫn.",
+          "Hiểu ý nghĩa của việc thống nhất cách ghi, và có thể hướng dẫn người mới cách làm thẻ dễ hiểu."
+        ],
+        "name_id": "Penulisan yang dimengerti siapa pun dan menaati aturan pewarnaan",
+        "kanten_id": "Apakah menulis dengan cara yang dimengerti siapa pun, mengikuti aturan pewarnaan dan singkatan peternakan, dan tidak membuat warna atau singkatan atas pertimbangan sendiri?",
+        "levels_id": [
+          "Format tulisan berbeda tiap petugas, membuat warna dan singkatan sendiri sehingga pengganti tidak dapat membacanya.",
+          "Menulis jika diperintah, tetapi sering lalai menyeragamkan penulisan dan menerapkan aturan pewarnaan.",
+          "Jika diperintah, dapat membuat sesuai format dan aturan pewarnaan yang ditetapkan secara lengkap.",
+          "Tanpa diperintah pun, menulis dengan format seragam yang dimengerti siapa pun, dan singkatan yang meragukan tidak dibuat sendiri melainkan ditanyakan kepada pembimbing.",
+          "Memahami arti keseragaman penulisan, dan dapat mengajarkan pembuatan kartu yang mudah dimengerti kepada karyawan baru."
+        ]
+      },
+      {
+        "id": "source-copy",
+        "name": "記録を見ながらの転記と読み合わせ",
+        "kanten": "記憶で書かず日報・治療記録・母豚カードを見て写し、書いた後に数字を指差しで照合できるか。",
+        "levels": [
+          "記憶だけで書いて番号や日付を間違え、照合もせず放置する。",
+          "指示があれば記録を見て写すが、読み合わせを省きがちで間違いに気づかない。",
+          "指示があれば記録を見ながら写し、書いた後に数字を1つずつ照合できる。",
+          "指示がなくても必ず記録を見て転記し、食い違いはその場で直すか上司に報告する。",
+          "転記ミスが作業ミスにつながると理解し、記録を見て写す習慣と照合を新人に指導できる。"
+        ],
+        "name_en": "Copying from Records and Read-Back Verification",
+        "kanten_en": "Can they copy from the daily report, treatment records, and sow cards instead of writing from memory, and point-check the figures after writing?",
+        "levels_en": [
+          "Writes from memory alone, gets numbers and dates wrong, and leaves them unverified.",
+          "With guidance copies from the records, but tends to skip the read-back and misses errors.",
+          "With guidance can copy while viewing the records and check the figures one by one after writing.",
+          "Independently always copies from the records, and fixes discrepancies on the spot or reports them to a supervisor.",
+          "Understands that copying errors lead to work errors, and can teach new staff the habit of copying from records and verifying."
+        ],
+        "name_vi": "Chép theo ghi chép và đối chiếu lại",
+        "kanten_vi": "Có chép theo nhật ký công việc, hồ sơ điều trị, thẻ lợn nái thay vì viết bằng trí nhớ, và sau khi viết có chỉ tay đối chiếu con số không.",
+        "levels_vi": [
+          "Chỉ viết bằng trí nhớ, sai số hiệu và ngày tháng, cũng không đối chiếu mà bỏ mặc.",
+          "Nếu được chỉ thị thì xem ghi chép để chép, nhưng hay bỏ qua việc đối chiếu lại nên không nhận ra sai sót.",
+          "Nếu được chỉ thị thì chép theo ghi chép, sau khi viết đối chiếu được từng con số một.",
+          "Dù không có chỉ thị vẫn luôn xem ghi chép để chép, chỗ sai lệch thì sửa ngay tại chỗ hoặc báo cáo cấp trên.",
+          "Hiểu chép nhầm sẽ dẫn đến làm nhầm, và có thể hướng dẫn người mới thói quen xem ghi chép để chép và đối chiếu."
+        ],
+        "name_id": "Menyalin sambil melihat catatan dan mencocokkannya kembali",
+        "kanten_id": "Apakah menyalin sambil melihat laporan harian, catatan pengobatan, dan kartu induk babi, bukan menulis dari ingatan, dan setelah menulis mencocokkan angkanya sambil menunjuk?",
+        "levels_id": [
+          "Menulis hanya dari ingatan, salah nomor dan tanggal, serta membiarkannya tanpa dicocokkan.",
+          "Menyalin sambil melihat catatan jika diperintah, tetapi cenderung melewatkan pencocokan sehingga tidak menyadari kesalahan.",
+          "Jika diperintah, dapat menyalin sambil melihat catatan dan mencocokkan angka satu per satu setelah menulis.",
+          "Tanpa diperintah pun, selalu menyalin sambil melihat catatan, dan ketidaksesuaian langsung diperbaiki di tempat atau dilaporkan kepada atasan.",
+          "Memahami bahwa salah salin berujung pada salah kerja, dan dapat mengajarkan kebiasaan menyalin sambil melihat catatan serta mencocokkannya kepada karyawan baru."
+        ]
+      },
+      {
+        "id": "withdrawal-card",
+        "name": "治療カードの休薬情報記入",
+        "kanten": "治療カードに薬剤名・休薬期間・出荷可能日まで書き切り、治療中と目立たせられるか。",
+        "levels": [
+          "治療カードを作らない、または休薬情報を書かず、休薬中の豚を見分けられなくする。",
+          "指示があれば書くが、出荷可能日の記入漏れや目立たせ方の不足が多い。",
+          "指示があれば症状・薬剤名・休薬期間・出荷可能日までひと通り書ける。",
+          "指示がなくても休薬が明ける日付まで必ず書き切り、治療中と一目で分かるよう目立たせる。",
+          "休薬情報が食の安全に直結すると理解し、治療カードの書き方を新人に指導できる。"
+        ],
+        "name_en": "Entering Withdrawal Information on Treatment Cards",
+        "kanten_en": "Can they write treatment cards completely with drug name, withdrawal period, and earliest shipping date, and make under-treatment status stand out?",
+        "levels_en": [
+          "Does not make treatment cards, or omits withdrawal information, making withdrawal pigs impossible to distinguish.",
+          "With guidance writes, but often misses the earliest shipping date and fails to make cards stand out.",
+          "With guidance can write symptoms, drug name, withdrawal period, and earliest shipping date through the basic routine.",
+          "Independently always writes through to the date the withdrawal ends, and makes cards stand out so treatment status is clear at a glance.",
+          "Understands that withdrawal information directly affects food safety, and can teach new staff how to write treatment cards."
+        ],
+        "name_vi": "Ghi thông tin ngừng thuốc trên thẻ điều trị",
+        "kanten_vi": "Có ghi đầy đủ trên thẻ điều trị tên thuốc, thời gian ngừng thuốc, ngày có thể xuất chuồng, và làm nổi bật là đang điều trị không.",
+        "levels_vi": [
+          "Không làm thẻ điều trị, hoặc không ghi thông tin ngừng thuốc, khiến không phân biệt được lợn đang ngừng thuốc.",
+          "Nếu được chỉ thị thì ghi, nhưng hay sót ngày có thể xuất chuồng và chưa làm đủ nổi bật.",
+          "Nếu được chỉ thị thì ghi được cơ bản triệu chứng, tên thuốc, thời gian ngừng thuốc, ngày có thể xuất chuồng.",
+          "Dù không có chỉ thị vẫn ghi đủ đến ngày hết ngừng thuốc, làm nổi bật để nhìn một cái là biết đang điều trị.",
+          "Hiểu thông tin ngừng thuốc liên quan trực tiếp đến an toàn thực phẩm, và có thể hướng dẫn người mới cách ghi thẻ điều trị."
+        ],
+        "name_id": "Mengisi informasi masa henti obat pada kartu pengobatan",
+        "kanten_id": "Apakah dapat mengisi kartu pengobatan sampai nama obat, masa henti obat, dan tanggal boleh dikirim, serta membuat status sedang diobati mencolok?",
+        "levels_id": [
+          "Tidak membuat kartu pengobatan, atau tidak mengisi informasi masa henti obat, sehingga babi dalam masa henti obat tidak dapat dibedakan.",
+          "Mengisi jika diperintah, tetapi sering melewatkan tanggal boleh dikirim dan kurang membuatnya mencolok.",
+          "Jika diperintah, dapat mengisi gejala, nama obat, masa henti obat, sampai tanggal boleh dikirim secara lengkap.",
+          "Tanpa diperintah pun, selalu mengisi sampai tanggal berakhirnya masa henti obat, dan membuatnya mencolok agar sekali lihat tahu sedang diobati.",
+          "Memahami bahwa informasi masa henti obat berhubungan langsung dengan keamanan pangan, dan dapat mengajarkan cara mengisi kartu pengobatan kepada karyawan baru."
+        ]
+      },
+      {
+        "id": "attach-safety",
+        "name": "取り付け位置と誤飲防止",
+        "kanten": "通路側から読め汚れにくい高さに付け、タイの切れ端やペンのキャップを豚房に落とさないか。",
+        "levels": [
+          "豚がかじれる位置に付けたり、切れ端を豚房に落としたりしても気にしない。",
+          "指示があれば付けるが、高さや向きにムラがあり、切れ端の回収も他者まかせ。",
+          "指示があれば通路側から読める高さに付け、切れ端やキャップを回収できる。",
+          "指示がなくても読みやすく汚れにくい位置を選び、豚が飲み込む物を残さないか確かめる。",
+          "誤飲の危険と読みやすさの両立を理解し、安全な取り付け方を新人に指導できる。"
+        ],
+        "name_en": "Attachment Position and Preventing Accidental Ingestion",
+        "kanten_en": "Can they attach plates at a height readable from the aisle and unlikely to get dirty, without dropping tie scraps or pen caps into the pen?",
+        "levels_en": [
+          "Attaches plates where pigs can chew them and does not care about scraps dropped into the pen.",
+          "With guidance attaches, but height and orientation vary and leaves scrap collection to others.",
+          "With guidance can attach at a height readable from the aisle and collect scraps and caps.",
+          "Independently chooses positions that are readable and unlikely to get dirty, and checks that nothing swallowable is left for the pigs.",
+          "Understands both the danger of accidental ingestion and readability, and can teach new staff safe attachment."
+        ],
+        "name_vi": "Vị trí gắn và phòng nuốt nhầm",
+        "kanten_vi": "Có gắn ở độ cao đọc được từ lối đi, khó bị bẩn, không làm rơi mẩu dây buộc hay nắp bút vào ô chuồng không.",
+        "levels_vi": [
+          "Gắn ở chỗ lợn gặm được, làm rơi mẩu vụn vào ô chuồng cũng không quan tâm.",
+          "Nếu được chỉ thị thì gắn, nhưng độ cao và hướng không đều, việc thu nhặt mẩu vụn thì phó mặc người khác.",
+          "Nếu được chỉ thị thì gắn được ở độ cao đọc được từ lối đi, thu nhặt mẩu vụn và nắp bút.",
+          "Dù không có chỉ thị vẫn chọn vị trí dễ đọc, khó bẩn, kiểm tra không để lại vật lợn có thể nuốt.",
+          "Hiểu phải vừa phòng nguy cơ nuốt nhầm vừa bảo đảm dễ đọc, và có thể hướng dẫn người mới cách gắn an toàn."
+        ],
+        "name_id": "Posisi pemasangan dan pencegahan tertelannya benda",
+        "kanten_id": "Apakah memasang pada ketinggian yang terbaca dari lorong dan tidak mudah kotor, tanpa menjatuhkan potongan pengikat atau tutup pena ke dalam kandang?",
+        "levels_id": [
+          "Memasang di posisi yang bisa digigit babi, dan tidak peduli walau menjatuhkan potongan ke dalam kandang.",
+          "Memasang jika diperintah, tetapi ketinggian dan arahnya tidak seragam, dan pengumpulan potongan diserahkan kepada orang lain.",
+          "Jika diperintah, dapat memasang pada ketinggian yang terbaca dari lorong dan mengumpulkan potongan serta tutup pena.",
+          "Tanpa diperintah pun, memilih posisi yang mudah dibaca dan tidak mudah kotor, serta memastikan tidak ada benda yang dapat tertelan babi yang tertinggal.",
+          "Memahami perlunya menyeimbangkan bahaya tertelannya benda dan kemudahan membaca, dan dapat mengajarkan cara pemasangan yang aman kepada karyawan baru."
+        ]
+      }
+    ],
+    "name_en": "Plate Preparation",
+    "name_vi": "Làm thẻ thông tin (plate)",
+    "name_id": "Membuat kartu data (plate)",
+    "purposeShort_en": "Make individuals and groups instantly identifiable and show vaccination, treatment, and withdrawal status",
+    "purposeShort_vi": "Giúp nhận biết ngay từng con, từng nhóm; hiển thị vắc-xin, điều trị, đang ngừng thuốc",
+    "purposeShort_id": "Membuat individu dan kelompok mudah dikenali dengan cepat, serta menandai babi yang divaksin, diobati, atau dalam masa henti obat"
+  },
+  {
+    "id": "tagging",
+    "category": "record",
+    "no": "No.21",
+    "name": "タグ付け",
+    "purposeShort": "1頭ずつ確実に見分け、健康・繁殖・治療・出荷を一貫管理し追跡可能にする",
+    "gyomu": "21",
+    "aspects": [
+      {
+        "id": "position-asepsis",
+        "name": "正しい位置と装着前消毒",
+        "kanten": "決められた位置・向きに正しく付け、装着前に器具と耳を消毒できるか。",
+        "levels": [
+          "装着位置・向きが不統一で読み取りにくく、器具・耳の消毒もしない。",
+          "指示があれば付けるが、位置の統一や消毒に漏れがある。",
+          "指示があれば決められた位置に、消毒してひと通り装着できる。",
+          "指示がなくても位置・向きを統一し、装着前に器具と耳を消毒する。",
+          "読み取りやすさと感染防止を理解し、正しい装着と消毒を新人に指導できる。"
+        ],
+        "name_en": "Correct Position and Pre-Attachment Disinfection",
+        "kanten_en": "Can they attach tags correctly in the designated position and orientation, and disinfect the applicator and the ear before attachment?",
+        "levels_en": [
+          "Attaches tags in inconsistent positions and orientations that are hard to read, and skips disinfecting the applicator and the ear.",
+          "With guidance can attach tags, but misses position consistency or disinfection.",
+          "With guidance can disinfect and attach tags in the designated position through the basic routine.",
+          "Independently keeps position and orientation consistent and disinfects the applicator and the ear before attachment.",
+          "Understands readability and infection prevention, and can teach new staff correct attachment and disinfection."
+        ],
+        "name_vi": "Vị trí đúng và khử trùng trước khi gắn",
+        "kanten_vi": "Có gắn đúng vị trí, đúng chiều quy định, khử trùng dụng cụ và tai trước khi gắn không.",
+        "levels_vi": [
+          "Vị trí, chiều gắn không thống nhất, khó đọc, cũng không khử trùng dụng cụ và tai.",
+          "Nếu được chỉ thị thì gắn, nhưng còn thiếu sót về thống nhất vị trí và khử trùng.",
+          "Nếu được chỉ thị thì khử trùng và gắn vào đúng vị trí quy định được cơ bản.",
+          "Dù không có chỉ thị vẫn thống nhất vị trí, chiều gắn, khử trùng dụng cụ và tai trước khi gắn.",
+          "Hiểu tính dễ đọc và việc phòng nhiễm trùng, và có thể hướng dẫn người mới cách gắn đúng và khử trùng."
+        ],
+        "name_id": "Posisi yang benar dan disinfeksi sebelum pemasangan",
+        "kanten_id": "Apakah dapat memasang dengan benar pada posisi dan arah yang ditentukan, serta mendisinfeksi alat dan telinga sebelum pemasangan?",
+        "levels_id": [
+          "Posisi dan arah pemasangan tidak seragam sehingga sulit dibaca, dan tidak mendisinfeksi alat dan telinga.",
+          "Memasang jika diperintah, tetapi sering lalai menyeragamkan posisi dan mendisinfeksi.",
+          "Jika diperintah, dapat memasang pada posisi yang ditentukan dengan disinfeksi secara lengkap.",
+          "Tanpa diperintah pun, menyeragamkan posisi dan arah, serta mendisinfeksi alat dan telinga sebelum pemasangan.",
+          "Memahami kemudahan pembacaan dan pencegahan infeksi, dan dapat mengajarkan pemasangan yang benar dan disinfeksi kepada karyawan baru."
+        ]
+      },
+      {
+        "id": "reattach",
+        "name": "脱落・破損時の再装着",
+        "kanten": "脱落・破損を見つけ次第付け直し、個体不明のまま管理を続けないか。",
+        "levels": [
+          "タグ付け忘れや脱落後の再装着をせず、個体不明のまま出荷しトレーサビリティを断つ。",
+          "指示があれば付け直すが、脱落の発見や再装着に漏れがある。",
+          "指示があれば脱落・破損をひと通り付け直せる。",
+          "指示がなくても脱落・破損を見つけ次第付け直し、個体不明を作らない。",
+          "トレーサビリティの重要性を理解し、脱落時の再装着徹底を新人に指導できる。"
+        ],
+        "name_en": "Reattachment After Loss or Damage",
+        "kanten_en": "Can they reattach tags as soon as loss or damage is found, and never continue managing unidentified pigs?",
+        "levels_en": [
+          "Skips tagging or reattachment after loss, ships unidentified pigs, and breaks traceability.",
+          "With guidance can reattach, but misses spotting losses or reattaching.",
+          "With guidance can reattach lost or damaged tags through the basic routine.",
+          "Independently reattaches tags as soon as loss or damage is found and never leaves pigs unidentified.",
+          "Understands the importance of traceability, and can teach new staff thorough reattachment after tag loss."
+        ],
+        "name_vi": "Gắn lại khi thẻ rơi, hỏng",
+        "kanten_vi": "Phát hiện thẻ rơi, hỏng có gắn lại ngay, không tiếp tục quản lý khi không rõ cá thể không.",
+        "levels_vi": [
+          "Quên gắn thẻ, thẻ rơi cũng không gắn lại, xuất chuồng khi không rõ cá thể, làm đứt truy xuất nguồn gốc.",
+          "Nếu được chỉ thị thì gắn lại, nhưng còn thiếu sót trong phát hiện thẻ rơi và gắn lại.",
+          "Nếu được chỉ thị thì gắn lại thẻ rơi, hỏng được cơ bản.",
+          "Dù không có chỉ thị vẫn phát hiện thẻ rơi, hỏng là gắn lại ngay, không để xảy ra con không rõ cá thể.",
+          "Hiểu tầm quan trọng của truy xuất nguồn gốc, và có thể hướng dẫn người mới việc gắn lại triệt để khi thẻ rơi."
+        ],
+        "name_id": "Memasang ulang saat lepas atau rusak",
+        "kanten_id": "Apakah memasang ulang begitu menemukan tanda telinga yang lepas atau rusak, dan tidak melanjutkan pengelolaan dengan individu yang tidak dikenal?",
+        "levels_id": [
+          "Lupa memasang tanda telinga dan tidak memasang ulang setelah lepas, mengirim babi tanpa identitas, sehingga memutus ketertelusuran (traceability).",
+          "Memasang ulang jika diperintah, tetapi sering lalai menemukan yang lepas dan memasang ulang.",
+          "Jika diperintah, dapat memasang ulang yang lepas atau rusak secara lengkap.",
+          "Tanpa diperintah pun, memasang ulang begitu menemukan yang lepas atau rusak, dan tidak membiarkan ada individu tanpa identitas.",
+          "Memahami pentingnya ketertelusuran (traceability), dan dapat mengajarkan kedisiplinan memasang ulang saat lepas kepada karyawan baru."
+        ]
+      },
+      {
+        "id": "number-prep",
+        "name": "番号順の準備と頭数照合",
+        "kanten": "タグを番号順にそろえ、腹の子豚の頭数と番号を数えて飛び・重複に装着前に気づけるか。",
+        "levels": [
+          "タグを数えず用意し、番号の飛びや重複に気づかないまま装着する。",
+          "指示があれば並べるが、頭数との照合を省きがちで間違いを他者に指摘される。",
+          "指示があれば番号順に並べ、頭数と番号が合っているか装着前に確認できる。",
+          "指示がなくても予備を含めて準備し、飛び・重複を装着前に見つけて対処する。",
+          "番号の乱れが記録の混乱を招くと理解し、準備と照合の手順を新人に指導できる。"
+        ],
+        "name_en": "Preparing Tags in Number Order and Matching Head Counts",
+        "kanten_en": "Can they arrange tags in number order, count the litter's piglets and numbers, and notice gaps or duplicates before attachment?",
+        "levels_en": [
+          "Prepares tags without counting and attaches them without noticing gaps or duplicated numbers.",
+          "With guidance arranges tags, but tends to skip matching against head counts and has errors pointed out by others.",
+          "With guidance can arrange tags in number order and confirm before attachment that counts and numbers match.",
+          "Independently prepares including spares, and finds and handles gaps or duplicates before attachment.",
+          "Understands that disordered numbers cause record confusion, and can teach new staff the preparation and matching procedure."
+        ],
+        "name_vi": "Chuẩn bị theo thứ tự số và đối chiếu số đầu con",
+        "kanten_vi": "Có xếp thẻ theo thứ tự số, đếm số lợn con trong ổ và số thẻ, nhận ra số nhảy cóc, trùng lặp trước khi gắn không.",
+        "levels_vi": [
+          "Chuẩn bị thẻ mà không đếm, gắn mà không nhận ra số nhảy cóc, trùng lặp.",
+          "Nếu được chỉ thị thì xếp, nhưng hay bỏ qua đối chiếu với số đầu con nên bị người khác chỉ ra sai sót.",
+          "Nếu được chỉ thị thì xếp theo thứ tự số, xác nhận được trước khi gắn số đầu con và số thẻ có khớp không.",
+          "Dù không có chỉ thị vẫn chuẩn bị cả thẻ dự phòng, phát hiện và xử lý số nhảy cóc, trùng lặp trước khi gắn.",
+          "Hiểu số bị rối sẽ gây hỗn loạn ghi chép, và có thể hướng dẫn người mới trình tự chuẩn bị và đối chiếu."
+        ],
+        "name_id": "Menyiapkan sesuai urutan nomor dan mencocokkan jumlah ekor",
+        "kanten_id": "Apakah menyusun tag sesuai urutan nomor, menghitung jumlah anak babi dalam satu kelahiran dan nomornya, dan menyadari nomor yang loncat atau ganda sebelum pemasangan?",
+        "levels_id": [
+          "Menyiapkan tag tanpa menghitung, dan memasang tanpa menyadari nomor yang loncat atau ganda.",
+          "Menyusun jika diperintah, tetapi cenderung melewatkan pencocokan dengan jumlah ekor sehingga kesalahannya ditunjukkan orang lain.",
+          "Jika diperintah, dapat menyusun sesuai urutan nomor dan memastikan sebelum pemasangan bahwa jumlah ekor dan nomor cocok.",
+          "Tanpa diperintah pun, menyiapkan termasuk cadangan, dan menemukan serta menangani nomor loncat atau ganda sebelum pemasangan.",
+          "Memahami bahwa nomor yang kacau menimbulkan kekacauan catatan, dan dapat mengajarkan urutan persiapan dan pencocokan kepada karyawan baru."
+        ]
+      },
+      {
+        "id": "restraint-attach",
+        "name": "保定と一回での確実な装着",
+        "kanten": "子豚をしっかり保定し、プライヤーを一気に握り込んで番号が読める状態に装着できるか。",
+        "levels": [
+          "保定が不十分なまま装着し、途中で止まったタグや読めないタグを放置する。",
+          "指示があれば装着するが、握りが中途半端で留まりのムラが多く、確認は他者まかせ。",
+          "指示があれば保定して一気に装着し、確実に留まって番号が読めるか確認できる。",
+          "指示がなくても確実に装着し、保定が難しいときは自分から先輩と2人で行う。",
+          "暴れによる位置ズレやけがの防止を理解し、保定と装着のコツを新人に指導できる。"
+        ],
+        "name_en": "Restraint and Secure One-Motion Attachment",
+        "kanten_en": "Can they restrain the piglet firmly and squeeze the applicator in one motion to attach the tag so the number is readable?",
+        "levels_en": [
+          "Attaches with insufficient restraint and leaves half-closed or unreadable tags as they are.",
+          "With guidance attaches, but grips halfway with uneven fastening and leaves checking to others.",
+          "With guidance can restrain, attach in one motion, and confirm the tag is fastened securely and the number readable.",
+          "Independently attaches securely and, when restraint is difficult, works in a pair with a senior on their own initiative.",
+          "Understands preventing position shift and injury from struggling, and can teach new staff the knack of restraint and attachment."
+        ],
+        "name_vi": "Giữ chặt và gắn chắc chắn trong một lần",
+        "kanten_vi": "Có giữ chặt lợn con, bóp kìm dứt khoát một lần để gắn thẻ ở trạng thái đọc được số không.",
+        "levels_vi": [
+          "Gắn khi giữ chưa chặt, thẻ kẹp dở dang hay không đọc được số cũng bỏ mặc.",
+          "Nếu được chỉ thị thì gắn, nhưng bóp nửa vời, độ bám không đều, việc kiểm tra thì phó mặc người khác.",
+          "Nếu được chỉ thị thì giữ chặt, gắn dứt khoát một lần, xác nhận được thẻ bám chắc và đọc được số.",
+          "Dù không có chỉ thị vẫn gắn chắc chắn, khi khó giữ thì tự đề nghị làm cùng người đi trước theo cặp 2 người.",
+          "Hiểu việc phòng lệch vị trí và bị thương do lợn giãy, và có thể hướng dẫn người mới mẹo giữ chặt và gắn thẻ."
+        ],
+        "name_id": "Memegangi dan memasang dengan pasti dalam sekali gerakan",
+        "kanten_id": "Apakah dapat memegangi anak babi dengan kuat, menekan tang sekali gerakan dengan mantap, dan memasang tag dalam keadaan nomornya terbaca?",
+        "levels_id": [
+          "Memasang saat pegangan belum kuat, dan membiarkan tag yang berhenti setengah jalan atau tidak terbaca.",
+          "Memasang jika diperintah, tetapi tekanannya setengah-setengah sehingga hasilnya tidak rata, dan pemeriksaan diserahkan kepada orang lain.",
+          "Jika diperintah, dapat memegangi lalu memasang sekali gerakan, dan memastikan tag terpasang kuat serta nomornya terbaca.",
+          "Tanpa diperintah pun, memasang dengan pasti, dan bila sulit memegangi berinisiatif bekerja berdua dengan senior.",
+          "Memahami pencegahan pergeseran posisi dan cedera akibat meronta, dan dapat mengajarkan kiat memegangi dan memasang kepada karyawan baru."
+        ]
+      },
+      {
+        "id": "record-observe",
+        "name": "その場記録と装着後の観察",
+        "kanten": "装着直後に個体番号・装着日・母豚番号をメモし、24〜48時間は耳の腫れと哺乳を確認できるか。",
+        "levels": [
+          "記録を残さず、装着後の耳の腫れや哺乳の様子も見ない。",
+          "指示があれば記録するが、後からまとめて記憶で書き、装着後の確認も抜けが多い。",
+          "指示があればその場でメモし、日報に正確に書き写し、装着後の見回りで耳を確認できる。",
+          "指示がなくてもその場で記録して見直し、腫れ・化膿や哺乳不良に気づけば報告する。",
+          "番号間違いが休薬管理をずらす危険を理解し、その場記録と観察を新人に指導できる。"
+        ],
+        "name_en": "On-the-Spot Recording and Post-Attachment Observation",
+        "kanten_en": "Can they note the individual number, attachment date, and sow number right after attachment, and check ear swelling and suckling for 24-48 hours?",
+        "levels_en": [
+          "Leaves no record and does not watch for ear swelling or suckling after attachment.",
+          "With guidance records, but batch-writes later from memory and often misses post-attachment checks.",
+          "With guidance can note on the spot, copy accurately into the daily report, and check the ears on post-attachment rounds.",
+          "Independently records on the spot and reviews it, and reports swelling, festering, or poor suckling when noticed.",
+          "Understands the danger that number errors shift withdrawal management, and can teach new staff on-the-spot recording and observation."
+        ],
+        "name_vi": "Ghi ngay tại chỗ và quan sát sau khi gắn",
+        "kanten_vi": "Có ghi ngay sau khi gắn số cá thể, ngày gắn, số lợn nái, và trong 24-48 giờ kiểm tra tai sưng và bú mẹ không.",
+        "levels_vi": [
+          "Không ghi lại, sau khi gắn cũng không xem tai sưng hay tình hình bú mẹ.",
+          "Nếu được chỉ thị thì ghi, nhưng để sau mới viết gộp bằng trí nhớ, kiểm tra sau khi gắn cũng nhiều thiếu sót.",
+          "Nếu được chỉ thị thì ghi chú ngay tại chỗ, chép chính xác vào nhật ký công việc, kiểm tra được tai khi đi tua sau khi gắn.",
+          "Dù không có chỉ thị vẫn ghi ngay tại chỗ và xem lại, nhận ra sưng, mưng mủ hay bú kém thì báo cáo.",
+          "Hiểu nguy cơ nhầm số làm lệch quản lý ngừng thuốc, và có thể hướng dẫn người mới việc ghi tại chỗ và quan sát."
+        ],
+        "name_id": "Mencatat di tempat dan mengamati setelah pemasangan",
+        "kanten_id": "Apakah segera setelah pemasangan mencatat nomor individu, tanggal pemasangan, dan nomor induk babi, serta selama 24-48 jam memeriksa pembengkakan telinga dan menyusunya?",
+        "levels_id": [
+          "Tidak meninggalkan catatan, dan setelah pemasangan tidak melihat pembengkakan telinga maupun keadaan menyusu.",
+          "Mencatat jika diperintah, tetapi menulisnya belakangan dari ingatan, dan pemeriksaan setelah pemasangan sering terlewat.",
+          "Jika diperintah, dapat mencatat di tempat, menyalinnya dengan tepat ke laporan harian, dan memeriksa telinga saat keliling setelah pemasangan.",
+          "Tanpa diperintah pun, mencatat di tempat dan memeriksanya kembali, serta melaporkan bila menyadari bengkak, bernanah, atau kurang menyusu.",
+          "Memahami bahaya salah nomor menggeser pengelolaan masa henti obat, dan dapat mengajarkan pencatatan di tempat dan pengamatan kepada karyawan baru."
+        ]
+      }
+    ],
+    "name_en": "Tagging",
+    "name_vi": "Gắn thẻ tai (bấm thẻ số)",
+    "name_id": "Pemasangan tanda telinga (tag nomor)",
+    "purposeShort_en": "Identify each pig reliably for consistent health, breeding, treatment, and shipping management and traceability",
+    "purposeShort_vi": "Nhận biết chắc chắn từng con, quản lý nhất quán sức khỏe, sinh sản, điều trị, xuất chuồng và truy xuất được nguồn gốc",
+    "purposeShort_id": "Mengenali setiap ekor dengan pasti, mengelola kesehatan, reproduksi, pengobatan, dan pengiriman secara terpadu, serta membuatnya dapat ditelusuri"
+  },
+  {
+    "id": "farrow-schedule",
+    "category": "record",
+    "no": "No.32",
+    "name": "分娩予定記入",
+    "purposeShort": "分娩時期を把握して舎・人手を計画的に準備し、不受胎を早期発見する",
+    "gyomu": "32",
+    "aspects": [
+      {
+        "id": "calc",
+        "name": "妊娠日齢の統一計算",
+        "kanten": "妊娠日齢の数え方を統一し、交配日から114〜115日後を正確に計算できるか。",
+        "levels": [
+          "交配日の記録が抜け、日齢の数え方も不統一で分娩予定を計算できない。",
+          "指示があれば計算するが、数え方の統一や幅の考慮に漏れがある。",
+          "指示があれば交配日から予定日をひと通り計算できる。",
+          "指示がなくても統一した数え方で114〜115日後を正確に計算する。",
+          "計算のズレが準備に与える影響を理解し、統一した数え方を新人に指導できる。"
+        ],
+        "name_en": "Standardized Gestation-Day Calculation",
+        "kanten_en": "Can they use a standardized way of counting gestation days and accurately calculate 114-115 days from the mating date?",
+        "levels_en": [
+          "Mating dates go unrecorded and day counting is inconsistent, so due dates cannot be calculated.",
+          "With guidance can calculate, but misses the standardized counting or the allowance for the range.",
+          "With guidance can calculate the due date from the mating date through the basic procedure.",
+          "Independently calculates 114-115 days accurately using the standardized counting.",
+          "Understands how calculation errors affect preparation, and can teach new staff the standardized counting."
+        ],
+        "name_vi": "Tính ngày tuổi thai theo cách thống nhất",
+        "kanten_vi": "Có thống nhất cách đếm ngày tuổi thai, tính đúng 114-115 ngày sau ngày giao phối không.",
+        "levels_vi": [
+          "Thiếu ghi chép ngày giao phối, cách đếm cũng không thống nhất nên không tính được ngày dự sinh.",
+          "Nếu được chỉ thị thì tính, nhưng còn thiếu sót về thống nhất cách đếm và xét khoảng dao động.",
+          "Nếu được chỉ thị thì tính được ngày dự sinh từ ngày giao phối một cách cơ bản.",
+          "Dù không có chỉ thị vẫn tính đúng 114-115 ngày sau bằng cách đếm thống nhất.",
+          "Hiểu ảnh hưởng của việc tính lệch đến khâu chuẩn bị, và có thể hướng dẫn người mới cách đếm thống nhất."
+        ],
+        "name_id": "Menghitung umur kebuntingan dengan cara yang seragam",
+        "kanten_id": "Apakah cara menghitung umur kebuntingan diseragamkan, dan dapat menghitung dengan tepat 114-115 hari setelah tanggal kawin?",
+        "levels_id": [
+          "Catatan tanggal kawin bolong dan cara menghitung tidak seragam, sehingga perkiraan melahirkan tidak dapat dihitung.",
+          "Menghitung jika diperintah, tetapi sering lalai menyeragamkan cara hitung dan mempertimbangkan rentangnya.",
+          "Jika diperintah, dapat menghitung tanggal perkiraan dari tanggal kawin secara lengkap.",
+          "Tanpa diperintah pun, menghitung 114-115 hari setelah kawin dengan tepat memakai cara hitung yang seragam.",
+          "Memahami pengaruh selisih hitungan terhadap persiapan, dan dapat mengajarkan cara hitung yang seragam kepada karyawan baru."
+        ]
+      },
+      {
+        "id": "rewrite",
+        "name": "再交配時の書き直しと母豚観察",
+        "kanten": "交配・再交配のたびに書き直し、予定日だけで判断せず母豚の様子も確認できるか。",
+        "levels": [
+          "再交配時に修正記入を忘れ、予定日だけで判断して母豚の様子を見ない。",
+          "指示があれば書き直すが、修正漏れや観察不足がある。",
+          "指示があれば交配・再交配のたびにひと通り書き直せる。",
+          "指示がなくても再交配時に必ず書き直し、母豚の様子も合わせて確認する。",
+          "書き直し漏れがスケジュール混乱を招くと理解し、記入と観察の徹底を新人に指導できる。"
+        ],
+        "name_en": "Rewriting on Rebreeding and Observing the Sow",
+        "kanten_en": "Can they rewrite the entry at every mating and rebreeding, and check the sow's condition instead of judging by the due date alone?",
+        "levels_en": [
+          "Forgets to correct entries on rebreeding and judges by the due date alone without watching the sow.",
+          "With guidance can rewrite, but has missed corrections and insufficient observation.",
+          "With guidance can rewrite the entry at every mating and rebreeding through the basic routine.",
+          "Independently rewrites without fail on rebreeding and checks the sow's condition as well.",
+          "Understands that missed rewrites disrupt the schedule, and can teach new staff thorough entry and observation."
+        ],
+        "name_vi": "Ghi lại khi phối lại và quan sát lợn nái",
+        "kanten_vi": "Mỗi lần phối, phối lại có ghi lại không, không chỉ dựa vào ngày dự sinh mà còn xem tình trạng lợn nái không.",
+        "levels_vi": [
+          "Quên sửa khi phối lại, chỉ dựa vào ngày dự sinh mà không xem tình trạng lợn nái.",
+          "Nếu được chỉ thị thì ghi lại, nhưng còn sót chỗ sửa và thiếu quan sát.",
+          "Nếu được chỉ thị thì ghi lại được mỗi lần phối, phối lại một cách cơ bản.",
+          "Dù không có chỉ thị vẫn luôn ghi lại khi phối lại, đồng thời xem tình trạng lợn nái.",
+          "Hiểu sót ghi lại sẽ gây rối loạn lịch, và có thể hướng dẫn người mới việc ghi chép và quan sát triệt để."
+        ],
+        "name_id": "Menulis ulang saat kawin ulang dan mengamati induk babi",
+        "kanten_id": "Apakah menulis ulang setiap kali kawin atau kawin ulang, dan tidak menilai hanya dari tanggal perkiraan tetapi juga memeriksa keadaan induk babi?",
+        "levels_id": [
+          "Lupa memperbaiki catatan saat kawin ulang, menilai hanya dari tanggal perkiraan, dan tidak melihat keadaan induk babi.",
+          "Menulis ulang jika diperintah, tetapi masih ada lupa memperbaiki dan kurang mengamati.",
+          "Jika diperintah, dapat menulis ulang setiap kali kawin atau kawin ulang secara lengkap.",
+          "Tanpa diperintah pun, pasti menulis ulang saat kawin ulang, dan memeriksa keadaan induk babi sekaligus.",
+          "Memahami bahwa lupa menulis ulang mengacaukan jadwal, dan dapat mengajarkan kedisiplinan mencatat dan mengamati kepada karyawan baru."
+        ]
+      },
+      {
+        "id": "date-verify",
+        "name": "カレンダーでの日付再確認",
+        "kanten": "計算した日付をカレンダーで指さし確認し、月またぎなどの1日ズレを防げるか。",
+        "levels": [
+          "計算しっぱなしで確認せず、月またぎの1日ズレに気づかず放置する。",
+          "指示があれば確認するが、指さし確認を省きがちでズレの見落としがある。",
+          "指示があればカレンダーで指さしして再確認し、早見表があれば優先して使える。",
+          "指示がなくても月またぎや31日がない月を意識して再確認し、ズレはその場で直す。",
+          "1日のズレが分娩準備を狂わせると理解し、再確認のやり方を新人に指導できる。"
+        ],
+        "name_en": "Rechecking Dates on the Calendar",
+        "kanten_en": "Can they point-check the calculated date on a calendar and prevent one-day slips such as month boundaries?",
+        "levels_en": [
+          "Leaves the calculation unchecked and lets one-day slips at month boundaries go unnoticed.",
+          "With guidance checks, but tends to skip point-checking and overlooks slips.",
+          "With guidance can recheck by pointing on the calendar, using a quick-reference table first when available.",
+          "Independently rechecks mindful of month boundaries and months without a 31st, and fixes slips on the spot.",
+          "Understands that a one-day slip disrupts farrowing preparation, and can teach new staff how to recheck."
+        ],
+        "name_vi": "Kiểm tra lại ngày trên lịch",
+        "kanten_vi": "Có chỉ tay kiểm tra lại ngày đã tính trên lịch, phòng lệch 1 ngày như khi sang tháng không.",
+        "levels_vi": [
+          "Tính xong không kiểm tra, lệch 1 ngày khi sang tháng cũng không nhận ra mà bỏ mặc.",
+          "Nếu được chỉ thị thì kiểm tra, nhưng hay bỏ qua việc chỉ tay xác nhận nên còn bỏ sót chỗ lệch.",
+          "Nếu được chỉ thị thì chỉ tay kiểm tra lại trên lịch, nếu có bảng tra nhanh thì ưu tiên dùng.",
+          "Dù không có chỉ thị vẫn chú ý khi sang tháng, tháng không có ngày 31 để kiểm tra lại, chỗ lệch thì sửa ngay tại chỗ.",
+          "Hiểu lệch 1 ngày sẽ làm rối việc chuẩn bị đẻ, và có thể hướng dẫn người mới cách kiểm tra lại."
+        ],
+        "name_id": "Memeriksa ulang tanggal pada kalender",
+        "kanten_id": "Apakah memeriksa ulang tanggal hasil hitungan pada kalender sambil menunjuk, dan mencegah selisih satu hari seperti saat pergantian bulan?",
+        "levels_id": [
+          "Selesai menghitung tanpa memeriksa, dan tidak menyadari selisih satu hari saat pergantian bulan.",
+          "Memeriksa jika diperintah, tetapi cenderung melewatkan pemeriksaan sambil menunjuk sehingga selisih terlewat.",
+          "Jika diperintah, dapat memeriksa ulang pada kalender sambil menunjuk, dan mengutamakan tabel rujukan cepat bila ada.",
+          "Tanpa diperintah pun, memeriksa ulang dengan memperhatikan pergantian bulan dan bulan tanpa tanggal 31, serta memperbaiki selisih di tempat.",
+          "Memahami bahwa selisih satu hari mengacaukan persiapan melahirkan, dan dapat mengajarkan cara memeriksa ulang kepada karyawan baru."
+        ]
+      },
+      {
+        "id": "board-plan",
+        "name": "予定表への記入と週単位の見える化",
+        "kanten": "予定表に母豚番号と予定日を書き、週ごとの分娩頭数と分娩舎への移動日まで見えるようにできるか。",
+        "levels": [
+          "母豚カードにしか書かず、予定表への記入も移動日の逆算もしない。",
+          "指示があれば予定表に書くが、記入漏れが多く週ごとの頭数が読み取れない。",
+          "指示があれば予定表に母豚番号と予定日を書き、移動日を逆算して記入できる。",
+          "指示がなくても週ごとの頭数が見える形に整え、移動日が休日や大きな作業と重ならないか確かめる。",
+          "週の頭数が舎と人手の計画の土台と理解し、予定表の作り方を新人に指導できる。"
+        ],
+        "name_en": "Entering the Schedule Board and Weekly Visualization",
+        "kanten_en": "Can they write sow numbers and due dates on the schedule board, making weekly farrowing counts and the move date to the farrowing house visible?",
+        "levels_en": [
+          "Writes only on the sow card, with no schedule-board entry or back-calculated move date.",
+          "With guidance writes on the board, but misses many entries so weekly counts cannot be read.",
+          "With guidance can write sow numbers and due dates on the board and back-calculate and enter the move date.",
+          "Independently keeps weekly counts visible, and checks that move dates do not clash with holidays or major work.",
+          "Understands that weekly counts underpin housing and staffing plans, and can teach new staff how to build the schedule board."
+        ],
+        "name_vi": "Ghi vào bảng kế hoạch và nhìn thấy theo tuần",
+        "kanten_vi": "Có ghi số lợn nái và ngày dự sinh vào bảng kế hoạch, làm cho thấy được số con đẻ theo tuần và cả ngày chuyển sang chuồng đẻ không.",
+        "levels_vi": [
+          "Chỉ ghi trên thẻ lợn nái, không ghi vào bảng kế hoạch, cũng không tính ngược ngày chuyển chuồng.",
+          "Nếu được chỉ thị thì ghi vào bảng, nhưng sót nhiều nên không đọc được số con theo tuần.",
+          "Nếu được chỉ thị thì ghi số lợn nái, ngày dự sinh vào bảng, tính ngược và ghi được ngày chuyển chuồng.",
+          "Dù không có chỉ thị vẫn sắp xếp để thấy được số con theo tuần, kiểm tra ngày chuyển có trùng ngày nghỉ hay việc lớn không.",
+          "Hiểu số con theo tuần là nền tảng kế hoạch chuồng và nhân lực, và có thể hướng dẫn người mới cách làm bảng kế hoạch."
+        ],
+        "name_id": "Mengisi papan jadwal dan visualisasi per minggu",
+        "kanten_id": "Apakah dapat menulis nomor induk babi dan tanggal perkiraan pada papan jadwal, sehingga jumlah yang melahirkan per minggu dan tanggal pindah ke kandang melahirkan terlihat?",
+        "levels_id": [
+          "Hanya menulis di kartu induk babi, tidak mengisi papan jadwal dan tidak menghitung mundur tanggal pindah.",
+          "Menulis di papan jika diperintah, tetapi banyak yang terlewat sehingga jumlah per minggu tidak terbaca.",
+          "Jika diperintah, dapat menulis nomor induk babi dan tanggal perkiraan di papan, serta menghitung mundur dan mengisi tanggal pindah.",
+          "Tanpa diperintah pun, menata agar jumlah per minggu terlihat, dan memastikan tanggal pindah tidak bertabrakan dengan hari libur atau pekerjaan besar.",
+          "Memahami bahwa jumlah per minggu menjadi dasar rencana kandang dan tenaga kerja, dan dapat mengajarkan cara membuat papan jadwal kepada karyawan baru."
+        ]
+      },
+      {
+        "id": "check-count",
+        "name": "鑑定日の記入と頭数突き合わせ",
+        "kanten": "再発情チェック・妊娠鑑定の日も予定表に書き、母豚カードと予定表の頭数を数えて突き合わせられるか。",
+        "levels": [
+          "鑑定日を書かず、頭数の突き合わせもせず、書きもれ・消しもれを放置する。",
+          "指示があれば書くが、鑑定日の記入や頭数照合に抜けが多く、不一致も他者まかせ。",
+          "指示があれば再発情チェック・妊娠鑑定の日を記入し、頭数を数えて突き合わせできる。",
+          "指示がなくても両方の頭数を合うまで確認し、不一致の原因（書きもれ・消しもれ）を自分で見つけて直す。",
+          "不受胎の早期発見につながる仕組みと理解し、鑑定日記入と突き合わせを新人に指導できる。"
+        ],
+        "name_en": "Entering Check Dates and Matching Head Counts",
+        "kanten_en": "Can they also write return-to-estrus check and pregnancy check dates on the board, and count and match head counts between sow cards and the board?",
+        "levels_en": [
+          "Does not write check dates or match head counts, and leaves missed entries and missed erasures as they are.",
+          "With guidance writes, but often misses check-date entries and count matching, leaving mismatches to others.",
+          "With guidance can enter return-to-estrus check and pregnancy check dates and count and match the head counts.",
+          "Independently checks both counts until they match, and finds and fixes the causes of mismatches (missed entries or erasures) by themselves.",
+          "Understands this as a mechanism for early detection of failed conception, and can teach new staff check-date entry and matching."
+        ],
+        "name_vi": "Ghi ngày kiểm tra và đối chiếu số đầu con",
+        "kanten_vi": "Có ghi cả ngày kiểm tra động dục lại, ngày khám thai vào bảng kế hoạch, đếm và đối chiếu số đầu con giữa thẻ lợn nái và bảng kế hoạch không.",
+        "levels_vi": [
+          "Không ghi ngày kiểm tra, không đối chiếu số đầu con, bỏ mặc chỗ sót ghi, sót xóa.",
+          "Nếu được chỉ thị thì ghi, nhưng còn nhiều sót về ghi ngày kiểm tra và đối chiếu số, chỗ không khớp thì phó mặc người khác.",
+          "Nếu được chỉ thị thì ghi được ngày kiểm tra động dục lại, ngày khám thai, đếm và đối chiếu số đầu con.",
+          "Dù không có chỉ thị vẫn xác nhận đến khi số hai bên khớp nhau, tự tìm ra và sửa nguyên nhân không khớp (sót ghi, sót xóa).",
+          "Hiểu đây là cơ chế giúp phát hiện sớm không thụ thai, và có thể hướng dẫn người mới việc ghi ngày kiểm tra và đối chiếu."
+        ],
+        "name_id": "Mengisi tanggal pemeriksaan dan mencocokkan jumlah ekor",
+        "kanten_id": "Apakah juga menulis tanggal pemeriksaan birahi kembali dan pemeriksaan kebuntingan pada papan jadwal, serta menghitung dan mencocokkan jumlah ekor antara kartu induk babi dan papan jadwal?",
+        "levels_id": [
+          "Tidak menulis tanggal pemeriksaan, tidak mencocokkan jumlah ekor, dan membiarkan catatan yang terlewat atau lupa dihapus.",
+          "Menulis jika diperintah, tetapi banyak yang terlewat dalam mengisi tanggal pemeriksaan dan mencocokkan jumlah, dan ketidakcocokan diserahkan kepada orang lain.",
+          "Jika diperintah, dapat mengisi tanggal pemeriksaan birahi kembali dan pemeriksaan kebuntingan, serta menghitung dan mencocokkan jumlah ekor.",
+          "Tanpa diperintah pun, memastikan sampai jumlah keduanya cocok, dan menemukan serta memperbaiki sendiri penyebab ketidakcocokan (catatan terlewat atau lupa dihapus).",
+          "Memahami bahwa ini mekanisme untuk menemukan kegagalan bunting sejak dini, dan dapat mengajarkan pengisian tanggal pemeriksaan dan pencocokan kepada karyawan baru."
+        ]
+      }
+    ],
+    "name_en": "Farrowing Due-Date Entry",
+    "name_vi": "Ghi ngày dự sinh",
+    "name_id": "Mencatat perkiraan tanggal melahirkan",
+    "purposeShort_en": "Grasp farrowing timing to prepare housing and staff systematically and detect failed conception early",
+    "purposeShort_vi": "Nắm thời kỳ đẻ để chuẩn bị chuồng và nhân lực có kế hoạch, phát hiện sớm không thụ thai",
+    "purposeShort_id": "Mengetahui waktu melahirkan untuk menyiapkan kandang dan tenaga kerja secara terencana, serta menemukan kegagalan bunting sejak dini"
+  }
+]

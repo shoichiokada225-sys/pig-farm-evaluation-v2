@@ -1,0 +1,635 @@
+[
+ {
+  "id": "farrow-entry",
+  "category": "farrowing",
+  "no": "No.26",
+  "name": "入室（分娩舎）",
+  "purposeShort": "分娩が近い母豚だけを入れ、落ち着いた状態で分娩を迎えさせる",
+  "gyomu": "26",
+  "name_en": "Entry (Farrowing House)",
+  "name_vi": "Đưa nái vào chuồng đẻ",
+  "name_id": "Memasukkan induk ke kandang beranak",
+  "purposeShort_en": "Move in only sows close to farrowing so they can farrow in a calm state",
+  "purposeShort_vi": "Chỉ đưa lợn nái sắp đẻ vào, để nái đón cuộc đẻ trong trạng thái yên tĩnh",
+  "purposeShort_id": "Memasukkan hanya induk babi yang hampir melahirkan, agar melahirkan dalam keadaan tenang",
+  "aspects": [
+   {
+    "id": "prep-before",
+    "name": "入室前の舎内準備",
+    "kanten": "入室前に床・温度・水・エサと分娩クレートの洗浄・乾燥を整えられるか。",
+    "levels": [
+     "分娩舎の温度・保温灯を確認せず、クレート洗浄・乾燥も未完了のまま入室させ、子豚低体温死を招く。",
+     "指示があれば準備するが、温度設定やクレート乾燥の確認に漏れがある。",
+     "指示があれば床・温度・水・エサをひと通り整えられる。",
+     "指示がなくても入室前に温度・保温灯・水・エサとクレートの洗浄・乾燥を確認する。",
+     "入室前準備が子豚の生存に直結すると理解し、準備の要点を新人に指導できる。"
+    ],
+    "name_en": "House Preparation Before Entry",
+    "kanten_en": "Can they prepare the floor, temperature, water, and feed, and wash and dry the farrowing crates before entry?",
+    "levels_en": [
+     "Moves sows in without checking the house temperature or heat lamps and with crates not yet washed and dried, causing piglet deaths from hypothermia.",
+     "With guidance can prepare, but misses the temperature settings or the crate-drying check.",
+     "With guidance can set up the floor, temperature, water, and feed through the basic procedure.",
+     "Independently checks temperature, heat lamps, water, feed, and crate washing and drying before entry.",
+     "Understands that pre-entry preparation directly affects piglet survival, and can teach new staff the key points of preparation."
+    ],
+    "name_vi": "Chuẩn bị trong chuồng trước khi đưa lợn vào",
+    "kanten_vi": "Trước khi đưa lợn vào, có chuẩn bị sàn, nhiệt độ, nước, thức ăn và rửa, làm khô cũi đẻ không.",
+    "levels_vi": [
+     "Không kiểm tra nhiệt độ và đèn sưởi ấm của chuồng đẻ, đưa lợn vào khi cũi chưa rửa, chưa khô, khiến lợn con chết vì hạ thân nhiệt.",
+     "Nếu được chỉ thị thì chuẩn bị, nhưng còn thiếu sót về kiểm tra cài đặt nhiệt độ và độ khô của cũi.",
+     "Nếu được chỉ thị thì chuẩn bị sàn, nhiệt độ, nước, thức ăn được cơ bản.",
+     "Dù không có chỉ thị vẫn kiểm tra nhiệt độ, đèn sưởi ấm, nước, thức ăn và việc rửa, làm khô cũi trước khi đưa lợn vào.",
+     "Hiểu việc chuẩn bị trước khi vào chuồng liên quan trực tiếp đến sự sống của lợn con, và có thể hướng dẫn người mới các điểm chính của việc chuẩn bị."
+    ],
+    "name_id": "Menyiapkan kandang sebelum babi masuk",
+    "kanten_id": "Apakah sebelum babi masuk dapat menyiapkan lantai, suhu, air, pakan, serta mencuci dan mengeringkan farrowing crate?",
+    "levels_id": [
+     "Tidak memeriksa suhu dan lampu pemanas kandang beranak, memasukkan babi sebelum farrowing crate selesai dicuci dan dikeringkan, sehingga anak babi mati kedinginan.",
+     "Menyiapkan jika diperintah, tetapi sering lalai memeriksa pengaturan suhu dan kekeringan crate.",
+     "Jika diperintah, dapat menyiapkan lantai, suhu, air, dan pakan secara lengkap.",
+     "Tanpa diperintah pun, sebelum babi masuk memeriksa suhu, lampu pemanas, air, pakan, serta pencucian dan pengeringan crate.",
+     "Memahami bahwa persiapan sebelum masuk langsung menentukan hidup mati anak babi, dan dapat mengajarkan pokok persiapan kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "batch-entry",
+    "name": "適期の一斉入室と入室後観察",
+    "kanten": "分娩が近い母豚をロットごとに一斉入室させ、途中追加を避け、入室後の体調・行動を観察できるか。",
+    "levels": [
+     "入室タイミングが遅れて妊娠舎で分娩させ、入室後の観察も怠る。",
+     "指示があれば入室させるが、タイミングや一斉入室の管理に漏れがある。",
+     "指示があればロットごとに一斉入室させ、ひと通り観察できる。",
+     "指示がなくても適期にロット単位で入室させ、途中追加を避けて入室後を観察する。",
+     "オールイン・オールアウトの意義を理解し、適期入室と観察を新人に指導できる。"
+    ],
+    "name_en": "Timely Batch Entry and Observation After Entry",
+    "kanten_en": "Can they move sows close to farrowing in by lot all at once, avoid mid-batch additions, and observe condition and behavior after entry?",
+    "levels_en": [
+     "Moves sows in too late so they farrow in the gestation house, and neglects observation after entry.",
+     "With guidance can move sows in, but misses the timing or batch-entry management.",
+     "With guidance can move sows in by lot all at once and observe them through the basic routine.",
+     "Independently moves sows in by lot at the right time, avoids mid-batch additions, and observes them after entry.",
+     "Understands the value of all-in/all-out, and can teach new staff timely entry and observation."
+    ],
+    "name_vi": "Đưa vào đồng loạt đúng thời điểm và theo dõi sau khi vào",
+    "kanten_vi": "Có đưa lợn nái sắp đẻ vào đồng loạt theo từng lô, tránh bổ sung giữa chừng, theo dõi thể trạng và hành vi sau khi vào không.",
+    "levels_vi": [
+     "Đưa vào muộn khiến nái đẻ ở chuồng mang thai, cũng lơ là theo dõi sau khi vào.",
+     "Nếu được chỉ thị thì đưa lợn vào, nhưng còn thiếu sót về thời điểm và quản lý đưa vào đồng loạt.",
+     "Nếu được chỉ thị thì đưa vào đồng loạt theo lô và theo dõi được cơ bản.",
+     "Dù không có chỉ thị vẫn đưa vào theo lô đúng thời điểm, tránh bổ sung giữa chừng và theo dõi sau khi vào.",
+     "Hiểu ý nghĩa của cùng vào - cùng ra (all-in all-out), và có thể hướng dẫn người mới việc đưa vào đúng thời điểm và theo dõi."
+    ],
+    "name_id": "Memasukkan serentak pada waktu yang tepat dan mengawasi setelahnya",
+    "kanten_id": "Apakah dapat memasukkan induk babi yang hampir melahirkan serentak per kelompok (lot), menghindari penambahan di tengah jalan, dan mengawasi kondisi tubuh dan tingkah lakunya setelah masuk?",
+    "levels_id": [
+     "Terlambat memasukkan sehingga babi melahirkan di kandang bunting, dan lalai mengawasi setelah masuk.",
+     "Memasukkan jika diperintah, tetapi sering lalai soal waktu dan pengaturan masuk serentak.",
+     "Jika diperintah, dapat memasukkan serentak per kelompok (lot) dan mengawasinya secara lengkap.",
+     "Tanpa diperintah pun, memasukkan per kelompok (lot) pada waktu yang tepat, menghindari penambahan di tengah jalan, dan mengawasi setelah masuk.",
+     "Memahami arti sistem all-in all-out, dan dapat mengajarkan waktu masuk yang tepat dan pengawasan kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "calm-move",
+    "name": "静かな誘導と人の安全",
+    "kanten": "走らせない・たたかないで静かに誘導し、母豚の真後ろに立たず仕切り板を正しく使えるか。",
+    "levels": [
+     "母豚を走らせたり大声・たたく扱いをし、真後ろに立つなど危険な位置取りをしても気にしない。",
+     "指示があれば静かに誘導しようとするが、仕切り板の使い方や立ち位置にムラがあり、慌てると乱暴になる。",
+     "指示があれば通路の逃げ道をふさぎ、仕切り板で方向をつくって静かにゆっくり誘導できる。",
+     "指示がなくても事前に通路を整え、真後ろを避けた位置取りで安全に誘導し、興奮した母豚には無理をしない。",
+     "驚かせるストレスが流産や事故につながる原理を理解し、安全な誘導のやり方と立ち位置を新人に指導できる。"
+    ],
+    "name_en": "Calm Moving and Human Safety",
+    "kanten_en": "Can they move sows calmly without making them run or hitting them, stay out of the spot directly behind the sow, and use the sorting board correctly?",
+    "levels_en": [
+     "Makes sows run, shouts at or hits them, and takes dangerous positions such as standing directly behind the sow without concern.",
+     "With guidance tries to move sows calmly, but is inconsistent with the sorting board and positioning, and becomes rough when flustered.",
+     "With guidance can block escape gaps in the aisle, use the sorting board to set the direction, and move sows calmly and slowly.",
+     "Independently prepares the aisle in advance, positions away from directly behind the sow to move her safely, and does not force an agitated sow.",
+     "Understands how the stress of startling sows leads to abortion and accidents, and can teach new staff safe moving methods and positioning."
+    ],
+    "name_vi": "Lùa nhẹ nhàng và an toàn cho người",
+    "kanten_vi": "Có lùa nhẹ nhàng không bắt chạy, không đánh, không đứng ngay sau lợn nái và dùng tấm chắn đúng cách không.",
+    "levels_vi": [
+     "Bắt lợn nái chạy, quát to, đánh lợn, đứng ngay sau nái, không quan tâm dù đứng ở vị trí nguy hiểm.",
+     "Nếu được chỉ thị thì cố lùa nhẹ nhàng, nhưng cách dùng tấm chắn và vị trí đứng chưa đều, khi cuống lại thô bạo.",
+     "Nếu được chỉ thị thì bịt lối thoát trên lối đi, dùng tấm chắn tạo hướng đi và lùa nhẹ nhàng, từ từ được.",
+     "Dù không có chỉ thị vẫn chuẩn bị lối đi trước, đứng tránh vị trí ngay sau nái để lùa an toàn, không ép nái đang kích động.",
+     "Hiểu nguyên lý stress do làm nái hoảng sợ dẫn đến sảy thai và tai nạn, và có thể hướng dẫn người mới cách lùa an toàn và vị trí đứng."
+    ],
+    "name_id": "Menggiring dengan tenang dan keselamatan orang",
+    "kanten_id": "Apakah dapat menggiring dengan tenang tanpa membuat lari atau memukul, tidak berdiri tepat di belakang induk babi, dan memakai papan sekat dengan benar?",
+    "levels_id": [
+     "Membuat induk babi lari, berteriak atau memukul, dan tidak peduli walau mengambil posisi berbahaya seperti berdiri tepat di belakang induk.",
+     "Jika diperintah berusaha menggiring dengan tenang, tetapi cara memakai papan sekat dan posisi berdiri tidak konsisten, dan menjadi kasar saat panik.",
+     "Jika diperintah, dapat menutup celah jalan kabur di lorong, membuat arah dengan papan sekat, dan menggiring dengan tenang dan perlahan.",
+     "Tanpa diperintah pun, menyiapkan lorong lebih dulu, mengambil posisi menghindari tepat di belakang induk agar menggiring dengan aman, dan tidak memaksa induk yang sedang gelisah.",
+     "Memahami prinsip bahwa stres karena dikagetkan menyebabkan keguguran dan kecelakaan, dan dapat mengajarkan cara menggiring yang aman dan posisi berdiri kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "id-check",
+    "name": "個体番号の照合と記入",
+    "kanten": "入室時に個体番号とストール番号をその場で照合し、プレート・記録に正しく残せるか。",
+    "levels": [
+     "番号を照合せずに母豚を入れ、プレートの記入漏れ・書きちがいがあっても放置する。",
+     "指示があれば記入するが、照合があいまいで確認は他者まかせ。",
+     "指示があれば個体番号とストール番号をその場で照合し、プレートに正しく記入できる。",
+     "指示がなくても全頭を照合・記入し、リストと合わない個体に気づけばその場で確かめて報告する。",
+     "番号ちがいが後の記録全部をくるわせることを理解し、照合と記入のやり方を新人に指導できる。"
+    ],
+    "name_en": "Checking and Recording ID Numbers",
+    "kanten_en": "Can they check the sow's ID number against the stall number on the spot at entry, and record it correctly on the sow card and records?",
+    "levels_en": [
+     "Puts sows in without checking numbers, and leaves missing or wrong entries on the sow card unaddressed.",
+     "With guidance can record, but checks numbers vaguely and leaves confirmation to others.",
+     "With guidance can check the ID number against the stall number on the spot and record it correctly on the sow card.",
+     "Independently checks and records every sow, and on noticing a sow that does not match the list, confirms on the spot and reports it.",
+     "Understands that a wrong number throws off all later records, and can teach new staff how to check and record."
+    ],
+    "name_vi": "Đối chiếu và ghi số tai",
+    "kanten_vi": "Khi đưa vào chuồng, có đối chiếu ngay tại chỗ số tai với số cũi, và ghi đúng vào bảng thẻ, sổ ghi chép không.",
+    "levels_vi": [
+     "Đưa lợn nái vào mà không đối chiếu số, bảng thẻ ghi thiếu hay ghi sai cũng bỏ mặc.",
+     "Nếu được chỉ thị thì ghi, nhưng đối chiếu mơ hồ và phó mặc người khác kiểm tra.",
+     "Nếu được chỉ thị thì đối chiếu ngay tại chỗ số tai với số cũi và ghi đúng vào bảng thẻ được.",
+     "Dù không có chỉ thị vẫn đối chiếu, ghi chép cho tất cả các con, nếu thấy con không khớp với danh sách thì kiểm tra ngay tại chỗ và báo cáo.",
+     "Hiểu rằng sai số sẽ làm sai toàn bộ ghi chép sau này, và có thể hướng dẫn người mới cách đối chiếu và ghi chép."
+    ],
+    "name_id": "Mencocokkan dan mencatat nomor telinga",
+    "kanten_id": "Apakah saat masuk dapat mencocokkan nomor telinga dengan nomor kandang di tempat, dan mencatatnya dengan benar di papan plat dan catatan?",
+    "levels_id": [
+     "Memasukkan induk babi tanpa mencocokkan nomor, dan membiarkan walau ada catatan papan plat yang kosong atau salah tulis.",
+     "Mencatat jika diperintah, tetapi pencocokannya samar dan pemastian diserahkan ke orang lain.",
+     "Jika diperintah, dapat mencocokkan nomor telinga dengan nomor kandang di tempat dan mencatatnya dengan benar di papan plat.",
+     "Tanpa diperintah pun, mencocokkan dan mencatat semua induk, dan jika menemukan induk yang tidak cocok dengan daftar, memastikan di tempat lalu melaporkan.",
+     "Memahami bahwa nomor yang salah mengacaukan semua catatan selanjutnya, dan dapat mengajarkan cara mencocokkan dan mencatat kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "after-entry",
+    "name": "入室直後の飲水・初回給餌",
+    "kanten": "入室直後に全頭が水を飲めるか実際に確かめ、最初のエサを農場の指示どおり少量から与えられるか。",
+    "levels": [
+     "入室後の飲水確認をせず、最初から多量のエサを与えても気にしない。",
+     "指示があれば確認するが、実際に飲む様子まで見ず、給餌量にもムラがある。",
+     "指示があれば全頭が実際に水を飲む様子を確かめ、最初のエサを指示どおり少量から与えられる。",
+     "指示がなくても全頭の飲水と採食を確かめ、飲めない・食べない個体に気づけばニップルの詰まりなどを調べて報告する。",
+     "急な多給や飲水不足が母豚の体調をくずすことを理解し、入室直後の確認のやり方を新人に指導できる。"
+    ],
+    "name_en": "Water Check and First Feeding Right After Entry",
+    "kanten_en": "Can they actually confirm every sow can drink water right after entry, and give the first feed starting from a small amount as the farm instructs?",
+    "levels_en": [
+     "Does not check drinking after entry, and gives a large amount of feed from the start without concern.",
+     "With guidance can check, but does not watch the sows actually drink, and feed amounts are inconsistent.",
+     "With guidance can confirm every sow actually drinks water, and give the first feed starting from a small amount as instructed.",
+     "Independently confirms every sow drinks and eats, and on noticing a sow that cannot drink or eat, checks for a clogged nipple and the like and reports it.",
+     "Understands that sudden overfeeding and lack of water upset the sow's condition, and can teach new staff how to check right after entry."
+    ],
+    "name_vi": "Kiểm tra uống nước và cho ăn lần đầu ngay sau khi vào",
+    "kanten_vi": "Ngay sau khi vào chuồng, có kiểm tra thực tế tất cả các con uống được nước không, và cho cữ ăn đầu tiên từ lượng ít theo đúng chỉ thị của trại không.",
+    "levels_vi": [
+     "Không kiểm tra uống nước sau khi vào, cho ăn nhiều ngay từ đầu cũng không quan tâm.",
+     "Nếu được chỉ thị thì kiểm tra, nhưng không nhìn tận mắt cảnh nái uống nước, lượng cám cho ăn cũng không đều.",
+     "Nếu được chỉ thị thì kiểm tra tận mắt tất cả các con uống nước, cho cữ ăn đầu tiên từ lượng ít theo đúng chỉ thị được.",
+     "Dù không có chỉ thị vẫn kiểm tra tất cả các con uống nước và ăn cám, nếu thấy con không uống, không ăn thì kiểm tra núm uống nước có tắc không rồi báo cáo.",
+     "Hiểu rằng cho ăn nhiều đột ngột và thiếu nước uống làm lợn nái suy sụp thể trạng, và có thể hướng dẫn người mới cách kiểm tra ngay sau khi vào chuồng."
+    ],
+    "name_id": "Memeriksa minum dan pemberian pakan pertama segera setelah masuk",
+    "kanten_id": "Apakah segera setelah masuk dapat benar-benar memastikan semua induk bisa minum air, dan memberi pakan pertama mulai dari jumlah sedikit sesuai perintah peternakan?",
+    "levels_id": [
+     "Tidak memeriksa minum setelah masuk, dan tidak peduli walau memberi pakan banyak sejak awal.",
+     "Memeriksa jika diperintah, tetapi tidak melihat langsung induk benar-benar minum, dan jumlah pakan tidak konsisten.",
+     "Jika diperintah, dapat memastikan semua induk benar-benar minum air, dan memberi pakan pertama mulai dari jumlah sedikit sesuai perintah.",
+     "Tanpa diperintah pun, memastikan semua induk minum dan makan, dan jika ada induk yang tidak bisa minum atau makan, memeriksa misalnya nipple yang tersumbat lalu melaporkan.",
+     "Memahami bahwa pemberian pakan banyak secara mendadak dan kekurangan air minum merusak kondisi induk babi, dan dapat mengajarkan cara pemeriksaan segera setelah masuk kepada karyawan baru."
+    ]
+   }
+  ]
+ },
+ {
+  "id": "farrow-assist",
+  "category": "farrowing",
+  "no": "No.35",
+  "name": "分娩介助",
+  "purposeShort": "母豚と子豚の命を守り、死産・直後の死亡を減らし初乳を飲ませる",
+  "gyomu": "35",
+  "name_en": "Farrowing Assistance",
+  "name_vi": "Hỗ trợ đỡ đẻ",
+  "name_id": "Membantu proses kelahiran",
+  "purposeShort_en": "Protect the lives of sows and piglets, reduce stillbirths and early deaths, and ensure colostrum intake",
+  "purposeShort_vi": "Bảo vệ tính mạng lợn nái và lợn con, giảm chết lưu, chết ngay sau đẻ và cho bú sữa đầu",
+  "purposeShort_id": "Melindungi nyawa induk dan anak babi, mengurangi lahir mati dan kematian setelah lahir, serta memberi kolostrum (susu pertama)",
+  "aspects": [
+   {
+    "id": "timing",
+    "name": "介助タイミングの見極めと難産の報告",
+    "kanten": "分娩間隔を計り、前の子豚から1時間以上出ない時だけ介助に入り、難産のサインをすぐ報告できるか。",
+    "levels": [
+     "分娩間隔を見ずに放置するか、逆にむやみに手を入れ、難産のサインがあっても報告しない。",
+     "指示があれば介助するが、分娩間隔の見極めが甘く、介助に入るかの判断は他者まかせ。",
+     "指示があれば見回りで分娩間隔を計り、前の子豚から1時間以上出ない時に手順どおり介助へ移れる。",
+     "指示がなくても最低30分おきの見回りで間隔を把握し、迷えば手を入れる前に報告し、難産のサインに気づけばすぐ先輩・獣医へ連絡する。",
+     "介助の遅れが低酸素・死産につながる原理を理解し、介助に入る見極めと難産サインの見分け方を新人に指導できる。"
+    ],
+    "name_en": "Judging When to Assist and Reporting Dystocia",
+    "kanten_en": "Can they time the birth intervals, assist only when no piglet has come for over an hour since the last, and report signs of dystocia right away?",
+    "levels_en": [
+     "Leaves the sow unattended without watching birth intervals, or puts a hand in needlessly, and does not report even when there are signs of dystocia.",
+     "With guidance can assist, but judges birth intervals poorly and leaves the decision to assist to others.",
+     "With guidance can time birth intervals on rounds, and move to assist by the procedure when no piglet has come for over an hour since the last.",
+     "Independently tracks the intervals with rounds at least every 30 minutes, reports before putting a hand in when unsure, and on noticing signs of dystocia contacts a senior or the vet right away.",
+     "Understands how delayed assistance leads to hypoxia and stillbirth, and can teach new staff how to judge when to assist and how to spot signs of dystocia."
+    ],
+    "name_vi": "Phán đoán thời điểm can thiệp và báo cáo đẻ khó",
+    "kanten_vi": "Có đo khoảng cách giữa các lần đẻ, chỉ can thiệp khi quá 1 tiếng kể từ con trước mà lợn con không ra, và báo ngay dấu hiệu đẻ khó không.",
+    "levels_vi": [
+     "Không theo dõi khoảng cách giữa các lần đẻ mà bỏ mặc, hoặc ngược lại tùy tiện đưa tay vào, có dấu hiệu đẻ khó cũng không báo.",
+     "Nếu được chỉ thị thì can thiệp, nhưng phán đoán khoảng cách đẻ còn kém, việc quyết định can thiệp phó mặc người khác.",
+     "Nếu được chỉ thị thì đo khoảng cách giữa các lần đẻ khi đi kiểm tra, và chuyển sang can thiệp theo đúng trình tự khi quá 1 tiếng kể từ con trước mà lợn con không ra.",
+     "Dù không có chỉ thị vẫn đi kiểm tra ít nhất 30 phút một lần để nắm khoảng cách đẻ, khi phân vân thì báo cáo trước khi đưa tay vào, thấy dấu hiệu đẻ khó thì liên lạc ngay với người hướng dẫn hoặc bác sĩ thú y.",
+     "Hiểu nguyên lý can thiệp chậm dẫn đến thiếu oxy, chết lưu, và có thể hướng dẫn người mới cách phán đoán khi nào can thiệp và cách nhận biết dấu hiệu đẻ khó."
+    ],
+    "name_id": "Menilai waktu membantu dan melaporkan kesulitan melahirkan",
+    "kanten_id": "Apakah dapat mengukur jarak waktu antar kelahiran, masuk membantu hanya saat lebih dari 1 jam sejak anak sebelumnya tidak ada yang keluar, dan segera melaporkan tanda kesulitan melahirkan?",
+    "levels_id": [
+     "Membiarkan tanpa melihat jarak waktu antar kelahiran, atau sebaliknya sembarangan memasukkan tangan, dan tidak melaporkan walau ada tanda kesulitan melahirkan.",
+     "Membantu jika diperintah, tetapi penilaian jarak waktu antar kelahiran lemah dan keputusan untuk membantu diserahkan ke orang lain.",
+     "Jika diperintah, dapat mengukur jarak waktu antar kelahiran saat berkeliling, dan mulai membantu sesuai prosedur saat lebih dari 1 jam sejak anak sebelumnya tidak ada yang keluar.",
+     "Tanpa diperintah pun, memantau jarak kelahiran dengan berkeliling minimal setiap 30 menit, jika ragu melapor sebelum memasukkan tangan, dan jika melihat tanda kesulitan melahirkan segera menghubungi senior atau dokter hewan.",
+     "Memahami prinsip bahwa keterlambatan membantu menyebabkan kekurangan oksigen dan lahir mati, dan dapat mengajarkan penilaian kapan harus membantu serta cara mengenali tanda kesulitan melahirkan kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "clean-assist",
+    "name": "清潔と潤滑の徹底",
+    "kanten": "介助前に肘まで洗浄・消毒し、長手袋と潤滑剤を使って清潔に産道へ手を入れられるか。",
+    "levels": [
+     "手洗い・消毒をせず素手や汚れた手袋のまま介助し、潤滑剤も使わない。",
+     "指示があれば手袋を着けるが、肘までの洗浄・消毒や潤滑剤の塗り方に抜けがある。",
+     "指示があれば石けんで肘まで洗って消毒し、長手袋の上から潤滑剤を塗って手順どおり介助できる。",
+     "指示がなくても毎回清潔と潤滑を徹底し、母豚の力みに合わせて引き出し、産道に別の子豚が残っていないかも確かめる。",
+     "不潔な介助が子宮炎から無乳・子豚の飢餓につながる流れを理解し、清潔操作を新人に指導できる。"
+    ],
+    "name_en": "Thorough Cleanliness and Lubrication",
+    "kanten_en": "Can they wash and disinfect up to the elbows before assisting, and enter the birth canal cleanly using long gloves and lubricant?",
+    "levels_en": [
+     "Assists bare-handed or with dirty gloves without washing or disinfecting, and uses no lubricant.",
+     "With guidance puts on gloves, but misses washing and disinfecting up to the elbows or how to apply the lubricant.",
+     "With guidance can wash up to the elbows with soap, disinfect, apply lubricant over the long gloves, and assist by the procedure.",
+     "Independently keeps thorough cleanliness and lubrication every time, pulls the piglet out in time with the sow's straining, and also checks that no other piglet remains in the birth canal.",
+     "Understands how unclean assistance leads from metritis to no milk and piglet starvation, and can teach new staff clean technique."
+    ],
+    "name_vi": "Triệt để sạch sẽ và bôi trơn",
+    "kanten_vi": "Trước khi can thiệp, có rửa, khử trùng đến tận khuỷu tay, dùng găng tay dài và gel bôi trơn để đưa tay vào đường sinh một cách sạch sẽ không.",
+    "levels_vi": [
+     "Không rửa tay, khử trùng, can thiệp bằng tay trần hoặc găng tay bẩn, cũng không dùng gel bôi trơn.",
+     "Nếu được chỉ thị thì đeo găng tay, nhưng còn thiếu sót về rửa, khử trùng đến khuỷu tay và cách bôi gel bôi trơn.",
+     "Nếu được chỉ thị thì rửa bằng xà phòng đến khuỷu tay và khử trùng, bôi gel bôi trơn bên ngoài găng tay dài và can thiệp theo đúng trình tự được.",
+     "Dù không có chỉ thị vẫn triệt để sạch sẽ, bôi trơn mỗi lần, kéo lợn con ra đúng lúc nái rặn, kiểm tra cả trong đường sinh còn con khác không.",
+     "Hiểu chuỗi can thiệp không sạch dẫn đến viêm tử cung rồi mất sữa, lợn con chết đói, và có thể hướng dẫn người mới thao tác sạch sẽ."
+    ],
+    "name_id": "Menjaga kebersihan dan pelumasan dengan ketat",
+    "kanten_id": "Apakah sebelum membantu dapat mencuci dan mendisinfeksi sampai siku, lalu memasukkan tangan ke jalan lahir dengan bersih memakai sarung tangan panjang dan gel pelumas?",
+    "levels_id": [
+     "Membantu dengan tangan telanjang atau sarung tangan kotor tanpa mencuci dan disinfeksi, dan tidak memakai pelumas.",
+     "Memakai sarung tangan jika diperintah, tetapi ada yang terlewat dalam mencuci dan disinfeksi sampai siku serta cara mengoleskan pelumas.",
+     "Jika diperintah, dapat mencuci dengan sabun sampai siku dan disinfeksi, mengoleskan gel pelumas di atas sarung tangan panjang, dan membantu sesuai prosedur.",
+     "Tanpa diperintah pun, setiap kali menjaga kebersihan dan pelumasan dengan ketat, menarik anak keluar mengikuti saat induk mengejan, dan memeriksa juga apakah masih ada anak lain di jalan lahir.",
+     "Memahami alur bahwa bantuan yang tidak bersih menyebabkan radang rahim lalu susu tidak keluar dan anak babi kelaparan, dan dapat mengajarkan penanganan bersih kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "newborn-care",
+    "name": "新生子豚の乾燥・保温・蘇生",
+    "kanten": "生まれた子豚をすぐ乾かし温め、呼吸を確認し、仮死子豚を蘇生できるか。",
+    "levels": [
+     "子豚を乾かさず温めず、仮死子豚を死産と誤判断して蘇生処置を省く。",
+     "指示があれば処置するが、呼吸確認や蘇生の判断に漏れがある。",
+     "指示があれば子豚を乾かし温め、呼吸をひと通り確認できる。",
+     "指示がなくてもすぐ乾かして温め、仮死子豚を見分けて蘇生処置を行う。",
+     "仮死と死産の見分けや蘇生の意義を理解し、新生子豚の初期処置を新人に指導できる。"
+    ],
+    "name_en": "Drying, Warming, and Resuscitating Newborn Piglets",
+    "kanten_en": "Can they dry and warm newborn piglets immediately, check breathing, and resuscitate piglets born in apparent lifelessness?",
+    "levels_en": [
+     "Does not dry or warm piglets, mistakes asphyxiated piglets for stillbirths, and skips resuscitation.",
+     "With guidance can treat piglets, but misses breathing checks or the decision to resuscitate.",
+     "With guidance can dry and warm piglets and check breathing through the basic routine.",
+     "Independently dries and warms piglets immediately, recognizes asphyxiated piglets, and performs resuscitation.",
+     "Understands how to distinguish asphyxia from stillbirth and the value of resuscitation, and can teach new staff the initial care of newborn piglets."
+    ],
+    "name_vi": "Lau khô, giữ ấm, hồi sức lợn con sơ sinh",
+    "kanten_vi": "Có lau khô, sưởi ấm lợn con ngay sau khi sinh, kiểm tra hô hấp và hồi sức cho lợn con bị ngạt không.",
+    "levels_vi": [
+     "Không lau khô, không sưởi ấm lợn con, nhầm lợn con bị ngạt là chết lưu và bỏ qua hồi sức.",
+     "Nếu được chỉ thị thì xử lý, nhưng còn thiếu sót trong kiểm tra hô hấp và phán đoán hồi sức.",
+     "Nếu được chỉ thị thì lau khô, sưởi ấm lợn con và kiểm tra hô hấp được cơ bản.",
+     "Dù không có chỉ thị vẫn lau khô, sưởi ấm ngay, phân biệt được lợn con bị ngạt và tiến hành hồi sức.",
+     "Hiểu cách phân biệt ngạt với chết lưu và ý nghĩa của hồi sức, và có thể hướng dẫn người mới cách xử lý ban đầu cho lợn con sơ sinh."
+    ],
+    "name_id": "Mengeringkan, menghangatkan, dan menghidupkan kembali anak babi baru lahir",
+    "kanten_id": "Apakah dapat segera mengeringkan dan menghangatkan anak babi yang lahir, memeriksa napasnya, dan menolong anak babi yang lemas seperti mati (asfiksia)?",
+    "levels_id": [
+     "Tidak mengeringkan dan menghangatkan anak babi, salah mengira anak babi lemas sebagai lahir mati, dan melewatkan pertolongan napas.",
+     "Menangani jika diperintah, tetapi sering lalai memeriksa napas dan menilai perlunya pertolongan.",
+     "Jika diperintah, dapat mengeringkan dan menghangatkan anak babi serta memeriksa napasnya secara lengkap.",
+     "Tanpa diperintah pun, segera mengeringkan dan menghangatkan, membedakan anak babi lemas dan melakukan pertolongan napas.",
+     "Memahami cara membedakan lemas dan lahir mati serta arti pertolongan napas, dan dapat mengajarkan penanganan awal anak babi baru lahir kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "colostrum",
+    "name": "初乳の早期摂取",
+    "kanten": "生まれた子豚に遅くとも生後6時間以内に初乳を飲ませ、吸えない子豚にも手を打てるか。",
+    "levels": [
+     "初乳を飲めているか気にせず放置し、吸えない子豚がいても何もしない。",
+     "指示があれば乳頭にあてがうが、実際に飲めたかの確認までせずムラがある。",
+     "指示があれば乳頭に子豚の口をあてがい、吸わない子豚には乳を搾って口にたらして飲ませられる。",
+     "指示がなくても全頭の初乳摂取を6時間以内に確かめ、弱い子豚を優先して確実に飲ませる。",
+     "生後24時間を過ぎると腸が閉じて免疫を吸収できなくなる原理を理解し、初乳管理を新人に指導できる。"
+    ],
+    "name_en": "Early Colostrum Intake",
+    "kanten_en": "Can they get newborn piglets to drink colostrum within 6 hours of birth at the latest, and take action for piglets that cannot suckle?",
+    "levels_en": [
+     "Pays no attention to whether piglets are getting colostrum, and does nothing even when a piglet cannot suckle.",
+     "With guidance puts piglets to the teat, but does not confirm they actually drank, so results are inconsistent.",
+     "With guidance can put the piglet's mouth to the teat, and for piglets that will not suckle, milk the teat and drip it into their mouths.",
+     "Independently confirms colostrum intake for every piglet within 6 hours, giving weak piglets priority so they drink without fail.",
+     "Understands that past 24 hours after birth the gut closes and can no longer absorb immunity, and can teach new staff colostrum management."
+    ],
+    "name_vi": "Cho bú sữa đầu sớm",
+    "kanten_vi": "Có cho lợn con mới sinh bú sữa đầu chậm nhất trong vòng 6 tiếng sau khi sinh, và có cách xử lý cho cả lợn con không bú được không.",
+    "levels_vi": [
+     "Không quan tâm lợn con có bú được sữa đầu không mà bỏ mặc, có con không bú được cũng không làm gì.",
+     "Nếu được chỉ thị thì áp miệng lợn con vào đầu vú, nhưng không kiểm tra đến mức con đã bú được thật chưa nên không đều.",
+     "Nếu được chỉ thị thì áp miệng lợn con vào đầu vú, con nào không bú thì vắt sữa nhỏ vào miệng cho bú được.",
+     "Dù không có chỉ thị vẫn kiểm tra tất cả các con bú sữa đầu trong vòng 6 tiếng, ưu tiên con yếu để cho bú chắc chắn.",
+     "Hiểu nguyên lý quá 24 tiếng sau sinh ruột sẽ đóng lại và không hấp thu được miễn dịch, và có thể hướng dẫn người mới cách quản lý sữa đầu."
+    ],
+    "name_id": "Pemberian kolostrum sejak dini",
+    "kanten_id": "Apakah dapat membuat anak babi yang lahir minum kolostrum paling lambat dalam 6 jam setelah lahir, dan mengambil tindakan untuk anak babi yang tidak bisa mengisap?",
+    "levels_id": [
+     "Tidak peduli apakah anak babi minum kolostrum dan membiarkannya, tidak berbuat apa-apa walau ada anak yang tidak bisa mengisap.",
+     "Jika diperintah menempelkan anak ke puting, tetapi tidak memastikan sampai benar-benar minum sehingga hasilnya tidak konsisten.",
+     "Jika diperintah, dapat menempelkan mulut anak babi ke puting, dan untuk anak yang tidak mau mengisap, memerah susu dan meneteskannya ke mulut agar minum.",
+     "Tanpa diperintah pun, memastikan semua anak minum kolostrum dalam 6 jam, dan memprioritaskan anak yang lemah agar pasti minum.",
+     "Memahami prinsip bahwa lewat 24 jam setelah lahir usus menutup dan tidak bisa menyerap kekebalan lagi, dan dapat mengajarkan pengelolaan kolostrum kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "post-record",
+    "name": "分娩後の確認・記録・片付け",
+    "kanten": "胎盤の排出を確認し、分娩時刻・産子数・死産数・処置を記録し、胎盤やタオルを決められた場所へ片付けられるか。",
+    "levels": [
+     "胎盤の確認や記録をせず、使ったタオル・胎盤も片付けずに放置する。",
+     "指示があれば記録・片付けをするが、記入項目や処理場所に抜け漏れが多い。",
+     "指示があれば分娩後4時間以内に胎盤の排出を確かめ、記録用紙に分娩時刻・産子数・死産数・処置を記入して片付けられる。",
+     "指示がなくても胎盤残留やMMAが疑われる発熱・乳房の異常に気づいてすぐ報告し、汚物を舎外に持ち出さず決められた場所で処理する。",
+     "胎盤残留が子宮炎につながることを理解し、分娩後の確認・記録・防疫を意識した片付けを新人に指導できる。"
+    ],
+    "name_en": "Post-Farrowing Checks, Records, and Cleanup",
+    "kanten_en": "Can they confirm the placenta has passed, record the farrowing time, litter size, stillbirths, and treatments, and dispose of the placenta and towels in the designated place?",
+    "levels_en": [
+     "Does not check the placenta or keep records, and leaves used towels and the placenta lying around.",
+     "With guidance records and cleans up, but leaves many gaps in the entries and the disposal place.",
+     "With guidance can confirm placental passage within 4 hours after farrowing, fill in the farrowing time, litter size, stillbirths, and treatments on the record sheet, and clean up.",
+     "Independently notices fever or udder abnormalities suggesting retained placenta or MMA and reports them right away, and processes waste in the designated place without carrying it out of the house.",
+     "Understands that a retained placenta leads to metritis, and can teach new staff post-farrowing checks, records, and biosecurity-minded cleanup."
+    ],
+    "name_vi": "Kiểm tra, ghi chép và dọn dẹp sau khi đẻ",
+    "kanten_vi": "Có xác nhận nhau thai đã ra, ghi giờ đẻ, số con sinh ra, số con chết lưu và nội dung xử lý, rồi dọn nhau thai và khăn vào nơi quy định không.",
+    "levels_vi": [
+     "Không kiểm tra nhau thai, không ghi chép, khăn đã dùng và nhau thai cũng bỏ mặc không dọn.",
+     "Nếu được chỉ thị thì ghi chép, dọn dẹp, nhưng còn nhiều thiếu sót về mục ghi và nơi xử lý.",
+     "Nếu được chỉ thị thì xác nhận nhau thai đã ra trong vòng 4 tiếng sau khi đẻ, ghi vào giấy ghi chép giờ đẻ, số con sinh ra, số con chết lưu, nội dung xử lý rồi dọn dẹp được.",
+     "Dù không có chỉ thị vẫn nhận ra sốt hay bất thường ở bầu vú nghi sót nhau, MMA và báo cáo ngay, xử lý chất bẩn ở nơi quy định, không mang ra ngoài chuồng.",
+     "Hiểu rằng sót nhau dẫn đến viêm tử cung, và có thể hướng dẫn người mới cách kiểm tra, ghi chép sau đẻ và dọn dẹp có ý thức phòng dịch."
+    ],
+    "name_id": "Pemeriksaan, pencatatan, dan pembersihan setelah melahirkan",
+    "kanten_id": "Apakah dapat memastikan plasenta sudah keluar, mencatat jam melahirkan, jumlah anak lahir, jumlah lahir mati, dan penanganan, lalu membereskan plasenta dan handuk ke tempat yang ditentukan?",
+    "levels_id": [
+     "Tidak memeriksa plasenta atau mencatat, dan membiarkan handuk bekas dan plasenta tanpa dibereskan.",
+     "Mencatat dan membereskan jika diperintah, tetapi banyak yang terlewat pada butir catatan dan tempat pembuangan.",
+     "Jika diperintah, dapat memastikan plasenta keluar dalam 4 jam setelah melahirkan, mengisi jam melahirkan, jumlah anak lahir, jumlah lahir mati, dan penanganan di kertas catatan, lalu membereskan.",
+     "Tanpa diperintah pun, menyadari demam atau kelainan ambing yang mencurigakan sisa plasenta atau MMA dan segera melaporkan, serta memproses kotoran di tempat yang ditentukan tanpa membawanya keluar kandang.",
+     "Memahami bahwa plasenta yang tertinggal menyebabkan radang rahim, dan dapat mengajarkan pemeriksaan, pencatatan setelah melahirkan, serta pembersihan yang sadar biosekuriti kepada karyawan baru."
+    ]
+   }
+  ]
+ },
+ {
+  "id": "cross-foster",
+  "category": "farrowing",
+  "no": "No.39",
+  "name": "送り里子",
+  "purposeShort": "乳頭数と子豚数のバランスを整え、離乳頭数を増やし弱子を助ける",
+  "gyomu": "39",
+  "name_en": "Cross-Fostering",
+  "name_vi": "Ghép bầy (cho nái khác nuôi)",
+  "name_id": "Titip anak ke induk lain",
+  "purposeShort_en": "Balance teat numbers and litter sizes, increase weaned piglets, and help weak piglets",
+  "purposeShort_vi": "Cân bằng số vú và số lợn con, tăng số con cai sữa và cứu con yếu",
+  "purposeShort_id": "Menyeimbangkan jumlah puting dan jumlah anak babi, menambah jumlah anak sapih, dan menolong anak yang lemah",
+  "aspects": [
+   {
+    "id": "colostrum-first",
+    "name": "初乳摂取後の里子と対象選び",
+    "kanten": "初乳を飲ませてから、日齢・体重が近い健康な子豚を組み合わせ、乳頭数を超えないよう里子に出せるか。",
+    "levels": [
+     "初乳摂取が不十分なまま移動させ、体重差の大きい子豚を混ぜ、乳頭数を超える頭数でも気にしない。",
+     "指示があれば里子に出すが、初乳確認や対象選びに漏れが多い。",
+     "指示があれば初乳を飲ませてから日齢・体重の近い子豚をひと通り組める。",
+     "指示がなくても初乳摂取後の生後12〜24時間に里子を実施し、体重差を抑えて乳頭数内に収める。",
+     "初乳と免疫獲得の関係を理解し、里子の対象選びと頭数管理を新人に指導できる。"
+    ],
+    "name_en": "Fostering After Colostrum Intake and Selecting Candidates",
+    "kanten_en": "Can they foster only after colostrum intake, match healthy piglets of similar age and weight, and stay within the teat count?",
+    "levels_en": [
+     "Moves piglets with insufficient colostrum intake, mixes piglets with large weight differences, and does not care even when the count exceeds the number of teats.",
+     "With guidance can foster, but often misses the colostrum check or candidate selection.",
+     "With guidance can ensure colostrum intake first and match piglets of similar age and weight through the basic procedure.",
+     "Independently fosters at 12-24 hours after birth once colostrum has been taken, limits weight differences, and stays within the teat count.",
+     "Understands the relationship between colostrum and immunity, and can teach new staff candidate selection and litter-size management."
+    ],
+    "name_vi": "Ghép bầy sau khi bú sữa đầu và chọn đối tượng",
+    "kanten_vi": "Có cho bú sữa đầu trước, ghép các lợn con khỏe mạnh có ngày tuổi, cân nặng gần nhau, không vượt quá số vú không.",
+    "levels_vi": [
+     "Chuyển đi khi chưa bú đủ sữa đầu, ghép lợn con chênh lệch cân nặng lớn, số con vượt quá số vú cũng không quan tâm.",
+     "Nếu được chỉ thị thì ghép bầy, nhưng hay thiếu sót về kiểm tra sữa đầu và chọn đối tượng.",
+     "Nếu được chỉ thị thì cho bú sữa đầu rồi ghép các con có ngày tuổi, cân nặng gần nhau một cách cơ bản.",
+     "Dù không có chỉ thị vẫn ghép bầy trong 12-24 giờ sau sinh, sau khi đã bú sữa đầu, hạn chế chênh lệch cân nặng và giữ trong số vú.",
+     "Hiểu quan hệ giữa sữa đầu và miễn dịch, và có thể hướng dẫn người mới cách chọn con ghép bầy và quản lý số con."
+    ],
+    "name_id": "Menitipkan setelah minum kolostrum dan memilih sasaran",
+    "kanten_id": "Apakah menitipkan setelah anak minum kolostrum (susu pertama), memasangkan anak babi sehat yang umur dan beratnya berdekatan, dan tidak melebihi jumlah puting?",
+    "levels_id": [
+     "Memindahkan sebelum cukup minum kolostrum, mencampur anak babi yang beda beratnya besar, dan tidak peduli walau jumlahnya melebihi jumlah puting.",
+     "Menitipkan jika diperintah, tetapi sering lalai memastikan kolostrum dan memilih sasaran.",
+     "Jika diperintah, dapat memasangkan anak babi yang umur dan beratnya berdekatan secara lengkap setelah minum kolostrum.",
+     "Tanpa diperintah pun, menitipkan pada 12-24 jam setelah lahir sesudah minum kolostrum, menekan beda berat, dan menjaga jumlah dalam batas jumlah puting.",
+     "Memahami hubungan kolostrum dengan kekebalan, dan dapat mengajarkan pemilihan anak titipan dan pengaturan jumlah kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "health-exclude",
+    "name": "病気の子豚の除外と手指衛生",
+    "kanten": "下痢・呼吸異常のある子豚を里子に出さず、疑わしい子豚に触れたあと手袋交換・手指消毒ができるか。",
+    "levels": [
+     "健康チェックをせず病気の子豚も移し、疑わしい子豚に触れた手のまま健康な子豚を扱う。",
+     "指示があればチェックするが見落としが多く、手袋交換や手指消毒も抜けがち。",
+     "指示があれば移す前に下痢・呼吸の異常を確かめ、疑わしい子豚に触れたあとは手袋を替えるか消毒できる。",
+     "指示がなくても健康チェックと手指衛生を徹底し、判断に迷う子豚は移さず報告して指示をあおぐ。",
+     "里子が感染を広げる経路になることを理解し、健康チェックと衛生手順を新人に指導できる。"
+    ],
+    "name_en": "Excluding Sick Piglets and Hand Hygiene",
+    "kanten_en": "Can they keep piglets with diarrhea or breathing problems out of fostering, and change gloves or disinfect their hands after touching a suspect piglet?",
+    "levels_en": [
+     "Moves sick piglets too without health checks, and handles healthy piglets with the same hands that touched a suspect piglet.",
+     "With guidance checks but misses many cases, and often skips glove changes and hand disinfection.",
+     "With guidance can check for diarrhea and breathing problems before moving, and change gloves or disinfect after touching a suspect piglet.",
+     "Independently keeps thorough health checks and hand hygiene, and does not move piglets they are unsure about but reports and asks for instructions.",
+     "Understands that fostering can become a route that spreads infection, and can teach new staff health checks and hygiene procedures."
+    ],
+    "name_vi": "Loại lợn con bệnh và vệ sinh tay",
+    "kanten_vi": "Có không ghép bầy lợn con bị tiêu chảy, thở bất thường, và sau khi chạm vào con nghi bệnh có thay găng tay, khử trùng tay không.",
+    "levels_vi": [
+     "Không kiểm tra sức khỏe, chuyển cả lợn con bệnh, tay vừa chạm con nghi bệnh vẫn dùng để chăm con khỏe.",
+     "Nếu được chỉ thị thì kiểm tra nhưng bỏ sót nhiều, cũng hay quên thay găng tay, khử trùng tay.",
+     "Nếu được chỉ thị thì kiểm tra tiêu chảy, thở bất thường trước khi chuyển, sau khi chạm con nghi bệnh thì thay găng tay hoặc khử trùng được.",
+     "Dù không có chỉ thị vẫn triệt để kiểm tra sức khỏe và vệ sinh tay, con nào phân vân thì không chuyển mà báo cáo và xin chỉ thị.",
+     "Hiểu rằng ghép bầy có thể thành đường lây lan bệnh, và có thể hướng dẫn người mới cách kiểm tra sức khỏe và trình tự vệ sinh."
+    ],
+    "name_id": "Menyisihkan anak babi sakit dan kebersihan tangan",
+    "kanten_id": "Apakah tidak menitipkan anak babi yang diare atau napasnya tidak normal, dan setelah menyentuh anak babi yang dicurigai dapat mengganti sarung tangan atau mendisinfeksi tangan?",
+    "levels_id": [
+     "Memindahkan juga anak babi sakit tanpa pemeriksaan kesehatan, dan menangani anak babi sehat dengan tangan yang baru menyentuh anak yang dicurigai.",
+     "Memeriksa jika diperintah tetapi banyak yang terlewat, dan sering lupa mengganti sarung tangan dan mendisinfeksi tangan.",
+     "Jika diperintah, dapat memeriksa diare dan kelainan napas sebelum memindah, dan setelah menyentuh anak yang dicurigai mengganti sarung tangan atau mendisinfeksi.",
+     "Tanpa diperintah pun, menjaga ketat pemeriksaan kesehatan dan kebersihan tangan, dan anak babi yang meragukan tidak dipindah melainkan dilaporkan untuk meminta petunjuk.",
+     "Memahami bahwa titip anak bisa menjadi jalur penyebaran infeksi, dan dapat mengajarkan pemeriksaan kesehatan dan prosedur kebersihan kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "move-handle",
+    "name": "静かな移動と受け入れ確認",
+    "kanten": "子豚を静かに抱えて1回で移し、母豚が受け入れるか見守り、拒否された時は無理をせず相談できるか。",
+    "levels": [
+     "子豚を乱暴に扱って何度も動かし、母豚が噛む・踏むなど拒否しても放置する。",
+     "指示があれば移せるが扱いが雑で、受け入れの見守りは他者まかせ。",
+     "指示があれば子豚を静かに抱えて1回で移し、移した直後の母豚の様子を見守れる。",
+     "指示がなくても冬は移動先の保温を先に確かめて短時間で移し、拒否されたら無理に押し付けず先輩に相談して別の母豚を検討する。",
+     "移動のくり返しがストレスで発育を止めることと母豚の咬みつきの危険を理解し、安全な移し方を新人に指導できる。"
+    ],
+    "name_en": "Calm Moving and Acceptance Checks",
+    "kanten_en": "Can they carry the piglet calmly and move it in one go, watch whether the sow accepts it, and consult without forcing it when rejected?",
+    "levels_en": [
+     "Handles piglets roughly and moves them repeatedly, and leaves them even when the sow rejects them by biting or trampling.",
+     "With guidance can move piglets but handles them roughly, and leaves watching for acceptance to others.",
+     "With guidance can carry the piglet calmly, move it in one go, and watch the sow right after the move.",
+     "Independently checks the warmth at the destination first in winter and moves quickly, and when rejected does not force the piglet on the sow but consults a senior and considers another sow.",
+     "Understands that repeated moves stall growth through stress and that sow bites are dangerous, and can teach new staff safe moving."
+    ],
+    "name_vi": "Chuyển nhẹ nhàng và kiểm tra nái nhận con",
+    "kanten_vi": "Có bế lợn con nhẹ nhàng, chuyển 1 lần là xong, theo dõi nái có nhận con không, khi bị từ chối thì không ép mà trao đổi được không.",
+    "levels_vi": [
+     "Xử lý lợn con thô bạo, chuyển đi chuyển lại nhiều lần, nái cắn hay giẫm để từ chối cũng bỏ mặc.",
+     "Nếu được chỉ thị thì chuyển được nhưng thao tác còn thô, việc theo dõi nái nhận con phó mặc người khác.",
+     "Nếu được chỉ thị thì bế lợn con nhẹ nhàng, chuyển 1 lần là xong, theo dõi được tình trạng nái ngay sau khi chuyển.",
+     "Dù không có chỉ thị, mùa đông vẫn kiểm tra việc giữ ấm ở chuồng nhận trước rồi chuyển nhanh, khi bị từ chối thì không ép mà trao đổi với người hướng dẫn để xem xét nái khác.",
+     "Hiểu rằng chuyển đi chuyển lại gây stress làm ngừng lớn và nguy hiểm khi nái cắn, và có thể hướng dẫn người mới cách chuyển an toàn."
+    ],
+    "name_id": "Memindahkan dengan tenang dan memastikan induk menerima",
+    "kanten_id": "Apakah dapat menggendong anak babi dengan tenang dan memindahkannya dalam 1 kali, mengawasi apakah induk menerimanya, dan saat ditolak tidak memaksa melainkan berkonsultasi?",
+    "levels_id": [
+     "Menangani anak babi dengan kasar dan memindahkannya berkali-kali, dan membiarkan walau induk menolak dengan menggigit atau menginjak.",
+     "Dapat memindah jika diperintah tetapi penanganannya kasar, dan pengawasan penerimaan diserahkan ke orang lain.",
+     "Jika diperintah, dapat menggendong anak babi dengan tenang, memindahkannya dalam 1 kali, dan mengawasi keadaan induk segera setelah pemindahan.",
+     "Tanpa diperintah pun, pada musim dingin memeriksa dulu penghangat di kandang tujuan lalu memindah dengan cepat, dan saat ditolak tidak memaksakan melainkan berkonsultasi dengan senior untuk mempertimbangkan induk lain.",
+     "Memahami bahwa pemindahan berulang menghentikan pertumbuhan karena stres dan bahaya gigitan induk babi, dan dapat mengajarkan cara memindah yang aman kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "follow-up",
+    "name": "里子後の飲乳確認と経過観察",
+    "kanten": "里子後24時間以内に乳頭への吸い付きとおなかのふくらみを確かめ、その後2〜3日観察を続けられるか。",
+    "levels": [
+     "移したあとの確認をせず、飲めていない子豚ややせ・下痢があっても気づかない。",
+     "指示があれば見るが確認が一度きりで、その後の観察は続かない。",
+     "指示があれば24時間以内に乳頭への吸い付きとおなかのふくらみを確かめられる。",
+     "指示がなくても2〜3日観察を続け、母豚の拒否・子豚のやせ・下痢に気づけばすぐ報告する。",
+     "飲めているかをおなかのふくらみで見分けるなど観察の要点を理解し、里子後のフォローを新人に指導できる。"
+    ],
+    "name_en": "Suckling Checks and Follow-Up After Fostering",
+    "kanten_en": "Can they confirm within 24 hours of fostering that the piglet latches onto a teat and has a rounded belly, and keep observing for the next 2-3 days?",
+    "levels_en": [
+     "Does not check after the move, and fails to notice piglets that are not drinking, losing weight, or scouring.",
+     "With guidance looks, but checks only once and does not keep observing afterward.",
+     "With guidance can confirm within 24 hours that the piglet latches onto a teat and its belly is rounded.",
+     "Independently keeps observing for 2-3 days, and reports right away on noticing sow rejection, piglet thinness, or diarrhea.",
+     "Understands the key observation points, such as telling whether piglets are drinking by the rounded belly, and can teach new staff post-fostering follow-up."
+    ],
+    "name_vi": "Kiểm tra bú sữa và theo dõi sau ghép bầy",
+    "kanten_vi": "Trong vòng 24 giờ sau khi ghép bầy, có kiểm tra con bám bú núm vú và bụng căng tròn không, sau đó tiếp tục theo dõi 2〜3 ngày không.",
+    "levels_vi": [
+     "Không kiểm tra sau khi chuyển, có con không bú được, gầy đi hay tiêu chảy cũng không nhận ra.",
+     "Nếu được chỉ thị thì xem, nhưng chỉ kiểm tra một lần, sau đó không tiếp tục theo dõi.",
+     "Nếu được chỉ thị thì kiểm tra được trong vòng 24 giờ con bám bú núm vú và bụng căng tròn.",
+     "Dù không có chỉ thị vẫn tiếp tục theo dõi 2〜3 ngày, thấy nái từ chối, lợn con gầy hay tiêu chảy thì báo cáo ngay.",
+     "Hiểu các điểm chính khi quan sát như nhìn bụng căng tròn để biết con bú được không, và có thể hướng dẫn người mới cách theo dõi sau ghép bầy."
+    ],
+    "name_id": "Memastikan menyusu dan pengamatan lanjutan setelah titip anak",
+    "kanten_id": "Apakah dalam 24 jam setelah titip anak dapat memastikan anak menempel menyusu di puting dan perutnya membuncit, lalu melanjutkan pengamatan 2〜3 hari berikutnya?",
+    "levels_id": [
+     "Tidak memeriksa setelah memindah, dan tidak menyadari anak babi yang tidak bisa menyusu, kurus, atau diare.",
+     "Melihat jika diperintah, tetapi memeriksa hanya sekali dan pengamatan selanjutnya tidak berlanjut.",
+     "Jika diperintah, dapat memastikan dalam 24 jam anak menempel menyusu di puting dan perutnya membuncit.",
+     "Tanpa diperintah pun, melanjutkan pengamatan 2〜3 hari, dan segera melaporkan jika menyadari induk menolak, anak babi kurus, atau diare.",
+     "Memahami pokok pengamatan seperti membedakan anak bisa menyusu atau tidak dari perut yang membuncit, dan dapat mengajarkan tindak lanjut setelah titip anak kepada karyawan baru."
+    ]
+   },
+   {
+    "id": "record-match",
+    "name": "マッチングシートと記録",
+    "kanten": "組み合わせをマッチングシートに書き、移した子豚に印をつけ、母豚番号・移した頭数を記録に残せるか。",
+    "levels": [
+     "シートも印も記録も残さず、どの子豚をどこへ移したか分からなくなる。",
+     "指示があれば書くが、記入漏れや印のつけ忘れが多い。",
+     "指示があればマッチングシートに組み合わせを書き、移した子豚に印をつけて母豚番号・頭数を記録できる。",
+     "指示がなくても移動のたびに記録し、移動後の頭数が乳頭数を超えていないかシートで確かめてズレがあれば報告する。",
+     "記録がその後の管理と個体追跡の土台になることを理解し、シートの書き方と印のつけ方を新人に指導できる。"
+    ],
+    "name_en": "Matching Sheet and Records",
+    "kanten_en": "Can they write the pairings on the matching sheet, mark the moved piglets, and record the sow number and the number of piglets moved?",
+    "levels_en": [
+     "Leaves no sheet, marks, or records, and loses track of which piglet went where.",
+     "With guidance writes, but often misses entries and forgets to mark piglets.",
+     "With guidance can write the pairings on the matching sheet, mark the moved piglets, and record the sow number and the head count.",
+     "Independently records every move, checks on the sheet that the count after the move does not exceed the teat count, and reports any discrepancy.",
+     "Understands that records are the foundation for later management and individual tracing, and can teach new staff how to fill in the sheet and mark piglets."
+    ],
+    "name_vi": "Bảng ghép bầy và ghi chép",
+    "kanten_vi": "Có ghi cách ghép vào bảng ghép bầy, đánh dấu lợn con đã chuyển, ghi lại số hiệu lợn nái và số con đã chuyển không.",
+    "levels_vi": [
+     "Không có bảng, không đánh dấu, không ghi chép, không còn biết đã chuyển con nào đi đâu.",
+     "Nếu được chỉ thị thì ghi, nhưng hay ghi thiếu và quên đánh dấu.",
+     "Nếu được chỉ thị thì ghi cách ghép vào bảng ghép bầy, đánh dấu lợn con đã chuyển và ghi được số hiệu lợn nái, số con.",
+     "Dù không có chỉ thị vẫn ghi chép mỗi lần chuyển, kiểm tra trên bảng số con sau khi chuyển có vượt số vú không, nếu lệch thì báo cáo.",
+     "Hiểu rằng ghi chép là nền tảng cho quản lý và truy xuất từng con sau này, và có thể hướng dẫn người mới cách ghi bảng và cách đánh dấu."
+    ],
+    "name_id": "Lembar pencocokan dan pencatatan",
+    "kanten_id": "Apakah dapat menulis pasangan di lembar pencocokan, menandai anak babi yang dipindah, dan mencatat nomor induk babi serta jumlah anak yang dipindah?",
+    "levels_id": [
+     "Tidak meninggalkan lembar, tanda, maupun catatan, sehingga tidak tahu lagi anak babi mana dipindah ke mana.",
+     "Menulis jika diperintah, tetapi sering ada catatan yang kurang dan lupa memberi tanda.",
+     "Jika diperintah, dapat menulis pasangan di lembar pencocokan, menandai anak babi yang dipindah, dan mencatat nomor induk babi serta jumlahnya.",
+     "Tanpa diperintah pun, mencatat setiap pemindahan, memastikan di lembar bahwa jumlah setelah pemindahan tidak melebihi jumlah puting, dan melaporkan jika ada selisih.",
+     "Memahami bahwa catatan menjadi dasar pengelolaan dan penelusuran individu selanjutnya, dan dapat mengajarkan cara mengisi lembar dan memberi tanda kepada karyawan baru."
+    ]
+   }
+  ]
+ }
+]
