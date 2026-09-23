@@ -138,10 +138,10 @@ function doSave(){
   if(editId){
     const idx=all.findIndex(e=>e.id===editId);
     if(idx===-1){toast(t('eEditGone'),1);exitEdit();return}
-    all[idx]=normRec({...all[idx],date:d.date,evaluator:d.evaluator.trim(),evaluatee:d.evaluatee.trim(),works:d.works,overall:d.overall,updatedAt:new Date().toISOString(),sent:false});
+    all[idx]=normRec({...all[idx],date:d.date,evaluator:d.evaluator.trim(),evaluatee:d.evaluatee.trim(),farm:rosterFarmOf(d.evaluatee.trim())||all[idx].farm||'',works:d.works,overall:d.overall,updatedAt:new Date().toISOString(),sent:false});
     putAll(all);toast(t('tUpdated'));exitEdit();
   }else{
-    all.push(normRec({id:crypto.randomUUID(),date:d.date,evaluator:d.evaluator.trim(),evaluatee:d.evaluatee.trim(),works:d.works,overall:d.overall,createdAt:new Date().toISOString(),sent:false}));
+    all.push(normRec({id:crypto.randomUUID(),date:d.date,evaluator:d.evaluator.trim(),evaluatee:d.evaluatee.trim(),farm:rosterFarmOf(d.evaluatee.trim()),works:d.works,overall:d.overall,createdAt:new Date().toISOString(),sent:false}));
     putAll(all);toast(t('tSaved'));
   }
   localStorage.removeItem(DRAFT_KEY);dirty=false;refreshSel();
@@ -223,16 +223,50 @@ async function reloadRoster(silent){
     else if(!silent)toast(t('tRoster')+' ('+r.list.length+')');
   }else if(!silent)toast(t('eRoster'),1);
 }
+const FARM_KEY='jitsugi_v2_farm';
+/* 名簿の農場（シートの並び順・所属未確定/空欄は最後） */
+function rosterFarms(ro){
+  const fs=[];ro.forEach(p=>{if(!fs.includes(p.farm))fs.push(p.farm)});
+  const last=f=>!f||/未確定/.test(f)?1:0;
+  return fs.sort((a,b)=>last(a)-last(b));
+}
+function curFarm(ro){
+  const fs=rosterFarms(ro);
+  const cur=document.getElementById('fEe').value.trim();
+  const hit=cur&&ro.find(p=>p.name===cur);
+  let f='';try{f=localStorage.getItem(FARM_KEY)||''}catch{}
+  if(hit&&hit.farm!==f)f=hit.farm;          // 選択中・編集中の人の農場を優先
+  return fs.includes(f)?f:fs[0];
+}
+function selectFarm(f){
+  try{localStorage.setItem(FARM_KEY,f)}catch{}
+  const cur=document.getElementById('fEe').value.trim();
+  const p=cur&&getRoster().list.find(p=>p.name===cur);
+  if(p&&p.farm!==f&&!editId){                 // 別の農場へ切り替えたら選択中の人は外す
+    if(dirty&&document.querySelector('#cards .ec.scored')&&!confirm(t('cSwitchEe')))return;
+    const dt=document.getElementById('fDate').value;clearForm();if(dt)document.getElementById('fDate').value=dt;
+    selWorks=[];saveSel();buildWorkSel();buildCards();
+  }
+  renderRoster();
+}
 function renderRoster(){
-  const box=document.getElementById('eeTabs'),note=document.getElementById('eeNote');
+  const box=document.getElementById('eeTabs'),note=document.getElementById('eeNote'),fbox=document.getElementById('eeFarms');
   const ro=getRoster().list;
   const cur=document.getElementById('fEe').value.trim();
   const date=document.getElementById('fDate').value;
   const done=new Set(getAll().filter(r=>r.date===date).map(r=>r.evaluatee));
-  box.innerHTML=ro.map((p,i)=>{
-    const on=p.name===cur;
+  const fs=rosterFarms(ro),farm=curFarm(ro);
+  const showF=fs.length>1||(fs.length===1&&fs[0]);
+  fbox.innerHTML=showF?fs.map(f=>{
+    const ps=ro.filter(p=>p.farm===f),dn=ps.filter(p=>done.has(p.name)).length,on=f===farm;
+    return `<button type="button" class="fchip${on?' on':''}" aria-pressed="${on}" onclick="selectFarm(this.dataset.f)" data-f="${esc(f)}">`+
+      `${esc(f||t('farmNone'))}<span class="fchip-ct">${dn?dn+'/':''}${ps.length}</span></button>`;
+  }).join(''):'';
+  const idx=[];ro.forEach((p,i)=>{if(!showF||p.farm===farm)idx.push(i)});
+  box.innerHTML=idx.map(i=>{
+    const p=ro[i],on=p.name===cur;
     return `<button type="button" role="tab" class="eetab${on?' on':''}${done.has(p.name)?' done':''}" aria-selected="${on}" onclick="selectEe(${i})">`+
-      `<span class="eetab-nm">${esc(p.name)}</span><span class="eetab-ct">${done.has(p.name)?'✓ ':''}${p.works.length}${esc(t('worksUnit'))}</span></button>`;
+      `<span class="eetab-nm">${esc(p.name)}</span><span class="eetab-ct">${done.has(p.name)?'✓ ':''}${p.works.length?p.works.length+esc(t('worksUnit')):esc(t('worksNone'))}</span></button>`;
   }).join('');
   document.getElementById('eeManual').style.display=ro.length?'none':'';
   note.textContent=ro.length?t('eeTabHint'):(sheetUrl()?t('eeNoRoster'):t('noSheet'));
@@ -247,6 +281,7 @@ function selectEe(i){
   clearForm();
   if(dt)document.getElementById('fDate').value=dt;
   document.getElementById('fEe').value=p.name;
+  try{localStorage.setItem(FARM_KEY,p.farm)}catch{}
   selWorks=p.works.slice();saveSel();buildWorkSel();buildCards();
   document.getElementById('wselBox').open=!selWorks.length;
   renderRoster();onCh();

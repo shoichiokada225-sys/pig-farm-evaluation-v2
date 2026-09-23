@@ -20,7 +20,8 @@ function getEvaluator(){try{return localStorage.getItem(EV_KEY)||''}catch{return
 function setEvaluator(n){localStorage.setItem(EV_KEY,String(n||'').trim())}
 
 /* ==============================================================
-   受験者名簿: [{name, works:[workId...]}]（シートの作業名/No./IDをカタログのIDへ解決）
+   受験者名簿: [{name, farm, works:[workId...], common?}]（シートの作業名/No./IDをカタログのIDへ解決）
+   被評価者名が「（農場共通）」の行 = その農場で作業を個別に決めていない人に使う作業
    ============================================================== */
 function resolveWork(v){
   const s=String(v||'').trim();if(!s)return null;
@@ -29,6 +30,8 @@ function resolveWork(v){
     ||WORKDATA_V2.works.find(w=>(w.no||'').replace(/^No\.?0*/,'')===s.replace(/^No\.?0*/i,''));
   return w?w.id:null;
 }
+function isCommonRow(n){return /^[（(]?\s*農場共通\s*[）)]?$/.test(String(n||'').trim())}
+function rosterFarmOf(name){const p=getRoster().list.find(p=>p.name===name);return p?p.farm:''}
 function getRoster(){try{const r=JSON.parse(localStorage.getItem(ROSTER_KEY));return r&&Array.isArray(r.list)?r:{list:[],at:''}}catch{return{list:[],at:''}}}
 async function fetchRoster(){
   const u=sheetUrl();if(!u)return{ok:false,reason:'nourl'};
@@ -36,12 +39,20 @@ async function fetchRoster(){
     const res=await fetch(u+'?action=roster',{cache:'no-store'});
     const j=await res.json();
     if(!j||!j.ok||!Array.isArray(j.roster))return{ok:false,reason:'bad'};
-    const unknown=[];
-    const list=j.roster.map(p=>{
+    const unknown=[],common={},seen=new Set();
+    const all=j.roster.map(p=>{
       const works=[];
       (p.works||[]).forEach(v=>{const id=resolveWork(v);if(id){if(!works.includes(id))works.push(id)}else unknown.push(String(v))});
-      return{name:String(p.name||'').trim(),works};
+      return{name:String(p.name||'').trim(),farm:String(p.farm||'').trim(),works};
     }).filter(p=>p.name);
+    all.forEach(p=>{if(isCommonRow(p.name))common[p.farm]=p.works});
+    const list=[];
+    all.forEach(p=>{
+      if(isCommonRow(p.name))return;
+      const k=p.farm+'\u0000'+p.name;if(seen.has(k))return;seen.add(k);   // 同じ農場の同名行は先勝ち
+      if(!p.works.length&&common[p.farm]&&common[p.farm].length)list.push({...p,works:common[p.farm].slice(),common:true});
+      else list.push(p);
+    });
     localStorage.setItem(ROSTER_KEY,JSON.stringify({list,at:new Date().toISOString()}));
     return{ok:true,list,unknown};
   }catch(e){return{ok:false,reason:'net'}}
@@ -51,7 +62,7 @@ async function fetchRoster(){
    送信（記録IDで上書きされるので、再送・編集後の送り直しで重複しない）
    ============================================================== */
 function toPayload(r){
-  return{id:r.id,date:r.date,evaluator:r.evaluator,evaluatee:r.evaluatee,overall:r.overall||'',
+  return{id:r.id,date:r.date,evaluator:r.evaluator,evaluatee:r.evaluatee,farm:r.farm||'',overall:r.overall||'',
     works:(r.works||[]).map(we=>{
       const w=workById(we.workId);
       const c=WORKDATA_V2.categories.find(c=>c.id===(we.category||(w&&w.category)));

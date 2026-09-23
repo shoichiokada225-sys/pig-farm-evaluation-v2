@@ -22,23 +22,35 @@ global.LockService = { getScriptLock: () => ({ tryLock: () => true, releaseLock(
 global.Utilities = { formatDate: () => '2026-09-23 10:00:00' };
 global.ContentService = { MimeType: { JSON: 'j' }, createTextOutput: s => ({ s, setMimeType() { return this; } }) };
 const code = fs.readFileSync(__dirname + '/Code.gs', 'utf8');
-const G = new Function(code + ';return {setup,doGet,doPost};')();
+const SEED = [['那須農場', '鈴木 花子', '給餌'], ['大田原農場', '高橋 次郎']];
+const G = new Function('ROSTER_SEED', code + ';return {setup,doGet,doPost};')(SEED);
 let pass = 0, fail = 0; const ok = (n, c) => { c ? pass++ : fail++; console.log((c ? '  OK ' : '  NG ') + n); };
 
 ok('setup', G.setup() === 'setup OK' && sheets['受験者'] && sheets['作業一覧'].d.length === 41);
-sheets['受験者'].getRange(2, 1, 2, 3).setValues([['グエン', '給餌', 'エサ調整'], ['  ', '給餌', '']]);
-const ro = JSON.parse(G.doGet({ parameter: { action: 'roster' } }).s);
-ok('roster: 空名の行は除外', ro.ok && ro.roster.length === 1 && ro.roster[0].works.join() === '給餌,エサ調整');
-const rec = { id: 'abc-1', date: '2026-09-23', evaluator: '岡田/正一', evaluatee: 'グエン', overall: '=SUM(A1)',
+ok('見出し=農場・被評価者・作業1〜8', sheets['受験者'].d[0].join() === '農場,被評価者,作業1,作業2,作業3,作業4,作業5,作業6,作業7,作業8');
+ok('空の受験者タブにシードが入る', sheets['受験者'].d.length === 3 && sheets['受験者'].d[1][1] === '鈴木 花子' && sheets['受験者'].d[2].length === 10);
+G.setup();
+ok('setup再実行でシードは二重に入らない', sheets['受験者'].d.length === 3);
+sheets['受験者'].getRange(4, 1, 2, 4).setValues([['睦沢農場', 'グエン', '給餌', 'エサ調整'], ['睦沢農場', '  ', '給餌', '']]);
+let ro = JSON.parse(G.doGet({ parameter: { action: 'roster' } }).s);
+ok('roster: 空名の行は除外', ro.ok && ro.roster.length === 3);
+ok('roster: 農場と作業', ro.roster[2].farm === '睦沢農場' && ro.roster[2].works.join() === '給餌,エサ調整' && ro.roster[0].works.join() === '給餌' && ro.roster[1].works.length === 0);
+// 旧形式（見出しに農場なし・A=被評価者）も読める
+sheets['受験者'].d.length = 0;
+sheets['受験者'].getRange(1, 1, 2, 3).setValues([['被評価者', '作業1', '作業2'], ['タナカ', '給餌', '']]);
+ro = JSON.parse(G.doGet({ parameter: { action: 'roster' } }).s);
+ok('旧形式（農場列なし）', ro.roster.length === 1 && ro.roster[0].name === 'タナカ' && ro.roster[0].farm === '' && ro.roster[0].works.join() === '給餌');
+const rec = { id: 'abc-1', date: '2026-09-23', evaluator: '岡田/正一', evaluatee: 'グエン', farm: '睦沢農場', overall: '=SUM(A1)',
   works: [{ workName: '給餌', category: '飼養管理', items: [{ aspect: 'a', score: 4, comment: '+x' }, { aspect: 'b', score: 2, comment: '' }] }] };
 const post = o => JSON.parse(G.doPost({ postData: { contents: JSON.stringify(o) } }).s);
 let r = post({ action: 'submit', record: rec });
 const sh = sheets['岡田_正一'];
 ok('評価者名タブ（/→_）', r.ok && sh && sh.d.length === 3);
-ok('数式インジェクション対策', sh.d[1][8] === "'+x" && sh.d[1][11] === "'=SUM(A1)");
-ok('平均', sh.d[1][9] === 3 && sh.d[1][10] === 3);
+ok('数式インジェクション対策', sh.d[1][9] === "'+x" && sh.d[1][12] === "'=SUM(A1)");
+ok('農場列', sh.d[0][4] === '農場' && sh.d[1][4] === '睦沢農場');
+ok('平均', sh.d[1][10] === 3 && sh.d[1][11] === 3);
 rec.works[0].items[0].score = 5; post({ action: 'submit', record: rec });
-ok('同じIDは上書き（行数不変）', sh.d.length === 3 && sh.d[1][7] === 5);
+ok('同じIDは上書き（行数不変）', sh.d.length === 3 && sh.d[1][8] === 5);
 post({ action: 'submit', record: { ...rec, id: 'abc-2' } });
 ok('別IDは追記', sh.d.length === 5);
 ok('予約名は回避', (post({ action: 'submit', record: { ...rec, id: 'z', evaluator: '受験者' } }), !!sheets['評価者_受験者']));

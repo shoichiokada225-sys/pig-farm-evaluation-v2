@@ -62,6 +62,13 @@
 /* 被評価者タブ（横スクロール） */
 .eebox{padding:14px 16px}
 .eebox .wsel-hd h3{font-size:1rem;margin:0}
+.efarms{display:flex;flex-wrap:wrap;gap:6px;padding:10px 0 2px}
+.efarms:empty{display:none}
+.fchip{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:6px 12px;border-radius:999px;border:1.5px solid var(--line,#d5dfdb);background:var(--bg2,#fff);color:inherit;font:inherit;font-size:.9rem;font-weight:700;cursor:pointer}
+.fchip-ct{font-size:.72rem;font-weight:800;color:var(--sub,#54635d);background:rgba(0,0,0,.06);border-radius:999px;padding:1px 7px}
+.fchip.on{border-color:var(--brand,#177863);background:rgba(23,120,99,.1);color:var(--brand,#177863)}
+.fchip.on .fchip-ct{background:var(--brand,#177863);color:#fff}
+.fchip:focus-visible{outline:3px solid #f0a500;outline-offset:2px}
 .eetabs{display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity;padding:10px 2px 6px;margin:0 -2px}
 .eetabs:empty{display:none}
 .eetab{flex:none;scroll-snap-align:start;display:flex;flex-direction:column;align-items:flex-start;gap:2px;min-height:52px;min-width:92px;max-width:70vw;padding:8px 14px;border-radius:12px;border:2px solid var(--line,#d5dfdb);background:var(--bg2,#fff);color:inherit;font:inherit;cursor:pointer;text-align:left}

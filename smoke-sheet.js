@@ -1,9 +1,9 @@
 /* スプレッドシート連携＋スマホ実機相当テスト（iPhone/Android エミュレーション・GASはモック）
    実行: node smoke-sheet.js   （スクショ: ./_shots/ ・git管理外） */
-const { chromium, devices } = require('C:/Users/so/farm-shift-app/node_modules/playwright');
+const { chromium, devices } = require(process.env.PW_PATH || require('path').join(require('os').homedir(), 'farm-shift-app/node_modules/playwright'));
 const fs = require('fs');
 
-const APP = 'file:///C:/Users/so/pig-farm-evaluation-v2/index.html';
+const APP = require('url').pathToFileURL(require('path').join(__dirname, 'index.html')).href;
 const GAS = 'https://script.google.com/macros/s/TESTDEPLOY_abc-123/exec';
 let pass = 0, fail = 0;
 function ok(name, cond) {
@@ -14,7 +14,7 @@ fs.mkdirSync(__dirname + '/_shots', { recursive: true });
 
 async function run(devName) {
   console.log(`\n===== ${devName} =====`);
-  const browser = await chromium.launch();
+  const browser = await chromium.launch(process.env.PW_CHANNEL ? { channel: process.env.PW_CHANNEL } : {});
   const ctx = await browser.newContext({ ...devices[devName], acceptDownloads: true });
   const page = await ctx.newPage();
   const errors = [];
@@ -173,6 +173,37 @@ async function run(devName) {
   ok('vi 送信バー', /Đã gửi/.test(await page.locator('#syncBar').textContent()));
   ok('vi 横スクロールなし', await noHScroll());
   await page.locator('.lsw button').nth(0).tap();
+
+  console.log('[11] 農場つき名簿 → 農場チップ → その農場の人だけ・農場共通の作業・送信に農場');
+  roster = [
+    { name: '鈴木 花子', farm: '那須農場', works: ['給餌'] },
+    { name: '田中 太郎', farm: '那須農場', works: [] },
+    { name: '（農場共通）', farm: '那須農場', works: ['エサ調整', '給餌'] },
+    { name: '高橋 次郎', farm: '大田原農場', works: ['No.16'] },
+    { name: '山本 三郎', farm: '所属未確定', works: [] },
+    { name: '空欄さん', farm: '', works: [] },
+  ];
+  await page.locator('.eebox .wsel-hd button').tap();
+  await page.waitForTimeout(400);
+  const chips = await page.locator('.fchip').allTextContents();
+  ok('農場チップ4つ（未確定・未記入は最後）', chips.length === 4 && /^那須農場/.test(chips[0]) && /^大田原農場/.test(chips[1]) && /未確定/.test(chips[2]) && /農場未記入/.test(chips[3]));
+  await page.locator('.fchip').nth(0).tap(); await page.waitForTimeout(200);
+  ok('先頭の農場の人だけ（共通行は人として出ない）', await page.locator('.eetab').count() === 2);
+  await page.locator('.eetab').nth(1).tap(); await page.waitForTimeout(200);
+  ok('作業未記入の人に農場共通の作業', await page.locator('.wshd').count() === 2);
+  await page.locator('.fchip').nth(1).tap(); await page.waitForTimeout(200);
+  ok('農場切替で選択中の人は外れる', await page.inputValue('#fEe') === '' && await page.locator('.eetab').count() === 1);
+  ok('横スクロールなし(農場チップ)', await noHScroll());
+  await page.reload(); await page.waitForTimeout(400);
+  ok('再起動後も農場を記憶', /^大田原農場/.test(await page.locator('.fchip.on').textContent()));
+  await page.locator('.eetab').nth(0).tap(); await page.waitForTimeout(200);
+  for (const cid of await page.locator('#cards .ec').evaluateAll(els => els.map(e => e.id.slice(2))))
+    await page.locator(`.sb[data-id="${cid}"][data-s="3"]`).tap();
+  const n0 = posts.length;
+  await page.locator('#btnSave').tap(); await page.waitForTimeout(600);
+  ok('送信に農場が入る', posts.length === n0 + 1 && posts[n0].record.farm === '大田原農場');
+  ok('農場チップに済/人数', /1\/1/.test(await page.locator('.fchip.on').textContent()));
+  await page.screenshot({ path: `${__dirname}/_shots/${devName.replace(/\W/g, '_')}_4_farm.png` });
 
   ok('JSエラーなし', errors.length === 0);
   if (errors.length) console.log(errors.join('\n'));

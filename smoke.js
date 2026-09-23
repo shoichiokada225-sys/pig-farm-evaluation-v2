@@ -1,8 +1,8 @@
 /* HSS実技試験V2 スモークテスト（playwright は farm-shift-app から借用）
    実行: node smoke.js */
-const { chromium } = require('C:/Users/so/farm-shift-app/node_modules/playwright');
+const { chromium } = require(process.env.PW_PATH || require('path').join(require('os').homedir(), 'farm-shift-app/node_modules/playwright'));
 
-const URL = 'file:///C:/Users/so/pig-farm-evaluation-v2/index.html';
+const URL = require('url').pathToFileURL(require('path').join(__dirname, 'index.html')).href;
 let pass = 0, fail = 0;
 function ok(name, cond) {
   if (cond) { pass++; console.log('  OK ' + name); }
@@ -10,7 +10,7 @@ function ok(name, cond) {
 }
 
 (async () => {
-  const browser = await chromium.launch();
+  const browser = await chromium.launch(process.env.PW_CHANNEL ? { channel: process.env.PW_CHANNEL } : {});
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
   const errors = [];

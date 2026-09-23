@@ -1,7 +1,7 @@
 /* HSS 実技試験 V2 Service Worker
    ネットワーク優先＋キャッシュフォールバック：
    オンライン時は常に最新を取得しつつキャッシュを更新、圏外の豚舎でもオフラインで起動できる */
-const CACHE = 'jitsugi-v2-v2';
+const CACHE = 'jitsugi-v2-v3';
 const ASSETS = [
   './', './index.html', './styles.css', './v2.css', './works-v2.js',
   './js/config.js', './js/util.js', './js/i18n.js', './js/data.js', './js/store.js', './js/ui.js', './js/sync.js', './js/app.js',
