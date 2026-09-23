@@ -59,26 +59,41 @@
 .ev-row input{flex:1;min-width:0;font-size:16px}
 .ev-row .b{flex:none}
 
-/* 被評価者タブ（横スクロール） */
-.eebox{padding:14px 16px}
+/* 被評価者：農場チップ=1段の横スクロール（選択中を中央へ）／人=縦に折り返すグリッド（未実施が先・実施済みは灰色で後ろ） */
+.eebox{padding:14px 16px;scroll-margin-top:120px}
 .eebox .wsel-hd h3{font-size:1rem;margin:0}
-.efarms{display:flex;flex-wrap:wrap;gap:6px;padding:10px 0 2px}
+.efarms{position:relative;display:flex;flex-wrap:nowrap;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:8px 2px 2px;margin:0 -2px;
+  -webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 22px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 22px),transparent)}
+.efarms::-webkit-scrollbar{display:none}
 .efarms:empty{display:none}
-.fchip{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:6px 12px;border-radius:999px;border:1.5px solid var(--line,#d5dfdb);background:var(--bg2,#fff);color:inherit;font:inherit;font-size:.9rem;font-weight:700;cursor:pointer}
-.fchip-ct{font-size:.72rem;font-weight:800;color:var(--sub,#54635d);background:rgba(0,0,0,.06);border-radius:999px;padding:1px 7px}
-.fchip.on{border-color:var(--brand,#177863);background:rgba(23,120,99,.1);color:var(--brand,#177863)}
-.fchip.on .fchip-ct{background:var(--brand,#177863);color:#fff}
+.fchip{flex:none;display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:6px 12px;border-radius:999px;border:1.5px solid var(--line,#d5dfdb);background:var(--bg2,#fff);color:inherit;font:inherit;font-size:.9rem;font-weight:700;cursor:pointer;white-space:nowrap}
+.fchip-ct{font-size:.72rem;font-weight:800;color:#8a4b00;background:#fff1d6;border-radius:999px;padding:1px 7px}
+.fchip-ct.zero{color:var(--brand,#177863);background:rgba(23,120,99,.12)}
+.fchip.on{border-color:var(--brand,#177863);background:var(--brand,#177863);color:#fff}
+.fchip.on .fchip-ct{background:#fff;color:var(--brand,#177863)}
 .fchip:focus-visible{outline:3px solid #f0a500;outline-offset:2px}
-.eetabs{display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity;padding:10px 2px 6px;margin:0 -2px}
+.ee-find{padding:4px 0 0}
+.ee-find[hidden]{display:none}
+.ee-find input{width:100%;min-height:44px;padding:10px 12px;border:2px solid var(--bdr-strong,#b9c7c1);border-radius:10px;font-size:16px;font-family:inherit;background:#fff;color:var(--txt,#1d2a25)}
+.ee-find input:focus{outline:0;border-color:var(--pri,#177863);box-shadow:0 0 0 3px var(--pri-l,rgba(23,120,99,.15))}
+.eetabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:8px 0 4px}
+@media(min-width:520px){.eetabs{grid-template-columns:repeat(3,minmax(0,1fr))}}
 .eetabs:empty{display:none}
-.eetab{flex:none;scroll-snap-align:start;display:flex;flex-direction:column;align-items:flex-start;gap:2px;min-height:52px;min-width:92px;max-width:70vw;padding:8px 14px;border-radius:12px;border:2px solid var(--line,#d5dfdb);background:var(--bg2,#fff);color:inherit;font:inherit;cursor:pointer;text-align:left}
-.eetab-nm{font-weight:800;font-size:1rem;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.eetab-ct{font-size:.72rem;color:var(--sub,#54635d);font-weight:700}
-.eetab.done{border-color:rgba(23,120,99,.45);background:rgba(23,120,99,.06)}
-.eetab.done .eetab-ct{color:var(--brand,#177863)}
+.eetab{position:relative;min-width:0;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:2px;min-height:52px;padding:6px 12px;border-radius:12px;border:2px solid #9fb3ab;background:#fff;color:var(--txt,#1d2a25);font:inherit;cursor:pointer;text-align:left}
+.eetab-nm{font-weight:800;font-size:1rem;line-height:1.25;max-width:100%;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;word-break:break-word}
+.eetab-ct{font-size:.75rem;color:var(--sub,#54635d);font-weight:700}
+.eetab.done{border-color:#c9d0cd;background:#dde2e0;color:#56625d;padding-right:40px}
+.eetab.done .eetab-nm{font-weight:700}
+.eetab-ok{position:absolute;top:50%;right:8px;transform:translateY(-50%);width:26px;height:26px;border-radius:50%;background:#56625d;color:#fff;font-size:1rem;font-weight:900;line-height:26px;text-align:center}
 .eetab.on{border-color:var(--brand,#177863);background:var(--brand,#177863);color:#fff}
 .eetab.on .eetab-ct{color:rgba(255,255,255,.9)}
+.eetab.on .eetab-ok{background:#fff;color:var(--brand,#177863)}
 .eetab:focus-visible{outline:3px solid #f0a500;outline-offset:2px}
+.eegrp{grid-column:1/-1;margin:8px 0 0;padding-top:8px;border-top:1px dashed #c9d0cd;font-size:.8rem;font-weight:800;color:#56625d}
+.eenone{grid-column:1/-1;margin:4px 0;font-size:.9rem;color:var(--sub,#54635d)}
+.ee-add{width:100%;margin-top:6px;min-height:48px}
+.ee-add[hidden]{display:none}
+.snt.off{color:#6b3fa0;background:#f1e9fb}
 .ee-manual input{font-size:16px}
 
 /* 作業選択は折りたたみ（名簿から自動セット） */

@@ -31,12 +31,22 @@ function resolveWork(v){
   return w?w.id:null;
 }
 function isCommonRow(n){return /^[（(]?\s*農場共通\s*[）)]?$/.test(String(n||'').trim())}
-function rosterFarmOf(name){const p=getRoster().list.find(p=>p.name===name);return p?p.farm:''}
+/* 名前から農場を引くのは「名簿にその名前が1人だけ」の時だけ（同名が2農場にいたら決めつけない） */
+function rosterFarmOf(name){const hs=getRoster().list.filter(p=>p.name===name);return hs.length===1?hs[0].farm:''}
+/* 電波の弱い豚舎で応答の返らない fetch を待ち続けないよう、時間で打ち切る */
+const ROSTER_TIMEOUT_MS=8000,SEND_TIMEOUT_MS=20000;
+async function fetchT(url,opt,ms){
+  const ac=typeof AbortController==='function'?new AbortController():null;
+  const tm=ac?setTimeout(()=>ac.abort(),ms):null;
+  try{return await fetch(url,{...(opt||{}),...(ac?{signal:ac.signal}:{})})}
+  finally{if(tm)clearTimeout(tm)}
+}
+let rosterLoading=false,rosterErr=false;   // 読み込み中 / 直近の読み込みが失敗
 function getRoster(){try{const r=JSON.parse(localStorage.getItem(ROSTER_KEY));return r&&Array.isArray(r.list)?r:{list:[],at:''}}catch{return{list:[],at:''}}}
 async function fetchRoster(){
   const u=sheetUrl();if(!u)return{ok:false,reason:'nourl'};
   try{
-    const res=await fetch(u+'?action=roster',{cache:'no-store'});
+    const res=await fetchT(u+'?action=roster',{cache:'no-store'},ROSTER_TIMEOUT_MS);
     const j=await res.json();
     if(!j||!j.ok||!Array.isArray(j.roster))return{ok:false,reason:'bad'};
     const unknown=[],common={},seen=new Set();
@@ -74,7 +84,8 @@ async function sendRec(r){
   const u=sheetUrl();if(!u)return false;
   try{
     // text/plain の単純リクエスト（プリフライト無し）でGASへPOST
-    const res=await fetch(u,{method:'POST',body:JSON.stringify({action:'submit',record:toPayload(r)})});
+    // 打ち切り後に届いていても、同じ記録IDで上書きされるので再送で重複しない
+    const res=await fetchT(u,{method:'POST',body:JSON.stringify({action:'submit',record:toPayload(r)})},SEND_TIMEOUT_MS);
     const j=await res.json();
     return !!(j&&j.ok&&j.id===r.id);
   }catch(e){return false}

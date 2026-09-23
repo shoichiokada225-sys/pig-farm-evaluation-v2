@@ -1,6 +1,6 @@
 /* store.js — 永続化層：評価セッション（1保存=複数作業）の読み書き・バックアップ */
 /* レコード形式:
-   {id,date,evaluator,evaluatee,farm,overall,createdAt,updatedAt?,
+   {id,date,evaluator,evaluatee,farm,overall,createdAt,updatedAt?,manual?(名簿にない人を手入力=true),
     works:[{workId,workName,category,scores:{aspectId:1-5|null},comments:{aspectId:str}}]} */
 const SKEY='jitsugi_v2_data';
 const SEL_KEY='jitsugi_v2_sel';
@@ -33,7 +33,8 @@ function normRec(e){
   return{id:sanitizeId(String(e.id||'')),date:String(e.date||''),
     evaluator:String(e.evaluator||''),evaluatee:String(e.evaluatee||''),farm:String(e.farm||''),
     overall:e.overall==null?'':String(e.overall),
-    createdAt:String(e.createdAt||''),...(e.updatedAt?{updatedAt:String(e.updatedAt)}:{}),works,
+    createdAt:String(e.createdAt||''),...(e.updatedAt?{updatedAt:String(e.updatedAt)}:{}),
+    ...(e.manual===true?{manual:true}:{}),works,
     sent:e.sent===true};
 }
 function validRec(r){return r&&typeof r==='object'&&typeof r.id==='string'&&r.id&&typeof r.date==='string'&&Array.isArray(r.works)&&r.works.length>0}

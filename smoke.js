@@ -16,6 +16,8 @@ function ok(name, cond) {
   const errors = [];
   page.on('pageerror', e => errors.push(String(e)));
   page.on('dialog', d => d.accept('ooiri'));
+  // 本番のGAS（config.js の既定の送信先）へテスト記録を送らない：外部への通信はすべて遮断
+  await page.route(u => u.href.startsWith('https://script.google.com/'), r => r.abort('internetdisconnected'));
 
   console.log('[1] 初期表示（作業未選択）');
   await page.goto(URL);

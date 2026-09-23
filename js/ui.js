@@ -113,7 +113,7 @@ function drawHist(){
     const ac=a==null?'':(a>=4?' av4':(a<2?' av1':(a<3?' av2':' av3')));
     const wnames=(r.works||[]).map(dispWorkName);
     const wlbl=wnames.slice(0,2).join('・')+(wnames.length>2?` +${wnames.length-2}`:'');
-    return `<div class="hi" role="button" tabindex="0" onclick="showDet('${sanitizeId(r.id)}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();showDet('${sanitizeId(r.id)}')}"><div class="hii"><div class="hid">${esc(r.date)}　${t('evLbl')}: ${esc(r.evaluator)}${sheetUrl()?(r.sent?` <span class="snt ok">✓${esc(t('sentLbl'))}</span>`:` <span class="snt ng">${esc(t('unsent'))}</span>`):''}</div><div class="hin">${esc(r.evaluatee)}　<span class="hiw">${esc(wlbl)}</span></div></div><div class="hia${ac}">${fm(a)}</div></div>`;
+    return `<div class="hi" role="button" tabindex="0" onclick="showDet('${sanitizeId(r.id)}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();showDet('${sanitizeId(r.id)}')}"><div class="hii"><div class="hid">${esc(r.date)}　${t('evLbl')}: ${esc(r.evaluator)}${sheetUrl()?(r.sent?` <span class="snt ok">✓${esc(t('sentLbl'))}</span>`:` <span class="snt ng">${esc(t('unsent'))}</span>`):''}</div><div class="hin">${esc(r.evaluatee)}${r.manual?` <span class="snt off">${esc(t('offRoster'))}</span>`:''}　<span class="hiw">${esc(wlbl)}</span></div></div><div class="hia${ac}">${fm(a)}</div></div>`;
   }).join('');
 }
 
