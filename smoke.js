@@ -26,6 +26,7 @@ function ok(name, cond) {
   ok('データ版数表示', /works/.test(dv));
 
   console.log('[2] 作業を2つ選択 → 5種目×2=10カード');
+  await page.click('#wselBox > summary');
   await page.click('.wcat >> nth=0 >> summary');
   const cb = page.locator('.wchk input');
   const id1 = await cb.nth(0).getAttribute('value');
@@ -51,12 +52,14 @@ function ok(name, cond) {
 
   console.log('[4] 下書き復元（選択作業込み）');
   await page.fill('#fEv', '岡田');
+  await page.click('#evEdit .b1');
   await page.fill('#fEe', 'テスト太郎');
   await page.waitForTimeout(500);
   await page.reload();
   await page.waitForTimeout(300);
   ok('選択が復元（カード数同じ）', await page.locator('#cards .ec').count() === nCards);
   ok('氏名が復元', await page.inputValue('#fEe') === 'テスト太郎');
+  ok('評価者は記憶表示', (await page.locator('#evName').textContent()) === '岡田' && !(await page.locator('#fEv').isVisible()));
   ok('進捗が復元 1/' + nCards, (await page.locator('#progT').textContent()).includes('1/' + nCards));
 
   console.log('[5] 全種目採点 → 保存 → 履歴');
@@ -103,6 +106,10 @@ function ok(name, cond) {
   await page.waitForTimeout(300);
   ok('vi: タブ表記', (await page.locator('.tabs button[data-pg="pgIn"] span').textContent()) === 'Nhập');
   await page.click('.tabs button[data-pg="pgIn"]');
+  ok('保存後は作業選択が空（次の人へ）', await page.locator('#cards .pickwork').count() === 1);
+  await page.evaluate(() => { document.getElementById('wselBox').open = true; document.querySelector('.wcat').open = true; });
+  await page.locator('.wchk input').first().check();
+  await page.waitForTimeout(150);
   const nmVi = await page.locator('.wshd-nm').first().textContent();
   await page.click('.lsw button >> nth=0'); // JP
   await page.waitForTimeout(300);

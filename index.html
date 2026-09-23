@@ -44,26 +44,55 @@
 <div id="pgIn" class="pg on">
   <div class="prog"><div class="prog-b" id="progB" role="progressbar" aria-valuemin="0" aria-valuemax="0" aria-valuenow="0"><div class="prog-f" id="progF"></div></div><span class="prog-t" id="progT"></span></div>
 
-  <!-- 作業の複数選択パネル -->
-  <div class="cd wsel" id="wselBox">
+  <div id="syncBar" class="syncbar" role="status" aria-live="polite"></div>
+
+  <!-- 評価者（一度入れたら記憶） -->
+  <div class="cd evbox" id="evBox">
+    <div id="evShow" class="ev-show">
+      <span class="ev-lbl" data-t="labelEvaluator">評価者名</span>
+      <strong id="evName" class="ev-nm"></strong>
+      <button class="b b3 b-slim" onclick="editEvaluator()" data-t="btnChange">変更</button>
+    </div>
+    <div id="evEdit" class="ev-edit">
+      <label for="fEv" data-t="labelEvaluator">評価者名</label>
+      <p class="wsel-hint" data-t="evHint">最初の1回だけ入力します。この端末に記憶され、次回から入力は不要です。</p>
+      <div class="ev-row">
+        <input type="text" id="fEv" data-ph="phEv" placeholder="例：山田太郎" autocomplete="name" enterkeyhint="done">
+        <button class="b b1 b-slim" onclick="commitEvaluator()" data-t="btnOk">決定</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 被評価者タブ（シートの「受験者」から） -->
+  <div class="cd eebox">
     <div class="wsel-hd">
+      <h3 data-t="labelEvaluatee">被評価者名</h3>
+      <button class="b b3 b-slim" onclick="reloadRoster()" data-t="btnReload">名簿を更新</button>
+    </div>
+    <div id="eeTabs" class="eetabs" role="tablist" aria-label="Evaluatee"></div>
+    <p id="eeNote" class="wsel-hint"></p>
+    <div id="eeManual" class="ee-manual">
+      <label for="fEe" data-t="labelEvaluatee">被評価者名</label>
+      <input type="text" id="fEe" data-ph="phEe" placeholder="例：佐藤花子">
+    </div>
+  </div>
+
+  <!-- 作業の複数選択パネル（名簿の作業が自動で入る。手動で変更も可） -->
+  <details class="cd wsel" id="wselBox">
+    <summary class="wsel-hd">
       <h3 data-t="selWorksTitle">評価する作業を選ぶ</h3>
       <span class="wsel-cnt" id="wselCnt" aria-live="polite"></span>
-    </div>
+    </summary>
     <p class="wsel-hint" data-t="selWorksHint">複数の作業を選べます。選んだ作業の評価項目（各5種目）が下に表示されます。</p>
     <div id="wselCats"></div>
     <div class="wsel-acts">
       <button class="b b2 b-slim" onclick="clearWorks()" data-t="btnClearSel">選択を全て解除</button>
     </div>
-  </div>
+  </details>
 
   <div class="cd meta">
     <label for="fDate" data-t="labelDate">評価日</label>
     <input type="date" id="fDate">
-    <label for="fEv" data-t="labelEvaluator">評価者名</label>
-    <input type="text" id="fEv" data-ph="phEv" placeholder="例：山田太郎">
-    <label for="fEe" data-t="labelEvaluatee">被評価者名</label>
-    <input type="text" id="fEe" data-ph="phEe" placeholder="例：佐藤花子">
   </div>
 
   <div id="cards"></div>
@@ -105,6 +134,11 @@
 <!-- 設定 -->
 <div id="pgCfg" class="pg">
   <div class="cfg-blk">
+    <label for="cfgUrl" data-t="sheetUrlLbl">記録用スプレッドシートの送信先URL（GAS …/exec）</label>
+    <input type="url" id="cfgUrl" inputmode="url" autocomplete="off" placeholder="https://script.google.com/macros/s/…/exec">
+    <div class="mt12"><button class="b b1 b-full" onclick="saveSheetUrl()" data-t="btnSaveUrl">送信先を保存して接続確認</button></div>
+  </div>
+  <div class="cfg-blk">
     <p data-t="backupHint" class="cfg-hint">端末の故障や誤消去に備えて、全評価データを1ファイルに保存できます。復元では既存の記録は残り、新しい記録だけが追加されます。</p>
     <button class="b b4 b-full" onclick="exportAll()" data-t="expAll">⬇ 全データをバックアップ</button>
     <div class="mt12">
@@ -145,11 +179,13 @@
 </nav>
 
 <script src="works-v2.js"></script>
+<script src="js/config.js"></script>
 <script src="js/util.js"></script>
 <script src="js/i18n.js"></script>
 <script src="js/data.js"></script>
 <script src="js/store.js"></script>
 <script src="js/ui.js"></script>
+<script src="js/sync.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>

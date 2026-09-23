@@ -5,7 +5,7 @@
 function setLang(l){
   lang=l;localStorage.setItem(LKEY,l);document.documentElement.lang=l;
   document.querySelectorAll('.lsw button').forEach(b=>{const on=b.textContent.trim()==={ja:'JP',en:'EN',vi:'VI',id:'ID'}[l];b.classList.toggle('on',on);b.setAttribute('aria-pressed',on)});
-  applyT();buildWorkSel();buildCards();restoreSt();
+  applyT();buildWorkSel();buildCards();restoreSt();renderEvaluator();renderRoster();updSyncUI();
   const cur=document.querySelector('.tabs button.on');
   if(cur&&cur.dataset.pg==='pgHi')drawHist();
   if(cur&&cur.dataset.pg==='pgCh'){populateChWork();drawCharts()}
@@ -25,6 +25,11 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('dataVer').textContent='DATA '+(WORKDATA_V2.version||'-')+' / '+WORKDATA_V2.works.length+' works';
   setLang(lang);
   restoreDraft();
+  document.getElementById('fEv').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();commitEvaluator()}});
+  document.getElementById('fDate').addEventListener('change',renderRoster);
+  document.getElementById('fEe').addEventListener('input',renderRoster);
+  document.getElementById('cfgUrl').value=sheetUrl();
+  reloadRoster(true).then(()=>syncPending(true));
   window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue=''}});
   refreshSel();
   // PWAショートカット等のディープリンク（#pgHi=履歴 / #pgCh=グラフ）
@@ -74,7 +79,7 @@ function clearWorks(){
    入力変更・下書き
    ============================================================== */
 function onCh(){dirty=true;clearTimeout(autoT);autoT=setTimeout(saveDraft,300)}
-['fDate','fEv','fEe','fOv'].forEach(id=>document.getElementById(id).addEventListener('input',onCh));
+['fDate','fEe','fOv'].forEach(id=>document.getElementById(id).addEventListener('input',onCh));
 function saveDraft(){const d=collectForm();d._editId=editId;d._sel=selWorks;localStorage.setItem(DRAFT_KEY,JSON.stringify(d))}
 function collectForm(){
   const works=selWorks.map(wid=>{
@@ -86,7 +91,7 @@ function collectForm(){
     });
     return{workId:wid,workName:w?w.name:'',category:w?w.category:'',scores:sc,comments:cm};
   });
-  return{date:document.getElementById('fDate').value,evaluator:document.getElementById('fEv').value,evaluatee:document.getElementById('fEe').value,works,overall:document.getElementById('fOv').value};
+  return{date:document.getElementById('fDate').value,evaluator:editEv!=null?editEv:getEvaluator(),evaluatee:document.getElementById('fEe').value,works,overall:document.getElementById('fOv').value};
 }
 function restoreDraft(){
   let d=null;try{d=JSON.parse(localStorage.getItem(DRAFT_KEY))}catch{}
@@ -100,7 +105,6 @@ function restoreDraft(){
     ||(d.works||[]).some(we=>Object.values(we.scores||{}).some(v=>v!=null)||Object.values(we.comments||{}).some(v=>(v||'').trim()));
   if(!hasContent)return;
   if(d.date)document.getElementById('fDate').value=d.date;
-  document.getElementById('fEv').value=d.evaluator||'';
   document.getElementById('fEe').value=d.evaluatee||'';
   document.getElementById('fOv').value=d.overall||'';
   getItems().forEach(it=>{
@@ -122,7 +126,8 @@ function restoreDraft(){
 function doSave(){
   if(!selWorks.length){toast(t('eNoWork'),1);return}
   const d=collectForm();
-  if(!d.evaluator.trim()||!d.evaluatee.trim()){toast(t('eNm'),1);return}
+  if(!d.evaluator.trim()){toast(t('eEv'),1);editEvaluator();document.getElementById('evBox').scrollIntoView({behavior:'smooth',block:'center'});return}
+  if(!d.evaluatee.trim()){toast(t('eEe'),1);document.querySelector('.eebox').scrollIntoView({behavior:'smooth',block:'center'});return}
   if(!d.date){toast(t('eDt'),1);return}
   const miss=getItems().filter(it=>{
     const we=d.works.find(x=>x.workId===it.workId);return !we||we.scores[it.aspectId]==null;
@@ -133,14 +138,18 @@ function doSave(){
   if(editId){
     const idx=all.findIndex(e=>e.id===editId);
     if(idx===-1){toast(t('eEditGone'),1);exitEdit();return}
-    all[idx]=normRec({...all[idx],date:d.date,evaluator:d.evaluator.trim(),evaluatee:d.evaluatee.trim(),works:d.works,overall:d.overall,updatedAt:new Date().toISOString()});
+    all[idx]=normRec({...all[idx],date:d.date,evaluator:d.evaluator.trim(),evaluatee:d.evaluatee.trim(),works:d.works,overall:d.overall,updatedAt:new Date().toISOString(),sent:false});
     putAll(all);toast(t('tUpdated'));exitEdit();
   }else{
-    all.push(normRec({id:crypto.randomUUID(),date:d.date,evaluator:d.evaluator.trim(),evaluatee:d.evaluatee.trim(),works:d.works,overall:d.overall,createdAt:new Date().toISOString()}));
+    all.push(normRec({id:crypto.randomUUID(),date:d.date,evaluator:d.evaluator.trim(),evaluatee:d.evaluatee.trim(),works:d.works,overall:d.overall,createdAt:new Date().toISOString(),sent:false}));
     putAll(all);toast(t('tSaved'));
   }
   localStorage.removeItem(DRAFT_KEY);dirty=false;refreshSel();
+  // 次の被評価者へ：作業選択も空に戻す（名簿のタブを押せば再セット）
+  selWorks=[];saveSel();buildWorkSel();buildCards();
   clearForm();
+  window.scrollTo({top:0,behavior:'smooth'});
+  syncPending();
 }
 
 /* ==============================================================
@@ -157,8 +166,8 @@ function startEdit(id){
   document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
   document.getElementById('pgIn').classList.add('on');
   document.getElementById('fDate').value=rec.date;
-  document.getElementById('fEv').value=rec.evaluator;
-  document.getElementById('fEe').value=rec.evaluatee;
+  editEv=rec.evaluator;
+  document.getElementById('fEe').value=rec.evaluatee;renderRoster();
   document.getElementById('fOv').value=rec.overall||'';
   getItems().forEach(it=>{
     const we=(rec.works||[]).find(x=>x.workId===it.workId);
@@ -170,16 +179,86 @@ function startEdit(id){
   window.scrollTo({top:0,behavior:'smooth'});dirty=false;updProg();
 }
 function cancelEdit(){if(dirty&&!confirm(t('cCEdit')))return;exitEdit();clearForm()}
-function exitEdit(){editId=null;document.getElementById('editBar').classList.remove('show');document.getElementById('btnSave').textContent=t('btnSave')}
+function exitEdit(){editId=null;editEv=null;document.getElementById('editBar').classList.remove('show');document.getElementById('btnSave').textContent=t('btnSave')}
 function doReset(){if(!confirm(t('cReset')))return;clearForm();if(editId)exitEdit();toast(t('tReset'))}
 function clearForm(keepDraft){
   document.getElementById('fDate').value=new Date().toISOString().split('T')[0];
-  ['fEv','fEe','fOv'].forEach(id=>document.getElementById(id).value='');
+  ['fEe','fOv'].forEach(id=>document.getElementById(id).value='');
   document.querySelectorAll('.sb.sel,.crit-lv.sel').forEach(b=>b.classList.remove('sel'));
   document.querySelectorAll('.ec.scored').forEach(c=>c.classList.remove('scored'));
   document.querySelectorAll('.ec textarea').forEach(ta=>ta.value='');
   if(!keepDraft)localStorage.removeItem(DRAFT_KEY);
-  dirty=false;updProg();
+  dirty=false;updProg();renderRoster();
+}
+
+/* ==============================================================
+   評価者（一度入れたら端末に記憶・以後は表示のみ）
+   ============================================================== */
+function renderEvaluator(forceEdit){
+  const n=getEvaluator();
+  const editing=forceEdit||!n;
+  document.getElementById('evShow').style.display=editing?'none':'';
+  document.getElementById('evEdit').style.display=editing?'':'none';
+  document.getElementById('evName').textContent=n;
+  if(editing)document.getElementById('fEv').value=n;
+}
+function editEvaluator(){renderEvaluator(true);const f=document.getElementById('fEv');f.focus();f.select()}
+function commitEvaluator(){
+  const v=document.getElementById('fEv').value.trim();
+  if(!v){toast(t('eEv'),1);return}
+  setEvaluator(v);renderEvaluator();document.getElementById('fEv').blur();toast(t('tEvSaved'));
+}
+
+/* ==============================================================
+   被評価者タブ（シート「受験者」の名簿→その人に用意した作業を表示）
+   ============================================================== */
+async function reloadRoster(silent){
+  if(!sheetUrl()){renderRoster();return}
+  const btn=document.querySelector('.eebox .wsel-hd button');if(btn)btn.disabled=true;
+  const r=await fetchRoster();
+  if(btn)btn.disabled=false;
+  renderRoster();
+  if(r.ok){
+    if(r.unknown.length)toast(t('eUnknownWork')+': '+r.unknown.slice(0,3).join('、'),1);
+    else if(!silent)toast(t('tRoster')+' ('+r.list.length+')');
+  }else if(!silent)toast(t('eRoster'),1);
+}
+function renderRoster(){
+  const box=document.getElementById('eeTabs'),note=document.getElementById('eeNote');
+  const ro=getRoster().list;
+  const cur=document.getElementById('fEe').value.trim();
+  const date=document.getElementById('fDate').value;
+  const done=new Set(getAll().filter(r=>r.date===date).map(r=>r.evaluatee));
+  box.innerHTML=ro.map((p,i)=>{
+    const on=p.name===cur;
+    return `<button type="button" role="tab" class="eetab${on?' on':''}${done.has(p.name)?' done':''}" aria-selected="${on}" onclick="selectEe(${i})">`+
+      `<span class="eetab-nm">${esc(p.name)}</span><span class="eetab-ct">${done.has(p.name)?'✓ ':''}${p.works.length}${esc(t('worksUnit'))}</span></button>`;
+  }).join('');
+  document.getElementById('eeManual').style.display=ro.length?'none':'';
+  note.textContent=ro.length?t('eeTabHint'):(sheetUrl()?t('eeNoRoster'):t('noSheet'));
+  const onTab=box.querySelector('.eetab.on');if(onTab&&onTab.scrollIntoView)onTab.scrollIntoView({block:'nearest',inline:'center'});
+}
+function selectEe(i){
+  const p=getRoster().list[i];if(!p)return;
+  if(editId){toast(t('editingBanner'),1);return}
+  if(p.name===document.getElementById('fEe').value.trim())return;
+  if(dirty&&document.querySelector('#cards .ec.scored')&&!confirm(t('cSwitchEe')))return;
+  const dt=document.getElementById('fDate').value;
+  clearForm();
+  if(dt)document.getElementById('fDate').value=dt;
+  document.getElementById('fEe').value=p.name;
+  selWorks=p.works.slice();saveSel();buildWorkSel();buildCards();
+  document.getElementById('wselBox').open=!selWorks.length;
+  renderRoster();onCh();
+  const c=document.getElementById('cards');if(c&&selWorks.length)c.scrollIntoView({behavior:'smooth',block:'start'});
+}
+async function saveSheetUrl(){
+  if(!setSheetUrl(document.getElementById('cfgUrl').value))return;
+  document.getElementById('cfgUrl').value=sheetUrl();
+  updSyncUI();
+  if(!sheetUrl()){renderRoster();return}
+  await reloadRoster();
+  syncPending();
 }
 
 /* ==============================================================
@@ -207,4 +286,4 @@ function refreshSel(){
   cs.innerHTML=`<option value="">${t('selPh')}</option>`+ns.map(n=>`<option value="${esc(n)}">${esc(n)}</option>`).join('');cs.value=cv;
 }
 
-let dirty=false,editId=null,autoT=null;
+let dirty=false,editId=null,editEv=null,autoT=null;

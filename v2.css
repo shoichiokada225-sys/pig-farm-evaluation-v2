@@ -38,3 +38,50 @@
 /* 詳細モーダルの作業グループ見出し */
 .dwh{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:14px 0 6px;padding:6px 10px;border-radius:8px;background:var(--bg3,#eef2f0);font-weight:700}
 .dwh-av{font-size:.8rem;color:var(--sub,#54635d);font-weight:700}
+
+/* 送信状態バー */
+.syncbar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 10px;padding:8px 12px;border-radius:10px;font-size:.85rem;font-weight:700;min-height:44px}
+.syncbar:empty{display:none}
+.syncbar.ok{background:rgba(23,120,99,.08);color:var(--brand,#177863)}
+.syncbar.warn{background:#fff4e0;color:#8a4b00;border:1px solid #f0c27a}
+.syncbar.busy{background:var(--bg3,#eef2f0);color:var(--sub,#54635d)}
+.syncbar.off{background:var(--bg3,#eef2f0);color:var(--sub,#54635d);font-weight:500}
+.snt{font-size:.72rem;font-weight:700;border-radius:6px;padding:1px 6px;margin-left:4px;white-space:nowrap}
+.snt.ok{color:var(--brand,#177863);background:rgba(23,120,99,.1)}
+.snt.ng{color:#8a4b00;background:#fff4e0}
+
+/* 評価者（記憶） */
+.evbox{padding:12px 16px}
+.ev-show{display:flex;align-items:center;gap:10px;min-height:44px}
+.ev-lbl{font-size:.8rem;color:var(--sub,#54635d);flex:none}
+.ev-nm{flex:1;font-size:1.05rem;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ev-row{display:flex;gap:8px;align-items:stretch}
+.ev-row input{flex:1;min-width:0;font-size:16px}
+.ev-row .b{flex:none}
+
+/* 被評価者タブ（横スクロール） */
+.eebox{padding:14px 16px}
+.eebox .wsel-hd h3{font-size:1rem;margin:0}
+.eetabs{display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity;padding:10px 2px 6px;margin:0 -2px}
+.eetabs:empty{display:none}
+.eetab{flex:none;scroll-snap-align:start;display:flex;flex-direction:column;align-items:flex-start;gap:2px;min-height:52px;min-width:92px;max-width:70vw;padding:8px 14px;border-radius:12px;border:2px solid var(--line,#d5dfdb);background:var(--bg2,#fff);color:inherit;font:inherit;cursor:pointer;text-align:left}
+.eetab-nm{font-weight:800;font-size:1rem;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.eetab-ct{font-size:.72rem;color:var(--sub,#54635d);font-weight:700}
+.eetab.done{border-color:rgba(23,120,99,.45);background:rgba(23,120,99,.06)}
+.eetab.done .eetab-ct{color:var(--brand,#177863)}
+.eetab.on{border-color:var(--brand,#177863);background:var(--brand,#177863);color:#fff}
+.eetab.on .eetab-ct{color:rgba(255,255,255,.9)}
+.eetab:focus-visible{outline:3px solid #f0a500;outline-offset:2px}
+.ee-manual input{font-size:16px}
+
+/* 作業選択は折りたたみ（名簿から自動セット） */
+details.wsel>summary{list-style:none;cursor:pointer;min-height:44px}
+details.wsel>summary::-webkit-details-marker{display:none}
+details.wsel>summary h3::before{content:'▸ ';color:var(--sub,#54635d)}
+details.wsel[open]>summary h3::before{content:'▾ '}
+.evbox label,.ee-manual label,#pgCfg label[for=cfgUrl]{display:block;font-size:.85rem;font-weight:700;color:var(--sub);margin-bottom:5px}
+.evbox input,.ee-manual input,#cfgUrl{width:100%;min-height:var(--tap,44px);padding:10px 12px;border:1.5px solid var(--bdr-strong,#b9c7c1);border-radius:var(--r-sm,8px);font-size:16px;font-family:inherit;outline:0;background:#fff;color:var(--txt,#1d2a25)}
+.evbox input:focus,.ee-manual input:focus,#cfgUrl:focus{border-color:var(--pri,#177863);box-shadow:0 0 0 3px var(--pri-l,rgba(23,120,99,.15))}
+.ee-manual{margin-top:8px}
+/* トースト：長い文も切らずに折り返す（スマホ幅で全文が読めるように） */
+.toast{white-space:normal;text-align:center;line-height:1.45;width:max-content;border-radius:16px;padding:12px 20px}

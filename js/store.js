@@ -33,7 +33,8 @@ function normRec(e){
   return{id:sanitizeId(String(e.id||'')),date:String(e.date||''),
     evaluator:String(e.evaluator||''),evaluatee:String(e.evaluatee||''),
     overall:e.overall==null?'':String(e.overall),
-    createdAt:String(e.createdAt||''),...(e.updatedAt?{updatedAt:String(e.updatedAt)}:{}),works};
+    createdAt:String(e.createdAt||''),...(e.updatedAt?{updatedAt:String(e.updatedAt)}:{}),works,
+    sent:e.sent===true};
 }
 function validRec(r){return r&&typeof r==='object'&&typeof r.id==='string'&&r.id&&typeof r.date==='string'&&Array.isArray(r.works)&&r.works.length>0}
 
