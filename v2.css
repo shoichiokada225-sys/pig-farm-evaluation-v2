@@ -29,18 +29,25 @@
 .wchk-nm{font-size:.9rem}
 
 /* 採点エリアの作業見出し: 進捗バーの下に貼り付く（作業8つ=40枚でも、今どの作業か・何枚残りかが常に見える） */
-.wshd{position:sticky;top:var(--stk,96px);z-index:80;display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:22px 2px 10px;padding:8px 10px 8px 14px;border-radius:10px;background:var(--brand,#177863);color:#fff;box-shadow:0 2px 8px rgba(10,66,56,.25)}
+/* 貼り付く見出しは常に1行（vi/id の長い作業名でも高さを増やさない＝採点できる範囲を削らない）。全文と「今回は実施しない」は直下の .wsub（貼り付かない） */
+.wshd{position:sticky;top:var(--stk,96px);z-index:80;display:flex;flex-wrap:nowrap;align-items:center;gap:6px 10px;margin:22px 2px 10px;padding:8px 10px 8px 14px;border-radius:10px;background:var(--brand,#177863);color:#fff;box-shadow:0 2px 8px rgba(10,66,56,.25)}
 .wsec:first-child>.wshd,.wnav+.wsec>.wshd{margin-top:6px}
 #cards .wsec>.cd{animation:cdin .3s ease-out backwards}
 .wshd-ct{font-size:.8rem;font-weight:800;background:#fff;color:#0f5a49;border-radius:999px;padding:2px 9px;font-variant-numeric:tabular-nums;white-space:nowrap}
 .wshd-ct.full{background:#e3f5ec}
-.wshd-skip{flex:none;margin-left:auto;min-height:36px;padding:4px 10px;border-radius:8px;border:1.5px solid rgba(255,255,255,.75);background:transparent;color:#fff;font:inherit;font-size:.78rem;font-weight:700;cursor:pointer;white-space:nowrap}
+.wsub{display:flex;align-items:flex-start;gap:8px;margin:0 2px 8px;padding:0 4px}
+.wsub-nm{flex:1;min-width:0;font-size:.85rem;font-weight:700;color:var(--sub,#54635d);line-height:1.4;overflow-wrap:anywhere}
+.wsub-cat{font-weight:500}
+.wshd-skip{flex:none;margin-left:auto;min-height:40px;max-width:48%;padding:4px 10px;border-radius:8px;border:1.5px solid var(--brand,#177863);background:#fff;color:var(--brand,#177863);font:inherit;font-size:.78rem;font-weight:700;cursor:pointer;line-height:1.25;text-align:center}
 .wshd-skip:focus-visible{outline:3px solid #f0a500;outline-offset:2px}
 #cards .ec{scroll-margin-top:calc(var(--stk,96px) + 64px)}
 /* 作業の目次（タップでその作業へ・作業ごとの x/5・今日済んだ作業は「済」） */
-.wnav{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 8px}
-.wnav-c{display:inline-flex;align-items:center;gap:6px;max-width:100%;min-height:44px;padding:6px 10px;border-radius:10px;border:1.5px solid var(--brand,#177863);background:#fff;color:var(--txt,#1d2a25);font:inherit;font-size:.85rem;font-weight:700;cursor:pointer;text-align:left}
-.wnav-nm{min-width:0;overflow-wrap:anywhere}
+/* 目次は農場チップと同じ1段の横スクロール（vi/id でも縦に伸びない） */
+.wnav{display:flex;flex-wrap:nowrap;gap:6px;margin:4px 0 8px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:2px;
+  -webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 22px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 22px),transparent)}
+.wnav::-webkit-scrollbar{display:none}
+.wnav-c{flex:none;display:inline-flex;align-items:center;gap:6px;max-width:15em;min-height:44px;padding:6px 10px;border-radius:10px;border:1.5px solid var(--brand,#177863);background:#fff;color:var(--txt,#1d2a25);font:inherit;font-size:.85rem;font-weight:700;cursor:pointer;text-align:left}
+.wnav-nm{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .wnav-ct{flex:none;font-size:.75rem;font-weight:800;color:#8a4b00;background:#fff1d6;border-radius:999px;padding:1px 7px;font-variant-numeric:tabular-nums}
 .wnav-ct.full{color:#0f5a49;background:#e3f5ec}
 .wnav-c.done{border-color:#c9d0cd;background:#dde2e0;color:#56625d;cursor:default}
@@ -52,7 +59,9 @@
 .eetab.part.on{border-color:var(--brand,#177863);background:var(--brand,#177863)}
 .eetab.on .eetab-pt{background:#fff;color:#0f5a49}
 .wshd-no{font-size:.72rem;font-weight:700;background:rgba(255,255,255,.2);border-radius:6px;padding:2px 8px;letter-spacing:.03em}
-.wshd-nm{font-weight:800;font-size:1.02rem;flex:1 1 auto;min-width:6.5em}
+.wshd-nm{font-weight:800;font-size:1.02rem;flex:1 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wshd-no{flex:none;white-space:nowrap}
+.wshd-ct{flex:none}
 .wshd-cat{font-size:.72rem;opacity:.85}
 
 /* 詳細モーダルの作業グループ見出し */
@@ -100,11 +109,13 @@
 @media(min-width:520px){.eetabs{grid-template-columns:repeat(3,minmax(0,1fr))}}
 .eetabs:empty{display:none}
 .eetab{position:relative;min-width:0;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:2px;min-height:52px;padding:6px 12px;border-radius:12px;border:2px solid #9fb3ab;background:#fff;color:var(--txt,#1d2a25);font:inherit;cursor:pointer;text-align:left}
-.eetab-nm{font-weight:800;font-size:1rem;line-height:1.25;max-width:100%;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;word-break:break-word}
+.eetab-nm{font-weight:800;font-size:1rem;line-height:1.25;max-width:100%;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;word-break:break-word}
+.eetab-nm.long{font-size:.9rem}
 .eetab-ct{font-size:.75rem;color:var(--sub,#54635d);font-weight:700}
-.eetab.done{border-color:#c9d0cd;background:#dde2e0;color:#56625d;padding-right:40px}
+.eetab.done{border-color:#c9d0cd;background:#dde2e0;color:#56625d}
 .eetab.done .eetab-nm{font-weight:700}
-.eetab-ok{position:absolute;top:50%;right:8px;transform:translateY(-50%);width:26px;height:26px;border-radius:50%;background:#56625d;color:#fff;font-size:1rem;font-weight:900;line-height:26px;text-align:center}
+/* 実施済みの✓はタブ右上のバッジ（名前の幅を狭めない＝長いカタカナ名が切れない） */
+.eetab-ok{position:absolute;top:-7px;right:-5px;width:22px;height:22px;border-radius:50%;background:#56625d;color:#fff;font-size:.8rem;font-weight:900;line-height:22px;text-align:center;box-shadow:0 0 0 2px #fff}
 .eetab.on{border-color:var(--brand,#177863);background:var(--brand,#177863);color:#fff}
 .eetab.on .eetab-ct{color:rgba(255,255,255,.9)}
 .eetab.on .eetab-ok{background:#fff;color:var(--brand,#177863)}
@@ -133,3 +144,8 @@ details.wsel[open]>summary h3::before{content:'▾ '}
 .ee-manual{margin-top:8px}
 /* トースト：長い文も切らずに折り返す（スマホ幅で全文が読めるように） */
 .toast{white-space:normal;text-align:center;line-height:1.45;width:max-content;border-radius:16px;padding:12px 20px}
+
+/* 選択中の被評価者（全文・農場つき）を採点カードの上に1行で */
+.eecur{margin:0 2px 10px;padding:8px 12px;border-radius:10px;background:rgba(23,120,99,.08);border:1px solid rgba(23,120,99,.3);color:#0f5a49;font-size:.9rem;font-weight:700;line-height:1.4;overflow-wrap:anywhere}
+.eecur[hidden]{display:none}
+.eecur b{font-weight:800}

@@ -288,6 +288,8 @@ const FARM_KEY='jitsugi_v2_farm';
 let eeQuery='',eeManualOpen=false,rosterKeptEmpty=false;
 function storedFarm(){try{return localStorage.getItem(FARM_KEY)||''}catch{return''}}
 /* 名簿の農場（シートの並び順・所属未確定/空欄は最後） */
+/* 農場名の表示だけを訳す（空欄=農場未記入・「所属未確定」=訳語）。data-f・保存する farm・シートの値は元の文字列のまま */
+function farmDisp(f){return !f?t('farmNone'):/未確定/.test(f)?t('farmUnassigned'):f}
 function rosterFarms(ro){
   const fs=[];ro.forEach(p=>{if(!fs.includes(p.farm))fs.push(p.farm)});
   const last=f=>!f||/未確定/.test(f)?1:0;
@@ -347,7 +349,7 @@ function renderRoster(){
   fbox.innerHTML=showF?fs.map(f=>{
     const ps=ro.filter(p=>p.farm===f),left=ps.filter(p=>!isDone(p)).length,on=f===farm;
     return `<button type="button" class="fchip${on?' on':''}" aria-pressed="${on}" onclick="selectFarm(this.dataset.f)" data-f="${esc(f)}" data-left="${left}" data-n="${ps.length}">`+
-      `${esc(f||t('farmNone'))}<span class="fchip-ct${left?'':' zero'}">${left?esc(t('leftN').replace('{n}',left)):'✓'}</span></button>`;
+      `${esc(farmDisp(f))}<span class="fchip-ct${left?'':' zero'}">${left?esc(t('leftN').replace('{n}',left)):'✓'}</span></button>`;
   }).join(''):'';
   const onChip=fbox.querySelector('.fchip.on');   // 選択中の農場を横スクロールの中央へ（ページは縦に動かさない）
   if(onChip)fbox.scrollLeft=Math.max(0,onChip.offsetLeft-(fbox.clientWidth-onChip.offsetWidth)/2);
@@ -359,8 +361,8 @@ function renderRoster(){
   const todo=hit.filter(i=>!isDone(ro[i])),dn=hit.filter(i=>isDone(ro[i]));   // 未実施を先・実施済みは後ろ
   const tab=i=>{
     const p=ro[i],on=p===sel,g=pr.get(p),d=g.complete,part=!d&&g.done>0;
-    return `<button type="button" class="eetab${on?' on':''}${d?' done':''}${part?' part':''}" aria-pressed="${on}" data-i="${i}" data-done="${g.done}" data-total="${g.total}" onclick="selectEe(${i})">`+
-      `<span class="eetab-nm">${esc(p.name)}</span><span class="eetab-ct">${d?esc(t('doneLbl'))+' · ':''}${part?`<span class="eetab-pt">${esc(t('partLbl'))} ${g.done}/${g.total}</span>`+esc(t('worksUnit')):p.works.length?p.works.length+esc(t('worksUnit')):esc(t('worksNone'))}${p.common?` <span class="eetab-cm">${esc(t('commonLbl'))}</span>`:''}</span>`+
+    return `<button type="button" class="eetab${on?' on':''}${d?' done':''}${part?' part':''}" aria-pressed="${on}" data-i="${i}" data-done="${g.done}" data-total="${g.total}" title="${esc(p.name)}" onclick="selectEe(${i})">`+
+      `<span class="eetab-nm${[...p.name].length>12?' long':''}">${esc(p.name)}</span><span class="eetab-ct">${d?esc(t('doneLbl'))+' · ':''}${part?`<span class="eetab-pt">${esc(t('partLbl'))} ${g.done}/${g.total}</span>`+esc(t('worksUnit')):p.works.length?p.works.length+esc(t('worksUnit')):esc(t('worksNone'))}${p.common?` <span class="eetab-cm">${esc(t('commonLbl'))}</span>`:''}</span>`+
       `${p.unresolved&&p.unresolved.length?`<span class="eetab-unk">⚠ ${esc(t('unkWorkLbl'))}: ${esc(p.unresolved.join('、'))}</span>`:''}`+
       `${d?'<span class="eetab-ok" aria-hidden="true">✓</span>':''}</button>`;
   };
@@ -370,6 +372,9 @@ function renderRoster(){
   const manual=!ro.length||eeManualOpen||(!!cur&&!sel);
   document.getElementById('eeManual').style.display=manual?'':'none';
   document.getElementById('eeAdd').hidden=!ro.length||manual;
+  // 選んだ人の名前（全文）と農場を採点カードの上に1行で（タブの名前は長いと切れる・手入力欄は隠れるため）
+  const ec=document.getElementById('eeCur');
+  if(ec){ec.hidden=!sel;ec.innerHTML=sel?`${esc(t('scoringFor'))}: <b>${esc(sel.name)}</b>（${esc(farmDisp(sel.farm))}）`:''}
   // 名簿の取得日時を常に出す。今回の取得に失敗・古い名簿の時は警告色（圏外の豚舎で古い名簿のまま試験しないように）
   const atTx=fmtAt(rs.at),stale=!!ro.length&&!rosterLoading&&!!sheetUrl()&&(rosterErr||rosterIsOld(rs));
   note.textContent=rosterLoading?t('eeLoading')+(ro.length?' ／ '+t('rosterAt').replace('{t}',atTx):'')

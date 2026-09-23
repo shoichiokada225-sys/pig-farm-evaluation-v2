@@ -40,8 +40,8 @@ function buildCards(){
   const dn=(typeof curDoneWorks==='function'?curDoneWorks():[]).filter(id=>!selWorks.includes(id)&&workById(id));
   if(selWorks.length>1||dn.length){
     h+=`<nav class="wnav" id="wnav" aria-label="${esc(t('wnavLbl'))}">`+
-      selWorks.filter(workById).map(wid=>{const w=workById(wid);return `<button type="button" class="wnav-c" data-w="${esc(wid)}" onclick="jumpWork(this.dataset.w)"><span class="wnav-nm">${esc(loc(w,'name'))}</span><span class="wnav-ct" data-wct="${esc(wid)}">0/${workItems(wid).length}</span></button>`}).join('')+
-      dn.map(wid=>`<span class="wnav-c done" data-w="${esc(wid)}"><span class="wnav-nm">${esc(loc(workById(wid),'name'))}</span><span class="wnav-ct">✓ ${esc(t('doneMark'))}</span></span>`).join('')+
+      selWorks.filter(workById).map(wid=>{const w=workById(wid);return `<button type="button" class="wnav-c" data-w="${esc(wid)}" title="${esc(loc(w,'name'))}" onclick="jumpWork(this.dataset.w)"><span class="wnav-nm">${esc(loc(w,'name'))}</span><span class="wnav-ct" data-wct="${esc(wid)}">0/${workItems(wid).length}</span></button>`}).join('')+
+      dn.map(wid=>`<span class="wnav-c done" data-w="${esc(wid)}" title="${esc(loc(workById(wid),'name'))}"><span class="wnav-nm">${esc(loc(workById(wid),'name'))}</span><span class="wnav-ct">✓ ${esc(t('doneMark'))}</span></span>`).join('')+
       `</nav>`;
   }
   selWorks.forEach(wid=>{
@@ -49,10 +49,10 @@ function buildCards(){
     // 作業ごとに区切る（見出しは自分の作業のカードの間だけ貼り付き、次の作業に来たら入れ替わる）
     h+=`<section class="wsec" data-w="${esc(w.id)}"><div class="wshd" id="wh-${esc(w.id)}" data-w="${esc(w.id)}">
       <span class="wshd-no">${esc(w.no||'')}</span>
-      <span class="wshd-nm">${esc(loc(w,'name'))}</span>
+      <span class="wshd-nm" title="${esc(loc(w,'name'))}">${esc(loc(w,'name'))}</span>
       <span class="wshd-ct" data-wct="${esc(w.id)}">0/${workItems(wid).length}</span>
-      ${editId?'':`<button type="button" class="wshd-skip" data-w="${esc(w.id)}" onclick="skipWork(this.dataset.w)">${esc(t('skipWork'))}</button>`}
-    </div>`;
+    </div>
+    <div class="wsub"><span class="wsub-nm">${esc(loc(w,'name'))} ${w.category?`<span class="wsub-cat">· ${esc(catLabel(w.category))}</span>`:''}</span>${editId?'':`<button type="button" class="wshd-skip" data-w="${esc(w.id)}" onclick="skipWork(this.dataset.w)">${esc(t('skipWork'))}</button>`}</div>`;
     if(w.gyomu)h+=`<a class="man-link" href="https://genba-manual.vercel.app/#g_${esc(w.gyomu)}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1zm0 13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"/></svg>${t('manualLink')}</a>`;
     workItems(wid).forEach((it,ii)=>{
       h+=`<div class="cd ec" id="c-${it.id}" data-w="${esc(wid)}" style="animation-delay:${Math.min(ci++,8)*0.03}s">
@@ -131,7 +131,7 @@ function eePeople(all){
   all.forEach(r=>{const k=keyOf(r);if(!m.has(k)){const [farm,name]=JSON.parse(k);m.set(k,{key:k,farm,name})}});
   const ps=[...m.values()];
   const cnt={};ps.forEach(p=>{cnt[p.name]=(cnt[p.name]||0)+1});
-  ps.forEach(p=>{p.label=cnt[p.name]>1?p.name+'（'+(p.farm||t('farmNone'))+'）':p.name});
+  ps.forEach(p=>{p.label=cnt[p.name]>1?p.name+'（'+farmDisp(p.farm)+'）':p.name});
   return ps.sort((a,b)=>a.name<b.name?-1:a.name>b.name?1:a.farm<b.farm?-1:a.farm>b.farm?1:0);
 }
 /* 選択キーに一致する記録（キーは全記録から計算＝履歴・グラフで同じ人を指す） */
@@ -201,6 +201,9 @@ function doDel(id){
 /* ==============================================================
    CSV（縦持ち: 1行=1種目）
    ============================================================== */
+/* CSVは事務所で集計するデータ形式なので日本語に固定（見出し・作業・種目と同じく、カテゴリも正本の日本語名。
+   画面の言語で変わる catLabel は使わない＝シートへの送信 toPayload と同じ値） */
+function catName(catId){const c=WORKDATA_V2.categories.find(c=>c.id===catId);return c?c.name:catId}
 function doCSV(){
   const all=getAll();if(!all.length){toast(t('eCSV'),1);return}
   const hd=['評価日','評価者','被評価者','農場','名簿外','カテゴリ','作業','種目','スコア','コメント','作業平均','セッション平均','全体所感','作成日時'];
@@ -214,7 +217,7 @@ function doCSV(){
       const keys=aspects.length?aspects.map(a=>a.id):Object.keys(we.scores||{});
       keys.forEach(aid=>{
         const a=aspects.find(x=>x.id===aid);
-        const row=[r.date,r.evaluator,r.evaluatee,r.farm||'',r.manual?'名簿外':'',catLabel(we.category||(w&&w.category)||''),we.workName||(w&&w.name)||'',a?a.name:aid,(we.scores||{})[aid]||'',(we.comments||{})[aid]||'',wav,sav,r.overall||'',r.createdAt||''];
+        const row=[r.date,r.evaluator,r.evaluatee,r.farm||'',r.manual?'名簿外':'',catName(we.category||(w&&w.category)||''),we.workName||(w&&w.name)||'',a?a.name:aid,(we.scores||{})[aid]||'',(we.comments||{})[aid]||'',wav,sav,r.overall||'',r.createdAt||''];
         csv+=row.map(csvCell).join(',')+'\n';
       });
     });

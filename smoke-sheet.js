@@ -678,11 +678,11 @@ async function runAssign(devName) {
 
   console.log('[A2] 今回は実施しない（その作業だけ外す）');
   dialogs.length = 0;
-  await page.locator('#wh-treatment .wshd-skip').tap(); await page.waitForTimeout(300);
+  await page.locator('.wsec[data-w="treatment"] .wshd-skip').tap(); await page.waitForTimeout(300);
   ok('未採点の作業は確認なしで外れる → 35枚・7作業', dialogs.length === 0 && await page.locator('#cards .ec').count() === 35 && await page.locator('#wnav .wnav-c').count() === 7);
   ok('外した作業の名前をトーストで知らせる', /治療/.test(await page.locator('#toast').textContent()));
   accept = false; dialogs.length = 0;
-  await page.locator('#wh-feeding-daily .wshd-skip').tap(); await page.waitForTimeout(300);
+  await page.locator('.wsec[data-w="feeding-daily"] .wshd-skip').tap(); await page.waitForTimeout(300);
   ok('採点済みの作業は確認（キャンセルで残る）', dialogs.length === 1 && /給餌/.test(dialogs[0]) && await page.locator('#wh-feeding-daily').count() === 1);
   accept = true;
   ok('外しても採点は消えない', /✓ 5\/5/.test(await page.locator('#wnav [data-wct="feeding-daily"]').textContent()));
@@ -720,7 +720,7 @@ async function runAssign(devName) {
 
   console.log('[A5] 3作業の人で1作業を外して保存 → 途中 2/3 → 残り1作業');
   await ee('テスト 三作').tap(); await page.waitForTimeout(300);
-  await page.locator('#wh-feed-adjust .wshd-skip').tap(); await page.waitForTimeout(200);
+  await page.locator('.wsec[data-w="feed-adjust"] .wshd-skip').tap(); await page.waitForTimeout(200);
   await scoreWork('feeding-daily', 4); await scoreWork('dung-removal', 4);
   await page.locator('#btnSave').tap(); await page.waitForTimeout(900);
   ok('記録は2作業', (await recs()).find(x => x.evaluatee === 'テスト 三作').works.length === 2);
@@ -812,11 +812,114 @@ async function runSW() {
   srv.closeAllConnections && srv.closeAllConnections(); srv.close();
 }
 
+/* 多言語（vi/id/en）の表示崩れ・固有データ（架空名）:
+   貼り付く作業見出しは1行（ja と同じ高さ）・目次は1段・長いカタカナ名の全文・「所属未確定」の訳・CSVのカテゴリは日本語固定 */
+async function runI18n(devName) {
+  console.log(`\n===== ${devName}（多言語の表示） =====`);
+  const browser = await chromium.launch(process.env.PW_CHANNEL ? { channel: process.env.PW_CHANNEL } : {});
+  const ctx = await browser.newContext({ ...devices[devName], acceptDownloads: true });
+  const page = await ctx.newPage();
+  const errors = [];
+  page.on('pageerror', e => errors.push(String(e)));
+  page.on('dialog', d => d.accept());
+  const LONG = 'テストティ・タイン・フォン・ビックゴ';       // 19字の架空カタカナ名
+  const UNASSIGNED = '所属未確定';
+  const roster = [
+    { name: 'テスト 八長', farm: 'テスト農場A', works: ['No.25', 'No.31', 'No.27', 'No.30', 'No.41', 'No.43', '給餌', 'エサ調整'] },
+    { name: LONG, farm: 'テスト農場A', works: ['給餌'] },
+    { name: 'テスト 未定', farm: UNASSIGNED, works: ['給餌'] },
+  ];
+  await page.route(u => u.href.startsWith('https://script.google.com/'), async route => {
+    const req = route.request(), hdr = { 'access-control-allow-origin': '*' };
+    if (req.method() === 'GET') return route.fulfill({ status: 200, contentType: 'application/json', headers: hdr, body: JSON.stringify({ ok: true, roster }) });
+    const body = JSON.parse(req.postData());
+    return route.fulfill({ status: 200, contentType: 'application/json', headers: hdr, body: JSON.stringify({ ok: true, id: body.record.id }) });
+  });
+  const ee = name => page.locator('.eetab').filter({ has: page.locator('.eetab-nm', { hasText: new RegExp('^' + name + '$') }) });
+  const noHScroll = () => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1);
+  const setL = async l => { await page.evaluate(l => setLang(l), l); await page.waitForTimeout(200); };
+  await page.goto(APP);
+  await page.evaluate(GAS => { localStorage.clear(); localStorage.setItem('jitsugi_v2_sheet_url', GAS); localStorage.setItem('jitsugi_v2_evaluator', 'テスト評価者'); }, GAS);
+  await page.reload(); await page.waitForTimeout(600);
+
+  console.log('[I0] 4言語のキーがそろっている');
+  const keyDiff = await page.evaluate(() => { const ja = Object.keys(TX.ja); return ['en', 'vi', 'id'].map(l => { const k = Object.keys(TX[l]); return l + ':' + ja.filter(x => !k.includes(x)).concat(k.filter(x => !ja.includes(x))).join('/'); }).filter(x => !/:$/.test(x)); });
+  ok('ja/en/vi/id のキーが一致' + (keyDiff.length ? ' ' + keyDiff.join(' ') : ''), keyDiff.length === 0);
+
+  console.log('[I1] 作業8つ（長い作業名）: 貼り付く見出しは1行・目次は1段');
+  await ee('テスト 八長').tap(); await page.waitForTimeout(300);
+  ok('カード40枚', await page.locator('#cards .ec').count() === 40);
+  const hs = {};
+  for (const l of ['ja', 'vi', 'id', 'en']) {
+    await setL(l);
+    hs[l] = { hd: await page.locator('.wshd').evaluateAll(e => Math.max(...e.map(x => x.getBoundingClientRect().height))), nav: Math.round((await page.locator('#wnav').boundingBox()).height), hs: await noHScroll() };
+  }
+  for (const l of ['vi', 'id', 'en']) {
+    ok(`${l}: 見出しの最大高さ ${Math.round(hs[l].hd)}px ≤ ja ${Math.round(hs.ja.hd)}px・84px以下`, hs[l].hd <= hs.ja.hd + 1 && hs[l].hd <= 84);
+    ok(`${l}: 作業の目次は1段（高さ ${hs[l].nav}px ≤ 64）・横スクロールなし`, hs[l].nav <= 64 && hs[l].hs);
+  }
+  await setL('vi');
+  const sub = await page.locator('.wsec[data-w="move-preg"] .wsub-nm').textContent();
+  const full = await page.evaluate(() => WORKDATA_V2.works.find(w => w.id === 'move-preg').name_vi);
+  ok('vi: 作業名の全文は貼り付かない行に出る（見出しは省略・title に全文）', sub.includes(full) && await page.locator('#wh-move-preg .wshd-nm').getAttribute('title') === full && await page.locator('.wsec[data-w="move-preg"] .wsub').evaluate(e => getComputedStyle(e).position !== 'sticky'));
+  ok('vi: 「今回は実施しない」は作業ごとに押せる', await page.locator('.wshd-skip').count() === 8 && /Lần này không làm/.test(await page.locator('.wshd-skip').first().textContent()));
+  await page.evaluate(() => { const c = document.querySelectorAll('#cards .ec[data-w="move-preg"]')[2]; window.scrollTo(0, c.getBoundingClientRect().top + scrollY - 250); });
+  await page.waitForTimeout(300);
+  const st = await page.evaluate(() => { const stk = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--stk')); const el = document.elementFromPoint(innerWidth / 2, stk + 8); const h = el && el.closest('.wshd'); return { w: h && h.dataset.w, b: h && Math.round(h.getBoundingClientRect().bottom), stk }; });
+  ok(`vi: スクロール中の貼り付き見出しは1行分（下端 ${st.b} ≤ ${Math.round(st.stk) + 60}）`, st.w === 'move-preg' && st.b <= st.stk + 60);
+  await page.screenshot({ path: `${__dirname}/_shots/${devName.replace(/\W/g, '_')}_I1_vi_sticky.png` });
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await setL('ja');
+
+  console.log('[I2] 長いカタカナ名（19字）: タブで切れない・選んだ人の全文を採点カードの上に');
+  const lt = ee(LONG);
+  ok('タブの名前が切れない（3行まで）・title に全文', await lt.locator('.eetab-nm').evaluate(e => e.scrollHeight <= e.clientHeight + 1) && await lt.getAttribute('title') === LONG);
+  ok('選択中の人（テスト 八長）を採点カードの上に表示', /テスト 八長/.test(await page.locator('#eeCur').textContent()));
+  await lt.tap(); await page.waitForTimeout(300);
+  ok('選んだ人の全文と農場が画面に出る', await page.locator('#eeCur').isVisible() && (await page.locator('#eeCur').textContent()).includes(LONG) && /テスト農場A/.test(await page.locator('#eeCur').textContent()));
+  // 実施済みにしても名前は切れない（✓はタブ右上のバッジ）
+  for (const cid of await page.locator('#cards .ec').evaluateAll(els => els.map(e => e.id.slice(2)))) await page.locator(`.sb[data-id="${cid}"][data-s="4"]`).tap();
+  await page.locator('#btnSave').tap(); await page.waitForTimeout(900);
+  ok('実施済みのタブでも名前が切れない', await ee(LONG).evaluate(e => e.classList.contains('done')) && await ee(LONG).locator('.eetab-nm').evaluate(e => e.scrollHeight <= e.clientHeight + 1));
+  const okB = await ee(LONG).locator('.eetab-ok').boundingBox(), tbB = await ee(LONG).boundingBox(), nmW = await ee(LONG).locator('.eetab-nm').evaluate(e => e.parentElement.clientWidth - parseFloat(getComputedStyle(e.parentElement).paddingLeft) - parseFloat(getComputedStyle(e.parentElement).paddingRight));
+  ok(`✓バッジはタブ右上の角（名前の欄 ${Math.round(nmW)}px ≥ ${Math.round(tbB.width - 30)}px）`, okB && okB.y < tbB.y && nmW >= tbB.width - 30);
+  await setL('vi');
+  ok('vi でも名前が切れない', await ee(LONG).locator('.eetab-nm').evaluate(e => e.scrollHeight <= e.clientHeight + 1) && await noHScroll());
+  await setL('ja');
+
+  console.log('[I3] 「所属未確定」: 表示だけ訳す・保存と送信は元の値');
+  const chip = () => page.locator(`.fchip[data-f="${UNASSIGNED}"]`);
+  ok('ja は「所属未確定」', /^所属未確定/.test(await chip().textContent()));
+  const want = { vi: 'Chưa xác định trại', id: 'Peternakan belum ditentukan', en: 'Farm not assigned' };
+  for (const l of ['vi', 'id', 'en']) { await setL(l); ok(`${l}: チップは「${want[l]}」・日本語が残らない`, (await chip().textContent()).startsWith(want[l]) && !/未確定/.test(await chip().textContent())); }
+  ok('id: 農場未記入の訳に英語の Farm が混じらない', await page.evaluate(() => TX.id.farmNone === 'Peternakan belum diisi'));
+  await setL('vi');
+  await chip().tap(); await page.waitForTimeout(200);
+  await ee('テスト 未定').tap(); await page.waitForTimeout(300);
+  ok('vi: 採点中の表示も訳した農場名', (await page.locator('#eeCur').textContent()).includes('Chưa xác định trại'));
+  for (const cid of await page.locator('#cards .ec').evaluateAll(els => els.map(e => e.id.slice(2)))) await page.locator(`.sb[data-id="${cid}"][data-s="3"]`).tap();
+  await page.locator('#btnSave').tap(); await page.waitForTimeout(900);
+  const rs = await page.evaluate(() => JSON.parse(localStorage.getItem('jitsugi_v2_data')).evaluations);
+  ok('保存した記録の farm は元の「所属未確定」', rs.find(r => r.evaluatee === 'テスト 未定').farm === UNASSIGNED);
+
+  console.log('[I4] CSVは日本語固定（カテゴリ列が画面の言語で変わらない）');
+  const csvOf = async l => { await setL(l); const [dl] = await Promise.all([page.waitForEvent('download'), page.evaluate(() => doCSV())]); return fs.readFileSync(await dl.path(), 'utf8'); };
+  const cJa = await csvOf('ja'), cVi = await csvOf('vi'), cId = await csvOf('id');
+  ok('vi/id で出したCSVが ja と同じ（カテゴリ列=飼養管理）', cVi === cJa && cId === cJa && cJa.includes('"飼養管理","給餌"'));
+  await setL('ja');
+
+  ok('JSエラーなし(多言語)', errors.length === 0);
+  if (errors.length) console.log(errors.join('\n'));
+  await browser.close();
+}
+
 (async () => {
+  if (process.env.ONLY_I18N) { await runI18n('iPhone SE'); console.log(`\n合計: OK ${pass} / NG ${fail}`); process.exit(fail ? 1 : 0); }
   if (!process.env.ONLY_REL && !process.env.ONLY_ASSIGN) for (const d of ['iPhone SE', 'iPhone 13', 'Pixel 7']) await run(d);
   if (!process.env.ONLY_REL && !process.env.ONLY_ASSIGN) await runSlow('iPhone SE');
   if (!process.env.ONLY_ASSIGN) await runRel('iPhone 13');
   for (const d of ['iPhone 13', 'iPhone SE']) await runAssign(d);
+  if (!process.env.ONLY_REL && !process.env.ONLY_ASSIGN) for (const d of ['iPhone SE', 'Pixel 7']) await runI18n(d);
   await runSW();
   console.log(`\n合計: OK ${pass} / NG ${fail}`);
   process.exit(fail ? 1 : 0);
