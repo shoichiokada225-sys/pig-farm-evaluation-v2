@@ -448,9 +448,222 @@ async function runSlow(devName) {
   await browser.close();
 }
 
+/* オフライン・送信の信頼性（架空名）: 送信中の保存の取りこぼし・失敗件数の誠実さ・自動再送・削除のシート反映・名簿の古さ */
+async function runRel(devName) {
+  console.log(`\n===== ${devName}（送信の信頼性） =====`);
+  const browser = await chromium.launch(process.env.PW_CHANNEL ? { channel: process.env.PW_CHANNEL } : {});
+  const ctx = await browser.newContext({ ...devices[devName] });
+  const page = await ctx.newPage();
+  const errors = [];
+  page.on('pageerror', e => errors.push(String(e)));
+  const dialogs = [];
+  page.on('dialog', d => { dialogs.push(d.message()); d.accept(); });
+  const sheet = {};              // {recordId: payload}
+  const posts = [];
+  let online = true, postDelay = 0, failFor = null, oldGas = false;
+  let roster = [
+    { name: 'テスト 甲太', farm: 'テスト那須', works: ['給餌'] },
+    { name: 'テスト 乙彦', farm: 'テスト那須', works: ['給餌'] },
+    { name: 'テスト 丙介', farm: 'テスト那須', works: ['給餌'] },
+  ];
+  await page.route(u => u.href.startsWith('https://script.google.com/'), async route => {
+    if (!online) return route.abort('internetdisconnected');
+    const req = route.request(), hdr = { 'access-control-allow-origin': '*' };
+    if (req.method() === 'GET') {
+      const a = new URL(req.url()).searchParams.get('action');
+      return route.fulfill({ status: 200, contentType: 'application/json', headers: hdr, body: JSON.stringify(a === 'roster' ? { ok: true, roster } : { ok: true }) });
+    }
+    const body = JSON.parse(req.postData());
+    posts.push(body);
+    if (postDelay) await new Promise(r => setTimeout(r, postDelay));
+    if (body.action === 'delete') {
+      if (oldGas) return route.fulfill({ status: 200, contentType: 'application/json', headers: hdr, body: JSON.stringify({ ok: false, error: 'bad request' }) });
+      const had = body.id in sheet; delete sheet[body.id];
+      return route.fulfill({ status: 200, contentType: 'application/json', headers: hdr, body: JSON.stringify({ ok: true, id: body.id, deleted: had ? 1 : 0 }) });
+    }
+    const r = body.record;
+    if (failFor && r.evaluatee === failFor) return route.abort('connectionreset');
+    sheet[r.id] = r;
+    return route.fulfill({ status: 200, contentType: 'application/json', headers: hdr, body: JSON.stringify({ ok: true, id: r.id }) });
+  });
+  const ee = name => page.locator('.eetab').filter({ has: page.locator('.eetab-nm', { hasText: new RegExp('^' + name + '$') }) });
+  const scoreAll = async s => { for (const cid of await page.locator('#cards .ec').evaluateAll(els => els.map(e => e.id.slice(2)))) await page.locator(`.sb[data-id="${cid}"][data-s="${s}"]`).tap(); };
+  const saveEe = async (name, s) => { await ee(name).tap(); await page.waitForTimeout(200); await scoreAll(s); await page.locator('#btnSave').tap(); };
+  const recs = () => page.evaluate(() => JSON.parse(localStorage.getItem('jitsugi_v2_data') || '{"evaluations":[]}').evaluations);
+  const toastTx = () => page.locator('#toast').textContent();
+  await page.goto(APP);
+  await page.evaluate(GAS => { localStorage.clear(); localStorage.setItem('jitsugi_v2_sheet_url', GAS); localStorage.setItem('jitsugi_v2_evaluator', 'テスト評価者'); }, GAS);
+  await page.reload(); await page.waitForTimeout(600);
+
+  console.log('[R1] 送信中に保存した記録も同じ送信で送る・失敗と言わない');
+  online = false;
+  await saveEe('テスト 甲太', 3); await page.waitForTimeout(500);
+  ok('圏外で保存 → 未送信1', /未送信: 1/.test(await page.locator('#syncBar').textContent()));
+  online = true; postDelay = 2500;
+  await page.evaluate(() => window.dispatchEvent(new Event('online')));   // 電波が戻った
+  await page.waitForTimeout(300);
+  ok('送信中の表示', /送信中/.test(await page.locator('#syncBar').textContent()));
+  await saveEe('テスト 乙彦', 4);                                          // 送信中に次の人を保存
+  await page.waitForTimeout(6500);
+  const r1 = await recs();
+  ok('送信中に保存した記録も送信済み（2件とも）', r1.length === 2 && r1.every(r => r.sent === true));
+  ok('POSTは2件（二重送信なし）', posts.filter(p => p.action === 'submit').length === 2 && Object.keys(sheet).length === 2);
+  ok('「送信できなかった」と出さない', !/送信できなかった/.test(await toastTx()) && /すべてスプレッドシートに送信済み/.test(await page.locator('#syncBar').textContent()));
+  postDelay = 0;
+
+  console.log('[R2] 失敗の件数は実際に失敗した分だけ');
+  failFor = 'テスト 丙介';
+  await saveEe('テスト 丙介', 2); await page.waitForTimeout(800);
+  ok('失敗1件だけを「送信できなかった (1)」', /送信できなかった.*\(1\)/.test(await toastTx()) && /未送信: 1/.test(await page.locator('#syncBar').textContent()));
+
+  console.log('[R3] 電波が弱い→強い（online イベント無し）でも自動で再送');
+  failFor = null;
+  const nb = posts.length;
+  ok('起動時から周期の再送が動いている（60秒）', await page.evaluate(() => retryT !== null && SYNC_RETRY_MS === 60000));
+  await page.evaluate(() => { SYNC_RETRY_MS = 700; schedRetry(); });
+  await page.waitForTimeout(2000);
+  ok('周期の再送で送信済み（ボタンを押さない）', (await recs()).every(r => r.sent) && posts.length > nb);
+  await page.evaluate(() => { SYNC_RETRY_MS = 600000; schedRetry(); });
+  failFor = 'テスト 甲太';
+  await page.locator('.tabs button[data-pg="pgHi"]').tap();
+  await page.locator('.hi', { hasText: 'テスト 甲太' }).first().tap();
+  await page.locator('#moBody .b3').tap(); await page.waitForTimeout(300);
+  const eid = (await page.locator('#cards .ec').first().getAttribute('id')).slice(2);
+  await page.locator(`.sb[data-id="${eid}"][data-s="5"]`).tap();
+  await page.locator('#btnSave').tap(); await page.waitForTimeout(800);
+  ok('編集の送信が失敗 → 未送信1', /未送信: 1/.test(await page.locator('#syncBar').textContent()));
+  failFor = null;
+  await page.evaluate(() => { Object.defineProperty(document, 'visibilityState', { value: 'visible', configurable: true }); document.dispatchEvent(new Event('visibilitychange')); });
+  await page.waitForTimeout(800);
+  ok('アプリが前面に戻った時に再送', (await recs()).every(r => r.sent) && sheet[(await recs()).find(r => r.evaluatee === 'テスト 甲太').id].works[0].items[0].score === 5);
+
+  console.log('[R4] 送信済みの記録を削除 → シートの行も消す（圏外なら削除待ち）');
+  await page.locator('.tabs button[data-pg="pgHi"]').tap();
+  const kotaId = (await recs()).find(r => r.evaluatee === 'テスト 甲太').id;
+  dialogs.length = 0;
+  await page.locator('.hi', { hasText: 'テスト 甲太' }).first().tap();
+  await page.locator('#moBody .bt-danger').tap(); await page.waitForTimeout(800);
+  ok('確認文にシートの行と記録IDを出す', dialogs.length === 1 && /スプレッドシート/.test(dialogs[0]) && dialogs[0].includes(kotaId));
+  ok('シートからも消える', !(kotaId in sheet) && posts.some(p => p.action === 'delete' && p.id === kotaId));
+  ok('端末からも消え、削除待ちは残らない', !(await recs()).some(r => r.id === kotaId) && await page.evaluate(() => JSON.parse(localStorage.getItem('jitsugi_v2_deletes') || '[]').length === 0));
+  online = false;
+  const otsuId = (await recs()).find(r => r.evaluatee === 'テスト 乙彦').id;
+  await page.locator('.hi', { hasText: 'テスト 乙彦' }).first().tap();
+  await page.locator('#moBody .bt-danger').tap(); await page.waitForTimeout(800);
+  ok('圏外で削除 → シートの削除待ち1（すべて送信済みと言わない）', /シートの削除待ち: 1/.test(await page.locator('#syncBar').textContent()) && otsuId in sheet);
+  await page.reload(); await page.waitForTimeout(600);
+  ok('削除待ちは再起動しても残る', /シートの削除待ち: 1/.test(await page.locator('#syncBar').textContent()));
+  online = true;
+  await page.locator('#syncBar button').tap(); await page.waitForTimeout(800);
+  ok('電波が戻れば削除される', !(otsuId in sheet) && /すべてスプレッドシートに送信済み/.test(await page.locator('#syncBar').textContent()));
+  // シート側が古い版（削除に未対応）→ 消えたと言わない
+  oldGas = true;
+  const heiId = (await recs()).find(r => r.evaluatee === 'テスト 丙介').id;
+  await page.locator('.tabs button[data-pg="pgHi"]').tap();
+  await page.locator('.hi', { hasText: 'テスト 丙介' }).first().tap();
+  await page.locator('#moBody .bt-danger').tap(); await page.waitForTimeout(800);
+  ok('GASが削除に未対応 → 未対応と知らせ、削除待ちに残す', /削除に未対応/.test(await toastTx()) && /シートの削除待ち: 1/.test(await page.locator('#syncBar').textContent()) && heiId in sheet);
+  oldGas = false;
+  await page.locator('.tabs button[data-pg="pgIn"]').tap();
+  await page.locator('#syncBar button').tap(); await page.waitForTimeout(800);
+  ok('GAS更新後の再送で削除される', !(heiId in sheet));
+  // 一度も送っていない記録の削除はシートへ問い合わせない
+  online = false;
+  await page.locator('.tabs button[data-pg="pgIn"]').tap();
+  await saveEe('テスト 甲太', 3); await page.waitForTimeout(500);
+  online = true;
+  const nd = posts.filter(p => p.action === 'delete').length;
+  dialogs.length = 0;
+  await page.locator('.tabs button[data-pg="pgHi"]').tap();
+  await page.locator('.hi', { hasText: 'テスト 甲太' }).first().tap();
+  await page.locator('#moBody .bt-danger').tap(); await page.waitForTimeout(500);
+  ok('未送信の記録の削除は通常の確認・削除要求なし', !/スプレッドシート/.test(dialogs[0] || '') && posts.filter(p => p.action === 'delete').length === nd && (await recs()).length === 0);
+
+  // 旧形式の記録（sentOnce も削除待ちキーも無い・送信済み）も、削除すればシートの行を消す
+  await page.evaluate(() => { const w = WORKDATA_V2.works[0]; localStorage.removeItem('jitsugi_v2_deletes');
+    localStorage.setItem('jitsugi_v2_data', JSON.stringify({ evaluations: [{ id: 'legacy-1', date: '2026-09-20', evaluator: 'テスト評価者', evaluatee: 'テスト 旧形式', farm: '', overall: '', createdAt: '2026-09-20T00:00:00Z',
+      works: [{ workId: w.id, workName: w.name, category: w.category, scores: Object.fromEntries(w.aspects.map(a => [a.id, 3])), comments: {} }], sent: true }] })); });
+  sheet['legacy-1'] = { id: 'legacy-1' };
+  await page.reload(); await page.waitForTimeout(600);
+  await page.locator('.tabs button[data-pg="pgHi"]').tap();
+  await page.locator('.hi', { hasText: 'テスト評価者' }).first().tap();
+  await page.locator('#moBody .bt-danger').tap(); await page.waitForTimeout(800);
+  ok('旧形式の送信済み記録の削除もシートへ反映', !('legacy-1' in sheet) && (await recs()).length === 0);
+
+  console.log('[R5] 名簿の取得日時と古さ');
+  await page.locator('.tabs button[data-pg="pgIn"]').tap();
+  await page.locator('.eebox .wsel-hd button').tap(); await page.waitForTimeout(600);
+  const at = await page.evaluate(() => JSON.parse(localStorage.getItem('jitsugi_v2_roster')).at);
+  const d = new Date(at), hm = (d.getMonth() + 1) + '/' + d.getDate() + ' ' + String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+  const note = () => page.locator('#eeNote');
+  ok('取得日時を常に表示', (await note().textContent()).includes('名簿: ' + hm + ' 取得') && !(await note().evaluate(e => e.classList.contains('eenote-stale'))));
+  online = false;
+  await page.reload(); await page.waitForTimeout(900);
+  ok('圏外で起動 → 「前回の名簿（日時）・最新ではありません」を警告色', /前回の名簿（/.test(await note().textContent()) && (await note().textContent()).includes(hm) && /最新ではありません/.test(await note().textContent()) && await note().evaluate(e => e.classList.contains('eenote-stale')));
+  await page.evaluate(() => { const r = JSON.parse(localStorage.getItem('jitsugi_v2_roster')); r.at = new Date(Date.now() - 30 * 3600 * 1000).toISOString(); localStorage.setItem('jitsugi_v2_roster', JSON.stringify(r)); });
+  await page.reload(); await page.waitForTimeout(900);
+  ok('12時間より古い名簿で圏外起動 → トーストでも知らせる', /前回の名簿/.test(await toastTx()) && await page.locator('#toast').evaluate(e => e.classList.contains('show')));
+  online = true;
+  await page.reload(); await page.waitForTimeout(900);
+  ok('取り直せれば警告は消える', !(await note().evaluate(e => e.classList.contains('eenote-stale'))) && /取得/.test(await note().textContent()));
+  await page.evaluate(() => { const r = JSON.parse(localStorage.getItem('jitsugi_v2_roster')); r.at = new Date(Date.now() - 30 * 3600 * 1000).toISOString(); localStorage.setItem('jitsugi_v2_roster', JSON.stringify(r)); renderRoster(); });
+  ok('古い名簿を表示中は（取得失敗でなくても）警告色', /古い可能性/.test(await note().textContent()) && await note().evaluate(e => e.classList.contains('eenote-stale')));
+  await page.locator('.lsw button').nth(2).tap(); await page.waitForTimeout(200);
+  ok('vi でも名簿の古さの表示', /Danh sách/.test(await note().textContent()));
+  await page.locator('.lsw button').nth(0).tap();
+
+  ok('JSエラーなし(送信の信頼性)', errors.length === 0);
+  if (errors.length) console.log(errors.join('\n'));
+  await browser.close();
+}
+
+/* Service Worker: 電波が弱い（つながるが応答が返らない）時もキャッシュから即起動する（localhost で実際にSWを登録） */
+async function runSW() {
+  console.log('\n===== Service Worker（応答が返らない回線で起動） =====');
+  const http = require('http'), path = require('path');
+  let hang = false; const held = [];
+  const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png' };
+  const srv = http.createServer((req, res) => {
+    if (hang) { held.push(res); return; }   // 応答しない（lie-fi）
+    let p = decodeURIComponent(new URL(req.url, 'http://x').pathname);
+    if (p.endsWith('/')) p += 'index.html';
+    const f = path.join(__dirname, p);
+    if (!f.startsWith(__dirname) || !fs.existsSync(f)) { res.writeHead(404); return res.end(); }
+    res.writeHead(200, { 'content-type': types[path.extname(f)] || 'application/octet-stream' });
+    fs.createReadStream(f).pipe(res);
+  });
+  await new Promise(r => srv.listen(0, '127.0.0.1', r));
+  const base = `http://localhost:${srv.address().port}/`;
+  const browser = await chromium.launch(process.env.PW_CHANNEL ? { channel: process.env.PW_CHANNEL } : {});
+  const ctx = await browser.newContext();
+  const page = await ctx.newPage();
+  const errors = [];
+  page.on('pageerror', e => errors.push(String(e)));
+  await page.route(u => u.href.startsWith('https://script.google.com/'), r => r.abort('internetdisconnected'));
+  await page.goto(base + 'index.html');
+  await page.evaluate(() => navigator.serviceWorker.register('sw.js').then(() => navigator.serviceWorker.ready));   // 本番は https で app.js が登録
+  await page.reload(); await page.waitForTimeout(500);
+  ok('SWがページを制御', await page.evaluate(() => !!navigator.serviceWorker.controller));
+  hang = true;
+  const t0 = Date.now();
+  let loaded = true;
+  try { await page.reload({ waitUntil: 'domcontentloaded', timeout: 8000 }); } catch (e) { loaded = false; }
+  const ms = Date.now() - t0;
+  hang = false; held.splice(0).forEach(r => { try { r.socket && r.socket.destroy(); } catch (e) {} });   // 止めた応答を解放（失敗時にテストが固まらないように）
+  ok(`応答の返らない回線でもキャッシュから即起動（${ms}ms ≤ 3000）`, loaded && ms <= 3000);
+  if (loaded) ok('グラフのライブラリも読み込まれる（defer）', await page.evaluate(() => typeof Chart === 'function'));
+  else ok('グラフのライブラリも読み込まれる（defer）', false);
+  ok('JSエラーなし(SW)', errors.length === 0);
+  if (errors.length) console.log(errors.join('\n'));
+  await browser.close().catch(() => {});
+  srv.closeAllConnections && srv.closeAllConnections(); srv.close();
+}
+
 (async () => {
-  for (const d of ['iPhone SE', 'iPhone 13', 'Pixel 7']) await run(d);
-  await runSlow('iPhone SE');
+  if (!process.env.ONLY_REL) for (const d of ['iPhone SE', 'iPhone 13', 'Pixel 7']) await run(d);
+  if (!process.env.ONLY_REL) await runSlow('iPhone SE');
+  await runRel('iPhone 13');
+  await runSW();
   console.log(`\n合計: OK ${pass} / NG ${fail}`);
   process.exit(fail ? 1 : 0);
 })();

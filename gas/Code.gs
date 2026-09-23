@@ -6,9 +6,10 @@
      （被評価者名が「（農場共通）」の行＝その農場で作業を個別に決めていない人に使う作業）
    - GET  ?action=ping    → 稼働確認（CODE_VERSION を返す）
    - POST {action:'submit', record}  → 評価者名のタブに 1種目=1行 で書き込む（記録IDで上書き＝再送・編集しても重複しない）
+   - POST {action:'delete', id}      → その記録IDの行を全ての評価者タブから消す（アプリで削除した記録。無ければ deleted:0 で ok＝再送しても安全）
    - setup() を一度エディタで実行 → 「受験者」「作業一覧」タブと作業のプルダウンを作る */
 
-const CODE_VERSION = '2026-09-23c';
+const CODE_VERSION = '2026-09-24a';
 const ROSTER_SHEET = '受験者';
 const WORKS_SHEET = '作業一覧';
 const ROSTER_MAX_WORKS = 8;
@@ -64,10 +65,17 @@ function doGet(e) {
 function doPost(e) {
   let body;
   try { body = JSON.parse(e.postData.contents); } catch (err) { return json_({ ok: false, error: 'bad json' }); }
-  if (!body || body.action !== 'submit' || !body.record) return json_({ ok: false, error: 'bad request' });
+  const isSubmit = body && body.action === 'submit' && body.record;
+  const isDelete = body && body.action === 'delete' && body.id;
+  if (!isSubmit && !isDelete) return json_({ ok: false, error: 'bad request' });
   const lock = LockService.getScriptLock();
   if (!lock.tryLock(20000)) return json_({ ok: false, error: 'busy' });
   try {
+    if (isDelete) {
+      const id = cleanId_(body.id);
+      if (!id) return json_({ ok: false, error: 'no id' });
+      return json_({ ok: true, id: String(body.id), deleted: deleteRecord_(id) });
+    }
     const n = writeRecord_(body.record);
     return json_({ ok: true, id: String(body.record.id), rows: n });
   } catch (err) {
@@ -120,8 +128,22 @@ function avg_(arr) {
   return v.length ? Math.round(v.reduce((a, b) => a + b, 0) / v.length * 100) / 100 : '';
 }
 
+function cleanId_(v) { return String(v || '').replace(/[^a-zA-Z0-9_\-]/g, '_'); }
+/* 記録IDの行を、評価者タブ（A1=記録ID のタブ）すべてから消す。評価者名が変わった記録も取りこぼさない */
+function deleteRecord_(id) {
+  let n = 0;
+  SpreadsheetApp.getActive().getSheets().forEach(sh => {
+    const nm = sh.getName();
+    if (nm === ROSTER_SHEET || nm === WORKS_SHEET || sh.getLastRow() < 2) return;
+    if (String(sh.getRange(1, 1).getValues()[0][0]) !== HEAD[0]) return;
+    const ids = sh.getRange(2, 1, sh.getLastRow() - 1, 1).getValues();
+    for (let i = ids.length - 1; i >= 0; i--) if (String(ids[i][0]) === id) { sh.deleteRow(i + 2); n++; }
+  });
+  return n;
+}
+
 function writeRecord_(rec) {
-  const id = String(rec.id || '').replace(/[^a-zA-Z0-9_\-]/g, '_');
+  const id = cleanId_(rec.id);
   if (!id) throw new Error('no id');
   const ss = SpreadsheetApp.getActive();
   const name = sheetNameFor_(rec.evaluator);

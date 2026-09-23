@@ -235,7 +235,16 @@ async function reloadRoster(silent){
     else if(!silent)toast(t('tRoster')+' ('+r.list.length+')');
   }else if(r.reason==='nosheet')toast(t('eRosterNoSheet'),1);
   else if(!silent)toast(t('eRoster'),1);
+  else{const rs=getRoster();if(rs.list.length&&rosterIsOld(rs))toast(t('rosterStale').replace('{t}',fmtAt(rs.at)),1)}   // 起動時でも、古い名簿のまま試験しないよう知らせる
 }
+/* 名簿の取得日時（端末の時刻で M/D HH:MM）と古さ */
+const ROSTER_OLD_MS=12*3600*1000;
+function fmtAt(at){
+  const d=new Date(at||'');if(!at||isNaN(d))return'—';
+  const p=n=>String(n).padStart(2,'0');
+  return (d.getMonth()+1)+'/'+d.getDate()+' '+p(d.getHours())+':'+p(d.getMinutes());
+}
+function rosterIsOld(rs){const d=new Date(rs&&rs.at||'');return isNaN(d)||Date.now()-d.getTime()>ROSTER_OLD_MS}
 const FARM_KEY='jitsugi_v2_farm';
 let eeQuery='',eeManualOpen=false,rosterKeptEmpty=false;
 function storedFarm(){try{return localStorage.getItem(FARM_KEY)||''}catch{return''}}
@@ -321,7 +330,12 @@ function renderRoster(){
   const manual=!ro.length||eeManualOpen||(!!cur&&!sel);
   document.getElementById('eeManual').style.display=manual?'':'none';
   document.getElementById('eeAdd').hidden=!ro.length||manual;
-  note.textContent=rosterLoading?t('eeLoading'):ro.length?t('eeTabHint'):(!sheetUrl()?t('noSheet'):rosterErr?t('eRosterNet'):t('eeNoRoster'));
+  // 名簿の取得日時を常に出す。今回の取得に失敗・古い名簿の時は警告色（圏外の豚舎で古い名簿のまま試験しないように）
+  const atTx=fmtAt(rs.at),stale=!!ro.length&&!rosterLoading&&!!sheetUrl()&&(rosterErr||rosterIsOld(rs));
+  note.textContent=rosterLoading?t('eeLoading')+(ro.length?' ／ '+t('rosterAt').replace('{t}',atTx):'')
+    :ro.length?(stale?(rosterErr?t('rosterStale'):t('rosterOld')).replace('{t}',atTx):t('eeTabHint')+' ／ '+t('rosterAt').replace('{t}',atTx))
+    :(!sheetUrl()?t('noSheet'):rosterErr?t('eRosterNet'):t('eeNoRoster'));
+  note.classList.toggle('eenote-stale',stale);
   // 名簿の警告は画面に残す（トーストは消える・キャッシュから起動した時は出ない）
   const wn=document.getElementById('eeWarn');
   if(wn){const w=[rosterKeptEmpty?t('eRosterEmptyKept'):'',rosterWarnText(rs)].filter(Boolean).join(' ／ ');wn.textContent=w?'⚠ '+w:'';wn.hidden=!w}

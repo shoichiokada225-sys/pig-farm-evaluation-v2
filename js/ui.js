@@ -170,7 +170,16 @@ function closeMo(){
   document.getElementById('modal').classList.remove('show');document.body.classList.remove('mo-open');
   if(_moRet&&document.body.contains(_moRet)){_moRet.focus()}_moRet=null;
 }
-function doDel(id){if(!confirm(t('cDel')))return;putAll(getAll().filter(e=>e.id!==id));closeMo();drawHist();refreshSel();updSyncUI();renderRoster();toast(t('tDel'))}
+/* 削除: シートに行があるかもしれない記録は「削除待ち」に入れ、シートの行も消す（圏外なら、つながった時に消す） */
+function doDel(id){
+  const r=getAll().find(e=>e.id===id);if(!r)return;
+  const onSheet=mayBeOnSheet(r)||syncing;   // 送信中の記録は、この後シートに届くかもしれない
+  if(!confirm(onSheet?t('cDelSheet').replace('{id}',r.id):t('cDel')))return;
+  if(onSheet)queueDel(r);
+  putAll(getAll().filter(e=>e.id!==id));closeMo();drawHist();refreshSel();updSyncUI();renderRoster();
+  toast(onSheet?t('tDelQueued'):t('tDel'));
+  if(onSheet)syncPending();
+}
 
 /* ==============================================================
    CSV（縦持ち: 1行=1種目）

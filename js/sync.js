@@ -116,33 +116,98 @@ async function sendRec(r){
     return !!(j&&j.ok&&j.id===r.id);
   }catch(e){return false}
 }
-let syncing=false;
+/* ==============================================================
+   削除待ち（送信済みかもしれない記録を端末で消した時、シートの行も消す）
+   記録本体とは別のキーに置く（記録の形式は変えない＝旧データ・バックアップと互換）: [{id, evaluator, at}]
+   ============================================================== */
+const DEL_KEY='jitsugi_v2_deletes';
+function getDels(){try{const r=JSON.parse(localStorage.getItem(DEL_KEY));return Array.isArray(r)?r.filter(d=>d&&typeof d.id==='string'&&d.id):[]}catch{return[]}}
+function putDels(a){localStorage.setItem(DEL_KEY,JSON.stringify(a))}
+function queueDel(r){const a=getDels().filter(d=>d.id!==r.id);a.push({id:r.id,evaluator:r.evaluator||'',at:new Date().toISOString()});putDels(a)}
+/* シートに行があるかもしれない記録 = 送信済み、または一度でも送った可能性がある（編集後の未送信） */
+function mayBeOnSheet(r){return !!(r&&(r.sent||r.sentOnce||r.updatedAt))}
+let delOld=false;   // シート側（GAS）が削除に未対応の古い版
+async function sendDel(d){
+  const u=sheetUrl();if(!u)return false;
+  try{
+    const res=await fetchT(u,{method:'POST',body:JSON.stringify({action:'delete',id:d.id,evaluator:d.evaluator})},SEND_TIMEOUT_MS);
+    const j=await res.json();
+    if(j&&j.ok===false&&j.error==='bad request')delOld=true;
+    return !!(j&&j.ok&&j.id===d.id);
+  }catch(e){return false}
+}
+function pendCount(){return getAll().filter(r=>!r.sent).length+getDels().length}
+
+/* ==============================================================
+   未送信の送信ループ
+   - 送信中に保存・編集・削除された分も、同じループでもう一周して送る（取りこぼさない）
+   - 「送信できなかった」は実際に送って失敗した件数だけ（まだ試していない分を失敗と言わない）
+   ============================================================== */
+let syncing=false,syncLoud=false;
 async function syncPending(silent){
-  if(syncing||!sheetUrl())return;
-  const pend=getAll().filter(r=>!r.sent);
-  if(!pend.length){updSyncUI();return}
+  if(!sheetUrl())return;
+  if(!silent)syncLoud=true;
+  if(syncing)return;             // 実行中のループが、増えた分を次の周で拾う
   syncing=true;updSyncUI();
+  const tried=new Set();         // 今回のループで試した版（記録ID＋更新時刻）
+  const failed=new Set();
   let ok=0;
-  for(const r of pend){
-    if(await sendRec(r)){
-      const all=getAll();const i=all.findIndex(e=>e.id===r.id);
-      // 送信中に編集されていたら（updatedAtが変わっていたら）未送信のまま残す
-      if(i>-1&&(all[i].updatedAt||'')===(r.updatedAt||'')){all[i].sent=true;putAll(all)}
-      ok++;
+  try{
+    for(;;){
+      const dels=getDels().filter(d=>!tried.has('del:'+d.id+':'+d.at));
+      const pend=getAll().filter(r=>!r.sent&&!tried.has('rec:'+r.id+':'+(r.updatedAt||'')));
+      if(!dels.length&&!pend.length)break;
+      for(const r of pend){
+        const k='rec:'+r.id+':'+(r.updatedAt||'');tried.add(k);
+        if(getDels().some(d=>d.id===r.id))continue;   // 送る前に削除された
+        if(await sendRec(r)){
+          const all=getAll();const i=all.findIndex(e=>e.id===r.id);
+          // 送信中に編集されていたら（updatedAtが変わっていたら）未送信のまま残す＝次の周で送る
+          if(i>-1&&(all[i].updatedAt||'')===(r.updatedAt||'')){all[i].sent=true;all[i].sentOnce=true;putAll(all)}
+          else if(i>-1&&!all[i].sentOnce){all[i].sentOnce=true;putAll(all)}
+          failed.delete(r.id);ok++;
+        }else failed.add(r.id);
+      }
+      for(const d of dels){
+        tried.add('del:'+d.id+':'+d.at);
+        if(await sendDel(d)){
+          putDels(getDels().filter(x=>!(x.id===d.id&&x.at===d.at)));
+          failed.delete('del:'+d.id);ok++;
+        }else failed.add('del:'+d.id);
+      }
+      updSyncUI();
     }
-  }
-  syncing=false;updSyncUI();
-  const left=getAll().filter(r=>!r.sent).length;
-  if(!silent||ok)toast(left?t('tSendFail')+' ('+left+')':t('tSent'),!!left);
+  }finally{syncing=false}
+  updSyncUI();
+  // まだ未送信で、今回実際に送って失敗したものだけを数える
+  const recLeft=new Set(getAll().filter(r=>!r.sent).map(r=>r.id)),delLeft=new Set(getDels().map(d=>'del:'+d.id));
+  const nFail=[...failed].filter(k=>recLeft.has(k)||delLeft.has(k)).length;
+  const loud=syncLoud;syncLoud=false;
+  if(nFail&&(loud||ok)&&delOld&&[...failed].some(k=>k.startsWith('del:')&&delLeft.has(k)))toast(t('eDelOld'),1);
+  else if(nFail&&(loud||ok))toast(t('tSendFail')+' ('+nFail+')',1);
+  else if(ok&&!nFail)toast(t('tSent'));
   if(document.getElementById('pgHi').classList.contains('on'))drawHist();
 }
 function updSyncUI(){
-  const n=getAll().filter(r=>!r.sent).length;
+  const n=getAll().filter(r=>!r.sent).length,nd=getDels().length;
   const el=document.getElementById('syncBar');if(!el)return;
   if(!sheetUrl()){el.className='syncbar off';el.innerHTML=`<span>${esc(t('noSheet'))}</span>`;return}
   if(syncing){el.className='syncbar busy';el.innerHTML=`<span>${esc(t('sending'))}</span>`;return}
-  if(!n){el.className='syncbar ok';el.innerHTML=`<span>✓ ${esc(t('allSent'))}</span>`;return}
+  if(!n&&!nd){el.className='syncbar ok';el.innerHTML=`<span>✓ ${esc(t('allSent'))}</span>`;return}
   el.className='syncbar warn';
-  el.innerHTML=`<span>${esc(t('unsent'))}: ${n}</span><button class="b b1 b-slim" onclick="syncPending()">${esc(t('btnResend'))}</button>`;
+  const parts=[];if(n)parts.push(`${esc(t('unsent'))}: ${n}`);if(nd)parts.push(`${esc(t('delPend'))}: ${nd}`);
+  el.innerHTML=`<span>${parts.join(' ／ ')}</span><button class="b b1 b-slim" onclick="syncPending()">${esc(t('btnResend'))}</button>`;
+}
+/* 自動再送のきっかけ: 圏外→圏内・アプリが前面に戻った時・未送信がある間は一定間隔
+   （'online' は圏外→圏内でしか起きない。電波が弱い→強いでは起きないので、周期でも試す） */
+let SYNC_RETRY_MS=60000,retryT=null;
+function schedRetry(){
+  clearTimeout(retryT);
+  retryT=setTimeout(()=>{
+    if(!syncing&&pendCount()&&sheetUrl()&&!(typeof document!=='undefined'&&document.visibilityState==='hidden'))syncPending(true);
+    schedRetry();
+  },SYNC_RETRY_MS);
 }
 window.addEventListener('online',()=>syncPending(true));
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&pendCount())syncPending(true)});
+schedRetry();

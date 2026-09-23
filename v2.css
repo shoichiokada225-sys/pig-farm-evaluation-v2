@@ -95,6 +95,7 @@
 .eetab-unk{max-width:100%;font-size:.72rem;font-weight:800;color:#8a3b00;background:#fff3e0;border-radius:6px;padding:1px 6px;overflow-wrap:anywhere}
 .eewarn{margin:6px 0 0;padding:8px 10px;border-radius:8px;background:#fff3e0;border:1px solid #f0a500;color:#6b3400;font-size:.82rem;font-weight:700;line-height:1.45;overflow-wrap:anywhere}
 .eewarn[hidden]{display:none}
+.eenote-stale{padding:6px 10px;border-radius:8px;background:#fff3e0;border:1px solid #f0a500;color:#6b3400!important;font-weight:700}
 .eenone{grid-column:1/-1;margin:4px 0;font-size:.9rem;color:var(--sub,#54635d)}
 .ee-add{width:100%;margin-top:6px;min-height:48px}
 .ee-add[hidden]{display:none}

@@ -1,6 +1,6 @@
 /* store.js — 永続化層：評価セッション（1保存=複数作業）の読み書き・バックアップ */
 /* レコード形式:
-   {id,date,evaluator,evaluatee,farm,overall,createdAt,updatedAt?,manual?(名簿にない人を手入力=true),
+   {id,date,evaluator,evaluatee,farm,overall,createdAt,updatedAt?,manual?(名簿にない人を手入力=true),sent,sentOnce?(一度でもシートに届いた=true。無い旧データも読める),
     works:[{workId,workName,category,scores:{aspectId:1-5|null},comments:{aspectId:str}}]} */
 const SKEY='jitsugi_v2_data';
 const SEL_KEY='jitsugi_v2_sel';
@@ -35,7 +35,7 @@ function normRec(e){
     overall:e.overall==null?'':String(e.overall),
     createdAt:String(e.createdAt||''),...(e.updatedAt?{updatedAt:String(e.updatedAt)}:{}),
     ...(e.manual===true?{manual:true}:{}),works,
-    sent:e.sent===true};
+    sent:e.sent===true,...(e.sent===true||e.sentOnce===true?{sentOnce:true}:{})};
 }
 function validRec(r){return r&&typeof r==='object'&&typeof r.id==='string'&&r.id&&typeof r.date==='string'&&Array.isArray(r.works)&&r.works.length>0}
 
@@ -64,10 +64,13 @@ function importAll(input){
     let added=0;
     data.data.evaluations.filter(validRec).forEach(e=>{
       const r=normRec(e);
-      if(r.id&&!ids.has(r.id)){ids.add(r.id);cur.push(r);added++}
+      if(r.id&&!ids.has(r.id)){
+        // 削除待ちの記録を復元した → 削除をやめて送り直す（シートと端末を一致させる）
+        if(typeof getDels==='function'&&getDels().some(d=>d.id===r.id)){putDels(getDels().filter(d=>d.id!==r.id));r.sent=false}
+        ids.add(r.id);cur.push(r);added++}
     });
     putAll(cur);
-    refreshSel();drawHist();
+    refreshSel();drawHist();if(typeof updSyncUI==='function')updSyncUI();
     toast(t('tBackupImp')+' (+'+added+')');
     input.value='';
   };

@@ -4,7 +4,7 @@ const sheets = {};
 function mkSheet(name) {
   const d = []; // 2D
   const sh = {
-    name, d,
+    name, d, getName: () => name,
     getLastRow: () => d.length, getLastColumn: () => d.reduce((m, r) => Math.max(m, r.length), 0),
     getRange: (r, c, nr = 1, nc = 1) => ({
       setValues(v) { v.forEach((row, i) => { d[r - 1 + i] = d[r - 1 + i] || []; row.forEach((x, j) => d[r - 1 + i][c - 1 + j] = x); }); return this; },
@@ -16,7 +16,7 @@ function mkSheet(name) {
   };
   return sh;
 }
-const ss = { getSheetByName: n => sheets[n] || null, insertSheet: n => (sheets[n] = mkSheet(n)) };
+const ss = { getSheetByName: n => sheets[n] || null, insertSheet: n => (sheets[n] = mkSheet(n)), getSheets: () => Object.values(sheets) };
 global.SpreadsheetApp = { getActive: () => ss, newDataValidation: () => ({ requireValueInRange() { return this; }, setAllowInvalid() { return this; }, build() { return {}; } }) };
 global.LockService = { getScriptLock: () => ({ tryLock: () => true, releaseLock() {} }) };
 global.Utilities = { formatDate: () => '2026-09-23 10:00:00' };
@@ -62,5 +62,19 @@ ok('同じIDは上書き（行数不変）', sh.d.length === 3 && sh.d[1][8] ===
 post({ action: 'submit', record: { ...rec, id: 'abc-2' } });
 ok('別IDは追記', sh.d.length === 5);
 ok('予約名は回避', (post({ action: 'submit', record: { ...rec, id: 'z', evaluator: '受験者' } }), !!sheets['評価者_受験者']));
+// 削除（アプリで消した記録の行をシートからも消す）
+const idsOf = n => sheets[n].d.slice(1).map(r => r[0]);
+post({ action: 'submit', record: { ...rec, id: 'del-1', evaluator: '評価者B' } });
+post({ action: 'submit', record: { ...rec, id: 'del-1' } });   // 評価者名を変えて送り直した記録＝2タブに同じID
+sheets['受験者'].getRange(6, 1, 1, 2).setValues([['del-1', 'del-1']]);   // 受験者タブの同じ文字列は消さない
+const nRo = sheets['受験者'].d.length;
+r = post({ action: 'delete', id: 'del-1' });
+ok('delete: ok・記録ID・消した行数', r.ok === true && r.id === 'del-1' && r.deleted === 4);
+ok('delete: 全ての評価者タブから消える', !idsOf('岡田_正一').includes('del-1') && !idsOf('評価者B').includes('del-1'));
+ok('delete: 他の記録は残る', idsOf('岡田_正一').includes('abc-1') && idsOf('岡田_正一').includes('abc-2'));
+ok('delete: 受験者タブは触らない', sheets['受験者'].d.length === nRo);
+r = post({ action: 'delete', id: 'del-1' });
+ok('delete: 2回目（再送）も ok・deleted 0', r.ok === true && r.id === 'del-1' && r.deleted === 0);
+ok('delete: IDなしは拒否', post({ action: 'delete' }).ok === false && post({ action: 'delete', id: '' }).ok === false);
 ok('不正JSON', post.call(null, null) && JSON.parse(G.doPost({ postData: { contents: '{' } }).s).ok === false);
 console.log(`\n合計: OK ${pass} / NG ${fail}`); process.exit(fail ? 1 : 0);
