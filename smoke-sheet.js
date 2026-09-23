@@ -617,6 +617,159 @@ async function runRel(devName) {
   await browser.close();
 }
 
+/* 作業の割り当て運用（架空名）: 作業8つの人の採点画面（見出しの固定・作業ごとの x/5・目次・今回は実施しない・終わった作業だけ保存）
+   一部の作業だけ保存した人は「途中 x/y」で残り、選び直すと残りの作業だけが出る／（農場共通）行の管理ミスを警告 */
+async function runAssign(devName) {
+  console.log(`\n===== ${devName}（作業の割り当て運用） =====`);
+  const browser = await chromium.launch(process.env.PW_CHANNEL ? { channel: process.env.PW_CHANNEL } : {});
+  const ctx = await browser.newContext({ ...devices[devName] });
+  const page = await ctx.newPage();
+  const errors = [];
+  page.on('pageerror', e => errors.push(String(e)));
+  const dialogs = [];
+  let accept = true;
+  page.on('dialog', d => { dialogs.push(d.message()); accept ? d.accept() : d.dismiss(); });
+  const posts = [];
+  const EIGHT = ['給餌', 'エサ調整', 'エサ回収', '去勢', '添加剤準備', '除フン', '5S清掃', '治療'];
+  const EIGHT_ID = ['feeding-daily', 'feed-adjust', 'feed-recovery', 'castration', 'additive', 'dung-removal', 'five-s', 'treatment'];
+  const FA = 'テスト農場A', FB = 'テスト農場B', FC = 'テスト農場C';
+  let roster = [
+    { name: 'テスト 八作', farm: FA, works: EIGHT },
+    { name: 'テスト 三作', farm: FA, works: ['給餌', 'エサ調整', '除フン'] },
+    { name: 'テスト 一作', farm: FA, works: ['給餌'] },
+  ];
+  await page.route(u => u.href.startsWith('https://script.google.com/'), async route => {
+    const req = route.request(), hdr = { 'access-control-allow-origin': '*' };
+    if (req.method() === 'GET') return route.fulfill({ status: 200, contentType: 'application/json', headers: hdr, body: JSON.stringify({ ok: true, roster }) });
+    const body = JSON.parse(req.postData()); posts.push(body);
+    return route.fulfill({ status: 200, contentType: 'application/json', headers: hdr, body: JSON.stringify({ ok: true, id: body.record.id }) });
+  });
+  const ee = name => page.locator('.eetab').filter({ has: page.locator('.eetab-nm', { hasText: new RegExp('^' + name + '$') }) });
+  const scoreWork = async (wid, s, n = 5) => { const ids = await page.locator(`#cards .ec[data-w="${wid}"]`).evaluateAll(els => els.map(e => e.id.slice(2))); for (const cid of ids.slice(0, n)) await page.locator(`.sb[data-id="${cid}"][data-s="${s}"]`).tap(); };
+  const recs = () => page.evaluate(() => JSON.parse(localStorage.getItem('jitsugi_v2_data') || '{"evaluations":[]}').evaluations);
+  const noHScroll = () => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1);
+  await page.goto(APP);
+  await page.evaluate(GAS => { localStorage.clear(); localStorage.setItem('jitsugi_v2_sheet_url', GAS); localStorage.setItem('jitsugi_v2_evaluator', 'テスト評価者'); }, GAS);
+  await page.reload(); await page.waitForTimeout(600);
+
+  console.log('[A1] 作業8つの人: 目次・作業ごとの x/5・見出しの固定');
+  await ee('テスト 八作').tap(); await page.waitForTimeout(300);
+  ok('カード40枚', await page.locator('#cards .ec').count() === 40);
+  ok('作業の目次に8作業（各 0/5）', await page.locator('#wnav .wnav-c').count() === 8 && (await page.locator('#wnav .wnav-ct').allTextContents()).every(x => x === '0/5'));
+  ok('見出しに作業ごとの 0/5', (await page.locator('.wshd .wshd-ct').allTextContents()).length === 8 && await page.locator('#wh-feeding-daily .wshd-ct').textContent() === '0/5');
+  ok('見出しは sticky', await page.locator('.wshd').first().evaluate(e => getComputedStyle(e).position === 'sticky'));
+  await scoreWork('feeding-daily', 4, 3);
+  ok('3枚採点 → 見出し・目次とも 3/5', await page.locator('#wh-feeding-daily .wshd-ct').textContent() === '3/5' && await page.locator('#wnav [data-wct="feeding-daily"]').textContent() === '3/5');
+  await scoreWork('feeding-daily', 4);
+  ok('5枚で ✓ 5/5', /✓ 5\/5/.test(await page.locator('#wnav [data-wct="feeding-daily"]').textContent()));
+  // 6作業目のカードの途中までスクロール → 画面上部（進捗バーの下）に6作業目の見出しが貼り付いている
+  await page.evaluate(() => { const c = document.querySelectorAll('#cards .ec[data-w="dung-removal"]')[2]; window.scrollTo(0, c.getBoundingClientRect().top + scrollY - 250); });
+  await page.waitForTimeout(300);
+  const stuck = await page.evaluate(() => { const stk = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--stk')); const el = document.elementFromPoint(innerWidth / 2, stk + 8); const h = el && el.closest('.wshd'); return { w: h && h.dataset.w, top: h && Math.round(h.getBoundingClientRect().top), stk }; });
+  ok(`スクロール中も今の作業の見出しが上に見える（${stuck.w} top=${stuck.top} / 貼り付け位置${stuck.stk}）`, stuck.w === 'dung-removal' && Math.abs(stuck.top - stuck.stk) <= 2);
+  const progBox = await page.locator('.prog').boundingBox(), hdBox = await page.locator('#wh-dung-removal').boundingBox();
+  ok('見出しは進捗バーと重ならない', hdBox.y >= progBox.y + progBox.height - 1);
+  await page.screenshot({ path: `${__dirname}/_shots/${devName.replace(/\W/g, '_')}_A1_sticky.png` });
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.locator('#wnav .wnav-c[data-w="five-s"]').tap(); await page.waitForTimeout(300);
+  const jb = await page.locator('#wh-five-s').boundingBox(), vh = page.viewportSize().height;
+  ok(`目次のチップで7作業目へ移動（見出しの上端 ${Math.round(jb.y)}）`, jb.y >= 0 && jb.y < vh / 2 && await page.evaluate(() => scrollY > 1000));
+  ok('横スクロールなし(作業8つ)', await noHScroll());
+
+  console.log('[A2] 今回は実施しない（その作業だけ外す）');
+  dialogs.length = 0;
+  await page.locator('#wh-treatment .wshd-skip').tap(); await page.waitForTimeout(300);
+  ok('未採点の作業は確認なしで外れる → 35枚・7作業', dialogs.length === 0 && await page.locator('#cards .ec').count() === 35 && await page.locator('#wnav .wnav-c').count() === 7);
+  ok('外した作業の名前をトーストで知らせる', /治療/.test(await page.locator('#toast').textContent()));
+  accept = false; dialogs.length = 0;
+  await page.locator('#wh-feeding-daily .wshd-skip').tap(); await page.waitForTimeout(300);
+  ok('採点済みの作業は確認（キャンセルで残る）', dialogs.length === 1 && /給餌/.test(dialogs[0]) && await page.locator('#wh-feeding-daily').count() === 1);
+  accept = true;
+  ok('外しても採点は消えない', /✓ 5\/5/.test(await page.locator('#wnav [data-wct="feeding-daily"]').textContent()));
+
+  console.log('[A3] 終わった作業だけ保存（途中保存）');
+  for (const w of ['feed-adjust', 'feed-recovery', 'castration', 'additive']) await scoreWork(w, 3);
+  await scoreWork('dung-removal', 3, 2);                   // 除フンは途中
+  dialogs.length = 0;
+  await page.locator('#btnSave').tap(); await page.waitForTimeout(400);
+  ok('途中の作業があると保存しない（途中の作業の未採点3件だけ示す）', (await recs()).length === 0 && dialogs.length === 0 && /\(3\)/.test(await page.locator('#toast').textContent()));
+  await scoreWork('dung-removal', 3);
+  await page.evaluate(() => { window._toasts = []; const o = toast; toast = (m, e) => { _toasts.push(m); return o(m, e); }; });   // 送信完了のトーストで上書きされる前の文も拾う
+  const n0 = posts.length;
+  await page.locator('#btnSave').tap(); await page.waitForTimeout(900);
+  ok('未採点の作業だけが残る時は確認して保存', dialogs.length === 1 && /5S清掃/.test(dialogs[0]) && /1件/.test(dialogs[0]));
+  let r = await recs();
+  ok('保存は採点済みの6作業だけ', r.length === 1 && r[0].works.map(w => w.workId).join() === 'feeding-daily,feed-adjust,feed-recovery,castration,additive,dung-removal' && r[0].works.every(w => Object.values(w.scores).every(v => v != null)));
+  ok('送信も6作業', posts.length === n0 + 1 && posts[n0].record.works.length === 6);
+  ok('「残りの作業 1件」', await page.evaluate(() => _toasts.some(m => /残りの作業 1件/.test(m))));
+
+  console.log('[A4] 一部だけ済んだ人は「途中 x/y」で未実施側に残る・選び直すと残りの作業だけ');
+  const tab8 = ee('テスト 八作');
+  ok('タブは「途中 6/8」・実施済みにならない', /途中 6\/8/.test(await tab8.textContent()) && !(await tab8.evaluate(e => e.classList.contains('done'))) && await page.locator('.eegrp').count() === 0);
+  ok('農場チップの残りは3人のまま', await page.locator('.fchip.on').getAttribute('data-left') === '3');
+  await tab8.tap(); await page.waitForTimeout(300);
+  ok('選び直すと残りの2作業（5S清掃・治療）だけ', await page.locator('.wshd').count() === 2 && (await page.locator('.wshd').evaluateAll(e => e.map(x => x.dataset.w))).join() === 'five-s,treatment');
+  await page.evaluate(() => window.scrollTo(0, document.getElementById('cards').getBoundingClientRect().top + scrollY - 120)); await page.waitForTimeout(200);
+  await page.screenshot({ path: `${__dirname}/_shots/${devName.replace(/\W/g, '_')}_A4_left.png` });
+  ok('済んだ6作業は目次に「✓ 済」で出る（押せない）', await page.locator('#wnav .wnav-c.done').count() === 6 && /✓ 済/.test(await page.locator('#wnav .wnav-c.done').first().textContent()) && await page.locator('#wnav button.wnav-c.done').count() === 0);
+  await page.evaluate(() => { document.getElementById('wselBox').open = true; document.querySelectorAll('.wcat').forEach(c => c.open = true); });
+  ok('作業選択にも「済」の印', await page.locator('.wchk-dn').count() === 6);
+  await scoreWork('five-s', 5); await scoreWork('treatment', 5);
+  await page.locator('#btnSave').tap(); await page.waitForTimeout(900);
+  ok('残りを保存すると実施済み（8/8）', await ee('テスト 八作').evaluate(e => e.classList.contains('done')) && await page.locator('.fchip.on').getAttribute('data-left') === '2');
+
+  console.log('[A5] 3作業の人で1作業を外して保存 → 途中 2/3 → 残り1作業');
+  await ee('テスト 三作').tap(); await page.waitForTimeout(300);
+  await page.locator('#wh-feed-adjust .wshd-skip').tap(); await page.waitForTimeout(200);
+  await scoreWork('feeding-daily', 4); await scoreWork('dung-removal', 4);
+  await page.locator('#btnSave').tap(); await page.waitForTimeout(900);
+  ok('記録は2作業', (await recs()).find(x => x.evaluatee === 'テスト 三作').works.length === 2);
+  ok('タブは「途中 2/3」・農場チップの残り2人', /途中 2\/3/.test(await ee('テスト 三作').textContent()) && await page.locator('.fchip.on').getAttribute('data-left') === '2');
+  await ee('テスト 三作').tap(); await page.waitForTimeout(300);
+  ok('選び直すとエサ調整だけ（カード5枚）', await page.locator('#cards .ec').count() === 5 && await page.locator('#wh-feed-adjust').count() === 1);
+  // 旧形式の記録（農場なし）も作業で数える
+  await page.evaluate(() => { const w = WORKDATA_V2.works.find(x => x.id === 'feeding-daily'); const all = JSON.parse(localStorage.getItem('jitsugi_v2_data')).evaluations;
+    all.push({ id: 'legacy-a', date: document.getElementById('fDate').value, evaluator: 'テスト評価者', evaluatee: 'テスト 一作', farm: '', overall: '', createdAt: '2026-09-20T00:00:00Z', works: [{ workId: w.id, workName: w.name, category: w.category, scores: Object.fromEntries(w.aspects.map(a => [a.id, 3])), comments: {} }], sent: true });
+    localStorage.setItem('jitsugi_v2_data', JSON.stringify({ evaluations: all })); renderRoster(); });
+  ok('農場列の無い旧記録も作業で数えて実施済み', await ee('テスト 一作').evaluate(e => e.classList.contains('done')));
+  await page.locator('.lsw button').nth(2).tap(); await page.waitForTimeout(200);
+  ok('vi: 見出しの「今回は実施しない」・途中表示', /Lần này không làm/.test(await page.locator('.wshd-skip').first().textContent()) && await noHScroll());
+  await page.locator('.lsw button').nth(0).tap(); await page.waitForTimeout(200);
+
+  console.log('[A6] （農場共通）行の管理ミスを警告');
+  accept = true;
+  roster = [
+    { name: '（農場共通）', farm: FB, works: ['給餌', '不明作業X', '除フン'] },
+    { name: '（農場共通）', farm: FB, works: ['治療'] },                   // 同じ農場の2行目
+    { name: 'テスト 未設定B', farm: FB, works: [] },
+    { name: '（農場共通）', farm: FC, works: ['エサ調整'] },                 // 半角C
+    { name: 'テスト 未設定C', farm: 'テスト農場Ｃ', works: [] },               // 全角Ｃ
+    { name: '（農場共通）', farm: 'テスト農場Z', works: ['給餌'] },            // 誰とも一致しない
+    { name: 'テスト 八作', farm: FA, works: EIGHT },
+  ];
+  await page.locator('.eebox .wsel-hd button').tap(); await page.waitForTimeout(600);
+  const cache = await page.evaluate(() => JSON.parse(localStorage.getItem('jitsugi_v2_roster')));
+  const B = cache.list.find(p => p.name === 'テスト 未設定B'), C = cache.list.find(p => p.name === 'テスト 未設定C');
+  ok('共通行2行は統合（後の行で前の行を消さない）', B.works.join() === 'feeding-daily,dung-removal,treatment' && B.common === true);
+  ok('共通行の不明作業は人にも残す', (B.unresolved || []).join() === '不明作業X');
+  ok('農場名の全角半角ゆれでも共通行を当てる', C.works.join() === 'feed-adjust' && C.common === true);
+  const warn = await page.locator('#eeWarn').textContent();
+  ok('警告: 共通行が2行', /（農場共通）行が2行以上/.test(warn) && warn.includes(FB));
+  ok('警告: 名簿の農場と一致しない共通行', /一致しません/.test(warn) && warn.includes('テスト農場Z') && !/一致しません[^／]*テスト農場C/.test(warn));
+  ok('警告: 共通行の不明作業は農場名つき', /（農場共通）（テスト農場B）: 不明作業X/.test(warn));
+  await page.locator(`.fchip[data-f="${FB}"]`).tap(); await page.waitForTimeout(200);
+  ok('共通の人のタブにも ⚠ 作業名不明', /⚠ 作業名不明: 不明作業X/.test(await ee('テスト 未設定B').textContent()) && await ee('テスト 未設定B').locator('.eetab-cm').count() === 1);
+  await ee('テスト 未設定B').tap(); await page.waitForTimeout(300);
+  ok('選ぶと解決分3作業＋作業選択が開く', await page.locator('.wshd').count() === 3 && await page.evaluate(() => document.getElementById('wselBox').open));
+  ok('旧形式の名簿キャッシュ（cdup/corphan無し）でも警告表示が落ちない', await page.evaluate(() => { const r = JSON.parse(localStorage.getItem('jitsugi_v2_roster')); delete r.cdup; delete r.corphan; localStorage.setItem('jitsugi_v2_roster', JSON.stringify(r)); renderRoster(); return true; }));
+  for (const l of [1, 2, 3]) { await page.locator('.lsw button').nth(l).tap(); await page.waitForTimeout(100); }
+  await page.locator('.lsw button').nth(0).tap();
+
+  ok('JSエラーなし(割り当て運用)', errors.length === 0);
+  if (errors.length) console.log(errors.join('\n'));
+  await browser.close();
+}
+
 /* Service Worker: 電波が弱い（つながるが応答が返らない）時もキャッシュから即起動する（localhost で実際にSWを登録） */
 async function runSW() {
   console.log('\n===== Service Worker（応答が返らない回線で起動） =====');
@@ -660,9 +813,10 @@ async function runSW() {
 }
 
 (async () => {
-  if (!process.env.ONLY_REL) for (const d of ['iPhone SE', 'iPhone 13', 'Pixel 7']) await run(d);
-  if (!process.env.ONLY_REL) await runSlow('iPhone SE');
-  await runRel('iPhone 13');
+  if (!process.env.ONLY_REL && !process.env.ONLY_ASSIGN) for (const d of ['iPhone SE', 'iPhone 13', 'Pixel 7']) await run(d);
+  if (!process.env.ONLY_REL && !process.env.ONLY_ASSIGN) await runSlow('iPhone SE');
+  if (!process.env.ONLY_ASSIGN) await runRel('iPhone 13');
+  for (const d of ['iPhone 13', 'iPhone SE']) await runAssign(d);
   await runSW();
   console.log(`\n合計: OK ${pass} / NG ${fail}`);
   process.exit(fail ? 1 : 0);

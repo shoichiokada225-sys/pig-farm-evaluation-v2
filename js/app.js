@@ -55,7 +55,9 @@ document.addEventListener('DOMContentLoaded',()=>{
     if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}
     else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
   });
-  const fixProg=()=>{const p=document.querySelector('.prog');if(p)p.style.top=document.querySelector('.hdr').offsetHeight+'px'};
+  // 進捗バーはヘッダーの下・作業見出しは進捗バーの下に貼り付く（高さは言語・画面幅で変わるので実測）
+  const fixProg=()=>{const p=document.querySelector('.prog'),h=document.querySelector('.hdr').offsetHeight;if(p)p.style.top=h+'px';
+    document.documentElement.style.setProperty('--stk',(h+(p?p.offsetHeight:0))+'px')};
   fixProg();window.addEventListener('resize',fixProg);
   if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(()=>{});
 });
@@ -131,9 +133,21 @@ function doSave(){
   if(!d.evaluator.trim()){toast(t('eEv'),1);editEvaluator();document.getElementById('evBox').scrollIntoView({behavior:'smooth',block:'center'});return}
   if(!d.evaluatee.trim()){toast(t('eEe'),1);document.querySelector('.eebox').scrollIntoView({behavior:'smooth',block:'center'});return}
   if(!d.date){toast(t('eDt'),1);return}
-  const miss=getItems().filter(it=>{
+  let miss=getItems().filter(it=>{
     const we=d.works.find(x=>x.workId===it.workId);return !we||we.scores[it.aspectId]==null;
   });
+  // 作業単位の部分保存: 採点を1つも付けていない作業だけが残っている時は、終わった作業だけを保存できる（作業8つでも途中で保存・豚がいない作業は後日）
+  let partLeft=0;
+  if(miss.length&&!editId){
+    const st=workStats(d);
+    const empty=st.filter(x=>x.done===0),half=st.filter(x=>x.done>0&&x.done<x.total),full=st.filter(x=>x.total&&x.done===x.total);
+    if(half.length)miss=miss.filter(it=>half.some(x=>x.wid===it.workId));   // 途中の作業の未採点だけを示す
+    else if(full.length&&empty.length){
+      const nm=empty.map(x=>{const w=workById(x.wid);return w?loc(w,'name'):x.wid}).join('、');
+      if(!confirm(t('cPartSave').replace('{n}',empty.length).replace('{w}',nm)))return;
+      d.works=d.works.filter(we=>full.some(x=>x.wid===we.workId));partLeft=empty.length;miss=[];
+    }
+  }
   if(miss.length){miss.forEach(it=>{const c=document.getElementById('c-'+it.id);if(c){c.classList.add('warn');setTimeout(()=>c.classList.remove('warn'),1000)}});
     toast(t('eSc')+'('+miss.length+')',1);const c0=document.getElementById('c-'+miss[0].id);if(c0)c0.scrollIntoView({behavior:'smooth',block:'center'});return}
   const all=getAll();
@@ -145,7 +159,7 @@ function doSave(){
     putAll(all);toast(t('tUpdated'));exitEdit();
   }else{
     all.push(normRec({id:crypto.randomUUID(),date:d.date,evaluator:d.evaluator.trim(),evaluatee:d.evaluatee.trim(),farm:who.farm,...(who.manual?{manual:true}:{}),works:d.works,overall:d.overall,createdAt:new Date().toISOString(),sent:false}));
-    putAll(all);toast(t('tSaved'));
+    putAll(all);toast(partLeft?t('tSavedPart').replace('{n}',partLeft):t('tSaved'));
   }
   localStorage.removeItem(DRAFT_KEY);dirty=false;refreshSel();
   // 次の被評価者へ：作業選択も空に戻す（名簿のタブを押せば再セット）
@@ -154,6 +168,31 @@ function doSave(){
   clearForm();
   scrollToEe();   // 先頭ではなく被評価者の一覧へ（次の人をすぐ選べる）
   syncPending();
+}
+
+/* 作業ごとの採点数 [{wid,done,total}]（フォームの内容 d = collectForm() から） */
+function workStats(d){
+  return selWorks.map(wid=>{
+    const its=workItems(wid),we=(d||collectForm()).works.find(x=>x.workId===wid);
+    return{wid,total:its.length,done:its.filter(it=>we&&we.scores[it.aspectId]!=null).length};
+  });
+}
+/* 作業を今回は実施しない（豚がいない・時間切れ）: その作業だけ外す。採点済みなら確認。外した作業は後で「残りの作業」として出る */
+function skipWork(wid){
+  if(editId){toast(t('editingBanner'),1);return}
+  const w=workById(wid);const nm=w?loc(w,'name'):wid;
+  const sc=document.querySelector('#cards .ec.scored[data-w="'+wid+'"]');
+  if(sc&&!confirm(t('cSkipScored').replace('{w}',nm)))return;
+  const y=window.scrollY;
+  toggleWork(wid,false);
+  window.scrollTo({top:y});   // 位置を保つ（外した作業の場所に次の作業が来る）
+  toast(t('tSkipped').replace('{w}',nm));
+}
+/* 作業の見出しへ移動（目次のチップから） */
+function jumpWork(wid){
+  const h=document.getElementById('wh-'+wid);if(!h)return;
+  const stk=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--stk'))||0;
+  window.scrollTo({top:Math.max(0,h.getBoundingClientRect().top+window.scrollY-stk-4)});   // 40枚=1万px超を一気に（なめらかスクロールは遠いと遅い）
 }
 
 /* ==============================================================
@@ -184,7 +223,7 @@ function startEdit(id){
   document.getElementById('btnSave').textContent=t('btnUpdate');
   window.scrollTo({top:0,behavior:'smooth'});dirty=false;updProg();
 }
-function cancelEdit(){if(dirty&&!confirm(t('cCEdit')))return;exitEdit();clearForm()}
+function cancelEdit(){if(dirty&&!confirm(t('cCEdit')))return;exitEdit();buildCards();clearForm()}
 function exitEdit(){editId=null;editEv=null;document.getElementById('editBar').classList.remove('show');document.getElementById('btnSave').textContent=t('btnSave')}
 function doReset(){if(!confirm(t('cReset')))return;clearForm();if(editId)exitEdit();toast(t('tReset'))}
 function clearForm(keepDraft){
@@ -300,7 +339,8 @@ function renderRoster(){
   const cur=document.getElementById('fEe').value.trim();
   const date=document.getElementById('fDate').value;
   const recs=getAll().filter(r=>r.date===date);
-  const isDone=p=>recs.some(r=>r.evaluatee===p.name&&(!r.farm||r.farm===p.farm));
+  const pr=new Map();ro.forEach(p=>pr.set(p,eeProgress(p,recs)));
+  const isDone=p=>pr.get(p).complete;
   const sel=selEntry(ro);
   const fs=rosterFarms(ro),farm=curFarm(ro);
   const showF=fs.length>1||(fs.length===1&&fs[0]);
@@ -318,9 +358,9 @@ function renderRoster(){
   const hit=q?ps.filter(i=>normQ(ro[i].name).includes(q)):ps;
   const todo=hit.filter(i=>!isDone(ro[i])),dn=hit.filter(i=>isDone(ro[i]));   // 未実施を先・実施済みは後ろ
   const tab=i=>{
-    const p=ro[i],on=p===sel,d=isDone(p);
-    return `<button type="button" class="eetab${on?' on':''}${d?' done':''}" aria-pressed="${on}" data-i="${i}" onclick="selectEe(${i})">`+
-      `<span class="eetab-nm">${esc(p.name)}</span><span class="eetab-ct">${d?esc(t('doneLbl'))+' · ':''}${p.works.length?p.works.length+esc(t('worksUnit')):esc(t('worksNone'))}${p.common?` <span class="eetab-cm">${esc(t('commonLbl'))}</span>`:''}</span>`+
+    const p=ro[i],on=p===sel,g=pr.get(p),d=g.complete,part=!d&&g.done>0;
+    return `<button type="button" class="eetab${on?' on':''}${d?' done':''}${part?' part':''}" aria-pressed="${on}" data-i="${i}" data-done="${g.done}" data-total="${g.total}" onclick="selectEe(${i})">`+
+      `<span class="eetab-nm">${esc(p.name)}</span><span class="eetab-ct">${d?esc(t('doneLbl'))+' · ':''}${part?`<span class="eetab-pt">${esc(t('partLbl'))} ${g.done}/${g.total}</span>`+esc(t('worksUnit')):p.works.length?p.works.length+esc(t('worksUnit')):esc(t('worksNone'))}${p.common?` <span class="eetab-cm">${esc(t('commonLbl'))}</span>`:''}</span>`+
       `${p.unresolved&&p.unresolved.length?`<span class="eetab-unk">⚠ ${esc(t('unkWorkLbl'))}: ${esc(p.unresolved.join('、'))}</span>`:''}`+
       `${d?'<span class="eetab-ok" aria-hidden="true">✓</span>':''}</button>`;
   };
@@ -340,6 +380,30 @@ function renderRoster(){
   const wn=document.getElementById('eeWarn');
   if(wn){const w=[rosterKeptEmpty?t('eRosterEmptyKept'):'',rosterWarnText(rs)].filter(Boolean).join(' ／ ');wn.textContent=w?'⚠ '+w:'';wn.hidden=!w}
 }
+/* その人の同じ日の記録にある作業（農場が空の記録=農場列の無い旧記録・名簿外は名前で数える） */
+function doneWorksOf(p,recs){
+  const s=new Set();
+  recs.forEach(r=>{if(r.evaluatee===p.name&&(!r.farm||r.farm===p.farm))(r.works||[]).forEach(we=>s.add(we.workId))});
+  return s;
+}
+/* 進み具合: 割り当てた作業のうち同じ日の記録にある作業の数。全部そろった時だけ完了
+   作業名不明の作業は評価者が作業選択で補うので、記録にある作業の数が割り当ての数に届いた時に完了とみなす
+   作業未設定の人は、記録が1つでもあれば完了（従来どおり） */
+function eeProgress(p,recs){
+  const ds=doneWorksOf(p,recs),nu=p.unresolved?p.unresolved.length:0,total=p.works.length+nu;
+  if(!total)return{done:ds.size?1:0,total:0,complete:ds.size>0,doneSet:ds};
+  const dAssigned=p.works.filter(w=>ds.has(w)).length;
+  const extra=[...ds].filter(w=>!p.works.includes(w)).length;
+  const done=dAssigned+Math.min(nu,extra);
+  return{done,total,complete:done>=total,doneSet:ds};
+}
+/* 選択中の名簿の人の、今日すでに記録のある作業（編集中は出さない） */
+function curDoneWorks(){
+  if(editId)return[];
+  const p=selEntry(getRoster().list);if(!p)return[];
+  const date=document.getElementById('fDate').value;
+  return [...doneWorksOf(p,getAll().filter(r=>r.date===date))];
+}
 function scrollToEe(){
   const eb=document.querySelector('.eebox');if(!eb)return;
   const hdr=document.querySelector('.hdr'),pr=document.querySelector('.prog');
@@ -357,7 +421,11 @@ function selectEe(i){
   eeManualOpen=false;
   document.getElementById('fEe').value=p.name;
   try{localStorage.setItem(FARM_KEY,p.farm)}catch{}
-  selWorks=p.works.slice();saveSel();buildWorkSel();buildCards();
+  // 同じ日に済んだ作業は外し、残りの作業だけを出す（全部済んでいる人を選び直した時は全作業＝やり直し）
+  const date=document.getElementById('fDate').value;
+  const ds=doneWorksOf(p,getAll().filter(r=>r.date===date));
+  const left=p.works.filter(w=>!ds.has(w));
+  selWorks=(left.length?left:p.works).slice();saveSel();buildWorkSel();buildCards();
   const unk=p.unresolved&&p.unresolved.length;
   document.getElementById('wselBox').open=!selWorks.length||!!unk;   // 作業名不明の人は作業選択を開いたまま（評価者が補う）
   renderRoster();onCh();
