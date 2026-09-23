@@ -22,13 +22,13 @@ global.LockService = { getScriptLock: () => ({ tryLock: () => true, releaseLock(
 global.Utilities = { formatDate: () => '2026-09-23 10:00:00' };
 global.ContentService = { MimeType: { JSON: 'j' }, createTextOutput: s => ({ s, setMimeType() { return this; } }) };
 const code = fs.readFileSync(__dirname + '/Code.gs', 'utf8');
-const SEED = [['那須農場', '鈴木 花子', '給餌'], ['大田原農場', '高橋 次郎']];
+const SEED = [['那須農場', 'テスト 一郎', '給餌'], ['大田原農場', 'テスト 二郎']];
 const G = new Function('ROSTER_SEED', code + ';return {setup,doGet,doPost};')(SEED);
 let pass = 0, fail = 0; const ok = (n, c) => { c ? pass++ : fail++; console.log((c ? '  OK ' : '  NG ') + n); };
 
 ok('setup', G.setup() === 'setup OK' && sheets['受験者'] && sheets['作業一覧'].d.length === 41);
 ok('見出し=農場・被評価者・作業1〜8', sheets['受験者'].d[0].join() === '農場,被評価者,作業1,作業2,作業3,作業4,作業5,作業6,作業7,作業8');
-ok('空の受験者タブにシードが入る', sheets['受験者'].d.length === 3 && sheets['受験者'].d[1][1] === '鈴木 花子' && sheets['受験者'].d[2].length === 10);
+ok('空の受験者タブにシードが入る', sheets['受験者'].d.length === 3 && sheets['受験者'].d[1][1] === 'テスト 一郎' && sheets['受験者'].d[2].length === 10);
 G.setup();
 ok('setup再実行でシードは二重に入らない', sheets['受験者'].d.length === 3);
 sheets['受験者'].getRange(4, 1, 2, 4).setValues([['睦沢農場', 'グエン', '給餌', 'エサ調整'], ['睦沢農場', '  ', '給餌', '']]);
@@ -40,6 +40,14 @@ sheets['受験者'].d.length = 0;
 sheets['受験者'].getRange(1, 1, 2, 3).setValues([['被評価者', '作業1', '作業2'], ['タナカ', '給餌', '']]);
 ro = JSON.parse(G.doGet({ parameter: { action: 'roster' } }).s);
 ok('旧形式（農場列なし）', ro.roster.length === 1 && ro.roster[0].name === 'タナカ' && ro.roster[0].farm === '' && ro.roster[0].works.join() === '給餌');
+// 受験者タブが空（見出しだけ）= ok:true・0件 ／ タブが無い = ok:false（アプリが前回の名簿を消さないよう区別）
+sheets['受験者'].d.length = 1;
+ro = JSON.parse(G.doGet({ parameter: { action: 'roster' } }).s);
+ok('空の受験者タブは ok:true・0件', ro.ok === true && Array.isArray(ro.roster) && ro.roster.length === 0);
+const keepRs = sheets['受験者']; delete sheets['受験者'];
+ro = JSON.parse(G.doGet({ parameter: { action: 'roster' } }).s);
+ok('受験者タブが無い時は ok:false・no roster sheet', ro.ok === false && ro.error === 'no roster sheet' && !('roster' in ro));
+sheets['受験者'] = keepRs;
 const rec = { id: 'abc-1', date: '2026-09-23', evaluator: '岡田/正一', evaluatee: 'グエン', farm: '睦沢農場', overall: '=SUM(A1)',
   works: [{ workName: '給餌', category: '飼養管理', items: [{ aspect: 'a', score: 4, comment: '+x' }, { aspect: 'b', score: 2, comment: '' }] }] };
 const post = o => JSON.parse(G.doPost({ postData: { contents: JSON.stringify(o) } }).s);

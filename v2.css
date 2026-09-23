@@ -90,6 +90,11 @@
 .eetab.on .eetab-ok{background:#fff;color:var(--brand,#177863)}
 .eetab:focus-visible{outline:3px solid #f0a500;outline-offset:2px}
 .eegrp{grid-column:1/-1;margin:8px 0 0;padding-top:8px;border-top:1px dashed #c9d0cd;font-size:.8rem;font-weight:800;color:#56625d}
+.eetab-cm{display:inline-block;margin-left:4px;padding:0 6px;border-radius:8px;background:#e6f2ee;color:#0f5a49;font-size:.7rem;font-weight:800}
+.eetab.on .eetab-cm{background:rgba(255,255,255,.9)}
+.eetab-unk{max-width:100%;font-size:.72rem;font-weight:800;color:#8a3b00;background:#fff3e0;border-radius:6px;padding:1px 6px;overflow-wrap:anywhere}
+.eewarn{margin:6px 0 0;padding:8px 10px;border-radius:8px;background:#fff3e0;border:1px solid #f0a500;color:#6b3400;font-size:.82rem;font-weight:700;line-height:1.45;overflow-wrap:anywhere}
+.eewarn[hidden]{display:none}
 .eenone{grid-column:1/-1;margin:4px 0;font-size:.9rem;color:var(--sub,#54635d)}
 .ee-add{width:100%;margin-top:6px;min-height:48px}
 .ee-add[hidden]{display:none}

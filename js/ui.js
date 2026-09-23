@@ -101,19 +101,40 @@ function sessionAvg(rec){
 function dispWorkName(we){const w=we.workId&&workById(we.workId);return w?loc(w,'name'):(we.workName||'')}
 
 /* ==============================================================
+   被評価者のキー = 農場＋名前（同名異人を1人に合算しない）
+   農場が空の記録（農場列ができる前の記録・名簿外）は、同じ名前の記録の農場が1つだけならその農場の人とみなす
+   ============================================================== */
+function eeKeyer(all){
+  const fs={};
+  all.forEach(r=>{if(r.farm)(fs[r.evaluatee]=fs[r.evaluatee]||new Set()).add(r.farm)});
+  return r=>{let f=r.farm||'';if(!f&&fs[r.evaluatee]&&fs[r.evaluatee].size===1)f=[...fs[r.evaluatee]][0];return JSON.stringify([f,r.evaluatee])};
+}
+function eePeople(all){
+  const keyOf=eeKeyer(all),m=new Map();
+  all.forEach(r=>{const k=keyOf(r);if(!m.has(k)){const [farm,name]=JSON.parse(k);m.set(k,{key:k,farm,name})}});
+  const ps=[...m.values()];
+  const cnt={};ps.forEach(p=>{cnt[p.name]=(cnt[p.name]||0)+1});
+  ps.forEach(p=>{p.label=cnt[p.name]>1?p.name+'（'+(p.farm||t('farmNone'))+'）':p.name});
+  return ps.sort((a,b)=>a.name<b.name?-1:a.name>b.name?1:a.farm<b.farm?-1:a.farm>b.farm?1:0);
+}
+/* 選択キーに一致する記録（キーは全記録から計算＝履歴・グラフで同じ人を指す） */
+function recsOfKey(k){const all=getAll();if(!k)return all;const keyOf=eeKeyer(all);return all.filter(r=>keyOf(r)===k)}
+
+/* ==============================================================
    履歴
    ============================================================== */
 function drawHist(){
-  const f=document.getElementById('hFil').value;let all=getAll();if(f)all=all.filter(e=>e.evaluatee===f);
+  const f=document.getElementById('hFil').value;let all=recsOfKey(f);
   all.sort((a,b)=>b.date.localeCompare(a.date)||(b.createdAt||'').localeCompare(a.createdAt||''));
   const c=document.getElementById('hList');
   if(!all.length){c.innerHTML=`<div class="nd">${t('noData')}</div>`;return}
+  const lbl={};eePeople(getAll()).forEach(p=>{lbl[p.key]=p.label});const keyOf=eeKeyer(getAll());
   c.innerHTML=all.map(r=>{
     const a=sessionAvg(r);
     const ac=a==null?'':(a>=4?' av4':(a<2?' av1':(a<3?' av2':' av3')));
     const wnames=(r.works||[]).map(dispWorkName);
     const wlbl=wnames.slice(0,2).join('・')+(wnames.length>2?` +${wnames.length-2}`:'');
-    return `<div class="hi" role="button" tabindex="0" onclick="showDet('${sanitizeId(r.id)}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();showDet('${sanitizeId(r.id)}')}"><div class="hii"><div class="hid">${esc(r.date)}　${t('evLbl')}: ${esc(r.evaluator)}${sheetUrl()?(r.sent?` <span class="snt ok">✓${esc(t('sentLbl'))}</span>`:` <span class="snt ng">${esc(t('unsent'))}</span>`):''}</div><div class="hin">${esc(r.evaluatee)}${r.manual?` <span class="snt off">${esc(t('offRoster'))}</span>`:''}　<span class="hiw">${esc(wlbl)}</span></div></div><div class="hia${ac}">${fm(a)}</div></div>`;
+    return `<div class="hi" role="button" tabindex="0" onclick="showDet('${sanitizeId(r.id)}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();showDet('${sanitizeId(r.id)}')}"><div class="hii"><div class="hid">${esc(r.date)}　${t('evLbl')}: ${esc(r.evaluator)}${sheetUrl()?(r.sent?` <span class="snt ok">✓${esc(t('sentLbl'))}</span>`:` <span class="snt ng">${esc(t('unsent'))}</span>`):''}</div><div class="hin">${esc(lbl[keyOf(r)]||r.evaluatee)}${r.manual?` <span class="snt off">${esc(t('offRoster'))}</span>`:''}　<span class="hiw">${esc(wlbl)}</span></div></div><div class="hia${ac}">${fm(a)}</div></div>`;
   }).join('');
 }
 
@@ -156,7 +177,7 @@ function doDel(id){if(!confirm(t('cDel')))return;putAll(getAll().filter(e=>e.id!
    ============================================================== */
 function doCSV(){
   const all=getAll();if(!all.length){toast(t('eCSV'),1);return}
-  const hd=['評価日','評価者','被評価者','カテゴリ','作業','種目','スコア','コメント','作業平均','セッション平均','全体所感','作成日時'];
+  const hd=['評価日','評価者','被評価者','農場','名簿外','カテゴリ','作業','種目','スコア','コメント','作業平均','セッション平均','全体所感','作成日時'];
   let csv='﻿'+hd.map(csvCell).join(',')+'\n';
   all.forEach(r=>{
     const sav=fm(sessionAvg(r));
@@ -167,7 +188,7 @@ function doCSV(){
       const keys=aspects.length?aspects.map(a=>a.id):Object.keys(we.scores||{});
       keys.forEach(aid=>{
         const a=aspects.find(x=>x.id===aid);
-        const row=[r.date,r.evaluator,r.evaluatee,catLabel(we.category||(w&&w.category)||''),we.workName||(w&&w.name)||'',a?a.name:aid,(we.scores||{})[aid]||'',(we.comments||{})[aid]||'',wav,sav,r.overall||'',r.createdAt||''];
+        const row=[r.date,r.evaluator,r.evaluatee,r.farm||'',r.manual?'名簿外':'',catLabel(we.category||(w&&w.category)||''),we.workName||(w&&w.name)||'',a?a.name:aid,(we.scores||{})[aid]||'',(we.comments||{})[aid]||'',wav,sav,r.overall||'',r.createdAt||''];
         csv+=row.map(csvCell).join(',')+'\n';
       });
     });
@@ -184,7 +205,7 @@ function onChPerson(){populateChWork();drawCharts()}
 function populateChWork(){
   const who=document.getElementById('chSel').value;
   const sel=document.getElementById('chWork');
-  const wids=[...new Set(getAll().filter(e=>e.evaluatee===who).flatMap(r=>(r.works||[]).map(we=>we.workId)))];
+  const wids=[...new Set((who?recsOfKey(who):[]).flatMap(r=>(r.works||[]).map(we=>we.workId)))];
   sel.innerHTML=`<option value="">${t('chAllWorks')}</option>`+
     wids.map(id=>{const w=workById(id);return `<option value="${esc(id)}">${esc(w?loc(w,'name'):id)}</option>`}).join('');
 }
@@ -192,7 +213,7 @@ function drawCharts(){
   const who=document.getElementById('chSel').value,wid=document.getElementById('chWork').value,
     area=document.getElementById('chArea'),none=document.getElementById('chNone');
   if(!who){area.style.display='none';none.style.display='block';none.textContent=t('selEe');return}
-  let all=getAll().filter(e=>e.evaluatee===who);
+  let all=recsOfKey(who);
   if(wid)all=all.filter(r=>(r.works||[]).some(we=>we.workId===wid));
   if(!all.length){area.style.display='none';none.style.display='block';none.textContent=t('chNone');return}
   area.style.display='block';none.style.display='none';

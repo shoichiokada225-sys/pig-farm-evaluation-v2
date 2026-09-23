@@ -20,19 +20,22 @@ function getEvaluator(){try{return localStorage.getItem(EV_KEY)||''}catch{return
 function setEvaluator(n){localStorage.setItem(EV_KEY,String(n||'').trim())}
 
 /* ==============================================================
-   受験者名簿: [{name, farm, works:[workId...], common?}]（シートの作業名/No./IDをカタログのIDへ解決）
+   受験者名簿: [{name, farm, works:[workId...], common?, unresolved?:[原文]}]（シートの作業名/No./IDをカタログのIDへ解決）
    被評価者名が「（農場共通）」の行 = その農場で作業を個別に決めていない人に使う作業
+   解決できない作業名が1つでもある人には共通行を当てない（予定外の作業を黙って採点させない）
    ============================================================== */
+/* 作業名の照合用: 全角半角（NFKC=かっこ・英数字）・空白・大小をそろえる */
+function normWorkName(v){return String(v||'').normalize('NFKC').replace(/\s+/g,'').toLowerCase()}
 function resolveWork(v){
   const s=String(v||'').trim();if(!s)return null;
   const byId=workById(s);if(byId)return byId.id;
+  const n=normWorkName(s);
   const w=WORKDATA_V2.works.find(w=>w.name===s)
-    ||WORKDATA_V2.works.find(w=>(w.no||'').replace(/^No\.?0*/,'')===s.replace(/^No\.?0*/i,''));
+    ||WORKDATA_V2.works.find(w=>normWorkName(w.name)===n)
+    ||WORKDATA_V2.works.find(w=>normWorkName(w.no).replace(/^no\.?0*/,'')===n.replace(/^no\.?0*/,''));
   return w?w.id:null;
 }
 function isCommonRow(n){return /^[（(]?\s*農場共通\s*[）)]?$/.test(String(n||'').trim())}
-/* 名前から農場を引くのは「名簿にその名前が1人だけ」の時だけ（同名が2農場にいたら決めつけない） */
-function rosterFarmOf(name){const hs=getRoster().list.filter(p=>p.name===name);return hs.length===1?hs[0].farm:''}
 /* 電波の弱い豚舎で応答の返らない fetch を待ち続けないよう、時間で打ち切る */
 const ROSTER_TIMEOUT_MS=8000,SEND_TIMEOUT_MS=20000;
 async function fetchT(url,opt,ms){
@@ -43,29 +46,52 @@ async function fetchT(url,opt,ms){
 }
 let rosterLoading=false,rosterErr=false;   // 読み込み中 / 直近の読み込みが失敗
 function getRoster(){try{const r=JSON.parse(localStorage.getItem(ROSTER_KEY));return r&&Array.isArray(r.list)?r:{list:[],at:''}}catch{return{list:[],at:''}}}
+/* 名簿を取り直す。0件が返った時は前回の名簿（1件以上）を上書きしない（貼り替え中・タブ取り違えで全員が消えないように）
+   戻り値 {ok, list, unknown:[{name,farm,work}], dup:[{name,farm}], keptEmpty?} / {ok:false, reason:'nourl'|'bad'|'nosheet'|'net'} */
 async function fetchRoster(){
   const u=sheetUrl();if(!u)return{ok:false,reason:'nourl'};
   try{
     const res=await fetchT(u+'?action=roster',{cache:'no-store'},ROSTER_TIMEOUT_MS);
     const j=await res.json();
+    if(j&&j.ok===false&&j.error==='no roster sheet')return{ok:false,reason:'nosheet'};
     if(!j||!j.ok||!Array.isArray(j.roster))return{ok:false,reason:'bad'};
-    const unknown=[],common={},seen=new Set();
+    const unknown=[],dup=[],common={},seen=new Set();
     const all=j.roster.map(p=>{
-      const works=[];
-      (p.works||[]).forEach(v=>{const id=resolveWork(v);if(id){if(!works.includes(id))works.push(id)}else unknown.push(String(v))});
-      return{name:String(p.name||'').trim(),farm:String(p.farm||'').trim(),works};
+      const name=String(p&&p.name||'').trim(),farm=String(p&&p.farm||'').trim(),works=[],unresolved=[];
+      (p&&Array.isArray(p.works)?p.works:[]).forEach(v=>{
+        const raw=String(v==null?'':v).trim();if(!raw)return;
+        const id=resolveWork(raw);
+        if(id){if(!works.includes(id))works.push(id)}
+        else if(!unresolved.includes(raw))unresolved.push(raw);
+      });
+      if(name)unresolved.forEach(w=>unknown.push({name,farm,work:w}));
+      return{name,farm,works,unresolved};
     }).filter(p=>p.name);
     all.forEach(p=>{if(isCommonRow(p.name))common[p.farm]=p.works});
     const list=[];
     all.forEach(p=>{
       if(isCommonRow(p.name))return;
-      const k=p.farm+'\u0000'+p.name;if(seen.has(k))return;seen.add(k);   // 同じ農場の同名行は先勝ち
-      if(!p.works.length&&common[p.farm]&&common[p.farm].length)list.push({...p,works:common[p.farm].slice(),common:true});
-      else list.push(p);
+      const k=p.farm+'\u0000'+p.name;
+      if(seen.has(k)){if(!dup.some(d=>d.name===p.name&&d.farm===p.farm))dup.push({name:p.name,farm:p.farm});return}   // 同じ農場の同名行: 2行目以降は区別できないので警告
+      seen.add(k);
+      const e={name:p.name,farm:p.farm,works:p.works};
+      if(p.unresolved.length)e.unresolved=p.unresolved;
+      else if(!p.works.length&&common[p.farm]&&common[p.farm].length){e.works=common[p.farm].slice();e.common=true}
+      list.push(e);
     });
-    localStorage.setItem(ROSTER_KEY,JSON.stringify({list,at:new Date().toISOString()}));
-    return{ok:true,list,unknown};
+    const prev=getRoster();
+    if(!list.length&&prev.list.length)return{ok:true,list:prev.list,unknown:prev.unknown||[],dup:prev.dup||[],keptEmpty:true};
+    try{localStorage.setItem(ROSTER_KEY,JSON.stringify({list,at:new Date().toISOString(),unknown,dup}))}catch{}
+    return{ok:true,list,unknown,dup};
   }catch(e){return{ok:false,reason:'net'}}
+}
+/* 名簿の警告（誰の・何が）。max を渡すと各項目をその件数で打ち切り「…+残り」 */
+function rosterWarnText(r,max){
+  const u=r&&r.unknown||[],d=r&&r.dup||[];const parts=[];
+  const cut=a=>max&&a.length>max?a.slice(0,max).join('、')+' …+'+(a.length-max):a.join('、');
+  if(u.length)parts.push(t('eUnknownWork')+' ('+u.length+'): '+cut(u.map(x=>x.name+': '+x.work)));
+  if(d.length)parts.push(t('eDupName')+' ('+d.length+'): '+cut(d.map(x=>x.name+(x.farm?'（'+x.farm+'）':''))));
+  return parts.join(' ／ ');
 }
 
 /* ==============================================================

@@ -39,7 +39,7 @@ async function run(devName) {
     if (req.method() === 'GET') {
       const a = new URL(req.url()).searchParams.get('action');
       return route.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' },
-        body: JSON.stringify(a === 'roster' ? { ok: true, roster } : { ok: true }) });
+        body: JSON.stringify(a === 'roster' ? (roster === 'NOSHEET' ? { ok: false, error: 'no roster sheet' } : { ok: true, roster }) : { ok: true }) });
     }
     const body = JSON.parse(req.postData());
     posts.push(body);
@@ -179,11 +179,11 @@ async function run(devName) {
 
   console.log('[11] 農場つき名簿 → 農場チップ → その農場の人だけ・農場共通の作業・送信に農場');
   roster = [
-    { name: '鈴木 花子', farm: '那須農場', works: ['給餌'] },
-    { name: '田中 太郎', farm: '那須農場', works: [] },
+    { name: 'テスト 甲太', farm: '那須農場', works: ['給餌'] },
+    { name: 'テスト 乙彦', farm: '那須農場', works: [] },
     { name: '（農場共通）', farm: '那須農場', works: ['エサ調整', '給餌'] },
-    { name: '高橋 次郎', farm: '大田原農場', works: ['No.16'] },
-    { name: '山本 三郎', farm: '所属未確定', works: [] },
+    { name: 'テスト 丙介', farm: '大田原農場', works: ['No.16'] },
+    { name: 'テスト 丁子', farm: '所属未確定', works: [] },
     { name: '空欄さん', farm: '', works: [] },
   ];
   await page.locator('.eebox .wsel-hd button').tap();
@@ -192,14 +192,14 @@ async function run(devName) {
   ok('農場チップ4つ（未確定・未記入は最後）', chips.length === 4 && /^那須農場/.test(chips[0]) && /^大田原農場/.test(chips[1]) && /未確定/.test(chips[2]) && /農場未記入/.test(chips[3]));
   await page.locator('.fchip').nth(0).tap(); await page.waitForTimeout(200);
   ok('先頭の農場の人だけ（共通行は人として出ない）', await page.locator('.eetab').count() === 2);
-  await ee('田中 太郎').tap(); await page.waitForTimeout(200);
+  await ee('テスト 乙彦').tap(); await page.waitForTimeout(200);
   ok('作業未記入の人に農場共通の作業', await page.locator('.wshd').count() === 2);
   await page.locator('.fchip').nth(1).tap(); await page.waitForTimeout(200);
   ok('農場切替で選択中の人は外れる', await page.inputValue('#fEe') === '' && await page.locator('.eetab').count() === 1);
   ok('横スクロールなし(農場チップ)', await noHScroll());
   await page.reload(); await page.waitForTimeout(400);
   ok('再起動後も農場を記憶', /^大田原農場/.test(await page.locator('.fchip.on').textContent()));
-  await ee('高橋 次郎').tap(); await page.waitForTimeout(200);
+  await ee('テスト 丙介').tap(); await page.waitForTimeout(200);
   for (const cid of await page.locator('#cards .ec').evaluateAll(els => els.map(e => e.id.slice(2))))
     await page.locator(`.sb[data-id="${cid}"][data-s="3"]`).tap();
   const n0 = posts.length;
@@ -308,6 +308,90 @@ async function run(devName) {
   await page.locator('#btnSave').tap(); await page.waitForTimeout(900);
   ok('記録の農場は南', posts.length === n3 + 1 && posts[n3].record.farm === 'テスト南農場');
   ok('実施済みは南だけ（北は残り1）', await page.locator('.fchip[data-f="テスト南農場"]').getAttribute('data-left') === '0' && await page.locator('.fchip[data-f="テスト北農場"]').getAttribute('data-left') === '1');
+
+  console.log('[15] 名簿の整合: 作業名の表記ゆれ・不明作業・共通の印・同名異人（架空名）');
+  const HIGASHI = 'テスト東農場', NISHI = 'テスト西農場', NAM = 'Nguyen Van Nam';
+  roster = [
+    { name: '（農場共通）', farm: HIGASHI, works: ['給餌', '除フン'] },
+    { name: 'テスト 次郎', farm: HIGASHI, works: ['えつけ'] },                                   // 正式名は「えつけ（哺乳期給餌）」→不明
+    { name: 'テスト 三郎', farm: HIGASHI, works: ['CSF(豚熱)子ワクチン接種', '給餌'] },              // 半角かっこ
+    { name: 'テスト 四郎', farm: HIGASHI, works: ['妊娠舎→交配舎・育成舎　移動', 'えつけ(哺乳期給餌)', 'ＰＭＳ投与'] },   // 全角空白・半角かっこ・全角英字
+    { name: 'テスト 五郎', farm: HIGASHI, works: [] },
+    { name: 'テスト 六郎', farm: HIGASHI, works: ['給餌', '謎の作業'] },                           // 一部だけ不明
+    { name: NAM, farm: HIGASHI, works: ['治療'] },
+    { name: NAM, farm: HIGASHI, works: ['消毒'] },                                              // 同じ農場の同名2行目
+    { name: NAM, farm: NISHI, works: ['去勢'] },
+  ];
+  await page.locator('.eebox .wsel-hd button').tap(); await page.waitForTimeout(500);
+  const toast15 = await page.locator('#toast').textContent();
+  const cache = await page.evaluate(() => JSON.parse(localStorage.getItem('jitsugi_v2_roster')));
+  const P = n => cache.list.filter(p => p.name === n);
+  ok('表記ゆれを解決（全角空白・半角かっこ・全角英字）', P('テスト 四郎')[0].works.join() === 'move-preg,nursing-feed,pms' && !P('テスト 四郎')[0].unresolved);
+  ok('半角かっこのCSFも落ちない', P('テスト 三郎')[0].works.join() === 'csf-vaccine,feeding-daily' && !P('テスト 三郎')[0].unresolved);
+  const jiro = P('テスト 次郎')[0];
+  ok('不明作業の人に共通行を当てない（原文を保持）', jiro.works.length === 0 && !jiro.common && jiro.unresolved.join() === 'えつけ');
+  ok('一部不明の人も共通行を当てず、解決できた作業は残す', P('テスト 六郎')[0].works.join() === 'feeding-daily' && P('テスト 六郎')[0].unresolved.join() === '謎の作業' && !P('テスト 六郎')[0].common);
+  ok('作業未設定の人は共通行（common印）', P('テスト 五郎')[0].common === true && P('テスト 五郎')[0].works.join() === 'feeding-daily,dung-removal');
+  ok('トーストに人名つき・全件数', /テスト 次郎: えつけ/.test(toast15) && /テスト 六郎: 謎の作業/.test(toast15) && /\(2\)/.test(toast15));
+  ok('同じ農場の同名は警告（2行目は黙って消さない）', /同名/.test(toast15) && /Nguyen Van Nam（テスト東農場）/.test(toast15) && cache.dup.length === 1);
+  ok('農場が違う同名は別人として残る', P(NAM).length === 2 && P(NAM).some(p => p.farm === NISHI));
+  await page.locator(`.fchip[data-f="${HIGASHI}"]`).tap(); await page.waitForTimeout(200);
+  ok('名簿の警告が画面に残る', await page.locator('#eeWarn').isVisible() && /テスト 次郎: えつけ/.test(await page.locator('#eeWarn').textContent()));
+  ok('不明作業のタブに「⚠ 作業名不明: えつけ」', /⚠ 作業名不明: えつけ/.test(await ee('テスト 次郎').textContent()));
+  ok('共通の人のタブに「共通」の印', await ee('テスト 五郎').locator('.eetab-cm').count() === 1 && await ee('テスト 三郎').locator('.eetab-cm').count() === 0);
+  await ee('テスト 六郎').tap(); await page.waitForTimeout(300);
+  ok('不明作業のある人を選ぶと作業選択が開いたまま（解決分は選択済み）', await page.evaluate(() => document.getElementById('wselBox').open) && await page.locator('.wshd').count() === 1);
+  await ee('テスト 次郎').tap(); await page.waitForTimeout(300);
+  ok('全部不明の人は作業0・作業選択が開く', await page.evaluate(() => document.getElementById('wselBox').open) && await page.locator('.wshd').count() === 0);
+  ok('横スクロールなし(警告表示)', await noHScroll());
+  // 同名異人（東と西の Nguyen Van Nam）をそれぞれ採点 → 履歴・グラフ・CSVで分かれる
+  await ee(NAM).tap(); await page.waitForTimeout(300);
+  await scoreAll(2); await page.locator('#btnSave').tap(); await page.waitForTimeout(900);
+  await page.locator(`.fchip[data-f="${NISHI}"]`).tap(); await page.waitForTimeout(200);
+  await ee(NAM).tap(); await page.waitForTimeout(300);
+  await scoreAll(5); await page.locator('#btnSave').tap(); await page.waitForTimeout(900);
+  await page.locator('.tabs button[data-pg="pgHi"]').tap(); await page.waitForTimeout(200);
+  const hOpts = await page.locator('#hFil option').allTextContents();
+  ok('履歴の絞り込みは同名を農場で区別', hOpts.includes(NAM + '（' + HIGASHI + '）') && hOpts.includes(NAM + '（' + NISHI + '）') && !hOpts.includes(NAM));
+  ok('同名でない人は名前だけ', hOpts.includes('テスト 丙介'));
+  await page.locator('#hFil').selectOption({ label: NAM + '（' + NISHI + '）' }); await page.waitForTimeout(200);
+  ok('西のNamだけ（1件・東と合算しない）', await page.locator('.hi').count() === 1 && /5\.0/.test(await page.locator('.hia').first().textContent()));
+  await page.locator('#hFil').selectOption(''); await page.waitForTimeout(100);
+  await page.evaluate(() => { document.activeElement && document.activeElement.blur(); window.scrollTo(0, 0); });
+  await page.locator('.tabs button[data-pg="pgCh"]').dispatchEvent('click'); await page.waitForTimeout(200);
+  await page.locator('#chSel').selectOption({ label: NAM + '（' + HIGASHI + '）' }); await page.waitForTimeout(400);
+  ok('グラフも東のNamだけ（平均2）', await page.evaluate(() => cL && cL.data.datasets[0].data.length === 1 && cL.data.datasets[0].data[0] === 2));
+  const [dl] = await Promise.all([page.waitForEvent('download'), page.evaluate(() => doCSV())]);
+  const csv = fs.readFileSync(await dl.path(), 'utf8');
+  const csvHead = csv.split('\n')[0];
+  ok('CSVに農場列・名簿外列', /"被評価者","農場","名簿外"/.test(csvHead));
+  ok('CSVで同名を農場で分けられる', csv.includes(`"${NAM}","${NISHI}",""`) && csv.includes(`"${NAM}","${HIGASHI}",""`) && csv.includes('"臨時 花子","","名簿外"'));
+  await page.locator('.tabs button[data-pg="pgIn"]').tap();
+
+  console.log('[16] キャッシュから起動（名簿を取り直せない）でも警告は残る');
+  online = false;
+  await page.reload(); await page.waitForTimeout(600);
+  ok('圏外で起動しても警告が見える', await page.locator('#eeWarn').isVisible() && /テスト 次郎: えつけ/.test(await page.locator('#eeWarn').textContent()));
+  await page.locator(`.fchip[data-f="${HIGASHI}"]`).tap(); await page.waitForTimeout(200);
+  ok('圏外で起動しても不明作業のタブ表示', /作業名不明/.test(await ee('テスト 次郎').textContent()));
+  online = true;
+
+  console.log('[17] シートの名簿が空・受験者タブが無い → 前回の名簿を残す');
+  const nBefore = await page.evaluate(() => JSON.parse(localStorage.getItem('jitsugi_v2_roster')).list.length);
+  roster = [];
+  await page.locator('.eebox .wsel-hd button').tap(); await page.waitForTimeout(500);
+  ok('空の名簿で上書きしない', await page.evaluate(() => JSON.parse(localStorage.getItem('jitsugi_v2_roster')).list.length) === nBefore && nBefore > 0);
+  ok('「シートの名簿が空でした（前回の名簿を表示中）」', /名簿が空でした（前回の名簿を表示中）/.test(await page.locator('#toast').textContent()) && /名簿が空でした/.test(await page.locator('#eeWarn').textContent()));
+  ok('人のタブは残る', await page.locator('.eetab').count() > 0);
+  roster = [{ name: '（農場共通）', farm: HIGASHI, works: ['給餌'] }];   // 共通行だけ＝人は0人
+  await page.locator('.eebox .wsel-hd button').tap(); await page.waitForTimeout(500);
+  ok('共通行だけ（人0人）でも上書きしない', await page.evaluate(() => JSON.parse(localStorage.getItem('jitsugi_v2_roster')).list.length) === nBefore);
+  roster = 'NOSHEET';
+  await page.locator('.eebox .wsel-hd button').tap(); await page.waitForTimeout(500);
+  ok('受験者タブが無い → 名簿は残し、タブが無いと知らせる', await page.evaluate(() => JSON.parse(localStorage.getItem('jitsugi_v2_roster')).list.length) === nBefore && /「受験者」タブが見つかりません/.test(await page.locator('#toast').textContent()));
+  roster = [{ name: 'テスト 七郎', farm: HIGASHI, works: ['給餌'] }];
+  await page.locator('.eebox .wsel-hd button').tap(); await page.waitForTimeout(500);
+  ok('名簿が戻れば新しい名簿に更新・警告は消える', await page.evaluate(() => JSON.parse(localStorage.getItem('jitsugi_v2_roster')).list.length) === 1 && !(await page.locator('#eeWarn').isVisible()));
 
   ok('JSエラーなし', errors.length === 0);
   if (errors.length) console.log(errors.join('\n'));

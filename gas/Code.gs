@@ -2,12 +2,13 @@
    ※ このファイルは build_gas.js が Code.src.gs から自動生成（作業一覧を works-v2.js から埋め込む）。直接編集しない
 
    - GET  ?action=roster  → 「受験者」タブの 農場・被評価者・その人に用意した作業 を返す
+     （「受験者」タブが無い時は ok:false, error:'no roster sheet'。空のタブは roster:[]）
      （被評価者名が「（農場共通）」の行＝その農場で作業を個別に決めていない人に使う作業）
    - GET  ?action=ping    → 稼働確認（CODE_VERSION を返す）
    - POST {action:'submit', record}  → 評価者名のタブに 1種目=1行 で書き込む（記録IDで上書き＝再送・編集しても重複しない）
    - setup() を一度エディタで実行 → 「受験者」「作業一覧」タブと作業のプルダウンを作る */
 
-const CODE_VERSION = '2026-09-23b';
+const CODE_VERSION = '2026-09-23c';
 const ROSTER_SHEET = '受験者';
 const WORKS_SHEET = '作業一覧';
 const ROSTER_MAX_WORKS = 8;
@@ -51,7 +52,12 @@ function setup() {
 
 function doGet(e) {
   const action = (e && e.parameter && e.parameter.action) || 'ping';
-  if (action === 'roster') return json_({ ok: true, version: CODE_VERSION, roster: readRoster_() });
+  if (action === 'roster') {
+    // 受験者タブが無い（名前の変更・取り違え）のと、タブはあるが空なのを区別する（アプリは前回の名簿を残す）
+    const roster = readRoster_();
+    if (!roster) return json_({ ok: false, version: CODE_VERSION, error: 'no roster sheet' });
+    return json_({ ok: true, version: CODE_VERSION, roster: roster });
+  }
   return json_({ ok: true, version: CODE_VERSION });
 }
 
@@ -81,7 +87,8 @@ function rosterCols_(rs) {
 }
 function readRoster_() {
   const rs = SpreadsheetApp.getActive().getSheetByName(ROSTER_SHEET);
-  if (!rs || rs.getLastRow() < 2) return [];
+  if (!rs) return null;
+  if (rs.getLastRow() < 2) return [];
   const cols = rosterCols_(rs);
   const vals = rs.getRange(2, 1, rs.getLastRow() - 1, Math.max(2, rs.getLastColumn())).getDisplayValues();
   const out = [];

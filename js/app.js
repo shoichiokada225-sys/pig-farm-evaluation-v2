@@ -225,14 +225,19 @@ async function reloadRoster(silent){
   const r=await fetchRoster();
   rosterLoading=false;rosterErr=!r.ok;
   if(btn){btn.disabled=false;btn.removeAttribute('aria-busy')}
+  rosterKeptEmpty=!!(r.ok&&r.keptEmpty);
   renderRoster();
+  // 名簿の管理ミス（空・タブが無い・作業名不明・同名）は電波と違って放っても直らないので、起動時も知らせる
   if(r.ok){
-    if(r.unknown.length)toast(t('eUnknownWork')+': '+r.unknown.slice(0,3).join('、'),1);
+    const w=rosterWarnText(r,5);
+    if(r.keptEmpty)toast(t('eRosterEmptyKept'),1);
+    else if(w)toast(w,1);
     else if(!silent)toast(t('tRoster')+' ('+r.list.length+')');
-  }else if(!silent)toast(t('eRoster'),1);
+  }else if(r.reason==='nosheet')toast(t('eRosterNoSheet'),1);
+  else if(!silent)toast(t('eRoster'),1);
 }
 const FARM_KEY='jitsugi_v2_farm';
-let eeQuery='',eeManualOpen=false;
+let eeQuery='',eeManualOpen=false,rosterKeptEmpty=false;
 function storedFarm(){try{return localStorage.getItem(FARM_KEY)||''}catch{return''}}
 /* 名簿の農場（シートの並び順・所属未確定/空欄は最後） */
 function rosterFarms(ro){
@@ -282,7 +287,7 @@ function selectFarm(f){
 }
 function renderRoster(){
   const box=document.getElementById('eeTabs'),note=document.getElementById('eeNote'),fbox=document.getElementById('eeFarms');
-  const ro=getRoster().list;
+  const rs=getRoster(),ro=rs.list;
   const cur=document.getElementById('fEe').value.trim();
   const date=document.getElementById('fDate').value;
   const recs=getAll().filter(r=>r.date===date);
@@ -306,7 +311,8 @@ function renderRoster(){
   const tab=i=>{
     const p=ro[i],on=p===sel,d=isDone(p);
     return `<button type="button" class="eetab${on?' on':''}${d?' done':''}" aria-pressed="${on}" data-i="${i}" onclick="selectEe(${i})">`+
-      `<span class="eetab-nm">${esc(p.name)}</span><span class="eetab-ct">${d?esc(t('doneLbl'))+' · ':''}${p.works.length?p.works.length+esc(t('worksUnit')):esc(t('worksNone'))}</span>`+
+      `<span class="eetab-nm">${esc(p.name)}</span><span class="eetab-ct">${d?esc(t('doneLbl'))+' · ':''}${p.works.length?p.works.length+esc(t('worksUnit')):esc(t('worksNone'))}${p.common?` <span class="eetab-cm">${esc(t('commonLbl'))}</span>`:''}</span>`+
+      `${p.unresolved&&p.unresolved.length?`<span class="eetab-unk">⚠ ${esc(t('unkWorkLbl'))}: ${esc(p.unresolved.join('、'))}</span>`:''}`+
       `${d?'<span class="eetab-ok" aria-hidden="true">✓</span>':''}</button>`;
   };
   box.innerHTML=todo.map(tab).join('')+(dn.length?`<div class="eegrp">✓ ${esc(t('doneGrp'))} (${dn.length})</div>`+dn.map(tab).join(''):'')
@@ -316,6 +322,9 @@ function renderRoster(){
   document.getElementById('eeManual').style.display=manual?'':'none';
   document.getElementById('eeAdd').hidden=!ro.length||manual;
   note.textContent=rosterLoading?t('eeLoading'):ro.length?t('eeTabHint'):(!sheetUrl()?t('noSheet'):rosterErr?t('eRosterNet'):t('eeNoRoster'));
+  // 名簿の警告は画面に残す（トーストは消える・キャッシュから起動した時は出ない）
+  const wn=document.getElementById('eeWarn');
+  if(wn){const w=[rosterKeptEmpty?t('eRosterEmptyKept'):'',rosterWarnText(rs)].filter(Boolean).join(' ／ ');wn.textContent=w?'⚠ '+w:'';wn.hidden=!w}
 }
 function scrollToEe(){
   const eb=document.querySelector('.eebox');if(!eb)return;
@@ -335,9 +344,11 @@ function selectEe(i){
   document.getElementById('fEe').value=p.name;
   try{localStorage.setItem(FARM_KEY,p.farm)}catch{}
   selWorks=p.works.slice();saveSel();buildWorkSel();buildCards();
-  document.getElementById('wselBox').open=!selWorks.length;
+  const unk=p.unresolved&&p.unresolved.length;
+  document.getElementById('wselBox').open=!selWorks.length||!!unk;   // 作業名不明の人は作業選択を開いたまま（評価者が補う）
   renderRoster();onCh();
-  const c=document.getElementById('cards');if(c&&selWorks.length)c.scrollIntoView({behavior:'smooth',block:'start'});
+  if(unk)toast(p.name+' — '+t('unkWorkLbl')+': '+p.unresolved.join('、'),1);
+  const c=document.getElementById('cards');if(c&&selWorks.length&&!unk)c.scrollIntoView({behavior:'smooth',block:'start'});
 }
 /* 名簿にいない人（当日来た新人・登録漏れ・表記違い）をその場で手入力して評価する */
 function openManualEe(){
@@ -376,12 +387,14 @@ function swTab(btn){
   if(btn.dataset.pg==='pgHi'){refreshSel();drawHist()}
   if(btn.dataset.pg==='pgCh'){refreshSel();populateChWork();drawCharts()}
 }
+/* 履歴・グラフの被評価者 = 「農場＋名前」（同名異人を合算しない）。表示は同名が複数農場にいる時だけ「名前（農場）」 */
 function refreshSel(){
-  const ns=[...new Set(getAll().map(e=>e.evaluatee))].sort();
+  const ps=eePeople(getAll());
+  const opts=ps.map(p=>`<option value="${esc(p.key)}">${esc(p.label)}</option>`).join('');
   const hf=document.getElementById('hFil'),hv=hf.value;
-  hf.innerHTML=`<option value="">${t('filterAll')}</option>`+ns.map(n=>`<option value="${esc(n)}">${esc(n)}</option>`).join('');hf.value=hv;
+  hf.innerHTML=`<option value="">${t('filterAll')}</option>`+opts;hf.value=hv;
   const cs=document.getElementById('chSel'),cv=cs.value;
-  cs.innerHTML=`<option value="">${t('selPh')}</option>`+ns.map(n=>`<option value="${esc(n)}">${esc(n)}</option>`).join('');cs.value=cv;
+  cs.innerHTML=`<option value="">${t('selPh')}</option>`+opts;cs.value=cv;
 }
 
 let dirty=false,editId=null,editEv=null,autoT=null;
