@@ -45,6 +45,8 @@ document.addEventListener('DOMContentLoaded',()=>{
   setLang(lang);
   restoreDraft();
   document.getElementById('fEv').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();commitEvaluator()}});
+  // 「決定」やEnterを押さずにキーボードを閉じた・次へ進んだ時も、打った名前を確定する（iOSの「完了」や画面外のタップではEnterが出ない）
+  document.getElementById('fEv').addEventListener('change',()=>adoptTypedEvaluator(true));
   document.getElementById('fDate').addEventListener('change',renderRoster);
   document.getElementById('fEe').addEventListener('input',e=>{curEe.name=e.target.value.trim();renderRoster()});   // 手入力・編集中に名前を直した
   document.getElementById('cfgUrl').value=sheetUrl();
@@ -281,6 +283,7 @@ function restoreDraft(){
    ============================================================== */
 function doSave(){
   if(!selWorks.length){toast(t('eNoWork'),1);return}
+  adoptTypedEvaluator(false);   // 打っただけで「決定」を押していない評価者名も採用する（保存の時に消して最上部へ戻さない）
   const d=collectForm();
   if(!d.evaluator.trim()){toast(t('eEv'),1);editEvaluator();document.getElementById('evBox').scrollIntoView({behavior:'smooth',block:'center'});return}
   if(!d.evaluatee.trim()){toast(t('eEe'),1);document.querySelector('.eebox').scrollIntoView({behavior:'smooth',block:'center'});return}
@@ -440,13 +443,22 @@ function renderEvaluator(forceEdit){
   document.getElementById('evShow').style.display=editing?'none':'';
   document.getElementById('evEdit').style.display=editing?'':'none';
   document.getElementById('evName').textContent=n;
-  if(editing)document.getElementById('fEv').value=n;
+  if(editing){const f=document.getElementById('fEv');if(!f.value.trim())f.value=n}   // 打ちかけの名前は上書きしない
 }
 function editEvaluator(){renderEvaluator(true);const f=document.getElementById('fEv');f.focus();f.select()}
+/* 入力欄に打ってある評価者名（決定前）を記憶する。空なら何もしない（記憶は消さない）。入力欄は開いたまま（押した「決定」ボタンの位置をずらさない）。notify=true で「記憶しました」を出す */
+function adoptTypedEvaluator(notify){
+  const box=document.getElementById('evEdit'),f=document.getElementById('fEv');
+  if(!f||!box||box.style.display==='none')return false;
+  const v=f.value.trim();if(!v)return false;
+  if(v!==getEvaluator()){setEvaluator(v);document.getElementById('evName').textContent=v;if(notify)toast(t('tEvSaved'))}
+  document.getElementById('evBox').classList.remove('ev-need');
+  return true;
+}
 function commitEvaluator(){
   const v=document.getElementById('fEv').value.trim();
   if(!v){toast(t('eEv'),1);return}
-  setEvaluator(v);renderEvaluator();document.getElementById('fEv').blur();toast(t('tEvSaved'));
+  setEvaluator(v);renderEvaluator();document.getElementById('evBox').classList.remove('ev-need');document.getElementById('fEv').blur();toast(t('tEvSaved'));
 }
 
 /* ==============================================================
@@ -600,8 +612,12 @@ function renderRosterBody(){
   // 名簿の取得日時を常に出す。今回の取得に失敗・古い名簿の時は警告色（圏外の豚舎で古い名簿のまま試験しないように）
   // 失敗の理由で文言を分ける: 電波（net）だけを「電波の良い所で」。受験者タブが無い・応答が不正は管理者へ（#eeWarn に理由）
   const atTx=fmtAt(rs.at),stale=!!ro.length&&!rosterLoading&&!!sheetUrl()&&(rosterErr||rosterIsOld(rs)),admin=rosterErr&&rosterErrReason!=='net';
+  // 最初の操作（名前をタップ）の案内は名簿の先頭＝農場チップの直前に1行で（名簿の下だと最初の画面に入らない）
+  const lead=document.getElementById('eeLead');
+  if(lead){const on=!!ro.length&&!cur&&!curEe.manual&&!editId;lead.hidden=!on;lead.textContent=on?t('eeTabHint'):''}
+  const pw=document.querySelector('#cards .pickwork .pw-tx');if(pw)pw.innerHTML=pickworkTx();   // 名簿が届いた・人を外した時に空表示の案内も合わせる
   note.textContent=rosterLoading?t('eeLoading')+(ro.length?' ／ '+t('rosterAt').replace('{t}',atTx):'')
-    :ro.length?(stale?(rosterErr?(admin?t('rosterPrev'):t('rosterStale')):t('rosterOld')).replace('{t}',atTx):t('eeTabHint')+' ／ '+t('rosterAt').replace('{t}',atTx))
+    :ro.length?(stale?(rosterErr?(admin?t('rosterPrev'):t('rosterStale')):t('rosterOld')).replace('{t}',atTx):t('rosterAt').replace('{t}',atTx))
     :(!sheetUrl()?t('noSheet'):rosterErr?(admin?t('eRosterAdmin'):t('eRosterNet')):t('eeNoRoster'));
   note.classList.toggle('eenote-stale',stale);
   // 名簿の警告は画面に残す（トーストは消える・キャッシュから起動した時は出ない）
@@ -668,6 +684,11 @@ function selectEe(i){
   renderRoster();onCh();
   if(unk)toast(p.name+' — '+t('unkWorkLbl')+': '+p.unresolved.join('、'),1);
   // 「採点中: 名前（農場）」を貼り付く帯の下に出し、フォーカスも採点の入口へ（押したタブに残すと、読み上げは残りの人のタブを全部通ることになる）
+  // 評価者名が未確定なら、人を選んだこの時点で知らせる（保存の時に最上部へ戻す往復をなくす）。打ちかけの名前はここで確定
+  if(!unk&&!adoptTypedEvaluator(true)&&!getEvaluator()&&!editId){
+    const eb=document.getElementById('evBox');eb.classList.add('ev-need');
+    toast(t('eEvFirst'),1);editEvaluator();scrollBelowStk(eb,8,true);return;
+  }
   const ec=document.getElementById('eeCur');
   if(ec&&!ec.hidden&&selWorks.length&&!unk){scrollBelowStk(ec,8,true);ec.focus({preventScroll:true})}
 }

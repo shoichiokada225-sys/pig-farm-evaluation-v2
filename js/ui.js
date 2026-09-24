@@ -69,11 +69,17 @@ function wsecHtml(wid,ci){
 /* 採点カードを全部作り直す（人を選んだ時・言語切替・編集の開始など）。
    anim=true の時だけカードをフェードで出す（人を選んだ最初の構築。作業の追加/外し・言語切替ではちらつかせない） */
 let _animT=null;
+/* 採点カードが空の時の案内。名簿があって人が未選択なら「名前をタップ」（作業は自動で入る）。名簿が無い・名簿にない人・作業未設定の人は「作業を選ぶ」 */
+function pickworkTx(){
+  const ro=typeof getRoster==='function'?getRoster().list:[];
+  const pickEe=ro.length&&!curEe.name&&!curEe.manual&&!editId;
+  return pickEe?`<strong>${esc(t('pickEeTitle'))}</strong><br>${esc(t('pickEeHint'))}`:`<strong>${esc(t('selWorksTitle'))}</strong><br>${esc(t('selWorksHint'))}`;
+}
 function buildCards(anim){
   saveSt();
   const el=document.getElementById('cards');
   if(!selWorks.length){
-    el.innerHTML=`<div class="pickwork"><svg class="pw-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4a3 3 0 0 1 6 0h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1zm3-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zM8 10h8v2H8zm0 4h5v2H8z"/></svg><strong>${t('selWorksTitle')}</strong><br>${t('selWorksHint')}</div>`;
+    el.innerHTML=`<div class="pickwork"><svg class="pw-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4a3 3 0 0 1 6 0h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1zm3-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zM8 10h8v2H8zm0 4h5v2H8z"/></svg><span class="pw-tx">${pickworkTx()}</span></div>`;
     updProg();return;
   }
   const ci={n:0};

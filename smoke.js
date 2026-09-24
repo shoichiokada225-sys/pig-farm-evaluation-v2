@@ -47,6 +47,7 @@ function ok(name, cond) {
   console.log('[1] 初期表示（作業未選択）');
   await page.goto(URL);
   ok('選択促しプレースホルダ', await page.locator('#cards .pickwork').count() === 1);
+  ok('R18-2 名簿が無い時は「作業を選ぶ」の案内・名簿の先頭の「名前をタップ」は出さない', /評価する作業を選ぶ/.test(await page.locator('#cards .pickwork').textContent()) && await page.locator('#eeLead').isHidden());
   ok('カテゴリ7つ', await page.locator('.wcat').count() === 7);
   ok('進捗 0/0', (await page.locator('#progT').textContent()).includes('0/0'));
   const dv = await page.locator('#dataVer').textContent();

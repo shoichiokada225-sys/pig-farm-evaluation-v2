@@ -79,6 +79,7 @@
       <h3 data-t="labelEvaluatee">被評価者名</h3>
       <button class="b b3 b-slim" onclick="reloadRoster()" data-t="btnReload">名簿を更新</button>
     </div>
+    <p id="eeLead" class="ee-lead" hidden></p>
     <div id="eeFarms" class="efarms" role="group" aria-label="Farm"></div>
     <div id="eeFindBox" class="ee-find" hidden>
       <input type="search" id="eeFind" data-ph="eeFindPh" placeholder="名前で探す" aria-label="Search" autocomplete="off" enterkeyhint="search">
@@ -96,10 +97,10 @@
   <!-- 作業の複数選択パネル（名簿の作業が自動で入る。手動で変更も可） -->
   <details class="cd wsel" id="wselBox">
     <summary class="wsel-hd">
-      <h3 data-t="selWorksTitle">評価する作業を選ぶ</h3>
+      <h3 data-t="wselTitle">作業の追加・変更</h3>
       <span class="wsel-cnt" id="wselCnt" aria-live="polite"></span>
     </summary>
-    <p class="wsel-hint" data-t="selWorksHint">複数の作業を選べます。選んだ作業の評価項目（各5種目）が下に表示されます。</p>
+    <p class="wsel-hint" data-t="wselHint">名簿の人を選ぶと作業は自動で入ります。ここは作業を足す・外す時や、名簿にない人を評価する時に使います。</p>
     <div id="wselCats"></div>
     <div class="wsel-acts">
       <button class="b b2 b-slim" onclick="clearWorks()" data-t="btnClearSel">選択を全て解除</button>

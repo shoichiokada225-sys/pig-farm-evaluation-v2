@@ -173,3 +173,6 @@ details.wsel[open]>summary h3::before{content:'▾ '}
 .updbar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:8px 12px;padding:8px 12px;border-radius:10px;background:#e6f2ff;color:#0b3d6b;border:1px solid #9cc4ea;font-size:.85rem;font-weight:700}
 .updbar[hidden],.a2hsbar[hidden]{display:none}
 .a2hsbar{margin:12px 0 10px;padding:8px 12px;border-radius:10px;background:#fff4e0;color:#8a4b00;border:1px solid #f0c27a;font-size:.8rem;line-height:1.5}
+/* R18: 最初の操作の案内（名簿の先頭）・評価者名が未確定の時の目印 */
+.ee-lead{margin:0 0 6px;padding:3px 8px;border-radius:var(--r-sm,8px);background:var(--pri-l,rgba(23,120,99,.12));color:var(--pri,#177863);font-weight:700;font-size:.8rem;line-height:1.4}
+.evbox.ev-need{outline:2px solid var(--pri,#177863);outline-offset:2px}

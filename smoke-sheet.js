@@ -2232,6 +2232,108 @@ async function runLayout(devName) {
   await browser.close();
 }
 
+/* R18: 初めて使う評価者の最初の1分
+   - 評価者名を打っただけ（決定/Enterなし）でも消さない・保存で最上部へ戻さない
+   - 評価者名が未確定のまま人を押したら、その時点で知らせる
+   - 最初の案内は「名前をタップ」（作業を選ぶへ誘導しない）・名簿の先頭に1行 */
+async function runFirstUse(devName) {
+  console.log(`\n===== first-use (R18) ${devName} =====`);
+  const browser = await chromium.launch(process.env.PW_CHANNEL ? { channel: process.env.PW_CHANNEL } : {});
+  const ctx = await browser.newContext({ ...devices[devName] });
+  const page = await ctx.newPage();
+  const errors = [];
+  page.on('pageerror', e => errors.push(String(e)));
+  page.on('dialog', d => d.accept());
+  const posts = [];
+  const roster = [
+    { name: 'テスト 一郎', farm: 'テスト農場A', works: ['給餌', 'エサ調整'] },
+    { name: 'テスト 二郎', farm: 'テスト農場A', works: ['給餌'] },
+    { name: 'テスト 三郎', farm: 'テスト農場B', works: ['給餌'] },
+  ];
+  await page.route(u => u.href.startsWith('https://script.google.com/'), async route => {
+    const req = route.request();
+    const H = { status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' } };
+    if (req.method() === 'GET') return route.fulfill({ ...H, body: JSON.stringify(new URL(req.url()).searchParams.get('action') === 'roster' ? rosterRes(roster) : { ok: true, ...GAS_META }) });
+    const b = JSON.parse(req.postData()); posts.push(b);
+    return route.fulfill({ ...H, body: JSON.stringify({ ok: true, id: b.record ? b.record.id : b.id }) });
+  });
+  const ee = name => page.locator('.eetab').filter({ has: page.locator('.eetab-nm', { hasText: new RegExp('^' + name + '$') }) });
+  const scoreAll = async s => { for (const cid of await page.locator('#cards .ec').evaluateAll(els => els.map(e => e.id.slice(2)))) await page.locator(`.sb[data-id="${cid}"][data-s="${s}"]`).tap(); };
+  const toastTx = () => page.locator('#toast').textContent();
+  const nRecs = () => page.evaluate(() => { try { return (JSON.parse(localStorage.getItem('jitsugi_v2_data')) || { evaluations: [] }).evaluations.length; } catch { return 0; } });
+  const fresh = async () => {
+    await page.goto(APP);
+    await page.evaluate(GAS => { localStorage.clear(); localStorage.setItem('jitsugi_v2_sheet_url', GAS); }, GAS);
+    await page.reload(); await page.waitForTimeout(600);
+  };
+
+  console.log('[R18-2] 最初の画面の案内は「名前をタップ」（作業を選ぶへ誘導しない）');
+  await fresh();
+  const vh = page.viewportSize().height;
+  const pw = await page.locator('#cards .pickwork').textContent();
+  ok('人が未選択の空表示は「名簿から名前をタップ」', /名前をタップ/.test(pw) && !/評価する作業を選ぶ/.test(pw) && !/複数の作業を選べます/.test(pw));
+  ok('作業パネルの見出しは「作業の追加・変更」・閉じている', (await page.locator('#wselBox > summary h3').textContent()) === '作業の追加・変更' && !(await page.evaluate(() => document.getElementById('wselBox').open)));
+  ok('作業パネルの説明は名簿の人は自動・名簿にない人用と明記', /自動/.test(await page.locator('#wselBox > .wsel-hint').textContent()) && /名簿にない人/.test(await page.locator('#wselBox > .wsel-hint').textContent()));
+  ok('どこにも「評価する作業を選ぶ」が見えない', await page.evaluate(() => ![...document.querySelectorAll('body *')].some(e => e.offsetParent !== null && e.children.length === 0 && /評価する作業を選ぶ/.test(e.textContent))));
+  const lead = page.locator('#eeLead');
+  const lb = await lead.boundingBox(), fb = await page.locator('#eeFarms').boundingBox();
+  ok(`名簿の先頭に「名前をタップ」の1行（農場チップの直前・y=${lb && Math.round(lb.y)}）`, await lead.isVisible() && /名前をタップ/.test(await lead.textContent()) && lb.y + lb.height <= fb.y + 1 && lb.height <= 30);
+  ok(`案内は最初の画面に入る（下端${Math.round(lb.y + lb.height)} ≤ 画面${vh}）`, lb.y + lb.height <= vh);
+  ok('#eeNote は「名前をタップ」を繰り返さない（取得日時のみ）', !/タップ/.test(await page.locator('#eeNote').textContent()));
+  for (const [i, re] of [[1, /Tap/], [2, /Chạm/], [3, /Ketuk/]]) {
+    await tapLang(page, i); await page.waitForTimeout(150);
+    ok(`言語${i}: 空表示と先頭の案内も切り替わる`, re.test(await page.locator('#cards .pickwork').textContent()) && re.test(await lead.textContent()));
+  }
+  await tapLang(page, 0); await page.waitForTimeout(150);
+
+  console.log('[R18-1] 評価者名を打っただけで人を選ぶ → 名前は確定・消えない');
+  await page.locator('#fEv').tap();
+  await page.locator('#fEv').pressSequentially('評価 花子');   // 決定も Enter も押さない
+  await ee('テスト 一郎').tap(); await page.waitForTimeout(300);
+  ok('人を選んだ時点で打った名前を記憶', await page.evaluate(() => localStorage.getItem('jitsugi_v2_evaluator')) === '評価 花子');
+  ok('#eeLead は人を選ぶと消える', await lead.isHidden());
+  await scoreAll(4);
+  await page.locator('#btnSave').tap(); await page.waitForTimeout(600);
+  ok('保存できる（記録1件・評価者=評価 花子）', await nRecs() === 1 && await page.evaluate(() => JSON.parse(localStorage.getItem('jitsugi_v2_data')).evaluations[0].evaluator) === '評価 花子');
+  ok('シートへの送信も評価者名つき', posts.some(p => p.record && p.record.evaluator === '評価 花子'));
+
+  console.log('[R18-1] 打ってキーボードを閉じただけ（change）でも確定');
+  await fresh();
+  await page.locator('#fEv').tap();
+  await page.locator('#fEv').pressSequentially('評価 次郎');
+  await page.evaluate(() => document.getElementById('fEv').blur()); await page.waitForTimeout(150);
+  ok('blur で記憶（Enter なし）', await page.evaluate(() => localStorage.getItem('jitsugi_v2_evaluator')) === '評価 次郎');
+
+  console.log('[R18-1] 評価者名が空のまま人を押す → その時点で知らせる');
+  await fresh();
+  await ee('テスト 二郎').tap(); await page.waitForTimeout(300);
+  ok('トースト「先に評価者名」', /先に評価者名/.test(await toastTx()));
+  ok('評価者欄に目印・入力欄にフォーカス', await page.locator('#evBox.ev-need').count() === 1 && await page.evaluate(() => document.activeElement && document.activeElement.id === 'fEv'));
+  const eb = await page.locator('#evBox').boundingBox();
+  ok(`評価者欄が画面内（y=${Math.round(eb.y)}）`, eb.y >= 0 && eb.y + eb.height <= vh);
+  ok('人は選ばれたまま（選び直し不要）', await page.locator('.eetab.on').count() === 1 && await page.locator('#cards .ec').count() === 5);
+
+  console.log('[R18-1] 打った名前が change 前でも、保存で消さず採用（最上部へ戻さない）');
+  await scoreAll(3);
+  await page.evaluate(() => { document.getElementById('fEv').value = '評価 三子'; });   // change が出ない入力（決定なし）
+  await page.evaluate(() => doSave()); await page.waitForTimeout(700);
+  ok('保存できる（記録1件・評価者=評価 三子）', await nRecs() === 1 && await page.evaluate(() => JSON.parse(localStorage.getItem('jitsugi_v2_data')).evaluations[0].evaluator) === '評価 三子');
+  ok('トーストは「評価者名を入力してください」ではない', !/評価者名を入力してください/.test(await toastTx()));
+  ok('目印は消える', await page.locator('#evBox.ev-need').count() === 0);
+
+  console.log('[R18-1] 評価者名が本当に空の時の保存 → 打ちかけを消さない（editEvaluator が上書きしない）');
+  await ee('テスト 一郎').tap(); await page.waitForTimeout(300);
+  await scoreAll(3);
+  await page.evaluate(() => { localStorage.removeItem('jitsugi_v2_evaluator'); document.getElementById('fEv').value = ''; });
+  await page.evaluate(() => doSave()); await page.waitForTimeout(400);
+  ok('空なら従来どおり「評価者名を入力してください」で止まる', /評価者名を入力してください/.test(await toastTx()) && await nRecs() === 1);
+  await page.evaluate(() => { document.getElementById('fEv').value = '打ちかけ'; editEvaluator(); });
+  ok('編集を開き直しても打ちかけの名前は残る', await page.inputValue('#fEv') === '打ちかけ');
+  ok('JSエラーなし(first-use)', errors.length === 0);
+  if (errors.length) console.log(errors);
+  await browser.close();
+}
+
 (async () => {
   if (process.env.ONLY) {   // 例: ONLY=rel,assign,guard,backup,sw（わざと壊して検証する時に一部だけ回す）
     const on = new Set(process.env.ONLY.split(','));
@@ -2244,6 +2346,7 @@ async function runLayout(devName) {
     if (on.has('err')) await runSheetErr('iPhone SE');
     if (on.has('perf')) await runPerf('iPhone 13');
     if (on.has('layout')) await runLayout('iPhone SE');
+    if (on.has('first')) for (const d of ['iPhone SE', 'iPhone 13']) await runFirstUse(d);
     console.log(`\n合計: OK ${pass} / NG ${fail}`); process.exit(fail ? 1 : 0);
   }
   if (process.env.ONLY_A11Y) { for (const d of ['iPhone SE', 'Pixel 7']) await runA11y(d); console.log(`\n合計: OK ${pass} / NG ${fail}`); process.exit(fail ? 1 : 0); }
@@ -2260,6 +2363,7 @@ async function runLayout(devName) {
   if (!process.env.ONLY_REL && !process.env.ONLY_ASSIGN) await runSheetErr('iPhone SE');
   if (!process.env.ONLY_REL && !process.env.ONLY_ASSIGN) await runPerf('iPhone 13');
   await runLayout('iPhone SE');
+  for (const d of ['iPhone SE', 'iPhone 13']) await runFirstUse(d);
   await runSW();
   await runSWUpdate();
   console.log(`\n合計: OK ${pass} / NG ${fail}`);
