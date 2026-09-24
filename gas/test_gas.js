@@ -111,6 +111,29 @@ r = post({ action: 'delete', id: 'del-1' });
 ok('delete: 2回目（再送）も ok・deleted 0', r.ok === true && r.id === 'del-1' && r.deleted === 0);
 ok('delete: IDなしは拒否', post({ action: 'delete' }).ok === false && post({ action: 'delete', id: '' }).ok === false);
 ok('不正JSON', post.call(null, null) && JSON.parse(G.doPost({ postData: { contents: '{' } }).s).ok === false);
+// C9-3: 契約（正本=js/contract.js）。アプリ側の本物のコード（works-v2.js＋data.js＋contract.js）で作った要求を、本物の doPost に通す
+const rd = f => fs.readFileSync(__dirname + '/../' + f, 'utf8');
+const APP = new Function(rd('works-v2.js') + ';' + rd('js/data.js') + ';' + rd('js/contract.js') +
+  ';return {WORKDATA_V2,toPayload,submitReq,deleteReq,gasInfo,gasMissing,isUnsupportedOp,GAS_REQUIRED_CAPS,GAS_MIN_VERSION};')();
+const ping = JSON.parse(G.doGet({ parameter: { action: 'ping' } }).s);
+const roC = JSON.parse(G.doGet({ parameter: { action: 'roster' } }).s);
+ok('契約: ping・roster は version と capabilities を返す', Array.isArray(ping.capabilities) && ping.version && JSON.stringify(roC.capabilities) === JSON.stringify(ping.capabilities) && roC.version === ping.version);
+ok('契約: GAS の capabilities ⊇ アプリが必要とする機能・版 ≥ GAS_MIN_VERSION', APP.GAS_REQUIRED_CAPS.every(c => ping.capabilities.includes(c)) && APP.gasMissing(APP.gasInfo(ping)).length === 0);
+ok('契約: capabilities の無い古い GAS は足りないと判定', APP.gasMissing(APP.gasInfo({ ok: true, version: '2026-09-24b' })).join() === APP.GAS_REQUIRED_CAPS.join() && APP.gasMissing(undefined).length === 0);
+ok('契約: 版だけ古い GAS も判定', APP.gasMissing({ version: '2026-09-01', caps: APP.GAS_REQUIRED_CAPS.slice() }).join() === 'version');
+const fw = APP.WORKDATA_V2.works.find(w => w.id === 'feeding-daily');
+const appRec = { id: 'fx-1', date: '2026-09-24', evaluator: 'テスト評価者', evaluatee: 'テスト 契約', farm: 'テスト農場A', overall: '全体の所感',
+  createdAt: '2026-09-24T01:00:00Z', sent: false,
+  works: [{ workId: fw.id, workName: fw.name, category: fw.category, scores: Object.fromEntries(fw.aspects.map((a, i) => [a.id, i + 1])), comments: { [fw.aspects[0].id]: '=cmd' } }] };
+r = post(APP.submitReq(appRec));
+const shC = sheets['テスト評価者'];
+ok('契約: toPayload の記録を doPost が受け付ける', r.ok === true && r.id === 'fx-1' && r.rows === fw.aspects.length && shC && shC.d.length === 1 + fw.aspects.length);
+ok('契約: 行に被評価者・農場・日本語のカテゴリ/作業/種目・点', shC.d[1][3] === 'テスト 契約' && shC.d[1][4] === 'テスト農場A' && shC.d[1][5] === '飼養管理' && shC.d[1][6] === fw.name &&
+  shC.d.slice(1).map(x => x[7]).join() === fw.aspects.map(a => a.name).join() && shC.d.slice(1).map(x => x[8]).join() === '1,2,3,4,5' && shC.d[1][9] === "'=cmd" && shC.d[1][11] === 3);
+r = post(APP.deleteReq({ id: 'fx-1', evaluator: 'テスト評価者' }));
+ok('契約: deleteReq を doPost が受け付け行が消える', r.ok === true && r.id === 'fx-1' && r.deleted === fw.aspects.length && shC.d.length === 1);
+ok('契約: 知らない操作は unknown action（アプリは古い GAS と判定）', (r = post({ action: 'rename', id: 'x' })).ok === false && r.error === 'unknown action' && APP.isUnsupportedOp(r) && APP.isUnsupportedOp({ ok: false, error: 'bad request' }));
+ok('契約: record 無しの submit・id 無しの delete は別の誤り（古い GAS と取り違えない）', post({ action: 'submit' }).error === 'no record' && post({ action: 'delete' }).error === 'no id' && !APP.isUnsupportedOp(post({ action: 'delete' })));
 // 名簿の初期データが無い時: 農場一覧は受験者タブにある農場（重複なし）＋所属未確定
 Object.keys(sheets).forEach(k => delete sheets[k]);
 const G3 = new Function('ROSTER_SEED', code + ';return {setup};')(undefined);

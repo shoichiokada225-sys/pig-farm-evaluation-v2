@@ -126,24 +126,20 @@ function sessionAvg(rec){
 function dispWorkName(we){const w=we.workId&&workById(we.workId);return w?loc(w,'name'):(we.workName||'')}
 
 /* ==============================================================
-   被評価者のキー = 農場＋名前（同名異人を1人に合算しない）
-   農場が空の記録（農場列ができる前の記録・名簿外）は、同じ名前の記録の農場が1つだけならその農場の人とみなす
+   履歴・グラフの被評価者 = person.js の personKeyer（名簿の進み具合と同じ規則）
+   名簿に同じ名前が1人なら今の名前で1人（所属が決まった・名前を直した後も分かれない）、2人以上なら農場で分ける。名簿外は農場＋名前
+   表示は同じ名前が2人以上いる時だけ「名前（農場）」
    ============================================================== */
-function eeKeyer(all){
-  const fs={};
-  all.forEach(r=>{if(r.farm)(fs[r.evaluatee]=fs[r.evaluatee]||new Set()).add(r.farm)});
-  return r=>{let f=r.farm||'';if(!f&&fs[r.evaluatee]&&fs[r.evaluatee].size===1)f=[...fs[r.evaluatee]][0];return JSON.stringify([f,r.evaluatee])};
-}
-function eePeople(all){
-  const keyOf=eeKeyer(all),m=new Map();
-  all.forEach(r=>{const k=keyOf(r);if(!m.has(k)){const [farm,name]=JSON.parse(k);m.set(k,{key:k,farm,name})}});
+function eePeople(all,ro){
+  const keyOf=personKeyer(all,ro),m=new Map();
+  all.forEach(r=>{const k=keyOf(r);if(!m.has(k.key))m.set(k.key,{key:k.key,farm:k.farm,name:k.name})});
   const ps=[...m.values()];
   const cnt={};ps.forEach(p=>{cnt[p.name]=(cnt[p.name]||0)+1});
   ps.forEach(p=>{p.label=cnt[p.name]>1?p.name+'（'+farmDisp(p.farm)+'）':p.name});
   return ps.sort((a,b)=>a.name<b.name?-1:a.name>b.name?1:a.farm<b.farm?-1:a.farm>b.farm?1:0);
 }
 /* 選択キーに一致する記録（キーは全記録から計算＝履歴・グラフで同じ人を指す） */
-function recsOfKey(k){const all=getAll();if(!k)return all;const keyOf=eeKeyer(all);return all.filter(r=>keyOf(r)===k)}
+function recsOfKey(k){const all=getAll();if(!k)return all;const keyOf=personKeyer(all);return all.filter(r=>keyOf(r).key===k)}
 
 /* ==============================================================
    履歴
@@ -153,13 +149,13 @@ function drawHist(){
   all.sort((a,b)=>b.date.localeCompare(a.date)||(b.createdAt||'').localeCompare(a.createdAt||''));
   const c=document.getElementById('hList');
   if(!all.length){c.innerHTML=`<div class="nd">${t('noData')}</div>`;return}
-  const lbl={};eePeople(getAll()).forEach(p=>{lbl[p.key]=p.label});const keyOf=eeKeyer(getAll());
+  const ro=getRoster().list,lbl={};eePeople(getAll(),ro).forEach(p=>{lbl[p.key]=p.label});const keyOf=personKeyer(getAll(),ro);
   c.innerHTML=all.map(r=>{
     const a=sessionAvg(r);
     const ac=a==null?'':(a>=4?' av4':(a<2?' av1':(a<3?' av2':' av3')));
     const wnames=(r.works||[]).map(dispWorkName);
     const wlbl=wnames.slice(0,2).join('・')+(wnames.length>2?` +${wnames.length-2}`:'');
-    return `<div class="hi" role="button" tabindex="0" onclick="showDet('${sanitizeId(r.id)}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();showDet('${sanitizeId(r.id)}')}"><div class="hii"><div class="hid">${esc(r.date)}　${t('evLbl')}: ${esc(r.evaluator)}${sheetUrl()?(r.sent?` <span class="snt ok">✓${esc(t('sentLbl'))}</span>`:` <span class="snt ng">${esc(t('unsent'))}</span>`):''}</div><div class="hin">${esc(lbl[keyOf(r)]||r.evaluatee)}${r.manual?` <span class="snt off">${esc(t('offRoster'))}</span>`:''}　<span class="hiw">${esc(wlbl)}</span></div></div><div class="hia${ac}">${fm(a)}</div></div>`;
+    return `<div class="hi" role="button" tabindex="0" onclick="showDet('${sanitizeId(r.id)}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();showDet('${sanitizeId(r.id)}')}"><div class="hii"><div class="hid">${esc(r.date)}　${t('evLbl')}: ${esc(r.evaluator)}${sheetUrl()?(r.sent?` <span class="snt ok">✓${esc(t('sentLbl'))}</span>`:` <span class="snt ng">${esc(t('unsent'))}</span>`):''}</div><div class="hin">${esc(lbl[keyOf(r).key]||r.evaluatee)}${r.manual?` <span class="snt off">${esc(t('offRoster'))}</span>`:''}　<span class="hiw">${esc(wlbl)}</span></div></div><div class="hia${ac}">${fm(a)}</div></div>`;
   }).join('');
 }
 

@@ -35,8 +35,7 @@ function resolveWork(v){
     ||WORKDATA_V2.works.find(w=>normWorkName(w.no).replace(/^no\.?0*/,'')===n.replace(/^no\.?0*/,''));
   return w?w.id:null;
 }
-/* 農場名の照合用（共通行と受験者の農場の突き合わせ）: 全角半角・空白をそろえる */
-function normFarm(v){return String(v||'').normalize('NFKC').replace(/\s+/g,'')}
+/* 農場名の照合 normFarm・名前の照合 nmKey は person.js（人の特定の規則と同じもの） */
 function isCommonRow(n){return /^[（(]?\s*農場共通\s*[）)]?$/.test(String(n||'').trim())}
 /* 電波の弱い豚舎で応答の返らない fetch を待ち続けないよう、時間で打ち切る */
 const ROSTER_TIMEOUT_MS=8000,SEND_TIMEOUT_MS=20000;
@@ -57,6 +56,7 @@ async function fetchRoster(){
     const j=await res.json();
     if(j&&j.ok===false&&j.error==='no roster sheet')return{ok:false,reason:'nosheet'};
     if(!j||!j.ok||!Array.isArray(j.roster))return{ok:false,reason:'bad'};
+    const gas=gasInfo(j);   // シート側の版と機能（古い GAS は旧名・削除が使えない → 警告）
     const unknown=[],dup=[],common={},seen=new Set();
     const all=j.roster.map(p=>{
       const name=String(p&&p.name||'').trim(),farm=String(p&&p.farm||'').trim(),works=[],unresolved=[];
@@ -87,7 +87,7 @@ async function fetchRoster(){
     const list=[];
     all.forEach(p=>{
       if(isCommonRow(p.name))return;
-      const k=p.farm+'\u0000'+p.name;
+      const k=JSON.stringify([normFarm(p.farm),nmKey(p.name)]);   // 同じ人か＝person.js と同じそろえ方
       if(seen.has(k)){if(!dup.some(d=>d.name===p.name&&d.farm===p.farm))dup.push({name:p.name,farm:p.farm});return}   // 同じ農場の同名行: 2行目以降は区別できないので警告
       seen.add(k);
       const e={name:p.name,farm:p.farm,works:p.works};
@@ -101,9 +101,12 @@ async function fetchRoster(){
       list.push(e);
     });
     const prev=getRoster();
-    if(!list.length&&prev.list.length)return{ok:true,list:prev.list,unknown:prev.unknown||[],dup:prev.dup||[],cdup:prev.cdup||[],corphan:prev.corphan||[],fvar:prev.fvar||[],keptEmpty:true};
-    try{localStorage.setItem(ROSTER_KEY,JSON.stringify({list,at:new Date().toISOString(),unknown,dup,cdup,corphan,fvar}))}catch{}
-    return{ok:true,list,unknown,dup,cdup,corphan,fvar};
+    if(!list.length&&prev.list.length){
+      try{localStorage.setItem(ROSTER_KEY,JSON.stringify({...prev,gas}))}catch{}
+      return{ok:true,list:prev.list,unknown:prev.unknown||[],dup:prev.dup||[],cdup:prev.cdup||[],corphan:prev.corphan||[],fvar:prev.fvar||[],gas,keptEmpty:true};
+    }
+    try{localStorage.setItem(ROSTER_KEY,JSON.stringify({list,at:new Date().toISOString(),unknown,dup,cdup,corphan,fvar,gas}))}catch{}
+    return{ok:true,list,unknown,dup,cdup,corphan,fvar,gas};
   }catch(e){return{ok:false,reason:'net'}}
 }
 /* 農場名のゆれ: ps（人の行）の farm を書き換えてそろえ、[{farm:ゆれた表記, n:人数, like:そろえた先/似た農場}] を返す
@@ -139,6 +142,7 @@ function rosterWarnText(r,max){
   if(d.length)parts.push(t('eDupName')+' ('+d.length+'): '+cut(d.map(x=>x.name+(x.farm?'（'+x.farm+'）':''))));
   if(cd.length)parts.push(t('eCommonDup')+' ('+cd.length+'): '+cut(cd.map(fn)));
   if(co.length)parts.push(t('eCommonOrphan')+' ('+co.length+'): '+cut(co.map(fn)));
+  if(r&&gasMissing(r.gas).length)parts.push(t('eGasOld').replace('{v}',r.gas.version||'?'));
   if(fv.length)parts.push(t('eFarmVar')+' ('+fv.length+'): '+cut(fv.map(x=>'「'+x.farm+'」('+x.n+') ≈ 「'+x.like+'」')));
   return parts.join(' ／ ');
 }
@@ -146,21 +150,13 @@ function rosterWarnText(r,max){
 /* ==============================================================
    送信（記録IDで上書きされるので、再送・編集後の送り直しで重複しない）
    ============================================================== */
-function toPayload(r){
-  return{id:r.id,date:r.date,evaluator:r.evaluator,evaluatee:r.evaluatee,farm:r.farm||'',overall:r.overall||'',
-    works:(r.works||[]).map(we=>{
-      const w=workById(we.workId);
-      const c=WORKDATA_V2.categories.find(c=>c.id===(we.category||(w&&w.category)));
-      return{workName:we.workName||(w&&w.name)||'',category:c?c.name:(we.category||''),
-        items:(w?w.aspects:[]).map(a=>({aspect:a.name,score:(we.scores||{})[a.id],comment:(we.comments||{})[a.id]||''}))};
-    })};
-}
+/* 送る形（toPayload・submitReq・deleteReq）は contract.js */
 async function sendRec(r){
   const u=sheetUrl();if(!u)return false;
   try{
     // text/plain の単純リクエスト（プリフライト無し）でGASへPOST
     // 打ち切り後に届いていても、同じ記録IDで上書きされるので再送で重複しない
-    const res=await fetchT(u,{method:'POST',body:JSON.stringify({action:'submit',record:toPayload(r)})},SEND_TIMEOUT_MS);
+    const res=await fetchT(u,{method:'POST',body:JSON.stringify(submitReq(r))},SEND_TIMEOUT_MS);
     const j=await res.json();
     return !!(j&&j.ok&&j.id===r.id);
   }catch(e){return false}
@@ -179,9 +175,9 @@ let delOld=false;   // シート側（GAS）が削除に未対応の古い版
 async function sendDel(d){
   const u=sheetUrl();if(!u)return false;
   try{
-    const res=await fetchT(u,{method:'POST',body:JSON.stringify({action:'delete',id:d.id,evaluator:d.evaluator})},SEND_TIMEOUT_MS);
+    const res=await fetchT(u,{method:'POST',body:JSON.stringify(deleteReq(d))},SEND_TIMEOUT_MS);
     const j=await res.json();
-    if(j&&j.ok===false&&j.error==='bad request')delOld=true;
+    if(isUnsupportedOp(j))delOld=true;   // 削除を知らない古い GAS（契約は contract.js）
     return !!(j&&j.ok&&j.id===d.id);
   }catch(e){return false}
 }

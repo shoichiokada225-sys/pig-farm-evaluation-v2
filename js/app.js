@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   restoreDraft();
   document.getElementById('fEv').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();commitEvaluator()}});
   document.getElementById('fDate').addEventListener('change',renderRoster);
-  document.getElementById('fEe').addEventListener('input',renderRoster);
+  document.getElementById('fEe').addEventListener('input',e=>{curEe.name=e.target.value.trim();renderRoster()});   // 手入力・編集中に名前を直した
   document.getElementById('cfgUrl').value=sheetUrl();
   document.getElementById('cfgExamStart').value=examStart();
   document.getElementById('eeFind').addEventListener('input',e=>{eeQuery=e.target.value;renderRoster()});
@@ -107,7 +107,7 @@ function clearWorks(){
    ============================================================== */
 function onCh(){dirty=true;clearTimeout(autoT);autoT=setTimeout(saveDraft,300)}
 ['fDate','fEe','fOv'].forEach(id=>document.getElementById(id).addEventListener('input',onCh));
-function saveDraft(){const d=collectForm();d._editId=editId;d._sel=selWorks;localStorage.setItem(DRAFT_KEY,JSON.stringify(d))}
+function saveDraft(){const d=collectForm();d._editId=editId;d._sel=selWorks;d._cur={...curEe};localStorage.setItem(DRAFT_KEY,JSON.stringify(d))}
 function collectForm(){
   const works=selWorks.map(wid=>{
     const w=workById(wid);
@@ -129,8 +129,9 @@ function restoreDraft(){
     if(sel.length){selWorks=sel;saveSel();buildWorkSel();buildCards()}
   }
   // 復元するのは採点・コメント・所感・手入力の名前がある時だけ（評価者名は端末の設定、名簿の人はタブを押しただけ＝入力途中ではない）
-  const ee=(d.evaluatee||'').trim();
-  const eeManual=!!ee&&!getRoster().list.some(p=>p.name===ee);
+  const ro=getRoster().list,ee=(d.evaluatee||'').trim();
+  const dc=d._cur&&typeof d._cur==='object'&&nmKey(d._cur.name)===nmKey(ee)?d._cur:null;   // _cur の無い前の版の下書きも読む
+  const eeManual=!!ee&&(!!(dc&&dc.manual)||!rosterHits(ee,'',ro).length);
   const hasContent=eeManual||(d.overall||'').trim()
     ||(d.works||[]).some(we=>Object.values(we.scores||{}).some(v=>v!=null)||Object.values(we.comments||{}).some(v=>(v||'').trim()));
   if(!hasContent)return;
@@ -142,7 +143,7 @@ function restoreDraft(){
     if(confirm(t('cDraftDate').replace(/\{d\}/g,m?(+m[2])+'/'+(+m[3]):dt)))dt=todayLocal();
   }
   if(dt)document.getElementById('fDate').value=dt;
-  document.getElementById('fEe').value=d.evaluatee||'';
+  setCur(dc?{name:ee,farm:dc.farm,manual:dc.manual}:{name:ee,farm:(rosterEntry(ee,chipFarm,ro)||{}).farm||'',manual:false});
   document.getElementById('fOv').value=d.overall||'';
   getItems().forEach(it=>{
     const we=(d.works||[]).find(x=>x.workId===it.workId);
@@ -150,11 +151,11 @@ function restoreDraft(){
     const ta=document.querySelector('textarea[data-cid="'+it.id+'"]');if(ta)ta.value=(we&&we.comments[it.aspectId])||'';
   });
   if(isEdit){
-    editId=d._editId;preEditDate=null;
+    editId=d._editId;preEditDate=null;preEditCur=null;
     document.getElementById('editBar').classList.add('show');
     document.getElementById('btnSave').textContent=t('btnUpdate');
   }
-  updProg();toast(t('tDraft'));
+  updProg();renderRoster();toast(t('tDraft'));
 }
 
 /* ==============================================================
@@ -191,7 +192,7 @@ function doSave(){
   const who=eeSaveInfo(d.evaluatee.trim());
   if(editId){
     const idx=all.findIndex(e=>e.id===editId);
-    if(idx===-1){toast(t('eEditGone'),1);exitEdit();return}
+    if(idx===-1){toast(t('eEditGone'),1);exitEdit(true);return}   // 採点は残す＝人も編集していた人のまま
     all[idx]=normRec({...all[idx],date:d.date,evaluator:d.evaluator.trim(),evaluatee:d.evaluatee.trim(),farm:all[idx].farm||who.farm,works:d.works,overall:d.overall,updatedAt:new Date().toISOString(),sent:false});
     putAll(all);toast(t('tUpdated'));exitEdit();
   }else{
@@ -201,7 +202,7 @@ function doSave(){
   localStorage.removeItem(DRAFT_KEY);dirty=false;refreshSel();
   // 次の被評価者へ：作業選択も空に戻す（名簿のタブを押せば再セット）
   selWorks=[];saveSel();buildWorkSel();buildCards();
-  eeQuery='';eeManualOpen=false;document.getElementById('eeFind').value='';
+  eeQuery='';document.getElementById('eeFind').value='';
   clearForm();
   scrollToEe();   // 先頭ではなく被評価者の一覧へ（次の人をすぐ選べる）
   syncPending();
@@ -249,7 +250,7 @@ function jumpWork(wid){
    ============================================================== */
 function startEdit(id){
   const rec=getAll().find(e=>e.id===id);if(!rec)return;
-  if(!editId)preEditDate=document.getElementById('fDate').value;   // 編集を終えたら、編集前に選んでいた評価日へ戻す
+  if(!editId){preEditDate=document.getElementById('fDate').value;preEditCur={...curEe}}   // 編集を終えたら、編集前に選んでいた評価日と人へ戻す
   editId=id;closeMo();
   const wids=(rec.works||[]).map(we=>we.workId).filter(wid=>workById(wid));
   if(!wids.length){toast(t('eImpCfg'),1);exitEdit();return}
@@ -260,9 +261,7 @@ function startEdit(id){
   document.getElementById('pgIn').classList.add('on');
   document.getElementById('fDate').value=rec.date;
   editEv=rec.evaluator;
-  if(rec.farm){try{localStorage.setItem(FARM_KEY,rec.farm)}catch{}}
-  eeManualOpen=!!rec.manual;
-  document.getElementById('fEe').value=rec.evaluatee;renderRoster();
+  setCur({name:rec.evaluatee,farm:rec.farm||'',manual:!!rec.manual});renderRoster();   // 農場チップの好み（FARM_KEY）は書き換えない
   document.getElementById('fOv').value=rec.overall||'';
   getItems().forEach(it=>{
     const we=(rec.works||[]).find(x=>x.workId===it.workId);
@@ -274,13 +273,15 @@ function startEdit(id){
   window.scrollTo({top:0,behavior:'smooth'});dirty=false;updProg();
 }
 function cancelEdit(){if(dirty&&!confirm(t('cCEdit')))return;exitEdit();buildCards();clearForm()}
-function exitEdit(){if(editId)document.getElementById('fDate').value=preEditDate||todayLocal();preEditDate=null;editId=null;editEv=null;document.getElementById('editBar').classList.remove('show');document.getElementById('btnSave').textContent=t('btnSave')}
-function doReset(){if(!confirm(t('cReset')))return;clearForm();if(editId)exitEdit();document.getElementById('fDate').value=todayLocal();renderRoster();toast(t('tReset'))}
+function exitEdit(keepCur){
+  if(editId){document.getElementById('fDate').value=preEditDate||todayLocal();if(!keepCur)setCur(preEditCur)}
+  preEditDate=null;preEditCur=null;editId=null;editEv=null;document.getElementById('editBar').classList.remove('show');document.getElementById('btnSave').textContent=t('btnSave')}
+function doReset(){if(!confirm(t('cReset')))return;if(editId)exitEdit();clearForm();document.getElementById('fDate').value=todayLocal();renderRoster();toast(t('tReset'))}
 /* 評価日は評価者が選んだ日のまま（空の時だけ今日）。次の人へ進むたびに日付が変わると、同じ日の記録が2つの日付に分かれる */
 function clearForm(keepDraft){
   clearTimeout(autoT);
   const fd=document.getElementById('fDate');if(!fd.value)fd.value=todayLocal();
-  ['fEe','fOv'].forEach(id=>document.getElementById(id).value='');
+  setCur(null);document.getElementById('fOv').value='';
   document.querySelectorAll('.sb.sel,.crit-lv.sel').forEach(b=>b.classList.remove('sel'));
   document.querySelectorAll('.ec.scored,.ec.miss').forEach(c=>c.classList.remove('scored','miss'));
   document.querySelectorAll('.ec textarea').forEach(ta=>ta.value='');
@@ -336,9 +337,17 @@ function fmtAt(at){
   return (d.getMonth()+1)+'/'+d.getDate()+' '+p(d.getHours())+':'+p(d.getMinutes());
 }
 function rosterIsOld(rs){const d=new Date(rs&&rs.at||'');return isNaN(d)||Date.now()-d.getTime()>ROSTER_OLD_MS}
+/* 採点中の人はメモリの curEe={name,farm,manual} だけが持つ（画面の #fEe はその表示）。
+   端末に残すのは「最後に開いた農場チップ」の好み（FARM_KEY）だけで、農場チップを押した時（selectFarm）にだけ書く
+   ＝編集のような一時的な操作で担当農場のチップが変わらない */
 const FARM_KEY='jitsugi_v2_farm';
-let eeQuery='',eeManualOpen=false,rosterKeptEmpty=false;
+let eeQuery='',rosterKeptEmpty=false;
 function storedFarm(){try{return localStorage.getItem(FARM_KEY)||''}catch{return''}}
+let curEe={name:'',farm:'',manual:false},preEditCur=null,chipFarm=storedFarm();
+function setCur(c){
+  curEe={name:String(c&&c.name||'').trim(),farm:String(c&&c.farm||''),manual:!!(c&&c.manual)};
+  document.getElementById('fEe').value=curEe.name;
+}
 /* 名簿の農場（シートの並び順・所属未確定/空欄は最後） */
 /* 農場名の表示だけを訳す（空欄=農場未記入・「所属未確定」=訳語）。data-f・保存する farm・シートの値は元の文字列のまま */
 function farmDisp(f){return !f?t('farmNone'):/未確定/.test(f)?t('farmUnassigned'):f}
@@ -347,27 +356,25 @@ function rosterFarms(ro){
   const last=f=>!f||/未確定/.test(f)?1:0;
   return fs.sort((a,b)=>last(a)-last(b));
 }
-/* 選択中の名簿の人 = 「農場＋名前」で特定（同じ名前が2農場にいても取り違えない） */
+/* 選択中の名簿の人（person.js の規則: 名簿に同名が1人なら名前で、2人以上なら農場で。手入力中は名簿の人として扱わない） */
 function selEntry(ro){
-  const cur=document.getElementById('fEe').value.trim();if(!cur)return null;
-  const f=storedFarm();
-  return ro.find(p=>p.name===cur&&p.farm===f)||null;
+  if(!curEe.name||curEe.manual)return null;
+  return rosterEntry(curEe.name,curEe.farm,ro);
 }
+/* 表示する農場チップ: 採点中の人の農場 > 最後に開いたチップ > 先頭 */
 function curFarm(ro){
-  const fs=rosterFarms(ro);
-  const cur=document.getElementById('fEe').value.trim();
-  let f=storedFarm();
-  if(cur&&!ro.some(p=>p.name===cur&&p.farm===f)){const hit=ro.find(p=>p.name===cur);if(hit)f=hit.farm}  // 編集中など
+  const fs=rosterFarms(ro),sel=selEntry(ro);
+  const f=sel?sel.farm:chipFarm;
   return fs.includes(f)?f:fs[0];
 }
-/* 保存する農場: 選んだ名簿の人の農場。名簿にない名前は農場空欄＋名簿外の印 */
+/* 保存する農場: 選んだ名簿の人の農場。手入力の名前は名簿で1人に決まればその人の農場、名簿にない名前は農場空欄＋名簿外の印 */
 function eeSaveInfo(name){
   const ro=getRoster().list;
-  const p=ro.find(p=>p.name===name&&p.farm===storedFarm());
+  const p=nmKey(name)===nmKey(curEe.name)?selEntry(ro):null;
   if(p)return{farm:p.farm,manual:false};
-  const hs=ro.filter(p=>p.name===name);
+  const hs=rosterHits(name,curEe.farm||chipFarm,ro);
   if(hs.length===1)return{farm:hs[0].farm,manual:false};
-  return{farm:'',manual:ro.length>0&&!hs.length};
+  return{farm:'',manual:ro.length>0&&!rosterHits(name,'',ro).length};
 }
 /* 検索用の正規化: 全角半角・大小・ひらがな→カタカナ・アクセント記号（ベトナム語）・区切り記号を揃える */
 function normQ(s){
@@ -376,21 +383,20 @@ function normQ(s){
     .replace(/[\s・･·.\-_,、。（）()]/g,'');
 }
 function selectFarm(f){
-  const cur=document.getElementById('fEe').value.trim();
   const sel=selEntry(getRoster().list);
-  try{localStorage.setItem(FARM_KEY,f)}catch{}
-  eeQuery='';document.getElementById('eeFind').value='';
-  if(cur&&sel&&sel.farm!==f&&!editId){         // 別の農場へ切り替えたら選択中の人は外す
-    if(dirty&&document.querySelector('#cards .ec.scored')&&!confirm(t('cSwitchEe'))){try{localStorage.setItem(FARM_KEY,sel.farm)}catch{};return}
+  if(sel&&sel.farm!==f&&!editId){         // 別の農場へ切り替えたら選択中の人は外す
+    if(dirty&&document.querySelector('#cards .ec.scored')&&!confirm(t('cSwitchEe')))return;
     const dt=document.getElementById('fDate').value;clearForm();if(dt)document.getElementById('fDate').value=dt;
     selWorks=[];saveSel();buildWorkSel();buildCards();
   }
+  chipFarm=f;try{localStorage.setItem(FARM_KEY,f)}catch{}
+  eeQuery='';document.getElementById('eeFind').value='';
   renderRoster();
 }
 function renderRoster(){
   const box=document.getElementById('eeTabs'),note=document.getElementById('eeNote'),fbox=document.getElementById('eeFarms');
   const rs=getRoster(),ro=rs.list;
-  const cur=document.getElementById('fEe').value.trim();
+  const cur=curEe.name;
   const recs=examRecs();
   const pr=new Map();ro.forEach(p=>pr.set(p,eeProgress(p,recs,ro)));
   const isDone=p=>pr.get(p).complete;
@@ -420,7 +426,7 @@ function renderRoster(){
   box.innerHTML=todo.map(tab).join('')+(dn.length?`<div class="eegrp">✓ ${esc(t('doneGrp'))} (${dn.length})</div>`+dn.map(tab).join(''):'')
     +(q&&!hit.length?`<p class="eenone">${esc(t('eeNoHit'))}</p>`:'');
   // 手入力欄: 名簿が無い時／「名簿にない人を入力」を押した時／入力済みの名前が名簿の人と一致しない時（打った名前を隠さない）
-  const manual=!ro.length||eeManualOpen||(!!cur&&!sel);
+  const manual=!ro.length||curEe.manual||(!!cur&&!sel);
   document.getElementById('eeManual').style.display=manual?'':'none';
   document.getElementById('eeAdd').hidden=!ro.length||manual;
   // 選んだ人の名前（全文）と農場を採点カードの上に1行で（タブの名前は長いと切れる・手入力欄は隠れるため）
@@ -445,28 +451,9 @@ function setExamStart(v){
   renderRoster();toast(v?t('tExamStart').replace('{d}',v):t('tExamStartAll'));
 }
 function examRecs(){const st=examStart();return getAll().filter(r=>!st||(r.date||'')>=st)}
-/* その人の試験期間の記録にある作業
-   記録の農場は「保存した時の農場」。所属未確定→農場が決まった・農場名の表記を直した後も「済」のままにするため、
-   名簿で同じ名前（旧名を含む）が1人だけなら農場を見ずに名前で数える。同じ名前が2人以上いる時だけ農場も見る（農場が空の旧記録は名前で数える） */
-function nmKey(v){return String(v==null?'':v).normalize('NFC').trim()}
-const nameIdxCache=new WeakMap();
-function nameIndex(ro){
-  let m=nameIdxCache.get(ro);if(m)return m;
-  m=new Map();
-  ro.forEach(p=>[p.name,...(Array.isArray(p.aliases)?p.aliases:[])].forEach(n=>{const k=nmKey(n);if(!k)return;const a=m.get(k)||[];if(!a.includes(p))a.push(p);m.set(k,a)}));
-  nameIdxCache.set(ro,m);return m;
-}
-function doneWorksOf(p,recs,ro){
-  const idx=nameIndex(ro||getRoster().list),s=new Set();
-  const keys=new Set([p.name,...(Array.isArray(p.aliases)?p.aliases:[])].map(nmKey));
-  recs.forEach(r=>{
-    const k=nmKey(r.evaluatee);if(!keys.has(k))return;
-    const cs=idx.get(k)||[p];
-    if(cs.length>1&&r.farm&&normFarm(r.farm)!==normFarm(p.farm))return;
-    (r.works||[]).forEach(we=>s.add(we.workId));
-  });
-  return s;
-}
+/* その人の試験期間の記録にある作業（人の特定は person.js＝履歴・グラフと同じ規則。
+   所属未確定→農場が決まった・農場名の表記を直した・名前を直した（旧名）後も「済」のまま。同じ名前が2人以上いる時だけ農場も見る） */
+function doneWorksOf(p,recs,ro){return doneMap(recs,ro||getRoster().list).get(p)||new Set()}
 /* 進み具合: 割り当てた作業のうち試験期間の記録にある作業の数。全部そろった時だけ完了
    作業名不明の作業は評価者が作業選択で補うので、記録にある作業の数が割り当ての数に届いた時に完了とみなす
    作業未設定の人は、記録が1つでもあれば完了（従来どおり） */
@@ -498,9 +485,7 @@ function selectEe(i){
   const dt=document.getElementById('fDate').value;
   clearForm();
   if(dt)document.getElementById('fDate').value=dt;
-  eeManualOpen=false;
-  document.getElementById('fEe').value=p.name;
-  try{localStorage.setItem(FARM_KEY,p.farm)}catch{}
+  setCur({name:p.name,farm:p.farm,manual:false});
   // 試験期間に済んだ作業は外し、残りの作業だけを出す（前の日に途中保存した人も同じ。全部済んでいる人を選び直した時は全作業＝やり直し）
   const ds=doneWorksOf(p,examRecs(),ro);
   const left=p.works.filter(w=>!ds.has(w));
@@ -520,7 +505,7 @@ function openManualEe(){
   const dt=document.getElementById('fDate').value;
   clearForm();if(dt)document.getElementById('fDate').value=dt;
   selWorks=[];saveSel();buildWorkSel();buildCards();
-  eeManualOpen=true;renderRoster();
+  curEe.manual=true;renderRoster();
   document.getElementById('wselBox').open=true;
   const f=document.getElementById('fEe');f.focus();
 }

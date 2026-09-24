@@ -1,16 +1,20 @@
 /* HSS 実技試験 V2 — 記録用スプレッドシート連携（Google Apps Script）
    ※ このファイルは build_gas.js が Code.src.gs から自動生成（作業一覧を works-v2.js から埋め込む）。直接編集しない
+   ※ アプリとの契約（操作・要求と応答の形・capabilities）の正本は js/contract.js。ここを変えたら CODE_VERSION と API_CAPABILITIES を上げる
 
    - GET  ?action=roster  → 「受験者」タブの 農場・被評価者・その人に用意した作業（見出し「作業1」〜「作業N」の列だけ）・旧名 を返す
      （「受験者」タブが無い時は ok:false, error:'no roster sheet'。空のタブは roster:[]）
      （被評価者名が「（農場共通）」の行＝その農場で作業を個別に決めていない人に使う作業）
-   - GET  ?action=ping    → 稼働確認（CODE_VERSION を返す）
+   - GET  ?action=ping    → 稼働確認（version=CODE_VERSION・capabilities=API_CAPABILITIES を返す。roster の応答にも付ける）
    - POST {action:'submit', record}  → 評価者名のタブに 1種目=1行 で書き込む（記録IDで上書き＝再送・編集しても重複しない）
    - POST {action:'delete', id}      → その記録IDの行を全ての評価者タブから消す（アプリで削除した記録。無ければ deleted:0 で ok＝再送しても安全）
+   - 誤り: 知らない action='unknown action'／submit に record が無い='no record'／id が無い='no id'（前の版は全部 'bad request' で区別できなかった）
    - setup() を一度エディタで実行 → 「受験者」「作業一覧」「農場一覧」タブと、作業・農場のプルダウンを作る
      何度実行しても受験者タブの行・農場一覧（管理者が直した分）は消さない。作業一覧だけ作り直す */
 
-const CODE_VERSION = '2026-09-24b';
+const CODE_VERSION = '2026-09-24c';
+/* アプリはこれを見て「シート側が古い（旧名・削除が使えない）」を警告する（js/contract.js の GAS_REQUIRED_CAPS） */
+const API_CAPABILITIES = ['roster', 'roster.aliases', 'submit', 'delete'];
 const ROSTER_SHEET = '受験者';
 const WORKS_SHEET = '作業一覧';
 const FARMS_SHEET = '農場一覧';
@@ -92,24 +96,25 @@ function doGet(e) {
   if (action === 'roster') {
     // 受験者タブが無い（名前の変更・取り違え）のと、タブはあるが空なのを区別する（アプリは前回の名簿を残す）
     const roster = readRoster_();
-    if (!roster) return json_({ ok: false, version: CODE_VERSION, error: 'no roster sheet' });
-    return json_({ ok: true, version: CODE_VERSION, roster: roster });
+    if (!roster) return json_({ ok: false, version: CODE_VERSION, capabilities: API_CAPABILITIES, error: 'no roster sheet' });
+    return json_({ ok: true, version: CODE_VERSION, capabilities: API_CAPABILITIES, roster: roster });
   }
-  return json_({ ok: true, version: CODE_VERSION });
+  return json_({ ok: true, version: CODE_VERSION, capabilities: API_CAPABILITIES });
 }
 
 function doPost(e) {
   let body;
   try { body = JSON.parse(e.postData.contents); } catch (err) { return json_({ ok: false, error: 'bad json' }); }
-  const isSubmit = body && body.action === 'submit' && body.record;
-  const isDelete = body && body.action === 'delete' && body.id;
-  if (!isSubmit && !isDelete) return json_({ ok: false, error: 'bad request' });
+  const action = body && body.action;
+  if (action !== 'submit' && action !== 'delete') return json_({ ok: false, error: 'unknown action' });
+  const isDelete = action === 'delete';
+  if (!isDelete && !(body.record && typeof body.record === 'object')) return json_({ ok: false, error: 'no record' });
+  if (isDelete && !cleanId_(body.id)) return json_({ ok: false, error: 'no id' });
   const lock = LockService.getScriptLock();
   if (!lock.tryLock(20000)) return json_({ ok: false, error: 'busy' });
   try {
     if (isDelete) {
       const id = cleanId_(body.id);
-      if (!id) return json_({ ok: false, error: 'no id' });
       return json_({ ok: true, id: String(body.id), deleted: deleteRecord_(id) });
     }
     const n = writeRecord_(body.record);

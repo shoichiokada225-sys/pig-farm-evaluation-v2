@@ -11,6 +11,10 @@ function ok(name, cond) {
   else { fail++; console.log('  NG ' + name); }
 }
 fs.mkdirSync(__dirname + '/_shots', { recursive: true });
+// GASモックは本物の GAS（gas/Code.src.gs）と同じ版・機能を名乗る（契約の正本=js/contract.js。手書きの値を持たない）
+const GAS_SRC = fs.readFileSync(__dirname + '/gas/Code.src.gs', 'utf8');
+const GAS_META = { version: /CODE_VERSION = '([^']+)'/.exec(GAS_SRC)[1], capabilities: JSON.parse(/API_CAPABILITIES = (\[[^\]]*\])/.exec(GAS_SRC)[1].replace(/'/g, '"')) };
+const rosterRes = (roster, meta) => ({ ok: true, ...(meta || GAS_META), roster });
 
 async function run(devName) {
   console.log(`\n===== ${devName} =====`);
@@ -39,10 +43,15 @@ async function run(devName) {
     if (req.method() === 'GET') {
       const a = new URL(req.url()).searchParams.get('action');
       return route.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' },
-        body: JSON.stringify(a === 'roster' ? (roster === 'NOSHEET' ? { ok: false, error: 'no roster sheet' } : { ok: true, roster }) : { ok: true }) });
+        body: JSON.stringify(a === 'roster' ? (roster === 'NOSHEET' ? { ok: false, ...GAS_META, error: 'no roster sheet' } : rosterRes(roster)) : { ok: true, ...GAS_META }) });
     }
     const body = JSON.parse(req.postData());
     posts.push(body);
+    if (body.action === 'delete') {   // 本物の GAS と同じ: 全ての評価者タブからその記録IDを消す
+      let n = 0; Object.values(sheet).forEach(tab => { if (body.id in tab) { delete tab[body.id]; n++; } });
+      return route.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify({ ok: true, id: body.id, deleted: n }) });
+    }
+    if (body.action !== 'submit') return route.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify({ ok: false, error: 'unknown action' }) });
     const r = body.record;
     (sheet[r.evaluator] = sheet[r.evaluator] || {})[r.id] = r;
     return route.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' },
@@ -414,7 +423,7 @@ async function runSlow(devName) {
     const hdr = { 'access-control-allow-origin': '*' };
     if (req.method() === 'GET') {
       if (mode === 'hang') { await new Promise(r => setTimeout(r, 12000)); try { await route.abort('timedout'); } catch (e) {} return; }
-      return route.fulfill({ status: 200, contentType: 'application/json', headers: hdr, body: JSON.stringify({ ok: true, roster: [{ name: 'テスト 一郎', farm: 'テスト農場', works: ['給餌'] }] }) });
+      return route.fulfill({ status: 200, contentType: 'application/json', headers: hdr, body: JSON.stringify(rosterRes([{ name: 'テスト 一郎', farm: 'テスト農場', works: ['給餌'] }])) });
     }
     postAt.push(Date.now() - t0);
     const r = JSON.parse(req.postData()).record;
@@ -460,7 +469,7 @@ async function runRel(devName) {
   page.on('dialog', d => { dialogs.push(d.message()); d.accept(); });
   const sheet = {};              // {recordId: payload}
   const posts = [];
-  let online = true, postDelay = 0, failFor = null, oldGas = false;
+  let online = true, postDelay = 0, failFor = null, oldGas = false, gasMeta = null;
   let roster = [
     { name: 'テスト 甲太', farm: 'テスト那須', works: ['給餌'] },
     { name: 'テスト 乙彦', farm: 'テスト那須', works: ['給餌'] },
@@ -471,7 +480,7 @@ async function runRel(devName) {
     const req = route.request(), hdr = { 'access-control-allow-origin': '*' };
     if (req.method() === 'GET') {
       const a = new URL(req.url()).searchParams.get('action');
-      return route.fulfill({ status: 200, contentType: 'application/json', headers: hdr, body: JSON.stringify(a === 'roster' ? { ok: true, roster } : { ok: true }) });
+      return route.fulfill({ status: 200, contentType: 'application/json', headers: hdr, body: JSON.stringify(a === 'roster' ? rosterRes(roster, gasMeta) : { ok: true, ...GAS_META }) });
     }
     const body = JSON.parse(req.postData());
     posts.push(body);
@@ -612,6 +621,25 @@ async function runRel(devName) {
   ok('vi でも名簿の古さの表示', /Danh sách/.test(await note().textContent()));
   await page.locator('.lsw button').nth(0).tap();
 
+  console.log('[R6] シート側（GAS）が古い版 → 旧名・削除が使えないと画面に残す（C9-3 契約の版）');
+  await page.locator('.tabs button[data-pg="pgIn"]').tap();
+  const gw = page.locator('#eeWarn');
+  ok('今の GAS（本物と同じ capabilities）なら版の警告は出ない', !(await gw.isVisible()) || !/古い版/.test(await gw.textContent()));
+  gasMeta = { version: '2026-09-24b' };   // capabilities を返さない前の版
+  await page.locator('.eebox .wsel-hd button').tap(); await page.waitForTimeout(600);
+  ok('古い GAS → #eeWarn に「シート側のプログラム（GAS）が古い版（2026-09-24b）・旧名・削除」', await gw.isVisible() && /古い版です（2026-09-24b）/.test(await gw.textContent()) && /旧名/.test(await gw.textContent()) && /削除/.test(await gw.textContent()));
+  ok('名簿の取り直しのトーストでも知らせる', /古い版です/.test(await toastTx()));
+  await page.reload(); await page.waitForTimeout(900);
+  ok('再起動しても（キャッシュの名簿で）警告は残る', await gw.isVisible() && /古い版です/.test(await gw.textContent()));
+  for (const [l, re] of [[1, /old version/], [2, /phiên bản cũ/], [3, /versi lama/]]) { await page.locator('.lsw button').nth(l).tap(); await page.waitForTimeout(100); ok(`${['', 'en', 'vi', 'id'][l]}: 古い GAS の警告が訳される`, re.test(await gw.textContent())); }
+  await page.locator('.lsw button').nth(0).tap();
+  gasMeta = { version: GAS_META.version, capabilities: GAS_META.capabilities.filter(c => c !== 'roster.aliases') };
+  await page.locator('.eebox .wsel-hd button').tap(); await page.waitForTimeout(600);
+  ok('機能が1つ欠けても警告', /古い版です/.test(await gw.textContent()));
+  gasMeta = null;
+  await page.locator('.eebox .wsel-hd button').tap(); await page.waitForTimeout(600);
+  ok('GAS を更新すれば警告は消える', !(await gw.isVisible()) || !/古い版/.test(await gw.textContent()));
+
   ok('JSエラーなし(送信の信頼性)', errors.length === 0);
   if (errors.length) console.log(errors.join('\n'));
   await browser.close();
@@ -640,7 +668,7 @@ async function runAssign(devName) {
   ];
   await page.route(u => u.href.startsWith('https://script.google.com/'), async route => {
     const req = route.request(), hdr = { 'access-control-allow-origin': '*' };
-    if (req.method() === 'GET') return route.fulfill({ status: 200, contentType: 'application/json', headers: hdr, body: JSON.stringify({ ok: true, roster }) });
+    if (req.method() === 'GET') return route.fulfill({ status: 200, contentType: 'application/json', headers: hdr, body: JSON.stringify(rosterRes(roster)) });
     const body = JSON.parse(req.postData()); posts.push(body);
     return route.fulfill({ status: 200, contentType: 'application/json', headers: hdr, body: JSON.stringify({ ok: true, id: body.record.id }) });
   });
@@ -832,6 +860,80 @@ async function runAssign(devName) {
   for (const l of [1, 2, 3]) { await page.locator('.lsw button').nth(l).tap(); await page.waitForTimeout(100); ok(`${['', 'en', 'vi', 'id'][l]}: 農場名のゆれの警告が訳される`, !/農場名のゆれ/.test(await page.locator('#eeWarn').textContent()) && /テスト大田原A農場/.test(await page.locator('#eeWarn').textContent())); }
   await page.locator('.lsw button').nth(0).tap();
 
+  console.log('[S3] 所属が決まった・名前を直した後も履歴とグラフで1人（C9-1）／編集を取り消しても農場チップは変わらない（C9-2）');
+  roster = [
+    { name: 'テスト 一郎', farm: '所属未確定', works: ['給餌'] },
+    { name: 'テスト 二郎', farm: FB, works: ['給餌'] },
+  ];
+  await reloadRo();
+  await chip('所属未確定').tap(); await page.waitForTimeout(200);
+  await ee('テスト 一郎').tap(); await page.waitForTimeout(300);
+  await scoreWork('feeding-daily', 2);
+  await page.locator('#btnSave').tap(); await page.waitForTimeout(900);
+  roster = [
+    { name: 'テスト 一郎', farm: FA, works: ['給餌', 'エサ調整'] },       // 所属が決まり、作業も増えた
+    { name: 'テスト 二郎', farm: FB, works: ['給餌'] },
+  ];
+  await reloadRo();
+  await chip(FA).tap(); await page.waitForTimeout(200);
+  ok('所属が決まった後: 済が引き継がれて途中 1/2', /途中 1\/2/.test(await ee('テスト 一郎').textContent()));
+  await ee('テスト 一郎').tap(); await page.waitForTimeout(300);
+  ok('残りはエサ調整だけ', await page.locator('#cards .ec').count() === 5 && await page.locator('#wh-feed-adjust').count() === 1);
+  await scoreWork('feed-adjust', 4);
+  await page.locator('#btnSave').tap(); await page.waitForTimeout(900);
+  ok('2作業そろって実施済み', await ee('テスト 一郎').evaluate(e => e.classList.contains('done')));
+  const ichi = () => page.evaluate(() => eePeople(getAll()).filter(p => /^テスト 一[郎朗]/.test(p.name)).map(p => p.label));
+  ok('履歴の人: 所属未確定の時の記録とテスト農場Aの記録で1人', JSON.stringify(await ichi()) === JSON.stringify(['テスト 一郎']));
+  await page.locator('.tabs button[data-pg="pgHi"]').tap(); await page.waitForTimeout(200);
+  let hO = await page.locator('#hFil option').allTextContents();
+  ok('履歴の絞り込みに「テスト 一郎」は1つ（農場で分かれない）', hO.filter(o => /テスト 一郎/.test(o)).length === 1);
+  await page.locator('#hFil').selectOption({ label: 'テスト 一郎' }); await page.waitForTimeout(200);
+  ok('絞り込むと2件（所属未確定の時の記録も）', await page.locator('.hi').count() === 2);
+  await page.locator('#hFil').selectOption(''); await page.waitForTimeout(100);
+  await page.evaluate(() => { document.activeElement && document.activeElement.blur(); window.scrollTo(0, 0); });
+  await page.locator('.tabs button[data-pg="pgCh"]').dispatchEvent('click'); await page.waitForTimeout(200);
+  await page.locator('#chSel').selectOption({ label: 'テスト 一郎' }); await page.waitForTimeout(400);
+  ok('グラフも1人で2回分（平均2→4）', await page.evaluate(() => !!cL && cL.data.datasets[0].data.join() === '2,4'));
+  roster = [
+    { name: 'テスト 一朗', farm: FA, works: ['給餌', 'エサ調整'], aliases: ['テスト 一郎'] },   // 名前を直した（旧名つき）
+    { name: 'テスト 二郎', farm: FB, works: ['給餌'] },
+  ];
+  await page.locator('.tabs button[data-pg="pgIn"]').tap(); await page.waitForTimeout(100);
+  await reloadRo();
+  ok('改名後も名簿は実施済み', await ee('テスト 一朗').evaluate(e => e.classList.contains('done')));
+  ok('改名後: 履歴の人は今の名前で1人', JSON.stringify(await ichi()) === JSON.stringify(['テスト 一朗']));
+  await page.locator('.tabs button[data-pg="pgHi"]').tap(); await page.waitForTimeout(200);
+  hO = await page.locator('#hFil option').allTextContents();
+  ok('履歴の絞り込みは「テスト 一朗」だけ（旧名の「テスト 一郎」が別人で残らない）', hO.includes('テスト 一朗') && !hO.some(o => /テスト 一郎/.test(o)));
+  await page.locator('#hFil').selectOption({ label: 'テスト 一朗' }); await page.waitForTimeout(200);
+  ok('今の名前で絞り込むと旧名の記録も入れて2件', await page.locator('.hi').count() === 2);
+  await page.locator('#hFil').selectOption(''); await page.waitForTimeout(100);
+  await page.evaluate(() => { document.activeElement && document.activeElement.blur(); window.scrollTo(0, 0); });
+  await page.locator('.tabs button[data-pg="pgCh"]').dispatchEvent('click'); await page.waitForTimeout(200);
+  await page.locator('#chSel').selectOption({ label: 'テスト 一朗' }); await page.waitForTimeout(400);
+  ok('改名後のグラフも2回分', await page.evaluate(() => !!cL && cL.data.datasets[0].data.join() === '2,4'));
+  // 名簿外の人: 農場名の全角半角・空白のゆれで分かれない（normFarm）
+  await page.evaluate(() => { const w = WORKDATA_V2.works.find(x => x.id === 'feeding-daily'); const all = getAll();
+    ['テスト農場Ｘ', 'テスト農場 X'].forEach((f, i) => all.push({ id: 'fv-' + i, date: '2026-09-20', evaluator: 'テスト評価者', evaluatee: 'テスト 名簿外', farm: f, overall: '', createdAt: '2026-09-20T0' + i + ':00:00Z',
+      works: [{ workId: w.id, workName: w.name, category: w.category, scores: Object.fromEntries(w.aspects.map(a => [a.id, 3])), comments: {} }], sent: true }));
+    putAll(all); });
+  ok('名簿外の人も農場名の表記ゆれで2人に分かれない', await page.evaluate(() => { const ps = eePeople(getAll()).filter(p => p.name === 'テスト 名簿外'); return ps.length === 1 && recsOfKey(ps[0].key).length === 2; }));
+  // C9-2: 担当の農場チップ（テスト農場B）を開いたまま、別の農場の古い記録を編集 → 取り消し／保存
+  await page.locator('.tabs button[data-pg="pgIn"]').tap(); await page.waitForTimeout(100);
+  await chip(FB).tap(); await page.waitForTimeout(200);
+  const oldId = (await recs()).find(x => x.evaluatee === 'テスト 一郎' && x.farm === '所属未確定').id;
+  await page.evaluate(id => startEdit(id), oldId); await page.waitForTimeout(300);
+  ok('編集中: 採点中の人の農場（テスト農場A）を表示・端末の農場チップの好みは書き換えない', await page.locator('.fchip.on').getAttribute('data-f') === FA && await page.evaluate(() => localStorage.getItem('jitsugi_v2_farm')) === FB);
+  await page.evaluate(() => cancelEdit()); await page.waitForTimeout(300);
+  ok('編集を取り消すと農場チップは元のテスト農場B', await page.locator('.fchip.on').getAttribute('data-f') === FB && await page.evaluate(() => localStorage.getItem('jitsugi_v2_farm')) === FB);
+  ok('取り消し後は誰も選ばれていない', await page.inputValue('#fEe') === '' && await page.locator('.eetab.on').count() === 0);
+  await page.evaluate(id => startEdit(id), oldId); await page.waitForTimeout(300);
+  await page.locator('#cards .ec .sb[data-s="3"]').first().tap();
+  await page.locator('#btnSave').tap(); await page.waitForTimeout(900);
+  ok('編集を保存しても農場チップはテスト農場Bのまま（記録の農場は所属未確定のまま）', await page.locator('.fchip.on').getAttribute('data-f') === FB && (await recs()).find(x => x.id === oldId).farm === '所属未確定');
+  await page.reload(); await page.waitForTimeout(900);
+  ok('再起動後も農場チップはテスト農場B', await page.locator('.fchip.on').getAttribute('data-f') === FB);
+
   ok('JSエラーなし(割り当て運用)', errors.length === 0);
   if (errors.length) console.log(errors.join('\n'));
   await browser.close();
@@ -856,7 +958,7 @@ async function runDate(devName) {
   ];
   await page.route(u => u.href.startsWith('https://script.google.com/'), async route => {
     const req = route.request(), hdr = { 'access-control-allow-origin': '*' };
-    if (req.method() === 'GET') return route.fulfill({ status: 200, contentType: 'application/json', headers: hdr, body: JSON.stringify({ ok: true, roster }) });
+    if (req.method() === 'GET') return route.fulfill({ status: 200, contentType: 'application/json', headers: hdr, body: JSON.stringify(rosterRes(roster)) });
     const body = JSON.parse(req.postData());
     return route.fulfill({ status: 200, contentType: 'application/json', headers: hdr, body: JSON.stringify({ ok: true, id: body.record && body.record.id }) });
   });
@@ -1017,7 +1119,7 @@ async function runI18n(devName) {
   ];
   await page.route(u => u.href.startsWith('https://script.google.com/'), async route => {
     const req = route.request(), hdr = { 'access-control-allow-origin': '*' };
-    if (req.method() === 'GET') return route.fulfill({ status: 200, contentType: 'application/json', headers: hdr, body: JSON.stringify({ ok: true, roster }) });
+    if (req.method() === 'GET') return route.fulfill({ status: 200, contentType: 'application/json', headers: hdr, body: JSON.stringify(rosterRes(roster)) });
     const body = JSON.parse(req.postData());
     return route.fulfill({ status: 200, contentType: 'application/json', headers: hdr, body: JSON.stringify({ ok: true, id: body.record.id }) });
   });
@@ -1117,7 +1219,7 @@ async function runA11y(devName) {
   for (let i = 1; i <= 18; i++) roster.push({ name: `テスト 未${i}`, farm: '所属未確定', works: W3 });
   await page.route(u => u.href.startsWith('https://script.google.com/'), async route => {
     const req = route.request(), hdr = { 'access-control-allow-origin': '*' };
-    if (req.method() === 'GET') return route.fulfill({ status: 200, contentType: 'application/json', headers: hdr, body: JSON.stringify({ ok: true, roster }) });
+    if (req.method() === 'GET') return route.fulfill({ status: 200, contentType: 'application/json', headers: hdr, body: JSON.stringify(rosterRes(roster)) });
     const body = JSON.parse(req.postData());
     return route.fulfill({ status: 200, contentType: 'application/json', headers: hdr, body: JSON.stringify({ ok: true, id: body.record.id }) });
   });
