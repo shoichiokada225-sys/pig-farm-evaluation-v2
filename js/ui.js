@@ -133,6 +133,7 @@ function updProg(){
   const mb=document.getElementById('missNext');
   if(mb){const nm=document.querySelectorAll('#cards .ec.miss').length,was=!mb.hidden;
     mb.hidden=!nm;mb.textContent=nm?t('missNext').replace('{n}',nm):'';
+    const pr=mb.closest('.prog');if(pr)pr.classList.toggle('has-miss',!!nm);   // 未採点がある間は「採点済 x/y」の代わりにこのボタン（件数の表示は1つ）
     if(was!==!mb.hidden&&typeof fixProg==='function')fixProg()}
   const bar=document.getElementById('progB');
   if(bar){bar.setAttribute('aria-valuemax',total);bar.setAttribute('aria-valuenow',done);bar.setAttribute('aria-label',t('progDone'))}

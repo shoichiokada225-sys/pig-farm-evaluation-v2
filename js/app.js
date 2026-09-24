@@ -4,12 +4,31 @@
    ============================================================== */
 function setLang(l){
   lang=l;localStorage.setItem(LKEY,l);document.documentElement.lang=l;
-  document.querySelectorAll('.lsw button').forEach(b=>{const on=b.textContent.trim()==={ja:'JP',en:'EN',vi:'VI',id:'ID'}[l];b.classList.toggle('on',on);b.setAttribute('aria-pressed',on)});
+  let lbOn=null;
+  document.querySelectorAll('#lswMenu button').forEach(b=>{const on=b.getAttribute('lang')===l;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on);if(on)lbOn=b});
+  const lb=document.getElementById('lswBtn'),lc=document.getElementById('lswCur');
+  if(lbOn&&lc)lc.textContent=lbOn.dataset.code;
+  if(lbOn&&lb)lb.setAttribute('aria-label','Language: '+lbOn.querySelector('.lsw-nm').textContent);
+  closeLangMenu();
   applyT();buildWorkSel();buildCards();restoreSt();renderEvaluator();renderRoster();updSyncUI();
   const cur=document.querySelector('.tabs button.on');
   if(cur&&cur.dataset.pg==='pgHi')drawHist();
   if(cur&&cur.dataset.pg==='pgCh'){populateChWork();drawCharts()}
 }
+/* 言語メニュー（今の言語の1ボタン → 4言語）。外側を押す・Esc で閉じる */
+function toggleLangMenu(){
+  const m=document.getElementById('lswMenu');if(!m)return;
+  if(!m.hidden){closeLangMenu(true);return}
+  m.hidden=false;document.getElementById('lswBtn').setAttribute('aria-expanded','true');
+  const on=m.querySelector('button.on')||m.querySelector('button');if(on)on.focus();
+}
+function closeLangMenu(refocus){
+  const m=document.getElementById('lswMenu'),b=document.getElementById('lswBtn');if(!m||m.hidden)return;
+  const had=m.contains(document.activeElement);
+  m.hidden=true;if(b){b.setAttribute('aria-expanded','false');if(refocus||had)b.focus()}
+}
+document.addEventListener('click',e=>{const w=document.querySelector('.lsw');if(w&&!w.contains(e.target))closeLangMenu()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){const m=document.getElementById('lswMenu');if(m&&!m.hidden){e.preventDefault();closeLangMenu(true)}}});
 function applyT(){
   document.querySelectorAll('[data-t]').forEach(el=>{el.textContent=t(el.dataset.t)});
   document.querySelectorAll('[data-ph]').forEach(el=>{el.placeholder=t(el.dataset.ph)});
@@ -60,8 +79,10 @@ document.addEventListener('DOMContentLoaded',()=>{
   if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(()=>{});
 });
 
-/* 進捗バーはヘッダーの下・作業見出しは進捗バーの下に貼り付く（高さは言語・画面幅・未採点ボタンの有無で変わるので実測） */
-function fixProg(){const p=document.querySelector('.prog'),hd=document.querySelector('.hdr');if(!hd)return;const h=hd.offsetHeight;if(p)p.style.top=h+'px';
+/* 進捗バーは画面の上端（ヘッダーが貼り付く設定ならその下）・作業見出しは進捗バーの下に貼り付く
+   （高さは言語・画面幅・未採点ボタンの有無で変わるので実測。ヘッダーは貼り付かない＝採点中は流れて消える） */
+function hdrStk(){const hd=document.querySelector('.hdr');return hd&&getComputedStyle(hd).position==='sticky'?hd.offsetHeight:0}
+function fixProg(){const p=document.querySelector('.prog'),h=hdrStk();if(p)p.style.top=h+'px';
   document.documentElement.style.setProperty('--stk',(h+(p?p.offsetHeight:0))+'px')}
 function stkH(){return parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--stk'))||0}
 /* 貼り付く帯（ヘッダー＋進捗＋作業見出し）の下に要素の頭が来るようにスクロール */
@@ -502,8 +523,8 @@ function curDoneWorks(){
 }
 function scrollToEe(){
   const eb=document.querySelector('.eebox');if(!eb)return;
-  const hdr=document.querySelector('.hdr'),pr=document.querySelector('.prog');
-  const off=(hdr?hdr.offsetHeight:0)+(pr?pr.offsetHeight:0)+8;
+  const pr=document.querySelector('.prog');
+  const off=hdrStk()+(pr?pr.offsetHeight:0)+8;
   window.scrollTo({top:Math.max(0,eb.getBoundingClientRect().top+window.scrollY-off),behavior:'smooth'});
 }
 function selectEe(i){

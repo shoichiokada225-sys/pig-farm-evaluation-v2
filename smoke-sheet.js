@@ -14,6 +14,8 @@ fs.mkdirSync(__dirname + '/_shots', { recursive: true });
 // GASモックは本物の GAS（gas/Code.src.gs）と同じ版・機能を名乗る（契約の正本=js/contract.js。手書きの値を持たない）
 const GAS_SRC = fs.readFileSync(__dirname + '/gas/Code.src.gs', 'utf8');
 const GAS_META = { version: /CODE_VERSION = '([^']+)'/.exec(GAS_SRC)[1], capabilities: JSON.parse(/API_CAPABILITIES = (\[[^\]]*\])/.exec(GAS_SRC)[1].replace(/'/g, '"')) };
+// 言語メニュー（今の言語の1ボタン → 4言語）から i 番目（0=JP 1=EN 2=VI 3=ID）を選ぶ
+const tapLang = async (pg, i) => { await pg.locator('#lswBtn').tap(); await pg.locator('#lswMenu button').nth(i).tap(); };
 const rosterRes = (roster, meta) => ({ ok: true, ...(meta || GAS_META), roster });
 
 async function run(devName) {
@@ -180,11 +182,11 @@ async function run(devName) {
   ok('横スクロールなし(採点画面)', await noHScroll());
 
   console.log('[10] 多言語（vi）でもタブ・送信バー表示');
-  await page.locator('.lsw button').nth(2).tap();
+  await tapLang(page, 2);
   await page.waitForTimeout(200);
   ok('vi 送信バー', /Đã gửi/.test(await page.locator('#syncBar').textContent()));
   ok('vi 横スクロールなし', await noHScroll());
-  await page.locator('.lsw button').nth(0).tap();
+  await tapLang(page, 0);
 
   console.log('[11] 農場つき名簿 → 農場チップ → その農場の人だけ・農場共通の作業・送信に農場');
   roster = [
@@ -618,9 +620,9 @@ async function runRel(devName) {
   ok('取り直せれば警告は消える', !(await note().evaluate(e => e.classList.contains('eenote-stale'))) && /取得/.test(await note().textContent()));
   await page.evaluate(() => { const r = JSON.parse(localStorage.getItem('jitsugi_v2_roster')); r.at = new Date(Date.now() - 30 * 3600 * 1000).toISOString(); localStorage.setItem('jitsugi_v2_roster', JSON.stringify(r)); renderRoster(); });
   ok('古い名簿を表示中は（取得失敗でなくても）警告色', /古い可能性/.test(await note().textContent()) && await note().evaluate(e => e.classList.contains('eenote-stale')));
-  await page.locator('.lsw button').nth(2).tap(); await page.waitForTimeout(200);
+  await tapLang(page, 2); await page.waitForTimeout(200);
   ok('vi でも名簿の古さの表示', /Danh sách/.test(await note().textContent()));
-  await page.locator('.lsw button').nth(0).tap();
+  await tapLang(page, 0);
 
   console.log('[R6] シート側（GAS）が古い版 → 旧名・削除が使えないと画面に残す（C9-3 契約の版）');
   await page.locator('.tabs button[data-pg="pgIn"]').tap();
@@ -632,8 +634,8 @@ async function runRel(devName) {
   ok('名簿の取り直しのトーストでも知らせる', /古い版です/.test(await toastTx()));
   await page.reload(); await page.waitForTimeout(900);
   ok('再起動しても（キャッシュの名簿で）警告は残る', await gw.isVisible() && /古い版です/.test(await gw.textContent()));
-  for (const [l, re] of [[1, /old version/], [2, /phiên bản cũ/], [3, /versi lama/]]) { await page.locator('.lsw button').nth(l).tap(); await page.waitForTimeout(100); ok(`${['', 'en', 'vi', 'id'][l]}: 古い GAS の警告が訳される`, re.test(await gw.textContent())); }
-  await page.locator('.lsw button').nth(0).tap();
+  for (const [l, re] of [[1, /old version/], [2, /phiên bản cũ/], [3, /versi lama/]]) { await tapLang(page, l); await page.waitForTimeout(100); ok(`${['', 'en', 'vi', 'id'][l]}: 古い GAS の警告が訳される`, re.test(await gw.textContent())); }
+  await tapLang(page, 0);
   gasMeta = { version: GAS_META.version, capabilities: GAS_META.capabilities.filter(c => c !== 'roster.aliases') };
   await page.locator('.eebox .wsel-hd button').tap(); await page.waitForTimeout(600);
   ok('機能が1つ欠けても警告', /古い版です/.test(await gw.textContent()));
@@ -809,9 +811,9 @@ async function runAssign(devName) {
     all.push({ id: 'legacy-a', date: document.getElementById('fDate').value, evaluator: 'テスト評価者', evaluatee: 'テスト 一作', farm: '', overall: '', createdAt: '2026-09-20T00:00:00Z', works: [{ workId: w.id, workName: w.name, category: w.category, scores: Object.fromEntries(w.aspects.map(a => [a.id, 3])), comments: {} }], sent: true });
     localStorage.setItem('jitsugi_v2_data', JSON.stringify({ evaluations: all })); renderRoster(); });
   ok('農場列の無い旧記録も作業で数えて実施済み', await ee('テスト 一作').evaluate(e => e.classList.contains('done')));
-  await page.locator('.lsw button').nth(2).tap(); await page.waitForTimeout(200);
+  await tapLang(page, 2); await page.waitForTimeout(200);
   ok('vi: 見出しの「今回は実施しない」・途中表示', /Lần này không làm/.test(await page.locator('.wshd-skip').first().textContent()) && await noHScroll());
-  await page.locator('.lsw button').nth(0).tap(); await page.waitForTimeout(200);
+  await tapLang(page, 0); await page.waitForTimeout(200);
 
   console.log('[A6] （農場共通）行の管理ミスを警告');
   accept = true;
@@ -839,8 +841,8 @@ async function runAssign(devName) {
   await ee('テスト 未設定B').tap(); await page.waitForTimeout(300);
   ok('選ぶと解決分3作業＋作業選択が開く', await page.locator('.wshd').count() === 3 && await page.evaluate(() => document.getElementById('wselBox').open));
   ok('旧形式の名簿キャッシュ（cdup/corphan無し）でも警告表示が落ちない', await page.evaluate(() => { const r = JSON.parse(localStorage.getItem('jitsugi_v2_roster')); delete r.cdup; delete r.corphan; localStorage.setItem('jitsugi_v2_roster', JSON.stringify(r)); renderRoster(); return true; }));
-  for (const l of [1, 2, 3]) { await page.locator('.lsw button').nth(l).tap(); await page.waitForTimeout(100); }
-  await page.locator('.lsw button').nth(0).tap();
+  for (const l of [1, 2, 3]) { await tapLang(page, l); await page.waitForTimeout(100); }
+  await tapLang(page, 0);
 
   console.log('[S1] 所属未確定→農場が決まった・名前を直した（旧名）後も「済」のまま');
   const reloadRo = async () => { await page.locator('.eebox .wsel-hd button').tap(); await page.waitForTimeout(600); };
@@ -906,8 +908,8 @@ async function runAssign(devName) {
   nP = posts.length;
   await page.locator('#btnSave').tap(); await page.waitForTimeout(900);
   ok('送信の farm はそろえた表記', posts.length === nP + 1 && posts[nP].record.farm === 'テスト大田原A');
-  for (const l of [1, 2, 3]) { await page.locator('.lsw button').nth(l).tap(); await page.waitForTimeout(100); ok(`${['', 'en', 'vi', 'id'][l]}: 農場名のゆれの警告が訳される`, !/農場名のゆれ/.test(await page.locator('#eeWarn').textContent()) && /テスト大田原A農場/.test(await page.locator('#eeWarn').textContent())); }
-  await page.locator('.lsw button').nth(0).tap();
+  for (const l of [1, 2, 3]) { await tapLang(page, l); await page.waitForTimeout(100); ok(`${['', 'en', 'vi', 'id'][l]}: 農場名のゆれの警告が訳される`, !/農場名のゆれ/.test(await page.locator('#eeWarn').textContent()) && /テスト大田原A農場/.test(await page.locator('#eeWarn').textContent())); }
+  await tapLang(page, 0);
 
   console.log('[S3] 所属が決まった・名前を直した後も履歴とグラフで1人（C9-1）／編集を取り消しても農場チップは変わらない（C9-2）');
   roster = [
@@ -1169,10 +1171,10 @@ async function runDate(devName) {
   ok('キャンセル → 下書きの日付（09-25）のまま', dialogs.length === d1 + 1 && await fDate() === '2026-09-25' && await page.locator('#cards .ec.scored').count() === 2);
   accept = true;
   for (const l of [1, 2, 3]) {
-    await page.locator('.lsw button').nth(l).tap(); await page.waitForTimeout(100);
+    await tapLang(page, l); await page.waitForTimeout(100);
     ok(`言語${l}: 試験開始日の見出し・説明が訳されている`, await page.evaluate(() => { const a = document.querySelector('[data-t="examStartLbl"]').textContent, b = document.querySelector('[data-t="examStartHint"]').textContent; return a && b && !/[ぁ-ん]/.test(a + b.replace(/受験者|農場共通/g, '')); }));
   }
-  await page.locator('.lsw button').nth(0).tap();
+  await tapLang(page, 0);
 
   ok('JSエラーなし(評価日)', errors.length === 0);
   if (errors.length) console.log(errors.join('\n'));
@@ -1581,7 +1583,7 @@ async function runA11y(devName) {
   ok('進捗の横に「未採点 4 件・次へ」', await page.locator('#missNext').isVisible() && /未採点 4 件/.test(await page.locator('#missNext').textContent()));
   const mnb = await page.locator('#missNext').boundingBox();
   ok(`「次へ」のタップ領域 ${Math.round(mnb.height)}px ≥ 44`, mnb.height >= 44);
-  ok('「次へ」を出しても貼り付く帯の高さ(--stk)を測り直す', await page.evaluate(() => { const p = document.querySelector('.prog'), h = document.querySelector('.hdr'); return Math.abs(parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--stk')) - (h.offsetHeight + p.offsetHeight)) < 1; }));
+  ok('「次へ」を出しても貼り付く帯の高さ(--stk)を測り直す（ヘッダーは貼り付かない＝進捗の高さだけ）', await page.evaluate(() => { const p = document.querySelector('.prog'); return Math.abs(parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--stk')) - p.offsetHeight) < 1; }));
   ok('横スクロールなし(未採点の表示)', await noHScroll());
   await page.locator('#missNext').tap(); await page.waitForTimeout(300);
   ok('「次へ」で2枚目の未採点へフォーカス', await page.evaluate(id => document.activeElement && document.activeElement.closest('.ec') && document.activeElement.closest('.ec').id === id, missIds[1]));
@@ -1603,8 +1605,11 @@ async function runA11y(devName) {
     ok(`${l}: マニュアルへのリンクとの間 ${Math.min(...gaps)}px ≥ 8`, Math.min(...gaps) >= 8);
   }
   await setL('ja');
-  const lsw = await page.locator('.lsw button').evaluateAll(els => els.map(e => Math.round(e.getBoundingClientRect().width)));
-  ok(`言語ボタンの幅 ${Math.min(...lsw)}px ≥ 44`, Math.min(...lsw) >= 44);
+  await page.locator('#lswBtn').tap();
+  const lsw = await page.locator('.lsw button').evaluateAll(els => els.map(e => { const r = e.getBoundingClientRect(); return Math.round(Math.min(r.width, r.height)); }));
+  ok(`言語ボタン（1ボタン＋メニュー4つ）の小さい辺 ${Math.min(...lsw)}px ≥ 44`, lsw.length === 5 && Math.min(...lsw) >= 44);
+  ok('横スクロールなし(言語メニューを開いた状態)', await noHScroll());
+  await page.keyboard.press('Escape');
   ok('横スクロールなし(言語ボタン)', await noHScroll());
   // 未採点の作業を外す → 「元に戻す」で同じ位置に戻る
   const before = await page.evaluate(() => selWorks.slice());
@@ -1686,10 +1691,10 @@ async function runSheetErr(devName) {
   mode[URL_A] = 'nosheet';
   await page.locator('.eebox .wsel-hd button').tap(); await page.waitForTimeout(600);
   for (const [l, re] of [[1, /Ask the administrator to run setup/], [2, /quản trị viên chạy setup/], [3, /admin menjalankan setup/]]) {
-    await page.locator('.lsw button').nth(l).tap(); await page.waitForTimeout(100);
+    await tapLang(page, l); await page.waitForTimeout(100);
     ok(`${['', 'en', 'vi', 'id'][l]}: 受験者タブが無いの警告・同期バーが訳される`, re.test(await warn.textContent()) && !/受験者」タブ/.test(await note()) && !/シート側/.test(await bar()));
   }
-  await page.locator('.lsw button').nth(0).tap(); await page.waitForTimeout(100);
+  await tapLang(page, 0); await page.waitForTimeout(100);
   mode[URL_A] = 'ok';
   await page.locator('.eebox .wsel-hd button').tap(); await page.waitForTimeout(600);
   ok('取れれば警告は消え、同期バーは送信済みに戻る', !(await warn.isVisible()) && /すべてスプレッドシートに送信済み/.test(await bar()) && await page.locator('.eetab').count() === 2);
@@ -1868,6 +1873,123 @@ async function runPerf(devName) {
   await browser.close();
 }
 
+/* V14: 見た目の一貫性（ヘッダー・進捗・点数ラベル）を画面幅×4言語で実測
+   - ヘッダー: アプリ名が切れない・飾りの英字は出さない・56〜60px・貼り付かない（固定帯は進捗と作業見出しだけ）
+   - 言語: 今の言語だけの1ボタン → 4言語メニュー（選ぶ/外側/Esc で閉じる）
+   - 未採点: 「採点済 x/y」の代わりに「未採点 n 件・次へ」だけ・進捗バーは全幅のまま
+   - 点数ラベル: どの言語・幅でも切れない（ボタンの内側に収まる）・1行でも2行でも高さがそろう */
+async function runLayout(devName) {
+  console.log(`\n===== layout (V14) ${devName} =====`);
+  const browser = await chromium.launch(process.env.PW_CHANNEL ? { channel: process.env.PW_CHANNEL } : {});
+  const ctx = await browser.newContext({ ...devices[devName] });
+  const page = await ctx.newPage();
+  const errors = [];
+  page.on('pageerror', e => errors.push(String(e)));
+  await page.route(u => u.href.startsWith('https://script.google.com/'), r => r.abort());
+  await page.goto(APP);
+  await page.evaluate(() => { localStorage.clear(); localStorage.setItem('jitsugi_v2_evaluator', 'テスト評価者'); });
+  await page.reload(); await page.waitForTimeout(500);
+  const setL = async l => { await page.evaluate(l => setLang(l), l); await page.waitForTimeout(150); };
+  const LS = ['ja', 'en', 'vi', 'id'];
+
+  console.log('[V14-1] ヘッダー: 切れない・56〜60px・英字サブなし・言語は1ボタン');
+  for (const w of [320, 375, 390, 412]) {
+    await page.setViewportSize({ width: w, height: 700 }); await page.waitForTimeout(100);
+    for (const l of LS) {
+      await setL(l);
+      const m = await page.evaluate(() => {
+        const h = document.querySelector('.hdr'), t = h.querySelector('h1'), sub = h.querySelector('.brand-sub'), b = document.getElementById('lswBtn');
+        return { hh: Math.round(h.getBoundingClientRect().height), cut: t.scrollWidth > t.clientWidth + 1, sub: getComputedStyle(sub).display, bw: Math.round(b.getBoundingClientRect().width), bh: Math.round(b.getBoundingClientRect().height), vis: document.querySelectorAll('.lsw button').length - document.querySelectorAll('#lswMenu[hidden] button').length, hs: document.documentElement.scrollWidth <= innerWidth + 1 };
+      });
+      ok(`${w}/${l}: アプリ名が切れない・ヘッダー ${m.hh}px は 56〜60・英字サブなし(${m.sub})・言語は1ボタン(${m.bw}x${m.bh})・横スクロールなし`, !m.cut && m.hh >= 56 && m.hh <= 60 && m.sub === 'none' && m.vis === 1 && m.bw <= 72 && m.bh >= 44 && m.hs);
+    }
+  }
+  await setL('ja');
+  // 言語メニュー: 開く → 4つ（44px以上） → 選ぶと閉じて表示が変わる / 外側・Esc で閉じる
+  await page.locator('#lswBtn').tap();
+  ok('メニューを開くと aria-expanded=true・4言語', await page.locator('#lswBtn').getAttribute('aria-expanded') === 'true' && await page.locator('#lswMenu button:visible').count() === 4);
+  ok('開いた時のフォーカスは今の言語', await page.evaluate(() => document.activeElement && document.activeElement.getAttribute('lang') === 'ja'));
+  await page.locator('#lswMenu button[lang="vi"]').tap(); await page.waitForTimeout(150);
+  ok('vi を選ぶとメニューが閉じ、ボタンは VI・フォーカスはボタンへ', await page.locator('#lswMenu').isHidden() && (await page.locator('#lswCur').textContent()) === 'VI' && await page.locator('#lswBtn').getAttribute('aria-expanded') === 'false' && await page.evaluate(() => document.activeElement && document.activeElement.id === 'lswBtn'));
+  ok('vi: 選んだ言語だけ aria-pressed=true', JSON.stringify(await page.locator('#lswMenu button').evaluateAll(els => els.map(e => e.getAttribute('aria-pressed')))) === '["false","false","true","false"]');
+  await page.locator('#lswBtn').tap(); await page.keyboard.press('Escape');
+  ok('Esc で閉じる（言語は vi のまま）', await page.locator('#lswMenu').isHidden() && await page.evaluate(() => lang) === 'vi');
+  await page.locator('#lswBtn').tap(); await page.locator('.eebox').tap({ position: { x: 5, y: 5 } });
+  ok('外側を押すと閉じる', await page.locator('#lswMenu').isHidden());
+  await setL('ja');
+
+  // 作業を2つ選んでカードを出す（名簿なし・手入力の人）
+  await page.evaluate(() => { document.getElementById('wselBox').open = true; document.querySelectorAll('.wcat').forEach(c => c.open = true); });
+  await page.locator('.wchk input').nth(0).check(); await page.locator('.wchk input').nth(1).check(); await page.waitForTimeout(250);
+  const nCards = await page.locator('#cards .ec').count();
+  ok(`カードが出る (${nCards})`, nCards >= 10);
+
+  console.log('[V14-1] 採点中はヘッダーが流れて消え、固定帯は進捗＋作業見出しだけ');
+  await page.setViewportSize({ width: 320, height: 568 }); await page.waitForTimeout(150);
+  await page.evaluate(() => { const c = document.querySelectorAll('#cards .ec')[2]; window.scrollTo(0, c.getBoundingClientRect().top + scrollY - 200); }); await page.waitForTimeout(250);
+  const band = await page.evaluate(() => {
+    const h = document.querySelector('.hdr'), p = document.querySelector('.prog'), stk = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--stk'));
+    const wh = [...document.querySelectorAll('.wshd')].map(e => e.getBoundingClientRect()).find(r => r.top <= stk + 1 && r.bottom > stk) || { bottom: stk };
+    return { pos: getComputedStyle(h).position, hb: Math.round(h.getBoundingClientRect().bottom), pt: Math.round(p.getBoundingClientRect().top), ph: p.offsetHeight, stk, band: Math.round(wh.bottom) };
+  });
+  ok(`ヘッダーは貼り付かない (${band.pos}・下端 ${band.hb}px ≤ 0)`, band.pos !== 'sticky' && band.hb <= 0);
+  ok(`進捗は画面の上端に貼り付く (top=${band.pt})・--stk(${band.stk}) = 進捗の高さ(${band.ph})`, band.pt === 0 && Math.abs(band.stk - band.ph) < 1);
+  ok(`幅320×568: 上の固定帯（進捗＋作業見出し）${band.band}px ≤ 100`, band.band <= 100);
+  await page.screenshot({ path: __dirname + '/_shots/v14_320_scroll.png' });
+
+  console.log('[V14-2] 未採点: 件数の表示は1つ・進捗バーは全幅・帯は太らない');
+  for (const w of [320, 390]) {
+    await page.setViewportSize({ width: w, height: 700 }); await page.waitForTimeout(100);
+    for (const l of LS) {
+      await setL(l);
+      await page.evaluate(() => { document.querySelectorAll('#cards .ec').forEach(c => c.classList.remove('miss')); updProg(); });
+      const base = await page.evaluate(() => ({ ph: document.querySelector('.prog').offsetHeight, bw: document.getElementById('progB').getBoundingClientRect().width }));
+      await page.evaluate(() => { document.querySelectorAll('#cards .ec:not(.scored)').forEach(c => c.classList.add('miss')); updProg(); });
+      const m = await page.evaluate(() => {
+        const p = document.querySelector('.prog'), b = document.getElementById('progB'), t = document.getElementById('progT'), mn = document.getElementById('missNext');
+        const pr = p.getBoundingClientRect(), br = b.getBoundingClientRect(), mr = mn.getBoundingClientRect();
+        return { ph: p.offsetHeight, bw: br.width, pw: pr.width, tVis: t.offsetParent !== null && t.getBoundingClientRect().width > 0, mVis: mr.width > 0, mh: mr.height, inP: mr.top >= pr.top - 0.5 && mr.bottom <= pr.bottom + 0.5, over: mr.bottom > br.top + 0.5 && mr.top < br.bottom, stk: parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--stk')), hs: document.documentElement.scrollWidth <= innerWidth + 1 };
+      });
+      ok(`${w}/${l}: 「採点済 x/y」は隠れ「次へ」だけ(${m.mVis}・${Math.round(m.mh)}px≥44)・進捗バーは全幅 ${Math.round(m.bw)}/${Math.round(m.pw)}（通常 ${Math.round(base.bw)}）・バーとボタンが重ならない`, !m.tVis && m.mVis && m.mh >= 44 && m.bw >= m.pw - 1 && m.bw >= base.bw - 1 && m.inP && !m.over && m.hs);
+      ok(`${w}/${l}: 進捗の帯 通常 ${base.ph}px ≤ 42・未採点時 ${m.ph}px ≤ 56・--stk 追随`, base.ph <= 42 && m.ph <= 56 && Math.abs(m.stk - m.ph) < 1);
+    }
+  }
+  await page.screenshot({ path: __dirname + '/_shots/v14_390_miss.png' });
+  await page.evaluate(() => { document.querySelectorAll('#cards .ec').forEach(c => c.classList.remove('miss')); updProg(); });
+
+  console.log('[V14-4] 点数ラベルがどの言語・幅でも切れない・高さがそろう');
+  for (const w of [320, 360, 375, 390, 412]) {
+    await page.setViewportSize({ width: w, height: 700 }); await page.waitForTimeout(100);
+    for (const l of LS) {
+      await setL(l);
+      const r = await page.evaluate(() => {
+        const row = document.querySelector('#cards .sr'), bad = [], hs = [], split = [];
+        row.querySelectorAll('.sb').forEach(b => {
+          const sl = b.querySelector('.sl'), br = b.getBoundingClientRect(), bw = parseFloat(getComputedStyle(b).borderLeftWidth);
+          const rg = document.createRange(); rg.selectNodeContents(sl);
+          const tr = [...rg.getClientRects()];
+          const minL = Math.min(...tr.map(x => x.left)), maxR = Math.max(...tr.map(x => x.right));
+          if (sl.scrollWidth > sl.clientWidth + 1 || minL < br.left + bw - 0.5 || maxR > br.right - bw + 0.5) bad.push(sl.textContent + '(' + Math.round(maxR - minL) + '/' + Math.round(br.width - 2 * bw) + ')');
+          hs.push(Math.round(sl.getBoundingClientRect().height));
+          // 1語のラベルが語の途中で折れていないか（幅360以上では折らない。320は2行まで許す）
+          const nl = new Set(tr.map(x => Math.round(x.top))).size;
+          if (!/\s/.test(sl.textContent.trim()) && nl > 1) split.push(sl.textContent);
+          if (nl > 2) bad.push(sl.textContent + '(' + nl + '行)');
+        });
+        return { bad, hs, split };
+      });
+      ok(`${w}/${l}: 点数ラベルが枠内に収まる${r.bad.length ? ' 切れ=' + r.bad.join(',') : ''}・高さがそろう(${[...new Set(r.hs)].join('/')})`, !r.bad.length && new Set(r.hs).size === 1);
+      if (w >= 360) ok(`${w}/${l}: 1語のラベルを語の途中で折らない${r.split.length ? ' 折れ=' + r.split.join(',') : ''}`, !r.split.length);
+    }
+  }
+  await setL('en'); await page.setViewportSize({ width: 375, height: 700 });
+  await page.locator('#cards .sr').first().screenshot({ path: __dirname + '/_shots/v14_375_en_sr.png' });
+  await setL('ja');
+  ok('JSエラーなし(layout)', errors.length === 0);
+  if (errors.length) console.log(errors);
+  await browser.close();
+}
+
 (async () => {
   if (process.env.ONLY) {   // 例: ONLY=rel,assign,guard,backup,sw（わざと壊して検証する時に一部だけ回す）
     const on = new Set(process.env.ONLY.split(','));
@@ -1878,6 +2000,7 @@ async function runPerf(devName) {
     if (on.has('sw')) await runSW();
     if (on.has('err')) await runSheetErr('iPhone SE');
     if (on.has('perf')) await runPerf('iPhone 13');
+    if (on.has('layout')) await runLayout('iPhone SE');
     console.log(`\n合計: OK ${pass} / NG ${fail}`); process.exit(fail ? 1 : 0);
   }
   if (process.env.ONLY_A11Y) { for (const d of ['iPhone SE', 'Pixel 7']) await runA11y(d); console.log(`\n合計: OK ${pass} / NG ${fail}`); process.exit(fail ? 1 : 0); }
@@ -1893,6 +2016,7 @@ async function runPerf(devName) {
   if (!process.env.ONLY_REL && !process.env.ONLY_ASSIGN) for (const d of ['iPhone SE', 'Pixel 7']) await runA11y(d);
   if (!process.env.ONLY_REL && !process.env.ONLY_ASSIGN) await runSheetErr('iPhone SE');
   if (!process.env.ONLY_REL && !process.env.ONLY_ASSIGN) await runPerf('iPhone 13');
+  await runLayout('iPhone SE');
   await runSW();
   console.log(`\n合計: OK ${pass} / NG ${fail}`);
   process.exit(fail ? 1 : 0);

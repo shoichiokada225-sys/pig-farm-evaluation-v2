@@ -116,7 +116,7 @@ function ok(name, cond) {
   await page.click('.tabs button[data-pg="pgHi"]');
   const [dl] = await Promise.all([page.waitForEvent('download'), page.click('.hctrl .b3')]);
   ok('CSVダウンロード', (dl.suggestedFilename() || '').startsWith('jitsugi_v2_'));
-  await page.click('.lsw button >> nth=2'); // VI
+  await page.click('#lswBtn'); await page.click('#lswMenu button >> nth=2'); // VI
   await page.waitForTimeout(300);
   ok('vi: タブ表記', (await page.locator('.tabs button[data-pg="pgIn"] span').textContent()) === 'Nhập');
   await page.click('.tabs button[data-pg="pgIn"]');
@@ -125,7 +125,7 @@ function ok(name, cond) {
   await page.locator('.wchk input').first().check();
   await page.waitForTimeout(150);
   const nmVi = await page.locator('.wshd-nm').first().textContent();
-  await page.click('.lsw button >> nth=0'); // JP
+  await page.click('#lswBtn'); await page.click('#lswMenu button >> nth=0'); // JP
   await page.waitForTimeout(300);
   const nmJa = await page.locator('.wshd-nm').first().textContent();
   ok('作業名が言語追従', nmVi !== nmJa || nmVi.length > 0);
