@@ -39,6 +39,12 @@
   </div>
 </header>
 
+<!-- 新しい版の通知（採点途中なら保存後に再読み込み。途中でなければ自動で再読み込み） -->
+<div class="updbar" id="updBar" role="status" aria-live="polite" hidden>
+  <span data-t="updReady">新しい版のアプリがあります。</span>
+  <button type="button" class="b b1 b-slim" onclick="reloadApp()" data-t="btnReloadApp">再読み込み</button>
+</div>
+
 <div class="ebar" id="editBar">
   <span data-t="editingBanner">編集中</span>
   <button onclick="cancelEdit()" data-t="cancelEdit">取消</button>
@@ -116,6 +122,9 @@
     <button class="b b1" id="btnSave" onclick="doSave()" data-t="btnSave">保存</button>
     <button class="b b2" onclick="doReset()" data-t="btnReset">リセット</button>
   </div>
+  <!-- ホーム画面から起動していない時の案内（Safari はホーム画面に無いサイトの保存を7日で消す）。
+       名簿の1人目が初期画面に入るよう、入力タブでは末尾に置く（設定タブにも同じ案内） -->
+  <p id="a2hsBar" class="a2hsbar mt12" data-t="a2hs" hidden>ホーム画面に追加してください（圏外の豚舎で使うため）。</p>
 </div>
 
 <!-- 履歴 -->
@@ -165,6 +174,8 @@
   <div class="cfg-blk">
     <p class="cfg-hint" data-t="aboutHint">評価項目（各作業5種目・レベル1〜5基準）は睦沢農場「業務の目的と注意点」と現場マニュアルに基づいています。項目の変更はアプリ更新で行います。</p>
     <p class="cfg-hint" id="dataVer"></p>
+    <p class="cfg-hint" id="storeSt"></p>
+    <p class="a2hsbar" data-t="a2hs" hidden>ホーム画面に追加してください（圏外の豚舎で使うため）。</p>
   </div>
 </div>
 

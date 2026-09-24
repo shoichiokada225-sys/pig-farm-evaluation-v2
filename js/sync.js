@@ -252,6 +252,8 @@ async function syncPending(silent){
   else if(nFail&&(loud||ok))toast(t('tSendFail')+' ('+nFail+')',1);
   else if(ok&&!nFail)toast(t('tSent'));
   if(document.getElementById('pgHi').classList.contains('on'))drawHist();
+  // 送信中に新しい版が入っていた（前面に戻った直後の再送と重なった）→ 送信が終わって入力途中でなければ読み込む（結果の表示を見せてから）
+  if(typeof maybeReloadApp==='function'&&typeof updReady!=='undefined'&&updReady)setTimeout(maybeReloadApp,1500);
 }
 function updSyncUI(){
   const n=getAll().filter(r=>!r.sent).length,nd=getDels().length;
@@ -272,7 +274,9 @@ let SYNC_RETRY_MS=60000,retryT=null;
 function schedRetry(){
   clearTimeout(retryT);
   retryT=setTimeout(()=>{
-    if(!syncing&&pendCount()&&sheetUrl()&&!(typeof document!=='undefined'&&document.visibilityState==='hidden'))syncPending(true);
+    const vis=!(typeof document!=='undefined'&&document.visibilityState==='hidden');
+    if(!syncing&&pendCount()&&sheetUrl()&&vis)syncPending(true);
+    if(vis&&typeof swCheck==='function')swCheck();   // 裏に回すだけで閉じない端末にも、新しい版を届ける
     schedRetry();
   },SYNC_RETRY_MS);
 }

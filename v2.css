@@ -169,3 +169,7 @@ details.wsel[open]>summary h3::before{content:'▾ '}
 .toast.act{pointer-events:auto;display:flex;align-items:center;gap:10px;white-space:normal;border-radius:14px;padding:8px 8px 8px 16px;width:max-content;line-height:1.4}
 .toast-act{flex:none;min-height:var(--tap,44px);min-width:var(--tap,44px);padding:6px 14px;border-radius:10px;border:2px solid #fff;background:transparent;color:#fff;font:inherit;font-weight:800;cursor:pointer}
 .toast-act:focus-visible{outline:3px solid #f0a500;outline-offset:2px}
+/* 新しい版の通知・ホーム画面への追加の案内 */
+.updbar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:8px 12px;padding:8px 12px;border-radius:10px;background:#e6f2ff;color:#0b3d6b;border:1px solid #9cc4ea;font-size:.85rem;font-weight:700}
+.updbar[hidden],.a2hsbar[hidden]{display:none}
+.a2hsbar{margin:12px 0 10px;padding:8px 12px;border-radius:10px;background:#fff4e0;color:#8a4b00;border:1px solid #f0c27a;font-size:.8rem;line-height:1.5}

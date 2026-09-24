@@ -19,6 +19,19 @@ function ok(name, cond) {
   ok(`index.html の参照 ${refs.length} 件はすべて sw.js の ASSETS にある` + (miss.length ? ' 漏れ=' + miss.join(',') : ''), refs.length >= 15 && miss.length === 0);
   const missFile = [...assets].filter(a => a && !fs.existsSync(path.join(__dirname, a)));
   ok('ASSETS のファイルはすべて実在する' + (missFile.length ? ' 無い=' + missFile.join(',') : ''), missFile.length === 0);
+  // W16-2: 設定タブに出す APP_VER は sw.js の CACHE と同じ（片方だけ上げると、本部が見る版と実際に入る版がずれる）
+  const cache = /const CACHE = '([^']+)'/.exec(sw)[1], appVer = (/const APP_VER='([^']+)'/.exec(fs.readFileSync(path.join(__dirname, 'js/config.js'), 'utf8')) || [])[1];
+  ok(`js/config.js の APP_VER（${appVer}）= sw.js の CACHE（${cache}）`, appVer === cache);
+  // CACHE の上げ忘れ: ASSETS のファイルをコミット前に変えたのに、CACHE が HEAD のままならNG（上げ忘れると端末に届かない）
+  try {
+    const cp = require('child_process'), git = a => cp.execFileSync('git', ['-C', __dirname, ...a], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
+    const changed = git(['diff', 'HEAD', '--name-only']).split('\n').filter(f => f && (assets.has(f) || f === 'sw.js'));
+    const headCache = (/const CACHE = '([^']+)'/.exec(git(['show', 'HEAD:sw.js'])) || [])[1];
+    ok(`CACHE の上げ忘れなし（変更=${changed.length}件 / HEAD=${headCache} / 今=${cache}）`, !changed.length || headCache !== cache);
+  } catch (e) { console.log('  -- git が使えないので CACHE の上げ忘れ検査を省略'); }
+  // W16-1/5: SW は今の CACHE のアプリ本体（ASSETS）を裏で上書きしない・フォールバックはページ遷移だけ
+  ok('sw.js: 裏の更新は ASSETS 以外だけ（!isAsset で put）', /if \(!isAsset && res && res\.ok/.test(sw));
+  ok("sw.js: index.html へのフォールバックは navigate の時だけ", /isNav \? caches\.match\('\.\/index\.html'\)/.test(sw) && /req\.mode === 'navigate'/.test(sw));
 }
 
 (async () => {
@@ -38,6 +51,9 @@ function ok(name, cond) {
   ok('進捗 0/0', (await page.locator('#progT').textContent()).includes('0/0'));
   const dv = await page.locator('#dataVer').textContent();
   ok('データ版数表示', /works/.test(dv));
+  ok('W16-2 アプリ本体の版も表示（APP jitsugi-v2-…）', /^APP jitsugi-v2-v\d+ \/ DATA /.test(dv));
+  ok('W16-4 ホーム画面から開いていない → 追加の案内が出る', await page.locator('#a2hsBar').isVisible());
+  ok('W16-4 保存の保護の状態を表示', /^端末の保存: /.test(await page.locator('#storeSt').textContent()));
 
   console.log('[2] 作業を2つ選択 → 5種目×2=10カード');
   await page.click('#wselBox > summary');

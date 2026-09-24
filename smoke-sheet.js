@@ -1504,6 +1504,156 @@ async function runSW() {
   srv.closeAllConnections && srv.closeAllConnections(); srv.close();
 }
 
+/* W16: アプリの更新が端末に確実に届くか（版が丸ごと入れ替わる・新旧が混ざらない・前面に戻ると新しい版が動く）
+   「配布」＝サーバーの中身を差し替える。新しい版は js/extra.js を新設して index.html から読み、app.js から呼ぶ（欠けると壊れる形） */
+async function runSWUpdate() {
+  console.log('\n===== Service Worker（更新の配布・新旧の混在・版の表示） =====');
+  const http = require('http'), path = require('path');
+  let down = false, over = {}; const failPaths = new Set();
+  const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png' };
+  const srv = http.createServer((req, res) => {
+    if (down) { req.socket.destroy(); return; }
+    let p = decodeURIComponent(new URL(req.url, 'http://x').pathname);
+    if (p.endsWith('/')) p += 'index.html';
+    if (failPaths.has(p)) { req.socket.destroy(); return; }   // 電波が弱くてこのファイルだけ取れない
+    const ct = types[path.extname(p)] || 'application/octet-stream';
+    if (p in over) { res.writeHead(200, { 'content-type': ct, 'cache-control': 'no-cache' }); return res.end(over[p]); }
+    const f = path.join(__dirname, p);
+    if (!f.startsWith(__dirname) || !fs.existsSync(f)) { res.writeHead(404); return res.end(); }
+    res.writeHead(200, { 'content-type': ct, 'cache-control': 'no-cache' });
+    fs.createReadStream(f).pipe(res);
+  });
+  await new Promise(r => srv.listen(0, '127.0.0.1', r));
+  const base = `http://localhost:${srv.address().port}/`;
+  const rd = f => fs.readFileSync(path.join(__dirname, f), 'utf8');
+  const curVer = /const APP_VER='([^']+)'/.exec(rd('js/config.js'))[1];
+  const V = tag => {   // 配布する新しい版（CACHE と APP_VER を上げ、ファイルを1本足す）
+    const cache = 'jitsugi-v2-test-' + tag;
+    return {
+      '/sw.js': rd('sw.js').replace(/const CACHE = '[^']+'/, `const CACHE = '${cache}'`).replace("'./js/app.js',", "'./js/extra.js', './js/app.js',"),
+      '/js/config.js': rd('js/config.js').replace(/const APP_VER='[^']+'/, `const APP_VER='${cache}'`),
+      '/index.html': rd('index.html').replace('<script src="js/app.js"></script>', '<script src="js/extra.js"></script>\n<script src="js/app.js"></script>'),
+      '/js/extra.js': `function extraFn(){return '${tag}'}`,
+      '/js/app.js': rd('js/app.js') + '\nwindow.APPMARK=extraFn();',
+    };
+  };
+  const browser = await chromium.launch(process.env.PW_CHANNEL ? { channel: process.env.PW_CHANNEL } : {});
+  const open = async () => {   // 事務所で開いてSWに制御させた端末（今の版）
+    down = false; over = {}; failPaths.clear();
+    const ctx = await browser.newContext();
+    const page = await ctx.newPage();
+    const errors = [];
+    page.on('pageerror', e => errors.push(String(e)));
+    page.on('dialog', d => d.accept());
+    await page.route(u => u.href.startsWith('https://script.google.com/'), r => r.abort('internetdisconnected'));
+    await page.goto(base + 'index.html');
+    await page.evaluate(() => navigator.serviceWorker.register('sw.js').then(() => navigator.serviceWorker.ready));
+    // Chrome はページ遷移の約1秒後に SW の更新を自分で確かめる。それが済んでから「配布」する（開いたままの端末＝遷移が起きない状態を作る）
+    await page.reload(); await page.waitForTimeout(3000);
+    return { ctx, page, errors };
+  };
+  const state = page => page.evaluate(async () => ({ mark: window.APPMARK || 'old', keys: await caches.keys(), ver: document.getElementById('dataVer').textContent }));
+  const offlineOpen = async (page, errors) => {
+    down = true; errors.length = 0;
+    let loaded = true;
+    try { await page.reload({ waitUntil: 'load', timeout: 10000 }); } catch (e) { loaded = false; }
+    await page.waitForTimeout(600);
+    return loaded;
+  };
+
+  // (a) CACHE の上げ忘れ（sw.js はそのまま・index.html / app.js / extra.js だけ配布）→ オンラインで1回開く → 圏外で起動
+  {
+    const { ctx, page, errors } = await open();
+    over = V('a'); delete over['/sw.js']; delete over['/js/config.js'];
+    await page.reload({ waitUntil: 'load' }); await page.waitForTimeout(1200);   // 配布後にオンラインで1回（裏の更新が走る）
+    const loaded = await offlineOpen(page, errors);
+    const st = loaded ? await state(page) : null;
+    ok('W16-1(a) 上げ忘れ→オンラインで1回→圏外で起動: JSエラーなし' + (errors.length ? ' ' + errors.slice(0, 2).join(' | ') : ''), loaded && errors.length === 0);
+    ok('W16-1(a) 旧版のまま丸ごとそろう（新旧が混ざらない）', !!st && st.mark === 'old' && st.ver.includes('APP ' + curVer));
+    await ctx.close();
+  }
+  // (b) CACHE は上げたが、install 中に1ファイルだけ取れない → 旧版が残る → 圏外で起動
+  {
+    const { ctx, page, errors } = await open();
+    over = V('b'); failPaths.add('/icon-512.png');
+    await page.reload({ waitUntil: 'load' }); await page.waitForTimeout(2000);   // 新SWの install は失敗する
+    // addAll は全部そろわないと1件も入れない（caches.open で空の箱だけ残るが、次に成功した版の activate で消える）
+    const k1 = await page.evaluate(async () => ({ keys: await caches.keys(), newN: (await (await caches.open('jitsugi-v2-test-b')).keys()).length }));
+    ok('W16-1(b) 1ファイル取れない→新しい版は1件も入らない・旧 CACHE が残る', k1.keys.includes(curVer) && k1.newN === 0);
+    const loaded = await offlineOpen(page, errors);
+    const st = loaded ? await state(page) : null;
+    ok('W16-1(b) 取り直し失敗の後に圏外で起動: JSエラーなし' + (errors.length ? ' ' + errors.slice(0, 2).join(' | ') : ''), loaded && errors.length === 0);
+    ok('W16-1(b) 旧版のまま丸ごとそろう（新しい index.html が混ざらない）', !!st && st.mark === 'old' && st.ver.includes('APP ' + curVer) && await page.evaluate(() => !document.querySelector('script[src="js/extra.js"]')));
+    // W16-5: キャッシュに無いスクリプト（圏外）は HTML ではなくエラーになる。ページ遷移だけ index.html
+    const r5 = await page.evaluate(async () => {
+      const js = await fetch('js/nope.js').then(r => 'resp:' + (r.headers.get('content-type') || ''), e => 'error');
+      return { js };
+    });
+    ok('W16-5 圏外でキャッシュに無い js → エラー（index.html を返さない）', r5.js === 'error');
+    const nav = await page.goto(base + 'no-such-page', { timeout: 8000 }).then(r => r && r.status(), () => 0);
+    ok('W16-5 圏外でキャッシュに無いページ遷移 → index.html で起動', nav === 200 && await page.locator('#pgIn').count() === 1);
+    // 電波が戻った → 前面に戻った時の更新確認で新しい版がそろう → 入力途中でないので自動で再読み込み
+    down = false; failPaths.clear(); errors.length = 0;
+    await page.goto(base + 'index.html'); await page.waitForTimeout(1500);   // ここでの遷移で新しい版の install が走ることもある（その時は自動で再読み込み中）
+    await page.evaluate(() => { document.dispatchEvent(new Event('visibilitychange')); }).catch(() => {});
+    try { await page.waitForFunction(() => window.APPMARK === 'b', null, { timeout: 15000 }); } catch (e) {}
+    const st2 = await state(page);
+    ok('W16-1(b) 電波が戻ると新しい版に丸ごと入れ替わる', st2.mark === 'b' && st2.keys.length === 1 && st2.keys[0] === 'jitsugi-v2-test-b');
+    ok('W16-2 設定の版表示が新しい版（APP jitsugi-v2-test-b）', st2.ver.includes('APP jitsugi-v2-test-b'));
+    const loaded2 = await offlineOpen(page, errors);
+    ok('W16-1(b) 新しい版で圏外起動: JSエラーなし・extra.js もそろう', loaded2 && errors.length === 0 && (await state(page)).mark === 'b');
+    await ctx.close();
+  }
+  // W16-2: 開いたまま（裏に回しただけ）の端末に配布 → 前面に戻る → 採点途中なら案内だけ・途中でなければ自動で再読み込み
+  {
+    const { ctx, page, errors } = await open();
+    const v0 = await state(page);
+    ok('W16-2 設定タブに APP の版が出る（' + curVer + '）', v0.ver.startsWith('APP ' + curVer + ' / DATA '));
+    over = V('c');
+    await page.evaluate(() => { dirty = true; });   // 採点途中
+    let reloaded = false; page.once('load', () => { reloaded = true; });
+    await page.evaluate(() => { document.dispatchEvent(new Event('visibilitychange')); });
+    try { await page.waitForFunction(() => !document.getElementById('updBar').hidden, null, { timeout: 15000 }); } catch (e) {}
+    ok('W16-2 採点途中: 新しい版の案内が出て、勝手に再読み込みしない', !reloaded && await page.evaluate(() => !document.getElementById('updBar').hidden && window.APPMARK === undefined));
+    ok('W16-2 案内の文言が i18n（再読み込みボタンあり）', (await page.locator('#updBar button').textContent()).trim() === '再読み込み');
+    await page.evaluate(() => { dirty = false; });
+    const nav = page.waitForEvent('load', { timeout: 10000 }).catch(() => null);
+    await page.locator('#updBar button').click({ timeout: 3000 }).catch(() => {});
+    await nav; await page.waitForTimeout(500);
+    ok('W16-2 「再読み込み」で新しい版が動く', (await state(page)).mark === 'c');
+    // 続けて次の版を配布 → 採点途中でない → 前面に戻っただけで自動で新しい版に
+    over = V('d');
+    await page.evaluate(() => { document.dispatchEvent(new Event('visibilitychange')); }).catch(() => {});
+    try { await page.waitForFunction(() => window.APPMARK === 'd', null, { timeout: 15000 }); } catch (e) {}
+    const st = await state(page);
+    ok('W16-2 採点途中でなければ前面に戻っただけで新しい版が動く（次の冷えた起動を待たない）', st.mark === 'd' && st.ver.includes('APP jitsugi-v2-test-d'));
+    ok('JSエラーなし(SW 更新)', errors.length === 0);
+    if (errors.length) console.log(errors.slice(0, 3).join('\n'));
+    await ctx.close();
+  }
+  // W16-4: ホーム画面から開いていない時の案内・端末の保存の保護の表示（4言語）
+  {
+    const { ctx, page } = await open();
+    ok('W16-4 ブラウザのタブで開いている → ホーム画面への追加の案内が出る', await page.locator('#a2hsBar').isVisible() && /ホーム画面に追加/.test(await page.locator('#a2hsBar').textContent()));
+    const stTx = await page.locator('#storeSt').textContent();
+    ok('W16-4 設定タブに保存の保護の状態が出る（' + stTx + '）', /^端末の保存: /.test(stTx));
+    await page.evaluate(() => setLang('vi'));
+    ok('W16-4 案内が言語に合わせて変わる（vi）', /màn hình chính/.test(await page.locator('#a2hsBar').textContent()) && /^Bộ nhớ máy: /.test(await page.locator('#storeSt').textContent()));
+    await page.evaluate(() => setLang('ja'));
+    await ctx.close();
+    const ctx2 = await browser.newContext();
+    const p2 = await ctx2.newPage();
+    await p2.addInitScript(() => { Object.defineProperty(navigator, 'standalone', { get: () => true }); });
+    await p2.route(u => u.href.startsWith('https://script.google.com/'), r => r.abort('internetdisconnected'));
+    await p2.goto(base + 'index.html');
+    ok('W16-4 ホーム画面から開いた（standalone）→ 案内は出ない', await p2.locator('#a2hsBar').isHidden());
+    await ctx2.close();
+  }
+  down = false;
+  await browser.close().catch(() => {});
+  srv.closeAllConnections && srv.closeAllConnections(); srv.close();
+}
+
 /* 多言語（vi/id/en）の表示崩れ・固有データ（架空名）:
    貼り付く作業見出しは1行（ja と同じ高さ）・目次は1段・長いカタカナ名の全文・「所属未確定」の訳・CSVのカテゴリは日本語固定 */
 async function runI18n(devName) {
@@ -2090,6 +2240,7 @@ async function runLayout(devName) {
     if (on.has('guard')) await runGuard('iPhone 13');
     if (on.has('backup')) await runBackup('iPhone 13');
     if (on.has('sw')) await runSW();
+    if (on.has('swu')) await runSWUpdate();
     if (on.has('err')) await runSheetErr('iPhone SE');
     if (on.has('perf')) await runPerf('iPhone 13');
     if (on.has('layout')) await runLayout('iPhone SE');
@@ -2110,6 +2261,7 @@ async function runLayout(devName) {
   if (!process.env.ONLY_REL && !process.env.ONLY_ASSIGN) await runPerf('iPhone 13');
   await runLayout('iPhone SE');
   await runSW();
+  await runSWUpdate();
   console.log(`\n合計: OK ${pass} / NG ${fail}`);
   process.exit(fail ? 1 : 0);
 })();

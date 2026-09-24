@@ -10,7 +10,7 @@ function setLang(l){
   if(lbOn&&lc)lc.textContent=lbOn.dataset.code;
   if(lbOn&&lb)lb.setAttribute('aria-label','Language: '+lbOn.querySelector('.lsw-nm').textContent);
   closeLangMenu();
-  applyT();buildWorkSel();buildCards();restoreSt();renderEvaluator();renderRoster();updSyncUI();
+  applyT();buildWorkSel();buildCards();restoreSt();renderEvaluator();renderRoster();updSyncUI();renderVer();renderStore();
   const cur=document.querySelector('.tabs button.on');
   if(cur&&cur.dataset.pg==='pgHi')drawHist();
   if(cur&&cur.dataset.pg==='pgCh'){populateChWork();drawCharts()}
@@ -41,7 +41,7 @@ function applyT(){
    ============================================================== */
 document.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('fDate').value=todayLocal();
-  document.getElementById('dataVer').textContent='DATA '+(WORKDATA_V2.version||'-')+' / '+WORKDATA_V2.works.length+' works';
+  renderVer();
   setLang(lang);
   restoreDraft();
   document.getElementById('fEv').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();commitEvaluator()}});
@@ -76,8 +76,85 @@ document.addEventListener('DOMContentLoaded',()=>{
     else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
   });
   fixProg();window.addEventListener('resize',fixProg);
-  if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(()=>{});
+  initSW();initStorage();
 });
+
+/* ==============================================================
+   アプリの更新（Service Worker）・版の表示・端末の保存の保護
+   ============================================================== */
+let swReg=null,swVer='',updReady=false,swReloading=false,_swChkAt=0;
+/* 設定タブの版表示: 「APP 動いているコードの版 / DATA 評価項目の版」。SW が別の版を持っていれば「更新待ち」も出す */
+function renderVer(){
+  const el=document.getElementById('dataVer');if(!el)return;
+  const app=typeof APP_VER==='string'?APP_VER:'-';
+  let s='APP '+app+' / DATA '+(WORKDATA_V2.version||'-')+' / '+WORKDATA_V2.works.length+' works';
+  if(swVer&&swVer!==app)s+=' — '+t('swWait').replace('{v}',swVer);
+  el.textContent=s;
+}
+function askSwVer(){
+  const c=navigator.serviceWorker&&navigator.serviceWorker.controller;if(!c||typeof MessageChannel==='undefined')return;
+  const ch=new MessageChannel();
+  ch.port1.onmessage=e=>{if(e.data&&typeof e.data.cache==='string'){swVer=e.data.cache;renderVer()}};
+  try{c.postMessage({type:'ver'},[ch.port2])}catch(e){}
+}
+/* 新しい版を確かめる（前面に戻った時・60秒ごとの再送の時）。連打しない（10秒に1回まで）・圏外の失敗は無視 */
+function swCheck(force){
+  if(!swReg||(!force&&Date.now()-_swChkAt<10000))return;
+  _swChkAt=Date.now();
+  try{const p=swReg.update();if(p&&p.catch)p.catch(()=>{})}catch(e){}
+}
+/* 採点途中（入力あり・編集中・送信中）でなければ、新しい版をすぐ読み込む。途中なら案内だけ出す */
+function busyForReload(){return !!(dirty||editId||(typeof syncing!=='undefined'&&syncing))}
+function maybeReloadApp(){
+  if(!updReady||swReloading)return;
+  if(busyForReload()){document.getElementById('updBar').hidden=false;return}
+  reloadApp();
+}
+function reloadApp(){
+  if(swReloading)return;
+  if(dirty)saveDraft();   // 入力途中は下書きに残す（読み込み後に復元される）
+  swReloading=true;location.reload();
+}
+function initSW(){
+  renderA2hs();
+  if(!('serviceWorker' in navigator))return;
+  const sw=navigator.serviceWorker;
+  // 初めての登録（まだSWに制御されていない）で起きる controllerchange は、新しい版ではない
+  let hadCtl=!!sw.controller;
+  sw.addEventListener('controllerchange',()=>{
+    askSwVer();
+    if(!hadCtl){hadCtl=true;return}
+    updReady=true;maybeReloadApp();
+  });
+  if(location.protocol==='https:'||window.__swForce)sw.register('sw.js').then(r=>{swReg=r}).catch(()=>{});
+  else sw.getRegistration().then(r=>{if(r)swReg=r}).catch(()=>{});
+  askSwVer();
+  document.addEventListener('visibilitychange',()=>{
+    if(document.visibilityState!=='visible')return;
+    swCheck(true);maybeReloadApp();
+  });
+}
+/* ホーム画面から開いていない（ブラウザのタブで開いている）時は、追加を案内し続ける */
+function isStandalone(){
+  try{if(window.navigator.standalone===true)return true;
+    return ['standalone','fullscreen','minimal-ui'].some(m=>window.matchMedia&&window.matchMedia('(display-mode: '+m+')').matches)}catch(e){return false}
+}
+function renderA2hs(){const st=isStandalone();document.querySelectorAll('.a2hsbar').forEach(b=>{b.hidden=st})}
+/* 端末の保存（未送信の記録・アプリ本体）を、容量不足などでブラウザに消されないよう保護を頼む */
+let storePersist=null;   // true/false/null(確認できない)
+function renderStore(){
+  const el=document.getElementById('storeSt');if(!el)return;
+  el.textContent=t(storePersist===true?'storeOn':storePersist===false?'storeOff':'storeNA');
+  el.classList.toggle('warn',storePersist!==true);
+}
+function initStorage(){
+  renderStore();
+  const st=navigator.storage;
+  if(!st||typeof st.persist!=='function')return;
+  const done=v=>{storePersist=!!v;renderStore()};
+  (typeof st.persisted==='function'?st.persisted():Promise.resolve(false))
+    .then(p=>p?true:st.persist()).then(done).catch(()=>{});
+}
 
 /* 進捗バーは画面の上端（ヘッダーが貼り付く設定ならその下）・作業見出しは進捗バーの下に貼り付く
    （高さは言語・画面幅・未採点ボタンの有無で変わるので実測。ヘッダーは貼り付かない＝採点中は流れて消える） */
