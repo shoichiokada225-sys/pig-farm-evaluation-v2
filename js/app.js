@@ -21,7 +21,7 @@ function applyT(){
    初期化
    ============================================================== */
 document.addEventListener('DOMContentLoaded',()=>{
-  document.getElementById('fDate').value=new Date().toISOString().split('T')[0];
+  document.getElementById('fDate').value=todayLocal();
   document.getElementById('dataVer').textContent='DATA '+(WORKDATA_V2.version||'-')+' / '+WORKDATA_V2.works.length+' works';
   setLang(lang);
   restoreDraft();
@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('fDate').addEventListener('change',renderRoster);
   document.getElementById('fEe').addEventListener('input',renderRoster);
   document.getElementById('cfgUrl').value=sheetUrl();
+  document.getElementById('cfgExamStart').value=examStart();
   document.getElementById('eeFind').addEventListener('input',e=>{eeQuery=e.target.value;renderRoster()});
   // 名簿の取得と未送信の再送は並行（電波が弱くて名簿が返らなくても再送は止めない）
   reloadRoster(true);syncPending(true);
@@ -127,10 +128,20 @@ function restoreDraft(){
     const sel=d._sel.filter(id=>workById(id));
     if(sel.length){selWorks=sel;saveSel();buildWorkSel();buildCards()}
   }
-  const hasContent=(d.evaluator||'').trim()||(d.evaluatee||'').trim()||(d.overall||'').trim()
+  // 復元するのは採点・コメント・所感・手入力の名前がある時だけ（評価者名は端末の設定、名簿の人はタブを押しただけ＝入力途中ではない）
+  const ee=(d.evaluatee||'').trim();
+  const eeManual=!!ee&&!getRoster().list.some(p=>p.name===ee);
+  const hasContent=eeManual||(d.overall||'').trim()
     ||(d.works||[]).some(we=>Object.values(we.scores||{}).some(v=>v!=null)||Object.values(we.comments||{}).some(v=>(v||'').trim()));
   if(!hasContent)return;
-  if(d.date)document.getElementById('fDate').value=d.date;
+  const isEdit=!!(d._editId&&getAll().some(e=>e.id===d._editId));
+  // 前日以前の入力途中: 日付を今日にするか確認（黙って昨日の日付で記録しない）。編集中の下書きは記録の日付のまま
+  let dt=d.date;
+  if(dt&&!isEdit&&dt!==todayLocal()){
+    const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(dt);
+    if(confirm(t('cDraftDate').replace(/\{d\}/g,m?(+m[2])+'/'+(+m[3]):dt)))dt=todayLocal();
+  }
+  if(dt)document.getElementById('fDate').value=dt;
   document.getElementById('fEe').value=d.evaluatee||'';
   document.getElementById('fOv').value=d.overall||'';
   getItems().forEach(it=>{
@@ -138,8 +149,8 @@ function restoreDraft(){
     const sc=we&&we.scores[it.aspectId];if(sc)setScoreUI(it.id,sc);
     const ta=document.querySelector('textarea[data-cid="'+it.id+'"]');if(ta)ta.value=(we&&we.comments[it.aspectId])||'';
   });
-  if(d._editId&&getAll().some(e=>e.id===d._editId)){
-    editId=d._editId;
+  if(isEdit){
+    editId=d._editId;preEditDate=null;
     document.getElementById('editBar').classList.add('show');
     document.getElementById('btnSave').textContent=t('btnUpdate');
   }
@@ -155,6 +166,7 @@ function doSave(){
   if(!d.evaluator.trim()){toast(t('eEv'),1);editEvaluator();document.getElementById('evBox').scrollIntoView({behavior:'smooth',block:'center'});return}
   if(!d.evaluatee.trim()){toast(t('eEe'),1);document.querySelector('.eebox').scrollIntoView({behavior:'smooth',block:'center'});return}
   if(!d.date){toast(t('eDt'),1);return}
+  clearTimeout(autoT);   // 保存前の入力で予約された下書き保存を取り消す（保存後に古い日付だけの下書きが残らないように）
   let miss=getItems().filter(it=>{
     const we=d.works.find(x=>x.workId===it.workId);return !we||we.scores[it.aspectId]==null;
   });
@@ -237,6 +249,7 @@ function jumpWork(wid){
    ============================================================== */
 function startEdit(id){
   const rec=getAll().find(e=>e.id===id);if(!rec)return;
+  if(!editId)preEditDate=document.getElementById('fDate').value;   // 編集を終えたら、編集前に選んでいた評価日へ戻す
   editId=id;closeMo();
   const wids=(rec.works||[]).map(we=>we.workId).filter(wid=>workById(wid));
   if(!wids.length){toast(t('eImpCfg'),1);exitEdit();return}
@@ -261,10 +274,12 @@ function startEdit(id){
   window.scrollTo({top:0,behavior:'smooth'});dirty=false;updProg();
 }
 function cancelEdit(){if(dirty&&!confirm(t('cCEdit')))return;exitEdit();buildCards();clearForm()}
-function exitEdit(){editId=null;editEv=null;document.getElementById('editBar').classList.remove('show');document.getElementById('btnSave').textContent=t('btnSave')}
-function doReset(){if(!confirm(t('cReset')))return;clearForm();if(editId)exitEdit();toast(t('tReset'))}
+function exitEdit(){if(editId)document.getElementById('fDate').value=preEditDate||todayLocal();preEditDate=null;editId=null;editEv=null;document.getElementById('editBar').classList.remove('show');document.getElementById('btnSave').textContent=t('btnSave')}
+function doReset(){if(!confirm(t('cReset')))return;clearForm();if(editId)exitEdit();document.getElementById('fDate').value=todayLocal();renderRoster();toast(t('tReset'))}
+/* 評価日は評価者が選んだ日のまま（空の時だけ今日）。次の人へ進むたびに日付が変わると、同じ日の記録が2つの日付に分かれる */
 function clearForm(keepDraft){
-  document.getElementById('fDate').value=new Date().toISOString().split('T')[0];
+  clearTimeout(autoT);
+  const fd=document.getElementById('fDate');if(!fd.value)fd.value=todayLocal();
   ['fEe','fOv'].forEach(id=>document.getElementById(id).value='');
   document.querySelectorAll('.sb.sel,.crit-lv.sel').forEach(b=>b.classList.remove('sel'));
   document.querySelectorAll('.ec.scored,.ec.miss').forEach(c=>c.classList.remove('scored','miss'));
@@ -376,8 +391,7 @@ function renderRoster(){
   const box=document.getElementById('eeTabs'),note=document.getElementById('eeNote'),fbox=document.getElementById('eeFarms');
   const rs=getRoster(),ro=rs.list;
   const cur=document.getElementById('fEe').value.trim();
-  const date=document.getElementById('fDate').value;
-  const recs=getAll().filter(r=>r.date===date);
+  const recs=examRecs();
   const pr=new Map();ro.forEach(p=>pr.set(p,eeProgress(p,recs)));
   const isDone=p=>pr.get(p).complete;
   const sel=selEntry(ro);
@@ -422,13 +436,22 @@ function renderRoster(){
   const wn=document.getElementById('eeWarn');
   if(wn){const w=[rosterKeptEmpty?t('eRosterEmptyKept'):'',rosterWarnText(rs)].filter(Boolean).join(' ／ ');wn.textContent=w?'⚠ '+w:'';wn.hidden=!w}
 }
-/* その人の同じ日の記録にある作業（農場が空の記録=農場列の無い旧記録・名簿外は名前で数える） */
+/* 試験期間の記録（設定の「試験開始日」以降。未設定なら全部）。作業の済/残りは日付をまたいで数える（豚がいない作業は後日に回すため） */
+const EXAM_START_KEY='jitsugi_v2_exam_start';
+function examStart(){try{return localStorage.getItem(EXAM_START_KEY)||''}catch{return''}}
+function setExamStart(v){
+  v=/^\d{4}-\d{2}-\d{2}$/.test(v||'')?v:'';
+  try{v?localStorage.setItem(EXAM_START_KEY,v):localStorage.removeItem(EXAM_START_KEY)}catch{}
+  renderRoster();toast(v?t('tExamStart').replace('{d}',v):t('tExamStartAll'));
+}
+function examRecs(){const st=examStart();return getAll().filter(r=>!st||(r.date||'')>=st)}
+/* その人の試験期間の記録にある作業（農場が空の記録=農場列の無い旧記録・名簿外は名前で数える） */
 function doneWorksOf(p,recs){
   const s=new Set();
   recs.forEach(r=>{if(r.evaluatee===p.name&&(!r.farm||r.farm===p.farm))(r.works||[]).forEach(we=>s.add(we.workId))});
   return s;
 }
-/* 進み具合: 割り当てた作業のうち同じ日の記録にある作業の数。全部そろった時だけ完了
+/* 進み具合: 割り当てた作業のうち試験期間の記録にある作業の数。全部そろった時だけ完了
    作業名不明の作業は評価者が作業選択で補うので、記録にある作業の数が割り当ての数に届いた時に完了とみなす
    作業未設定の人は、記録が1つでもあれば完了（従来どおり） */
 function eeProgress(p,recs){
@@ -439,12 +462,11 @@ function eeProgress(p,recs){
   const done=dAssigned+Math.min(nu,extra);
   return{done,total,complete:done>=total,doneSet:ds};
 }
-/* 選択中の名簿の人の、今日すでに記録のある作業（編集中は出さない） */
+/* 選択中の名簿の人の、試験期間にすでに記録のある作業（編集中は出さない） */
 function curDoneWorks(){
   if(editId)return[];
   const p=selEntry(getRoster().list);if(!p)return[];
-  const date=document.getElementById('fDate').value;
-  return [...doneWorksOf(p,getAll().filter(r=>r.date===date))];
+  return [...doneWorksOf(p,examRecs())];
 }
 function scrollToEe(){
   const eb=document.querySelector('.eebox');if(!eb)return;
@@ -463,9 +485,8 @@ function selectEe(i){
   eeManualOpen=false;
   document.getElementById('fEe').value=p.name;
   try{localStorage.setItem(FARM_KEY,p.farm)}catch{}
-  // 同じ日に済んだ作業は外し、残りの作業だけを出す（全部済んでいる人を選び直した時は全作業＝やり直し）
-  const date=document.getElementById('fDate').value;
-  const ds=doneWorksOf(p,getAll().filter(r=>r.date===date));
+  // 試験期間に済んだ作業は外し、残りの作業だけを出す（前の日に途中保存した人も同じ。全部済んでいる人を選び直した時は全作業＝やり直し）
+  const ds=doneWorksOf(p,examRecs());
   const left=p.works.filter(w=>!ds.has(w));
   selWorks=(left.length?left:p.works).slice();saveSel();buildWorkSel();buildCards();
   const unk=p.unresolved&&p.unresolved.length;
@@ -523,4 +544,4 @@ function refreshSel(){
   cs.innerHTML=`<option value="">${t('selPh')}</option>`+opts;cs.value=cv;
 }
 
-let dirty=false,editId=null,editEv=null,autoT=null;
+let dirty=false,editId=null,editEv=null,autoT=null,preEditDate=null;

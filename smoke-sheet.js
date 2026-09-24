@@ -770,6 +770,125 @@ async function runAssign(devName) {
   await browser.close();
 }
 
+/* 評価日と日をまたぐ試験（日本時間で実測）: 9時前でも今日の日付・保存しても日付を保つ・後日に回した作業は翌日も「途中」・前日の下書きは日付を確認 */
+async function runDate(devName) {
+  console.log(`\n===== ${devName}（評価日・日をまたぐ試験 Asia/Tokyo） =====`);
+  const browser = await chromium.launch(process.env.PW_CHANNEL ? { channel: process.env.PW_CHANNEL } : {});
+  const ctx = await browser.newContext({ ...devices[devName], timezoneId: 'Asia/Tokyo' });
+  const page = await ctx.newPage();
+  const errors = [];
+  page.on('pageerror', e => errors.push(String(e)));
+  const dialogs = [];
+  let accept = true;
+  page.on('dialog', d => { if (d.type() === 'beforeunload') return d.accept(); dialogs.push(d.message()); accept ? d.accept() : d.dismiss(); });   // 閉じる時の「変更を破棄？」は数えない
+  const FA = 'テスト農場D';
+  const roster = [
+    { name: 'テスト 甲太', farm: FA, works: ['給餌', 'エサ調整'] },
+    { name: 'テスト 乙彦', farm: FA, works: ['給餌'] },
+    { name: 'テスト 丙助', farm: FA, works: ['除フン'] },
+  ];
+  await page.route(u => u.href.startsWith('https://script.google.com/'), async route => {
+    const req = route.request(), hdr = { 'access-control-allow-origin': '*' };
+    if (req.method() === 'GET') return route.fulfill({ status: 200, contentType: 'application/json', headers: hdr, body: JSON.stringify({ ok: true, roster }) });
+    const body = JSON.parse(req.postData());
+    return route.fulfill({ status: 200, contentType: 'application/json', headers: hdr, body: JSON.stringify({ ok: true, id: body.record && body.record.id }) });
+  });
+  const ee = name => page.locator('.eetab').filter({ has: page.locator('.eetab-nm', { hasText: new RegExp('^' + name + '$') }) });
+  const scoreWork = async (wid, s, n = 5) => { const ids = await page.locator(`#cards .ec[data-w="${wid}"]`).evaluateAll(els => els.map(e => e.id.slice(2))); for (const cid of ids.slice(0, n)) await page.locator(`.sb[data-id="${cid}"][data-s="${s}"]`).tap(); };
+  const recs = () => page.evaluate(() => JSON.parse(localStorage.getItem('jitsugi_v2_data') || '{"evaluations":[]}').evaluations);
+  const fDate = () => page.inputValue('#fDate');
+  const at = async iso => { await page.clock.setSystemTime(new Date(iso)); };
+
+  await page.clock.install({ time: new Date('2026-09-24T07:30:00+09:00') });
+  await page.goto(APP);
+  await page.evaluate(GAS => { localStorage.clear(); localStorage.setItem('jitsugi_v2_sheet_url', GAS); localStorage.setItem('jitsugi_v2_evaluator', 'テスト評価者'); }, GAS);
+  await page.reload(); await page.waitForTimeout(600);
+
+  console.log('[D1] 日本時間 7:30 に開いても評価日は今日（UTCの前日にならない）');
+  ok(`起動直後の評価日 ${await fDate()} = 2026-09-24`, await fDate() === '2026-09-24');
+  await ee('テスト 乙彦').tap(); await page.waitForTimeout(300);
+  await scoreWork('feeding-daily', 4);
+  await page.locator('#btnSave').tap(); await page.waitForTimeout(700);
+  let r = await recs();
+  ok('記録の日付は 2026-09-24', r.length === 1 && r[0].date === '2026-09-24');
+  ok(`保存後も評価日は 2026-09-24（${await fDate()}）`, await fDate() === '2026-09-24');
+  ok('保存した人は実施済み・農場の残り2人', await ee('テスト 乙彦').evaluate(e => e.classList.contains('done')) && await page.locator('.fchip.on').getAttribute('data-left') === '2');
+
+  console.log('[D2] 評価者が選んだ日付は、次の人を選んでも保存しても変わらない');
+  await page.fill('#fDate', '2026-09-23'); await page.dispatchEvent('#fDate', 'change');
+  await ee('テスト 丙助').tap(); await page.waitForTimeout(300);
+  ok('人を選んでも評価日は 09-23 のまま', await fDate() === '2026-09-23');
+  await scoreWork('dung-removal', 3);
+  await page.locator('#btnSave').tap(); await page.waitForTimeout(700);
+  r = await recs();
+  ok('記録は選んだ日付（09-23）・保存後も 09-23 のまま', r.find(x => x.evaluatee === 'テスト 丙助').date === '2026-09-23' && await fDate() === '2026-09-23');
+  // 前日の記録を編集して閉じる → 編集前に選んでいた日付に戻る
+  await page.fill('#fDate', '2026-09-24'); await page.dispatchEvent('#fDate', 'change');
+  await page.evaluate(id => startEdit(id), r.find(x => x.evaluatee === 'テスト 丙助').id); await page.waitForTimeout(200);
+  ok('編集中は記録の日付（09-23）', await fDate() === '2026-09-23');
+  await page.evaluate(() => cancelEdit()); await page.waitForTimeout(200);
+  ok('編集をやめると編集前の日付（09-24）に戻る', await fDate() === '2026-09-24');
+
+  console.log('[D3] 最後の採点から300ms以内に保存しても、保存後に下書きが残らない');
+  await ee('テスト 甲太').tap(); await page.waitForTimeout(300);
+  await scoreWork('feeding-daily', 4, 4);
+  const dn = dialogs.length;
+  // 最後の1枚を採点した直後（300ms以内）に保存 → 未採点のエサ調整は後日（途中保存の確認OK）
+  await page.evaluate(() => { const b = document.querySelectorAll('#cards .ec[data-w="feeding-daily"]')[4].querySelector('.sb[data-s="5"]'); b.click(); doSave(); });
+  await page.waitForTimeout(800);
+  ok('途中保存の確認が出て保存された', dialogs.length === dn + 1 && (await recs()).some(x => x.evaluatee === 'テスト 甲太' && x.works.map(w => w.workId).join() === 'feeding-daily'));
+  ok('保存後に下書きが書かれない', await page.evaluate(() => localStorage.getItem('jitsugi_v2_draft')) === null);
+  ok('甲太は「途中 1/2」', /途中 1\/2/.test(await ee('テスト 甲太').textContent()));
+
+  console.log('[D4] 翌日: 前日に後日へ回した作業は「途中」のまま・選ぶと残りの作業だけ');
+  await ee('テスト 丙助').tap(); await page.waitForTimeout(500);   // タブを押しただけ（採点0）で閉じる
+  await at('2026-09-25T10:00:00+09:00');
+  const d0 = dialogs.length;
+  await page.reload(); await page.waitForTimeout(600);
+  ok(`翌日の評価日は今日（${await fDate()}）`, await fDate() === '2026-09-25');
+  ok('タブを押しただけの下書きは復元しない（確認も出ない・人も選ばれない）', dialogs.length === d0 && await page.inputValue('#fEe') === '' && !/復元/.test(await page.locator('#toast').textContent()));
+  ok('前日に途中保存した甲太は翌日も「途中 1/2」', /途中 1\/2/.test(await ee('テスト 甲太').textContent()) && !(await ee('テスト 甲太').evaluate(e => e.classList.contains('done'))));
+  ok('前日に済んだ乙彦は翌日も実施済み・農場の残り1人', await ee('テスト 乙彦').evaluate(e => e.classList.contains('done')) && await page.locator('.fchip.on').getAttribute('data-left') === '1');
+  await ee('テスト 甲太').tap(); await page.waitForTimeout(300);
+  ok('甲太を選ぶと残りのエサ調整だけ（給餌は二重に出ない）', JSON.stringify(await page.evaluate(() => selWorks)) === '["feed-adjust"]');
+  await scoreWork('feed-adjust', 4);
+  await page.locator('#btnSave').tap(); await page.waitForTimeout(700);
+  ok('残りを保存すると実施済み（残り0人）', await ee('テスト 甲太').evaluate(e => e.classList.contains('done')) && await page.locator('.fchip.on').getAttribute('data-left') === '0');
+  ok('2日目の記録は 09-25', (await recs()).filter(x => x.evaluatee === 'テスト 甲太').map(x => x.date).sort().join() === '2026-09-24,2026-09-25');
+
+  console.log('[D5] 試験開始日: 前回の試験の記録を数えない');
+  await page.evaluate(() => setExamStart('2026-09-25')); await page.waitForTimeout(100);
+  ok('開始日 09-25 → 乙彦（09-24のみ）は未実施・甲太は「途中 1/2」', !(await ee('テスト 乙彦').evaluate(e => e.classList.contains('done'))) && /途中 1\/2/.test(await ee('テスト 甲太').textContent()));
+  await page.reload(); await page.waitForTimeout(600);
+  ok('開始日は再起動後も残る', await page.evaluate(() => examStart()) === '2026-09-25' && await page.locator('.fchip.on').getAttribute('data-left') === '3');
+  await page.evaluate(() => setExamStart('')); await page.waitForTimeout(100);
+  ok('空欄に戻すと全記録で数える', await page.locator('.fchip.on').getAttribute('data-left') === '0');
+
+  console.log('[D6] 前日の入力途中（採点あり）は日付を確認してから復元');
+  await at('2026-09-25T15:00:00+09:00');
+  await ee('テスト 丙助').tap(); await page.waitForTimeout(300);
+  await scoreWork('dung-removal', 2, 2); await page.waitForTimeout(500);
+  await at('2026-09-26T08:00:00+09:00');
+  accept = true; let d1 = dialogs.length;
+  await page.reload(); await page.waitForTimeout(600);
+  ok('確認文に前日の日付（9/25）', dialogs.length === d1 + 1 && /9\/25/.test(dialogs[d1]) && !/\{d\}/.test(dialogs[d1]));
+  ok('OK → 日付は今日（09-26）・採点と人は復元', await fDate() === '2026-09-26' && await page.inputValue('#fEe') === 'テスト 丙助' && await page.locator('#cards .ec.scored').count() === 2);
+  await page.evaluate(() => { const d = JSON.parse(localStorage.getItem('jitsugi_v2_draft')); d.date = '2026-09-25'; localStorage.setItem('jitsugi_v2_draft', JSON.stringify(d)); });
+  accept = false; d1 = dialogs.length;
+  await page.reload(); await page.waitForTimeout(600);
+  ok('キャンセル → 下書きの日付（09-25）のまま', dialogs.length === d1 + 1 && await fDate() === '2026-09-25' && await page.locator('#cards .ec.scored').count() === 2);
+  accept = true;
+  for (const l of [1, 2, 3]) {
+    await page.locator('.lsw button').nth(l).tap(); await page.waitForTimeout(100);
+    ok(`言語${l}: 試験開始日の見出し・説明が訳されている`, await page.evaluate(() => { const a = document.querySelector('[data-t="examStartLbl"]').textContent, b = document.querySelector('[data-t="examStartHint"]').textContent; return a && b && !/[ぁ-ん]/.test(a + b.replace(/受験者|農場共通/g, '')); }));
+  }
+  await page.locator('.lsw button').nth(0).tap();
+
+  ok('JSエラーなし(評価日)', errors.length === 0);
+  if (errors.length) console.log(errors.join('\n'));
+  await browser.close();
+}
+
 /* Service Worker: 電波が弱い（つながるが応答が返らない）時もキャッシュから即起動する（localhost で実際にSWを登録） */
 async function runSW() {
   console.log('\n===== Service Worker（応答が返らない回線で起動） =====');
@@ -1036,11 +1155,13 @@ async function runA11y(devName) {
 
 (async () => {
   if (process.env.ONLY_A11Y) { for (const d of ['iPhone SE', 'Pixel 7']) await runA11y(d); console.log(`\n合計: OK ${pass} / NG ${fail}`); process.exit(fail ? 1 : 0); }
+  if (process.env.ONLY_DATE) { for (const d of ['iPhone 13', 'Pixel 7']) await runDate(d); console.log(`\n合計: OK ${pass} / NG ${fail}`); process.exit(fail ? 1 : 0); }
   if (process.env.ONLY_I18N) { await runI18n('iPhone SE'); console.log(`\n合計: OK ${pass} / NG ${fail}`); process.exit(fail ? 1 : 0); }
   if (!process.env.ONLY_REL && !process.env.ONLY_ASSIGN) for (const d of ['iPhone SE', 'iPhone 13', 'Pixel 7']) await run(d);
   if (!process.env.ONLY_REL && !process.env.ONLY_ASSIGN) await runSlow('iPhone SE');
   if (!process.env.ONLY_ASSIGN) await runRel('iPhone 13');
   for (const d of ['iPhone 13', 'iPhone SE']) await runAssign(d);
+  if (!process.env.ONLY_REL && !process.env.ONLY_ASSIGN) for (const d of ['iPhone 13', 'Pixel 7']) await runDate(d);
   if (!process.env.ONLY_REL && !process.env.ONLY_ASSIGN) for (const d of ['iPhone SE', 'Pixel 7']) await runI18n(d);
   if (!process.env.ONLY_REL && !process.env.ONLY_ASSIGN) for (const d of ['iPhone SE', 'Pixel 7']) await runA11y(d);
   await runSW();

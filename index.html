@@ -146,6 +146,11 @@
     <div class="mt12"><button class="b b1 b-full" onclick="saveSheetUrl()" data-t="btnSaveUrl">送信先を保存して接続確認</button></div>
   </div>
   <div class="cfg-blk">
+    <label for="cfgExamStart" data-t="examStartLbl">試験開始日</label>
+    <input type="date" id="cfgExamStart" onchange="setExamStart(this.value)">
+    <p class="cfg-hint mt12" data-t="examStartHint">この日以降の記録で「実施済・途中・残り」を数えます（2日以上に分けた試験も続きから）。前回の試験の記録が端末に残っている時に設定してください。空欄＝端末の全記録。</p>
+  </div>
+  <div class="cfg-blk">
     <p data-t="backupHint" class="cfg-hint">端末の故障や誤消去に備えて、全評価データを1ファイルに保存できます。復元では既存の記録は残り、新しい記録だけが追加されます。</p>
     <button class="b b4 b-full" onclick="exportAll()" data-t="expAll">⬇ 全データをバックアップ</button>
     <div class="mt12">
