@@ -116,14 +116,35 @@ async function fetchRoster(){
       }
       list.push(e);
     });
+    // シートの記録の要約（ほかの端末で済んだ人・作業）。古い GAS は返さない＝null（この端末の記録だけで数える）
+    const done=parseSheetDone(j.done);
     const prev=getRoster();
     if(!list.length&&prev.list.length){
-      try{localStorage.setItem(ROSTER_KEY,JSON.stringify({...prev,gas,url:u}))}catch{}
+      try{localStorage.setItem(ROSTER_KEY,JSON.stringify({...prev,gas,url:u,done}))}catch{}
       return{ok:true,list:prev.list,unknown:prev.unknown||[],dup:prev.dup||[],cdup:prev.cdup||[],corphan:prev.corphan||[],fvar:prev.fvar||[],gas,keptEmpty:true};
     }
-    try{localStorage.setItem(ROSTER_KEY,JSON.stringify({list,at:new Date().toISOString(),unknown,dup,cdup,corphan,fvar,gas,url:u}))}catch{}
+    try{localStorage.setItem(ROSTER_KEY,JSON.stringify({list,at:new Date().toISOString(),unknown,dup,cdup,corphan,fvar,gas,url:u,done}))}catch{}
     return{ok:true,list,unknown,dup,cdup,corphan,fvar,gas};
   }catch(e){return{ok:false,reason:'bad',gas:jg}}
+}
+/* GAS の done（[{id,date,name,farm,works:[作業名]}]）→ 記録の形 [{id,date,evaluatee,farm,works:[{workId}],sheet:true}]（作業名はカタログのIDへ。解決できない作業は数えない）。
+   配列でなければ null（シートが要約を返さない＝古い GAS） */
+function parseSheetDone(a){
+  if(!Array.isArray(a))return null;
+  const out=[];
+  a.slice(0,20000).forEach(o=>{
+    if(!o||typeof o!=='object')return;
+    const id=sanitizeId(String(o.id||'')),date=String(o.date||''),name=String(o.name||'').trim();
+    if(!id||!name||!/^\d{4}-\d{2}-\d{2}$/.test(date))return;
+    const ws=[];(Array.isArray(o.works)?o.works:[]).forEach(v=>{const w=resolveWork(v);if(w&&!ws.some(x=>x.workId===w))ws.push({workId:w})});
+    if(ws.length)out.push({id,date,evaluatee:name,farm:String(o.farm||'').trim(),works:ws,sheet:true});
+  });
+  return out;
+}
+/* この端末で消した記録を、名簿と一緒に取ったシートの要約からも外す（次に名簿を取るまで「済」に数えない） */
+function dropSheetDone(id){
+  try{const r=JSON.parse(localStorage.getItem(ROSTER_KEY));if(!r||!Array.isArray(r.done))return;
+    r.done=r.done.filter(x=>x.id!==id);localStorage.setItem(ROSTER_KEY,JSON.stringify(r))}catch{}
 }
 /* 農場名のゆれ: ps（人の行）の farm を書き換えてそろえ、[{farm:ゆれた表記, n:人数, like:そろえた先/似た農場}] を返す
    ① 全角半角・空白だけの違い（normFarm が同じ）→ 人数の多い表記（同数なら先の行）に統一
@@ -250,7 +271,7 @@ async function syncPending(silent){
   const loud=syncLoud;syncLoud=false;
   if(nFail&&(loud||ok)&&delOld&&[...failed].some(k=>k.startsWith('del:')&&delLeft.has(k)))toast(t('eDelOld'),1);
   else if(nFail&&(loud||ok))toast(t('tSendFail')+' ('+nFail+')',1);
-  else if(ok&&!nFail)toast(t('tSent'));
+  else if(ok&&!nFail&&!(typeof toastHeld==='function'&&toastHeld()))toast(t('tSent'));   // 読ませたい知らせ（日付を今日に直した等）は消さない
   if(document.getElementById('pgHi').classList.contains('on'))drawHist();
   // 送信中に新しい版が入っていた（前面に戻った直後の再送と重なった）→ 送信が終わって入力途中でなければ読み込む（結果の表示を見せてから）
   if(typeof maybeReloadApp==='function'&&typeof updReady!=='undefined'&&updReady)setTimeout(maybeReloadApp,1500);

@@ -54,6 +54,10 @@
 .wnav-c.done{border-color:#c9d0cd;background:#dde2e0;color:#56625d;cursor:default}
 .wnav-c.done .wnav-ct{color:#fff;background:#56625d}
 .wnav-c:focus-visible{outline:3px solid #f0a500;outline-offset:2px}
+/* やり直し（同じ試験期間に済んでいる作業を選び直した）: 前回の日付と点 */
+.wnav-c.redo{border-color:#b86e00}
+.wnav-prev{flex:none;font-size:.72rem;font-weight:700;color:#7a4a00;white-space:nowrap}
+.wsub-prev{display:inline-block;font-size:.78rem;font-weight:700;color:#7a4a00;background:#fff1d6;border-radius:6px;padding:0 6px}
 .wchk-dn{flex:none;margin-left:auto;font-size:.72rem;font-weight:800;color:#fff;background:#56625d;border-radius:999px;padding:1px 8px}
 .eetab.part{border-color:#f0a500;background:#fff8ea}
 .eetab-pt{display:inline-block;margin-right:2px;padding:0 6px;border-radius:8px;background:#f0a500;color:#3d2400;font-weight:800}
@@ -150,6 +154,7 @@ details.wsel[open]>summary h3::before{content:'▾ '}
 .eecur{margin:0 2px 10px;padding:8px 12px;border-radius:10px;background:rgba(23,120,99,.08);border:1px solid rgba(23,120,99,.3);color:#0f5a49;font-size:.9rem;font-weight:700;line-height:1.4;overflow-wrap:anywhere}
 .eecur[hidden]{display:none}
 .eecur b{font-weight:800}
+.eecur-redo{display:inline-block;margin-left:4px;padding:1px 8px;border-radius:999px;background:#fff1d6;color:#7a4a00;border:1px solid #e0a54a;font-size:.8rem;font-weight:800;white-space:nowrap}
 
 /* 未採点の印（保存を押した時に見つかった漏れ）: 点を付けるまで残す。色だけに頼らず「⚠ 未採点」の文字と太い赤枠 */
 .miss-bd{display:none}

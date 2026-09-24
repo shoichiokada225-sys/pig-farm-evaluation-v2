@@ -29,11 +29,17 @@ function updSelCnt(){
    採点カード生成（選択中の全作業×各5種目）
    ============================================================== */
 /* 作業の目次（作業ごとの x/5・タップでその作業へ）＋今日すでに済んだ作業は「済」で外して見せる。出さない時は '' */
+/* 選択中の作業のうち、同じ試験期間にすでに済んでいる作業（やり直し・作業選択で足した時）の「✓済（前回の点）」。済でなければ '' */
+function prevDoneTx(wid){
+  const pv=typeof prevWork==='function'?prevWork(wid):null;if(!pv)return'';
+  return '✓ '+t('doneMark')+'（'+t('prevLbl')+' '+mdOf(pv.date)+(pv.avg!=null?' · '+(Math.round(pv.avg*10)/10).toFixed(1):'')+'）';
+}
 function wnavHtml(){
-  const dn=(typeof curDoneWorks==='function'?curDoneWorks():[]).filter(id=>!selWorks.includes(id)&&workById(id));
+  const all=typeof curDoneWorks==='function'?curDoneWorks():[];
+  const dn=all.filter(id=>!selWorks.includes(id)&&workById(id));
   if(!(selWorks.length>1||dn.length))return'';
   return `<nav class="wnav" id="wnav" aria-label="${esc(t('wnavLbl'))}">`+
-    selWorks.filter(workById).map(wid=>{const w=workById(wid);return `<button type="button" class="wnav-c" data-w="${esc(wid)}" title="${esc(loc(w,'name'))}" onclick="jumpWork(this.dataset.w)"><span class="wnav-nm">${esc(loc(w,'name'))}</span><span class="wnav-ct" data-wct="${esc(wid)}">0/${workItems(wid).length}</span></button>`}).join('')+
+    selWorks.filter(workById).map(wid=>{const w=workById(wid),pv=all.includes(wid)?prevDoneTx(wid):'';return `<button type="button" class="wnav-c${pv?' redo':''}" data-w="${esc(wid)}" title="${esc(loc(w,'name'))}" onclick="jumpWork(this.dataset.w)"><span class="wnav-nm">${esc(loc(w,'name'))}</span><span class="wnav-ct" data-wct="${esc(wid)}">0/${workItems(wid).length}</span>${pv?`<span class="wnav-prev">${esc(pv)}</span>`:''}</button>`}).join('')+
     dn.map(wid=>`<span class="wnav-c done" data-w="${esc(wid)}" title="${esc(loc(workById(wid),'name'))}"><span class="wnav-nm">${esc(loc(workById(wid),'name'))}</span><span class="wnav-ct">✓ ${esc(t('doneMark'))}</span></span>`).join('')+
     `</nav>`;
 }
@@ -47,7 +53,7 @@ function wsecHtml(wid,ci){
       <span class="wshd-nm" title="${esc(loc(w,'name'))}">${esc(loc(w,'name'))}</span>
       <span class="wshd-ct" data-wct="${esc(w.id)}">0/${workItems(wid).length}</span>
     </div>
-    <div class="wsub"><span class="wsub-nm">${esc(loc(w,'name'))} ${w.category?`<span class="wsub-cat">· ${esc(catLabel(w.category))}</span>`:''}</span>${editId?'':`<button type="button" class="wshd-skip" data-w="${esc(w.id)}" onclick="skipWork(this.dataset.w)">${esc(t('skipWork'))}</button>`}</div>`;
+    <div class="wsub"><span class="wsub-nm">${esc(loc(w,'name'))} ${w.category?`<span class="wsub-cat">· ${esc(catLabel(w.category))}</span>`:''}${(()=>{const pv=typeof curDoneWorks==='function'&&curDoneWorks().includes(wid)?prevDoneTx(wid):'';return pv?` <span class="wsub-prev">${esc(pv)}</span>`:''})()}</span>${editId?'':`<button type="button" class="wshd-skip" data-w="${esc(w.id)}" onclick="skipWork(this.dataset.w)">${esc(t('skipWork'))}</button>`}</div>`;
   if(w.gyomu)h+=`<a class="man-link" href="https://genba-manual.vercel.app/#g_${esc(w.gyomu)}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1zm0 13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"/></svg>${t('manualLink')}</a>`;
   workItems(wid).forEach((it,ii)=>{
     h+=`<div class="cd ec" id="c-${it.id}" data-w="${esc(wid)}" style="animation-delay:${Math.min(ci.n++,8)*0.03}s">
@@ -238,6 +244,7 @@ function doDel(id){
   const onSheet=mayBeOnSheet(r)||syncing;   // 送信中の記録は、この後シートに届くかもしれない
   if(!confirm(onSheet?t('cDelSheet').replace('{id}',r.id):t('cDel')))return;
   if(onSheet)queueDel(r);
+  if(typeof dropSheetDone==='function')dropSheetDone(id);
   putAll(getAll().filter(e=>e.id!==id));closeMo();drawHist();refreshSel();updSyncUI();renderRoster();
   toast(onSheet?t('tDelQueued'):t('tDel'));
   if(onSheet)syncPending();

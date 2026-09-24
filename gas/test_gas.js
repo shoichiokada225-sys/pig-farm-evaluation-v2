@@ -35,7 +35,7 @@ global.PropertiesService = { getDocumentProperties: () => ({ getProperty: k => (
 /* Sheets の「複製」＝中身も見出しも同じで sheetId だけ新しいタブ */
 const dupSheet = (from, to) => { const s2 = ss.insertSheet(to); sheets[from].d.forEach((row, i) => { s2.d[i] = row.slice(); }); return s2; };
 global.LockService = { getScriptLock: () => ({ tryLock: () => true, releaseLock() {} }) };
-global.Utilities = { formatDate: () => '2026-09-23 10:00:00' };
+global.Utilities = { formatDate: (d, tz, f) => f === 'yyyy-MM-dd' ? new Date(d.getTime() + 9 * 3600e3).toISOString().slice(0, 10) : '2026-09-23 10:00:00' };
 global.ContentService = { MimeType: { JSON: 'j' }, createTextOutput: s => ({ s, setMimeType() { return this; } }) };
 const code = fs.readFileSync(__dirname + '/Code.gs', 'utf8');
 const SEED = [['那須農場', 'テスト 一郎', '給餌'], ['大田原農場', 'テスト 二郎']];
@@ -179,6 +179,24 @@ const shC = sheets['テスト評価者'];
 ok('契約: toPayload の記録を doPost が受け付ける', r.ok === true && r.id === 'fx-1' && r.rows === fw.aspects.length && shC && shC.d.length === 1 + fw.aspects.length);
 ok('契約: 行に被評価者・農場・日本語のカテゴリ/作業/種目・点', shC.d[1][3] === 'テスト 契約' && shC.d[1][4] === 'テスト農場A' && shC.d[1][5] === '飼養管理' && shC.d[1][6] === fw.name &&
   shC.d.slice(1).map(x => x[7]).join() === fw.aspects.map(a => a.name).join() && shC.d.slice(1).map(x => x[8]).join() === '1,2,3,4,5' && shC.d[1][9] === "'=cmd" && shC.d[1][11] === 3);
+// Z19-3: 名簿の応答に評価者タブの記録の要約（ほかの端末で済んだ人・作業）。点数・コメント・評価者名は出さない
+const fw2 = APP.WORKDATA_V2.works.find(w => w.id === 'feed-adjust');
+post(APP.submitReq({ ...appRec, id: 'fx-2', evaluator: 'テスト評価者B', evaluatee: 'テスト 別端末', farm: 'テスト農場B', date: '2026-09-25',
+  works: [fw, fw2].map(w => ({ workId: w.id, workName: w.name, category: w.category, scores: Object.fromEntries(w.aspects.map(a => [a.id, 4])), comments: {} })) }));
+sheets['テスト評価者B'].d.push(['fx-3', new Date('2026-09-26T00:00:00+09:00'), 'テスト評価者B', 'テスト 日付型', '', '飼養管理', fw.name, fw.aspects[0].name, 3, '', 3, 3, '', '']);   // 評価日が日付型に変わったセル
+ss.insertSheet('控え').getRange(1, 1, 2, 14).setValues([sheets['テスト評価者'].d[0].slice(), ['fx-9', '2026-09-25', 'x', 'テスト 控え', '', '', fw.name, '', 3, '', 3, 3, '', '']]);   // 台帳に無いタブは数えない
+let roD = JSON.parse(G.doGet({ parameter: { action: 'roster' } }).s);
+const dOf = id => (roD.done || []).find(x => x.id === id);
+ok('要約: roster に done 配列・capabilities に roster.done', Array.isArray(roD.done) && roD.capabilities.includes('roster.done'));
+ok('要約: 記録ごとに 日付・被評価者・農場・作業名（重複なし）', dOf('fx-1') && dOf('fx-1').date === '2026-09-24' && dOf('fx-1').name === 'テスト 契約' && dOf('fx-1').farm === 'テスト農場A' && dOf('fx-1').works.join() === fw.name
+  && dOf('fx-2') && dOf('fx-2').works.join() === [fw.name, fw2.name].join() && dOf('fx-2').date === '2026-09-25');
+ok('要約: 日付型のセルも YYYY-MM-DD', dOf('fx-3') && dOf('fx-3').date === '2026-09-26');
+ok('要約: 点数・コメント・評価者名・所感は含まない', Array.isArray(roD.done) && !/テスト評価者|全体の所感|=cmd/.test(JSON.stringify(roD.done)) && roD.done.every(x => Object.keys(x).sort().join() === 'date,farm,id,name,works'));
+ok('要約: 台帳に無いタブ（控え）は数えない', !dOf('fx-9'));
+{ const orig = sheets['テスト評価者B'].getRange; sheets['テスト評価者B'].getRange = () => { throw new Error('boom'); };
+  roD = JSON.parse(G.doGet({ parameter: { action: 'roster' } }).s); sheets['テスト評価者B'].getRange = orig;
+  ok('要約が読めなくても名簿は返す（done を付けない）', roD.ok === true && Array.isArray(roD.roster) && !('done' in roD)); }
+post(APP.deleteReq({ id: 'fx-2' })); sheets['テスト評価者B'].d.splice(1); delete sheets['控え'];
 r = post(APP.deleteReq({ id: 'fx-1', evaluator: 'テスト評価者' }));
 ok('契約: deleteReq を doPost が受け付け行が消える', r.ok === true && r.id === 'fx-1' && r.deleted === fw.aspects.length && shC.d.length === 1);
 ok('契約: 知らない操作は unknown action（アプリは古い GAS と判定）', (r = post({ action: 'rename', id: 'x' })).ok === false && r.error === 'unknown action' && APP.isUnsupportedOp(r) && APP.isUnsupportedOp({ ok: false, error: 'bad request' }));

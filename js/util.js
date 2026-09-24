@@ -3,10 +3,13 @@
    ユーティリティ
    ============================================================== */
 /* act={label,fn}: トーストに押せるボタン（「元に戻す」等）を付ける。表示は長め（6秒） */
-function toast(msg,err,act){const el=document.getElementById('toast');el.textContent=msg;el.classList.toggle('err',!!err);el.classList.toggle('act',!!act);
+/* hold（ms）: 長めに出し、その間は裏の「送信済み」で上書きしない（toastHeld で確かめる）＝読む前に消さない */
+function toast(msg,err,act,hold){
+  toast._holdTo=hold?Date.now()+hold:0;
+  const el=document.getElementById('toast');el.textContent=msg;el.classList.toggle('err',!!err);el.classList.toggle('act',!!act);
   if(act){const b=document.createElement('button');b.type='button';b.className='toast-act';b.textContent=act.label;
     b.onclick=()=>{clearTimeout(toast._t);el.classList.remove('show','act');act.fn()};el.appendChild(b)}
-  el.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(()=>el.classList.remove('show','act'),act?6000:err?4500:2500)}
+  el.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(()=>el.classList.remove('show','act'),Math.max(hold||0,act?6000:err?4500:2500))}
 /* 端末のローカル日付 YYYY-MM-DD（toISOString はUTCなので日本時間9:00前は前日になる） */
 function todayLocal(d){d=d||new Date();const p=n=>String(n).padStart(2,'0');return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())}
 function esc(s){if(!s)return'';return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
@@ -17,3 +20,4 @@ function csvCell(v){
   if(/^[=+\-@\t\r]/.test(s))s="'"+s;   // =HYPERLINK(...) 等がExcelで実行されるのを防ぐ
   return '"'+s.replace(/"/g,'""')+'"';
 }
+function toastHeld(){return toast._holdTo>Date.now()}

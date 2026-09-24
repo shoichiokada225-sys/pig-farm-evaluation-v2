@@ -5,6 +5,8 @@
    - GET  ?action=roster  → 「受験者」タブの 農場・被評価者・その人に用意した作業（見出し「作業1」〜「作業N」の列だけ）・旧名 を返す
      （「受験者」タブが無い時は ok:false, error:'no roster sheet'。空のタブは roster:[]）
      （被評価者名が「（農場共通）」の行＝その農場で作業を個別に決めていない人に使う作業）
+     （done: 評価者タブの記録の要約 [{id, date, name, farm, works:[作業名]}]＝ほかの端末で済んだ人・作業をアプリが数える。
+       点数・コメント・評価者名は返さない（名簿と同じく認証なしの GET なので、名簿より多くを出さない）。読めなかった時は done を付けない）
    - GET  ?action=ping    → 稼働確認（version=CODE_VERSION・capabilities=API_CAPABILITIES を返す。roster の応答にも付ける）
    - POST {action:'submit', record}  → 評価者名のタブに 1種目=1行 で書き込む（記録IDで上書き＝再送・編集しても重複しない）
    - POST {action:'delete', id}      → その記録IDの行を全ての評価者タブから消す（アプリで削除した記録。無ければ deleted:0 で ok＝再送しても安全）
@@ -12,9 +14,9 @@
    - setup() を一度エディタで実行 → 「受験者」「作業一覧」「農場一覧」タブと、作業・農場のプルダウンを作る
      何度実行しても受験者タブの行・農場一覧（管理者が直した分）は消さない。作業一覧だけ作り直す */
 
-const CODE_VERSION = '2026-09-24d';
+const CODE_VERSION = '2026-09-24e';
 /* アプリはこれを見て「シート側が古い（旧名・削除が使えない）」を警告する（js/contract.js の GAS_REQUIRED_CAPS） */
-const API_CAPABILITIES = ['roster', 'roster.aliases', 'submit', 'delete'];
+const API_CAPABILITIES = ['roster', 'roster.aliases', 'roster.done', 'submit', 'delete'];
 const ROSTER_SHEET = '受験者';
 const WORKS_SHEET = '作業一覧';
 const FARMS_SHEET = '農場一覧';
@@ -97,7 +99,9 @@ function doGet(e) {
     // 受験者タブが無い（名前の変更・取り違え）のと、タブはあるが空なのを区別する（アプリは前回の名簿を残す）
     const roster = readRoster_();
     if (!roster) return json_({ ok: false, version: CODE_VERSION, capabilities: API_CAPABILITIES, error: 'no roster sheet' });
-    return json_({ ok: true, version: CODE_VERSION, capabilities: API_CAPABILITIES, roster: roster });
+    const res = { ok: true, version: CODE_VERSION, capabilities: API_CAPABILITIES, roster: roster };
+    try { res.done = readDone_(); } catch (err) { /* 要約が読めなくても名簿は返す（アプリはこの端末の記録だけで数える） */ }
+    return json_(res);
   }
   return json_({ ok: true, version: CODE_VERSION, capabilities: API_CAPABILITIES });
 }
@@ -161,6 +165,36 @@ function readRoster_() {
     out.push(o);
   });
   return out;
+}
+
+/* 評価者タブ（台帳に載ったタブ）の記録を記録IDごとに要約する＝どの端末で採点しても「済・途中・残り」を同じに数える（Z19-3）。
+   返すのは 記録ID・評価日・被評価者・農場・作業名だけ（点数・コメント・所感・評価者名は返さない） */
+function ymd_(v) {
+  if (v instanceof Date) return Utilities.formatDate(v, 'Asia/Tokyo', 'yyyy-MM-dd');
+  const m = /^(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})/.exec(String(v || '').replace(/^'/, '').trim());
+  return m ? m[1] + '-' + ('0' + m[2]).slice(-2) + '-' + ('0' + m[3]).slice(-2) : '';
+}
+function readDone_() {
+  const ss = SpreadsheetApp.getActive();
+  const ids = evalTabIds_(ss), byId = {}, out = [];
+  ss.getSheets().forEach(sh => {
+    const nm = sh.getName();
+    if (isReserved_(nm) || sh.getLastRow() < 2) return;
+    if (ids.indexOf(String(sh.getSheetId())) < 0) return;
+    if (String(sh.getRange(1, 1).getValues()[0][0]) !== HEAD[0]) return;
+    const rows = sh.getRange(2, 1, sh.getLastRow() - 1, HEAD.length).getValues();
+    rows.forEach(r => {
+      const id = String(r[0] || '').trim(), wn = String(r[6] || '').replace(/^'/, '').trim();
+      if (!id || !wn) return;
+      let o = byId[id];
+      if (!o) {
+        o = byId[id] = { id: id, date: ymd_(r[1]), name: String(r[3] || '').replace(/^'/, '').trim(), farm: String(r[4] || '').replace(/^'/, '').trim(), works: [] };
+        out.push(o);
+      }
+      if (o.works.indexOf(wn) < 0) o.works.push(wn);
+    });
+  });
+  return out.filter(o => o.name && o.date);
 }
 
 /* シート名に使えない文字を置換・予約タブ名と衝突させない */
