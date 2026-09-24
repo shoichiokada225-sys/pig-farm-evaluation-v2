@@ -90,9 +90,13 @@ function missNext(){
    ============================================================== */
 function toggleWork(id,on){
   if(editId){toast(t('editingBanner'),1);buildWorkSel();return}
-  if(on){if(!selWorks.includes(id))selWorks.push(id)}
+  const had=selWorks.includes(id);
+  if(on){if(!had)selWorks.push(id)}
   else selWorks=selWorks.filter(x=>x!==id);
-  saveSel();saveSt();buildWorkSel();buildCards();restoreSt();onCh();
+  // その作業の区切りだけを足す/外す（ほかのカードは作り直さない＝開いた評価基準・入力中のコメント・点数はそのまま）
+  saveSel();buildWorkSel();
+  if(on&&!had)addWorkSec(id);else if(!on&&had)removeWorkSec(id);
+  onCh();
 }
 function clearWorks(){
   if(!selWorks.length)return;
@@ -230,7 +234,7 @@ function skipWork(wid){
 function unskipWork(wid,idx,snap,who){
   if(editId||selWorks.includes(wid)||document.getElementById('fEe').value!==who)return;
   selWorks.splice(Math.max(0,Math.min(idx,selWorks.length)),0,wid);
-  saveSel();saveSt();buildWorkSel();buildCards();restoreSt();
+  saveSel();buildWorkSel();addWorkSec(wid);
   if(snap)workItems(wid).forEach(it=>{
     const sc=snap.scores[it.aspectId];if(sc)setScoreUI(it.id,sc);
     const ta=document.querySelector('textarea[data-cid="'+it.id+'"]');if(ta&&snap.comments[it.aspectId])ta.value=snap.comments[it.aspectId];
@@ -400,7 +404,18 @@ function selectFarm(f){
   eeQuery='';document.getElementById('eeFind').value='';
   renderRoster();
 }
+/* 名簿の枠（#cards より上）の作り直しで、下で採点中の評価者の画面が跳ねないようにする。
+   iOS Safari はスクロールアンカリングが無いので自前で: 基準（#eeCur か #cards）の位置の差を打ち消す。
+   枠が画面の上に隠れている（＝評価者が下で採点中）時だけ補正する */
 function renderRoster(){
+  const eb=document.querySelector('.eebox'),ec0=document.getElementById('eeCur');
+  const anc=()=>ec0&&!ec0.hidden?ec0:document.getElementById('cards');
+  const below=!!eb&&eb.getBoundingClientRect().bottom<(typeof stkH==='function'?stkH():0),a0=below?anc():null,y0=a0?a0.getBoundingClientRect().top:0;
+  renderRosterBody();
+  if(a0){const a1=anc(),d=(a1===a0?a1.getBoundingClientRect().top-y0:0);if(Math.abs(d)>=0.5)window.scrollBy(0,d)}
+}
+let _chipCentered=null;   // 最後に中央へ寄せた農場（同じ農場のままならユーザーが横にスクロールした位置を戻さない）
+function renderRosterBody(){
   const box=document.getElementById('eeTabs'),note=document.getElementById('eeNote'),fbox=document.getElementById('eeFarms');
   const rs=getRoster(),ro=rs.list;
   const cur=curEe.name;
@@ -410,13 +425,18 @@ function renderRoster(){
   const sel=selEntry(ro);
   const fs=rosterFarms(ro),farm=curFarm(ro);
   const showF=fs.length>1||(fs.length===1&&fs[0]);
-  fbox.innerHTML=showF?fs.map(f=>{
+  const fh=showF?fs.map(f=>{
     const ps=ro.filter(p=>p.farm===f),left=ps.filter(p=>!isDone(p)).length,on=f===farm;
     return `<button type="button" class="fchip${on?' on':''}" aria-pressed="${on}" onclick="selectFarm(this.dataset.f)" data-f="${esc(f)}" data-left="${left}" data-n="${ps.length}">`+
       `${esc(farmDisp(f))}<span class="fchip-ct${left?'':' zero'}">${left?esc(t('leftN').replace('{n}',left)):'✓'}</span></button>`;
   }).join(''):'';
+  // 同じ内容なら置き換えない（押している最中のチップ・横スクロールの位置を壊さない）
+  const firstChips=!fbox.querySelector('.fchip');
+  if(fbox._fh!==fh||!fbox.firstChild&&fh){fbox.innerHTML=fh;fbox._fh=fh}
   const onChip=fbox.querySelector('.fchip.on');   // 選択中の農場を横スクロールの中央へ（ページは縦に動かさない）
-  if(onChip)fbox.scrollLeft=Math.max(0,onChip.offsetLeft-(fbox.clientWidth-onChip.offsetWidth)/2);
+  // 中央へ寄せるのは、チップを初めて作った時と選択中の農場が変わった時だけ（名簿の取得完了・検索の入力のたびに戻さない）
+  if(onChip&&(firstChips||_chipCentered!==farm))fbox.scrollLeft=Math.max(0,onChip.offsetLeft-(fbox.clientWidth-onChip.offsetWidth)/2);
+  _chipCentered=onChip?farm:null;
   const ps=[];ro.forEach((p,i)=>{if(!showF||p.farm===farm)ps.push(i)});
   const findOn=ps.length>8;                      // 8名を超える農場は名前で絞り込めるように
   document.getElementById('eeFindBox').hidden=!findOn;
@@ -498,7 +518,7 @@ function selectEe(i){
   // 試験期間に済んだ作業は外し、残りの作業だけを出す（前の日に途中保存した人も同じ。全部済んでいる人を選び直した時は全作業＝やり直し）
   const ds=doneWorksOf(p,examRecs(),ro);
   const left=p.works.filter(w=>!ds.has(w));
-  selWorks=(left.length?left:p.works).slice();saveSel();buildWorkSel();buildCards();
+  selWorks=(left.length?left:p.works).slice();saveSel();buildWorkSel();buildCards(true);   // 人を選んだ最初の構築だけフェード
   const unk=p.unresolved&&p.unresolved.length;
   document.getElementById('wselBox').open=!selWorks.length||!!unk;   // 作業名不明の人は作業選択を開いたまま（評価者が補う）
   renderRoster();onCh();

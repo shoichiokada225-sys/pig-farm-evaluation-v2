@@ -32,7 +32,8 @@
 /* 貼り付く見出しは常に1行（vi/id の長い作業名でも高さを増やさない＝採点できる範囲を削らない）。全文と「今回は実施しない」は直下の .wsub（貼り付かない） */
 .wshd{position:sticky;top:var(--stk,96px);z-index:80;display:flex;flex-wrap:nowrap;align-items:center;gap:6px 10px;margin:22px 2px 10px;padding:8px 10px 8px 14px;border-radius:10px;background:var(--brand,#177863);color:#fff;box-shadow:0 2px 8px rgba(10,66,56,.25)}
 .wsec:first-child>.wshd,.wnav+.wsec>.wshd{margin-top:6px}
-#cards .wsec>.cd{animation:cdin .3s ease-out backwards}
+/* カードのフェードは人を選んだ最初の構築だけ（#cards.anim は buildCards(true) が付けて1回で外す）。作業の追加/外し・言語切替ではちらつかせない */
+#cards.anim .wsec>.cd{animation:cdin .3s ease-out backwards}
 .wshd-ct{font-size:.8rem;font-weight:800;background:#fff;color:#0f5a49;border-radius:999px;padding:2px 9px;font-variant-numeric:tabular-nums;white-space:nowrap}
 .wshd-ct.full{background:#e3f5ec}
 .wsub{display:flex;align-items:flex-start;gap:8px;margin:0 2px 12px;padding:0 4px}

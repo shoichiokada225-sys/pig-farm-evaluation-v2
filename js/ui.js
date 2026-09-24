@@ -28,34 +28,29 @@ function updSelCnt(){
 /* ==============================================================
    採点カード生成（選択中の全作業×各5種目）
    ============================================================== */
-function buildCards(){
-  saveSt();
-  const el=document.getElementById('cards');
-  if(!selWorks.length){
-    el.innerHTML=`<div class="pickwork"><svg class="pw-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4a3 3 0 0 1 6 0h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1zm3-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zM8 10h8v2H8zm0 4h5v2H8z"/></svg><strong>${t('selWorksTitle')}</strong><br>${t('selWorksHint')}</div>`;
-    updProg();return;
-  }
-  let h='',ci=0;
-  // 作業の目次（作業ごとの x/5・タップでその作業へ）＋今日すでに済んだ作業は「済」で外して見せる
+/* 作業の目次（作業ごとの x/5・タップでその作業へ）＋今日すでに済んだ作業は「済」で外して見せる。出さない時は '' */
+function wnavHtml(){
   const dn=(typeof curDoneWorks==='function'?curDoneWorks():[]).filter(id=>!selWorks.includes(id)&&workById(id));
-  if(selWorks.length>1||dn.length){
-    h+=`<nav class="wnav" id="wnav" aria-label="${esc(t('wnavLbl'))}">`+
-      selWorks.filter(workById).map(wid=>{const w=workById(wid);return `<button type="button" class="wnav-c" data-w="${esc(wid)}" title="${esc(loc(w,'name'))}" onclick="jumpWork(this.dataset.w)"><span class="wnav-nm">${esc(loc(w,'name'))}</span><span class="wnav-ct" data-wct="${esc(wid)}">0/${workItems(wid).length}</span></button>`}).join('')+
-      dn.map(wid=>`<span class="wnav-c done" data-w="${esc(wid)}" title="${esc(loc(workById(wid),'name'))}"><span class="wnav-nm">${esc(loc(workById(wid),'name'))}</span><span class="wnav-ct">✓ ${esc(t('doneMark'))}</span></span>`).join('')+
-      `</nav>`;
-  }
-  selWorks.forEach(wid=>{
-    const w=workById(wid);if(!w)return;
-    // 作業ごとに区切る（見出しは自分の作業のカードの間だけ貼り付き、次の作業に来たら入れ替わる）
-    h+=`<section class="wsec" data-w="${esc(w.id)}"><div class="wshd" id="wh-${esc(w.id)}" data-w="${esc(w.id)}">
+  if(!(selWorks.length>1||dn.length))return'';
+  return `<nav class="wnav" id="wnav" aria-label="${esc(t('wnavLbl'))}">`+
+    selWorks.filter(workById).map(wid=>{const w=workById(wid);return `<button type="button" class="wnav-c" data-w="${esc(wid)}" title="${esc(loc(w,'name'))}" onclick="jumpWork(this.dataset.w)"><span class="wnav-nm">${esc(loc(w,'name'))}</span><span class="wnav-ct" data-wct="${esc(wid)}">0/${workItems(wid).length}</span></button>`}).join('')+
+    dn.map(wid=>`<span class="wnav-c done" data-w="${esc(wid)}" title="${esc(loc(workById(wid),'name'))}"><span class="wnav-nm">${esc(loc(workById(wid),'name'))}</span><span class="wnav-ct">✓ ${esc(t('doneMark'))}</span></span>`).join('')+
+    `</nav>`;
+}
+/* 1作業ぶんの区切り（見出し＋5種目のカード）。ci=通し番号（最初の構築のフェードの遅れ）。作業が無ければ '' */
+function wsecHtml(wid,ci){
+  const w=workById(wid);if(!w)return'';
+  ci=ci||{n:0};
+  // 作業ごとに区切る（見出しは自分の作業のカードの間だけ貼り付き、次の作業に来たら入れ替わる）
+  let h=`<section class="wsec" data-w="${esc(w.id)}"><div class="wshd" id="wh-${esc(w.id)}" data-w="${esc(w.id)}">
       <span class="wshd-no">${esc(w.no||'')}</span>
       <span class="wshd-nm" title="${esc(loc(w,'name'))}">${esc(loc(w,'name'))}</span>
       <span class="wshd-ct" data-wct="${esc(w.id)}">0/${workItems(wid).length}</span>
     </div>
     <div class="wsub"><span class="wsub-nm">${esc(loc(w,'name'))} ${w.category?`<span class="wsub-cat">· ${esc(catLabel(w.category))}</span>`:''}</span>${editId?'':`<button type="button" class="wshd-skip" data-w="${esc(w.id)}" onclick="skipWork(this.dataset.w)">${esc(t('skipWork'))}</button>`}</div>`;
-    if(w.gyomu)h+=`<a class="man-link" href="https://genba-manual.vercel.app/#g_${esc(w.gyomu)}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1zm0 13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"/></svg>${t('manualLink')}</a>`;
-    workItems(wid).forEach((it,ii)=>{
-      h+=`<div class="cd ec" id="c-${it.id}" data-w="${esc(wid)}" style="animation-delay:${Math.min(ci++,8)*0.03}s">
+  if(w.gyomu)h+=`<a class="man-link" href="https://genba-manual.vercel.app/#g_${esc(w.gyomu)}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1zm0 13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"/></svg>${t('manualLink')}</a>`;
+  workItems(wid).forEach((it,ii)=>{
+    h+=`<div class="cd ec" id="c-${it.id}" data-w="${esc(wid)}" style="animation-delay:${Math.min(ci.n++,8)*0.03}s">
         <div class="en">${ii+1}</div>
         <div class="enm" id="enm-${it.id}">${esc(it.name)}</div>
         <span class="miss-bd" id="miss-${it.id}">⚠ ${esc(t('missLbl'))}</span>
@@ -68,13 +63,52 @@ function buildCards(){
         <div class="clbl">${t('cmtLbl')}</div>
         <textarea data-cid="${it.id}" placeholder="${t('phCmt')}" oninput="onCh()"></textarea>
       </div>`;
-    });
-    h+='</section>';
   });
+  return h+'</section>';
+}
+/* 採点カードを全部作り直す（人を選んだ時・言語切替・編集の開始など）。
+   anim=true の時だけカードをフェードで出す（人を選んだ最初の構築。作業の追加/外し・言語切替ではちらつかせない） */
+let _animT=null;
+function buildCards(anim){
+  saveSt();
+  const el=document.getElementById('cards');
+  if(!selWorks.length){
+    el.innerHTML=`<div class="pickwork"><svg class="pw-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4a3 3 0 0 1 6 0h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1zm3-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zM8 10h8v2H8zm0 4h5v2H8z"/></svg><strong>${t('selWorksTitle')}</strong><br>${t('selWorksHint')}</div>`;
+    updProg();return;
+  }
+  const ci={n:0};
+  const h=wnavHtml()+selWorks.map(wid=>wsecHtml(wid,ci)).join('');
   const miss=[...el.querySelectorAll('.ec.miss')].map(c=>c.id);   // 言語切替・作業の追加/外しで作り直しても未採点の印は残す
+  clearTimeout(_animT);el.classList.toggle('anim',!!anim);
   el.innerHTML=h;
+  if(anim)_animT=setTimeout(()=>el.classList.remove('anim'),900);   // フェードは最初の1回だけ（後で作り足すカードには付けない）
   miss.forEach(id=>{const c=document.getElementById(id);if(c)c.classList.add('miss')});
   updProg();
+}
+/* 目次だけを今の selWorks に合わせて差し替える（作業の追加/外しで、ほかのカードに触らない） */
+function syncWnav(){
+  const el=document.getElementById('cards'),old=document.getElementById('wnav'),h=wnavHtml();
+  if(old){if(h)old.outerHTML=h;else old.remove()}
+  else if(h)el.insertAdjacentHTML('afterbegin',h);
+}
+/* 作業を1つだけ外す／足す（ほかの作業のカード・点数・開いた評価基準・入力中のコメントはそのまま） */
+function removeWorkSec(wid){
+  const el=document.getElementById('cards');
+  if(!selWorks.length||!el.querySelector('.wsec')){buildCards();return}
+  const sec=el.querySelector('.wsec[data-w="'+CSS.escape(wid)+'"]');if(sec)sec.remove();
+  syncWnav();updProg();
+}
+function addWorkSec(wid){
+  const el=document.getElementById('cards');
+  if(!el.querySelector('.wsec')){buildCards();return}   // 「作業を選んでください」の案内から最初の1作業＝全部作る
+  if(el.querySelector('.wsec[data-w="'+CSS.escape(wid)+'"]')){syncWnav();updProg();return}
+  const h=wsecHtml(wid);if(!h)return;
+  // selWorks の並びどおりの位置へ（後ろの作業のうち、画面にある最初の区切りの前）
+  const i=selWorks.indexOf(wid);
+  const next=selWorks.slice(i+1).map(x=>el.querySelector('.wsec[data-w="'+CSS.escape(x)+'"]')).find(Boolean);
+  if(next)next.insertAdjacentHTML('beforebegin',h);
+  else el.insertAdjacentHTML('beforeend',h);
+  syncWnav();updProg();
 }
 function setScoreUI(id,s){
   document.querySelectorAll('.sb[data-id="'+id+'"]').forEach(b=>{const on=+b.dataset.s===s;b.classList.toggle('sel',on);b.setAttribute('aria-pressed',on)});
@@ -298,10 +332,24 @@ function drawCharts(){
 }
 
 /* 採点フォームの状態退避/復元（言語切替・再描画時） */
-let _fs=null;
-function saveSt(){_fs=collectForm()}
+/* 点数・コメントに加えて、開いていた評価基準と入力中のコメント欄も覚えて戻す（作り直しで閉じない・キーボードが閉じない） */
+let _fs=null,_fsUi=null;
+function saveSt(){
+  _fs=collectForm();
+  const ae=document.activeElement;
+  _fsUi={open:[...document.querySelectorAll('#cards .crit.open')].map(c=>c.id),
+    focus:ae&&ae.matches&&ae.matches('#cards textarea[data-cid]')?ae.dataset.cid:'',
+    sel:ae&&ae.matches&&ae.matches('#cards textarea[data-cid]')?[ae.selectionStart,ae.selectionEnd]:null};
+}
 function restoreSt(){if(!_fs)return;const d=_fs;getItems().forEach(it=>{
   const we=d.works.find(x=>x.workId===it.workId);
   const sc=we&&we.scores[it.aspectId];if(sc)setScoreUI(it.id,sc);
   const cm=we&&we.comments[it.aspectId];if(cm){const ta=document.querySelector('textarea[data-cid="'+it.id+'"]');if(ta)ta.value=cm}
-});_fs=null;updProg()}
+});
+  const u=_fsUi;
+  if(u){
+    u.open.forEach(id=>{const c=document.getElementById(id);if(c&&!c.classList.contains('open'))toggleCrit(id.slice(5))});
+    const ta=u.focus&&document.querySelector('#cards textarea[data-cid="'+u.focus+'"]');
+    if(ta&&document.activeElement!==ta){ta.focus({preventScroll:true});if(u.sel)try{ta.setSelectionRange(u.sel[0],u.sel[1])}catch(e){}}
+  }
+  _fs=null;_fsUi=null;updProg()}

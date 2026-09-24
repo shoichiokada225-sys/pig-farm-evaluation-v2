@@ -1735,6 +1735,139 @@ async function runSheetErr(devName) {
   await browser.close();
 }
 
+/* 描画の手戻り（名簿100名規模）: 名簿の取得完了で画面が跳ねない・農場チップの横位置を戻さない・作業を外しても他のカードを作り直さない */
+async function runPerf(devName) {
+  console.log(`\n===== ${devName}（描画: 名簿94名・12農場＋所属未確定） =====`);
+  const browser = await chromium.launch(process.env.PW_CHANNEL ? { channel: process.env.PW_CHANNEL } : {});
+  const ctx = await browser.newContext({ ...devices[devName] });
+  const page = await ctx.newPage();
+  const errors = [];
+  page.on('pageerror', e => errors.push(String(e)));
+  page.on('dialog', d => d.accept());
+  let roster = [], delay = 0;
+  await page.route(u => u.href.startsWith('https://script.google.com/'), async route => {
+    const req = route.request(), hdr = { 'access-control-allow-origin': '*' };
+    if (req.method() === 'GET') {
+      if (delay) await new Promise(r => setTimeout(r, delay));
+      try { return await route.fulfill({ status: 200, contentType: 'application/json', headers: hdr, body: JSON.stringify(rosterRes(roster)) }); } catch (e) { return; }
+    }
+    const body = JSON.parse(req.postData());
+    return route.fulfill({ status: 200, contentType: 'application/json', headers: hdr, body: JSON.stringify({ ok: true, id: body.record ? body.record.id : body.id }) });
+  });
+  await page.goto(APP);
+  const wn = await page.evaluate(() => WORKDATA_V2.works.map(w => w.name));
+  // 架空名。最大の農場 25名（全員8作業）、ほか11農場×約4名、所属未確定18名＝合計94名
+  const F1 = 'テスト第01農場';
+  const base = [];
+  for (let k = 0; k < 25; k++) base.push({ name: `テスト大 ${k}`, farm: F1, works: wn.slice(k % 20, k % 20 + 8) });
+  for (let f = 2; f <= 12; f++) for (let k = 0; k < (f <= 8 ? 5 : 4); k++) base.push({ name: `テスト${f}の${k}`, farm: `テスト第${String(f).padStart(2, '0')}農場`, works: wn.slice(f, f + 2) });
+  for (let k = 0; k < 18; k++) base.push({ name: `テスト未定 ${k}`, farm: '所属未確定', works: wn.slice(0, 1) });
+  roster = base.slice();
+  await page.evaluate(GAS => { localStorage.clear(); localStorage.setItem('jitsugi_v2_sheet_url', GAS); localStorage.setItem('jitsugi_v2_evaluator', 'テスト評価者'); }, GAS);
+  await page.reload(); await page.waitForTimeout(800);
+  ok('名簿94名・農場チップ13', await page.evaluate(() => getRoster().list.length) === 94 && await page.locator('#eeFarms .fchip').count() === 13);
+
+  console.log('[P1] 人を選んだ最初の構築だけフェード');
+  await page.locator('.eetab').first().tap(); await page.waitForTimeout(100);
+  ok('最初の構築はフェードあり（#cards.anim）', await page.evaluate(() => document.getElementById('cards').classList.contains('anim') && document.getAnimations().length > 0));
+  await page.waitForTimeout(1100);
+  ok('フェードは1回で外れる', await page.evaluate(() => !document.getElementById('cards').classList.contains('anim')));
+  ok('8作業=40枚', await page.locator('#cards .ec').count() === 40);
+
+  console.log('[P2] 「今回は実施しない」で他のカードを作り直さない（評価基準・入力中のコメントがそのまま）');
+  const w = await page.evaluate(() => selWorks.slice());
+  const c3 = await page.locator(`#cards .ec[data-w="${w[2]}"]`).first().getAttribute('id');
+  const cid3 = c3.slice(2);
+  await page.locator(`#critb-${cid3}`).tap();
+  await page.locator(`.sb[data-id="${cid3}"][data-s="4"]`).tap();
+  await page.locator(`textarea[data-cid="${cid3}"]`).tap();
+  await page.keyboard.type('テストのコメント');
+  await page.evaluate(() => { document.querySelectorAll('#cards .wsec').forEach(s => { s._keep = 1; }); });
+  const r2 = await page.evaluate(wid => { skipWork(wid); return { anims: document.getAnimations().filter(a => a.animationName === 'cdin').length }; }, w[0]);
+  ok('外した作業だけ消える（35枚・区切り7）', await page.locator('#cards .ec').count() === 35 && await page.locator('#cards .wsec').count() === 7 && await page.locator(`#cards .wsec[data-w="${w[0]}"]`).count() === 0);
+  ok('ほかの作業の区切りは作り直していない（同じ要素のまま）', await page.evaluate(() => [...document.querySelectorAll('#cards .wsec')].every(s => s._keep === 1)));
+  ok('開いていた評価基準は開いたまま', await page.locator(`#crit-${cid3}`).evaluate(e => e.classList.contains('open')));
+  ok('入力中のコメント欄のフォーカスが外れない（キーボードが閉じない）', await page.evaluate(cid => document.activeElement && document.activeElement.dataset.cid === cid, cid3));
+  ok('カードのフェードが走らない', r2.anims === 0);
+  ok('点数とコメントは残る', await page.locator(`.sb[data-id="${cid3}"][data-s="4"]`).evaluate(e => e.classList.contains('sel')) && await page.inputValue(`textarea[data-cid="${cid3}"]`) === 'テストのコメント');
+  ok('目次から外れる（7作業）', await page.locator('#wnav .wnav-c:not(.done)').count() === 7 && await page.locator(`#wnav .wnav-c[data-w="${w[0]}"]`).count() === 0);
+  ok('進み具合は 1/35', /1\/35/.test(await page.locator('#progT').textContent()));
+  // 元に戻す → 同じ位置（先頭）に戻り、ほかはそのまま
+  await page.locator(`textarea[data-cid="${cid3}"]`).focus();
+  await page.locator('.toast-act').first().tap();
+  await page.waitForTimeout(200);
+  ok('元に戻すで先頭に戻る（40枚）', await page.locator('#cards .ec').count() === 40 && await page.locator('#cards .wsec').first().getAttribute('data-w') === w[0]);
+  ok('戻してもほかの区切りは同じ要素・評価基準は開いたまま', await page.evaluate(() => [...document.querySelectorAll('#cards .wsec')].filter(s => s._keep === 1).length === 7) && await page.locator(`#crit-${cid3}`).evaluate(e => e.classList.contains('open')));
+  ok('目次も8作業に戻る（並び順どおり）', JSON.stringify(await page.locator('#wnav .wnav-c:not(.done)').evaluateAll(es => es.map(e => e.dataset.w))) === JSON.stringify(w));
+  // 作業選択で1つ足す → 末尾に1区切りだけ増える
+  const add = await page.evaluate(() => WORKDATA_V2.works.find(x => !selWorks.includes(x.id)).id);
+  await page.evaluate(id => { document.getElementById('wselBox').open = true; }, add);
+  await page.evaluate(id => toggleWork(id, true), add);
+  ok('作業を足すと末尾に1区切りだけ増え、他はそのまま', await page.locator('#cards .wsec').last().getAttribute('data-w') === add && await page.evaluate(() => [...document.querySelectorAll('#cards .wsec')].filter(s => s._keep === 1).length === 7) && await page.locator(`#crit-${cid3}`).evaluate(e => e.classList.contains('open')));
+  ok('足した作業は採点前（0/N）・進み具合の分母が増える', (await page.locator(`#wh-${add} .wshd-ct`).textContent()).startsWith('0/') && /\/4\d/.test(await page.locator('#progT').textContent()));
+  await page.evaluate(id => toggleWork(id, false), add);
+  // 言語切替（全部作り直す）でも開いた評価基準・フォーカスは戻す
+  await page.locator(`textarea[data-cid="${cid3}"]`).focus();
+  await page.evaluate(() => setLang('vi'));
+  ok('言語切替で作り直しても評価基準は開いたまま・フォーカスも戻る', await page.locator(`#crit-${cid3}`).evaluate(e => e.classList.contains('open')) && await page.evaluate(cid => document.activeElement && document.activeElement.dataset.cid === cid, cid3));
+  ok('言語切替ではフェードしない', await page.evaluate(() => !document.getElementById('cards').classList.contains('anim') && document.getAnimations().filter(a => a.animationName === 'cdin').length === 0));
+  await page.evaluate(() => setLang('ja'));
+  await page.waitForTimeout(600);   // 下書き保存
+
+  console.log('[P3] 起動時に名簿が届いても、下で採点中の画面が跳ねない（iOS=スクロールアンカリングなし相当）');
+  const shift = async (mut) => {
+    roster = base.slice(); mut && mut(roster);
+    delay = 2000;
+    await page.reload(); await page.waitForTimeout(250);
+    await page.addStyleTag({ content: '*{overflow-anchor:none!important}' });
+    await page.evaluate(() => { const c = document.querySelectorAll('#cards .ec')[15]; window.scrollTo(0, c.getBoundingClientRect().top + scrollY - 300); });
+    await page.waitForTimeout(100);
+    const y0 = await page.evaluate(() => document.querySelectorAll('#cards .ec')[15].getBoundingClientRect().top);
+    const loading = /読み込み中/.test(await page.locator('#eeNote').textContent());
+    await page.waitForTimeout(2600);
+    const y1 = await page.evaluate(() => document.querySelectorAll('#cards .ec')[15].getBoundingClientRect().top);
+    const done = !/読み込み中/.test(await page.locator('#eeNote').textContent());
+    delay = 0;
+    return { d: y1 - y0, loading, done };
+  };
+  let r = await shift(null);
+  ok(`名簿が同じ: 取得中→完了で16枚目が動かない (${r.d.toFixed(1)}px)`, r.loading && r.done && Math.abs(r.d) <= 1);
+  r = await shift(ro => { for (let k = 25; k < 28; k++) ro.push({ name: `テスト大 ${k}`, farm: F1, works: wn.slice(0, 2) }); });
+  ok(`名簿に3人増えても動かない (${r.d.toFixed(1)}px)`, r.done && Math.abs(r.d) <= 1);
+  r = await shift(ro => { ro.push({ name: 'テスト大 99', farm: F1, works: ['存在しない作業テスト'] }); });
+  ok(`作業名不明の⚠が増えても動かない (${r.d.toFixed(1)}px)`, r.done && Math.abs(r.d) <= 1 && await page.locator('#eeWarn').isVisible());
+  // 枠が見えている時（上で人を選んでいる時）は補正しない＝押そうとしている名簿のタブが逃げない
+  delay = 1500; roster = base.slice();
+  await page.reload(); await page.waitForTimeout(250);
+  await page.evaluate(() => window.scrollTo(0, 0));
+  const t0 = await page.evaluate(() => scrollY);
+  await page.waitForTimeout(1900); delay = 0;
+  ok('名簿の枠が見えている時はページを動かさない', await page.evaluate(() => scrollY) === t0);
+
+  console.log('[P4] 農場チップの横スクロールを、名簿の取得完了・検索の入力で戻さない');
+  delay = 2000;
+  await page.reload(); await page.waitForTimeout(300);
+  const fb = page.locator('#eeFarms');
+  const sl0 = await fb.evaluate(e => { e.scrollLeft = e.scrollWidth; return e.scrollLeft; });
+  const loadingNow = /読み込み中/.test(await page.locator('#eeNote').textContent());
+  await page.waitForTimeout(2500); delay = 0;
+  const sl1 = await fb.evaluate(e => e.scrollLeft);
+  ok(`名簿の取得完了で横位置が戻らない (${sl0}→${sl1})`, loadingNow && sl0 > 200 && sl1 === sl0);
+  await page.evaluate(() => renderRoster());
+  ok('renderRoster を呼んでも横位置はそのまま', await fb.evaluate(e => e.scrollLeft) === sl0);
+  const chip0 = await fb.evaluate(e => { e.querySelector('.fchip')._keep = 1; return 1; });
+  await page.fill('#eeFind', 'テスト大 1');
+  ok('検索の入力でもチップを作り直さない・横位置もそのまま', await fb.evaluate(e => e.querySelector('.fchip')._keep === 1) && await fb.evaluate(e => e.scrollLeft) === sl0);
+  await page.fill('#eeFind', '');
+  // 別の農場を選んだ時は中央へ寄せる
+  await page.locator('#eeFarms .fchip').nth(6).evaluate(e => e.click());
+  await page.waitForTimeout(100);
+  ok('別の農場を選ぶと、その農場のチップを中央へ寄せる', await fb.evaluate(e => { const c = e.querySelector('.fchip.on'); const mid = c.offsetLeft + c.offsetWidth / 2 - e.scrollLeft; return Math.abs(mid - e.clientWidth / 2) < 4 || e.scrollLeft === 0 || e.scrollLeft >= e.scrollWidth - e.clientWidth - 1; }) && await fb.evaluate(e => e.scrollLeft) !== sl0);
+  ok('JSエラーなし(描画)', errors.length === 0);
+  if (errors.length) console.log(errors.join('\n'));
+  await browser.close();
+}
+
 (async () => {
   if (process.env.ONLY) {   // 例: ONLY=rel,assign,guard,backup,sw（わざと壊して検証する時に一部だけ回す）
     const on = new Set(process.env.ONLY.split(','));
@@ -1744,6 +1877,7 @@ async function runSheetErr(devName) {
     if (on.has('backup')) await runBackup('iPhone 13');
     if (on.has('sw')) await runSW();
     if (on.has('err')) await runSheetErr('iPhone SE');
+    if (on.has('perf')) await runPerf('iPhone 13');
     console.log(`\n合計: OK ${pass} / NG ${fail}`); process.exit(fail ? 1 : 0);
   }
   if (process.env.ONLY_A11Y) { for (const d of ['iPhone SE', 'Pixel 7']) await runA11y(d); console.log(`\n合計: OK ${pass} / NG ${fail}`); process.exit(fail ? 1 : 0); }
@@ -1758,6 +1892,7 @@ async function runSheetErr(devName) {
   if (!process.env.ONLY_REL && !process.env.ONLY_ASSIGN) for (const d of ['iPhone SE', 'Pixel 7']) await runI18n(d);
   if (!process.env.ONLY_REL && !process.env.ONLY_ASSIGN) for (const d of ['iPhone SE', 'Pixel 7']) await runA11y(d);
   if (!process.env.ONLY_REL && !process.env.ONLY_ASSIGN) await runSheetErr('iPhone SE');
+  if (!process.env.ONLY_REL && !process.env.ONLY_ASSIGN) await runPerf('iPhone 13');
   await runSW();
   console.log(`\n合計: OK ${pass} / NG ${fail}`);
   process.exit(fail ? 1 : 0);
