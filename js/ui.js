@@ -258,7 +258,8 @@ function doDel(id){
 function catName(catId){const c=WORKDATA_V2.categories.find(c=>c.id===catId);return c?c.name:catId}
 function doCSV(){
   const all=getAll();if(!all.length){toast(t('eCSV'),1);return}
-  const hd=['評価日','評価者','被評価者','農場','名簿外','カテゴリ','作業','種目','スコア','コメント','作業平均','セッション平均','全体所感','作成日時'];
+  // 記録ID・やり直し元はシートの評価者タブと同じ意味（やり直し元に書かれた記録IDの行は、やり直しで置き換わった前回＝集計では除く）
+  const hd=['評価日','評価者','被評価者','農場','名簿外','カテゴリ','作業','種目','スコア','コメント','作業平均','セッション平均','全体所感','作成日時','記録ID','やり直し元'];
   let csv='﻿'+hd.map(csvCell).join(',')+'\n';
   all.forEach(r=>{
     const sav=fm(sessionAvg(r));
@@ -269,7 +270,7 @@ function doCSV(){
       const keys=aspects.length?aspects.map(a=>a.id):Object.keys(we.scores||{});
       keys.forEach(aid=>{
         const a=aspects.find(x=>x.id===aid);
-        const row=[r.date,r.evaluator,r.evaluatee,r.farm||'',r.manual?'名簿外':'',catName(we.category||(w&&w.category)||''),we.workName||(w&&w.name)||'',a?a.name:aid,(we.scores||{})[aid]||'',(we.comments||{})[aid]||'',wav,sav,r.overall||'',r.createdAt||''];
+        const row=[r.date,r.evaluator,r.evaluatee,r.farm||'',r.manual?'名簿外':'',catName(we.category||(w&&w.category)||''),we.workName||(w&&w.name)||'',a?a.name:aid,(we.scores||{})[aid]||'',(we.comments||{})[aid]||'',wav,sav,r.overall||'',r.createdAt||'',r.id||'',r.redoOf||''];
         csv+=row.map(csvCell).join(',')+'\n';
       });
     });

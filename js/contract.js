@@ -4,10 +4,10 @@
                         done = シートの評価者タブにある記録の要約（ほかの端末で済んだ人・作業も数える。'roster.done' の GAS だけが返す＝無くても動く）
                         受験者タブが無い時 {ok:false, version, capabilities, error:'no roster sheet'}
    GET  ?action=ping   → {ok:true, version, capabilities}
-   POST {action:'submit', record: toPayload(記録)} → {ok:true, id, rows} ／ {ok:false, error:'no record'|'no id'|'busy'|…}
+   POST {action:'submit', record: toPayload(記録)} → {ok:true, id, rows}（record.redoOf=やり直し元の記録ID。'submit.redoOf' の GAS が「やり直し元」列に書く・古い GAS は無視＝送っても安全） ／ {ok:false, error:'no record'|'no id'|'busy'|…}
    POST {action:'delete', id, evaluator}          → {ok:true, id, deleted:行数（無ければ0＝再送しても安全）} ／ {ok:false, error:'no id'|'busy'}
    知らない action → {ok:false, error:'unknown action'}（2026-09-24b 以前の GAS は何でも 'bad request'）
-   capabilities（GAS の API_CAPABILITIES）: 'roster'=名簿 / 'roster.aliases'=旧名の列 / 'roster.done'=記録の要約 / 'submit'=記録の書き込み / 'delete'=行の削除
+   capabilities（GAS の API_CAPABILITIES）: 'roster'=名簿 / 'roster.aliases'=旧名の列 / 'roster.done'=記録の要約 / 'submit'=記録の書き込み / 'submit.redoOf'=やり直し元の列 / 'delete'=行の削除
    GAS に機能を足したら: GAS の CODE_VERSION と API_CAPABILITIES を上げ、アプリが必要とするならここの GAS_REQUIRED_CAPS・GAS_MIN_VERSION も上げる
    （gas/test_gas.js が、GAS の返す capabilities ⊇ GAS_REQUIRED_CAPS と、toPayload の出力を本物の doPost に通せることを確かめる） */
 const GAS_MIN_VERSION='2026-09-24c';
@@ -31,7 +31,7 @@ function submitReq(r){return{action:'submit',record:toPayload(r)}}
 function deleteReq(d){return{action:'delete',id:d.id,evaluator:d.evaluator||''}}
 /* 端末の記録 → シートの行の元（作業名・カテゴリ・種目名は日本語の正本の名前） */
 function toPayload(r){
-  return{id:r.id,date:r.date,evaluator:r.evaluator,evaluatee:r.evaluatee,farm:r.farm||'',overall:r.overall||'',
+  return{id:r.id,date:r.date,evaluator:r.evaluator,evaluatee:r.evaluatee,farm:r.farm||'',overall:r.overall||'',redoOf:r.redoOf||'',
     works:(r.works||[]).map(we=>{
       const w=workById(we.workId);
       const c=WORKDATA_V2.categories.find(c=>c.id===(we.category||(w&&w.category)));

@@ -11,12 +11,12 @@
    - POST {action:'submit', record}  → 評価者名のタブに 1種目=1行 で書き込む（記録IDで上書き＝再送・編集しても重複しない）
    - POST {action:'delete', id}      → その記録IDの行を全ての評価者タブから消す（アプリで削除した記録。無ければ deleted:0 で ok＝再送しても安全）
    - 誤り: 知らない action='unknown action'／submit に record が無い='no record'／id が無い='no id'（前の版は全部 'bad request' で区別できなかった）
-   - setup() を一度エディタで実行 → 「受験者」「作業一覧」「農場一覧」タブと、作業・農場のプルダウンを作る
+   - setup() を一度エディタで実行 → 「受験者」「作業一覧」「農場一覧」「集計（自動）」タブと、作業・農場のプルダウンを作る
      何度実行しても受験者タブの行・農場一覧（管理者が直した分）は消さない。作業一覧だけ作り直す */
 
-const CODE_VERSION = '2026-09-24e';
+const CODE_VERSION = '2026-09-24f';
 /* アプリはこれを見て「シート側が古い（旧名・削除が使えない）」を警告する（js/contract.js の GAS_REQUIRED_CAPS） */
-const API_CAPABILITIES = ['roster', 'roster.aliases', 'roster.done', 'submit', 'delete'];
+const API_CAPABILITIES = ['roster', 'roster.aliases', 'roster.done', 'submit', 'submit.redoOf', 'delete'];
 const ROSTER_SHEET = '受験者';
 const WORKS_SHEET = '作業一覧';
 const FARMS_SHEET = '農場一覧';
@@ -29,8 +29,14 @@ const ROSTER_NOTE = '記入の約束\n' +
   '・名前を直した時は「旧名」列に直す前の名前を書く（済んだ記録をそのまま数える）\n' +
   '・備考の列は自由に足してよい（見出しを「作業」+数字にしない）';
 const ROSTER_MAX_WORKS = 8;
-const HEAD = ['記録ID', '評価日', '評価者', '被評価者', '農場', 'カテゴリ', '作業', '種目', 'スコア', 'コメント',
+/* 評価者タブの見出し。HEAD_BASE（14列）で評価者タブを見分け、15列目「やり直し元」は 2026-09-24f で追加
+   （前の版で作ったタブは、次に書き込む時に O1 へ見出しを足す＝行は消さない）。
+   やり直し元 = やり直しで置き換えた前回の記録ID（半角空白区切り）。集計では、どこかの行の「やり直し元」に書かれた記録IDの行を除く */
+const HEAD_BASE = ['記録ID', '評価日', '評価者', '被評価者', '農場', 'カテゴリ', '作業', '種目', 'スコア', 'コメント',
   '作業平均', 'セッション平均', '全体所感', '送信日時'];
+const HEAD = HEAD_BASE.concat(['やり直し元']);
+const SUMMARY_SHEET = '集計（自動）';
+const SUMMARY_KEY = 'HSS_SUMMARY_TAB_ID';
 const WORKS = [["No.11","給餌","飼養管理"],["No.02","エサ調整","飼養管理"],["No.16","エサ回収","飼養管理"],["No.43","えつけ（哺乳期給餌）","飼養管理"],["No.27","育成受け","飼養管理"],["No.34","去勢","飼養管理"],["No.18","添加剤準備","飼養管理"],["No.12","除フン","衛生管理"],["No.31","5S清掃","衛生管理"],["No.04","治療","衛生管理"],["No.06","母豚ワクチン接種","衛生管理"],["No.41","CSF（豚熱）子ワクチン接種","衛生管理"],["No.40","洗浄（離乳後）","衛生管理"],["No.15","消毒","衛生管理"],["No.44","石灰散布","衛生管理"],["No.37","死獣回収","衛生管理"],["No.14","AI（人工授精）注入作業","繁殖管理"],["No.33","許容確認","繁殖管理"],["No.03","精液検査・反転","繁殖管理"],["No.17","精液攪拌","繁殖管理"],["No.09","妊娠鑑定","繁殖管理"],["No.08","PMS投与","繁殖管理"],["No.36","PG（プロスタグランジン）接種","繁殖管理"],["No.42","子宮内洗浄","繁殖管理"],["No.26","入室（分娩舎）","分娩管理"],["No.35","分娩介助","分娩管理"],["No.39","送り里子","分娩管理"],["No.13","母豚の並びの整理","施設管理"],["No.10","移動指示","施設管理"],["No.25","妊娠舎→交配舎・育成舎 移動","施設管理"],["No.19","スクレーパー動作確認","施設管理"],["No.29","ファン清掃","施設管理"],["No.30","パドタンク清掃（夏季）","施設管理"],["No.20","エサスイッチ","施設管理"],["No.05","日報記入","記録管理"],["No.07","プレート作成","記録管理"],["No.21","タグ付け","記録管理"],["No.32","分娩予定記入","記録管理"],["No.22","廃豚出荷（母豚出し）","出荷管理"],["No.23","育成舎へ廃豚移動","出荷管理"]];   // [No, 作業名, カテゴリ]
 
 function setup() {
@@ -75,6 +81,7 @@ function setup() {
     rs.getRange(2, cols.farm + 1, 300, 1).setDataValidation(frule);
   }
   rs.getRange(1, cols.name + 1).setNote(ROSTER_NOTE);
+  buildSummary_(true);   // 集計タブ（全評価者タブを1本の式で並べる）を作る・作り直す
   return 'setup OK';
 }
 function farmsSheet_(rs, cols) {
@@ -223,10 +230,10 @@ function cleanId_(v) { return String(v || '').replace(/[^a-zA-Z0-9_\-]/g, '_'); 
 const EVAL_TABS_KEY = 'HSS_EVAL_TAB_IDS';
 function isReserved_(nm) { return nm === ROSTER_SHEET || nm === WORKS_SHEET || nm === FARMS_SHEET; }
 function isEvalHead_(sh) {
-  if (sh.getLastColumn() < HEAD.length) return false;
-  const rg = sh.getRange(1, 1, 1, HEAD.length);
+  if (sh.getLastColumn() < HEAD_BASE.length) return false;
+  const rg = sh.getRange(1, 1, 1, HEAD_BASE.length);
   const v = rg.getValues()[0], f = rg.getFormulas()[0];
-  return HEAD.every((h, i) => String(v[i]) === h && !f[i]);
+  return HEAD_BASE.every((h, i) => String(v[i]) === h && !f[i]);
 }
 function evalTabIds_(ss) {
   const props = PropertiesService.getDocumentProperties();
@@ -286,16 +293,21 @@ function writeRecord_(rec) {
     name = base.slice(0, 85) + '_記録' + (k > 1 ? k : '');
     sh = ss.getSheetByName(name);
   }
+  let added = false;
   if (!sh) {
     sh = ss.insertSheet(name);
     sh.getRange(1, 1, 1, HEAD.length).setValues([HEAD]).setFontWeight('bold').setBackground('#e6f2ee');
     sh.setFrozenRows(1);
     addEvalTab_(ss, sh);
+    added = true;
+  } else if (String(sh.getRange(1, HEAD.length).getValues()[0][0]) !== HEAD[HEAD.length - 1]) {
+    sh.getRange(1, HEAD.length).setValues([[HEAD[HEAD.length - 1]]]).setFontWeight('bold').setBackground('#e6f2ee');   // 前の版で作ったタブに「やり直し元」の見出し
   }
   const works = Array.isArray(rec.works) ? rec.works.slice(0, 50) : [];
   const allScores = [];
   works.forEach(w => (w.items || []).forEach(it => allScores.push(Number(it.score))));
   const sessAvg = avg_(allScores);
+  const redoOf = cleanIds_(rec.redoOf);
   const now = Utilities.formatDate(new Date(), 'Asia/Tokyo', 'yyyy-MM-dd HH:mm:ss');
   const rows = [];
   works.forEach(w => {
@@ -304,11 +316,68 @@ function writeRecord_(rec) {
     items.forEach(it => {
       const sc = Number(it.score);
       rows.push([id, safe_(rec.date), safe_(rec.evaluator), safe_(rec.evaluatee), safe_(rec.farm), safe_(w.category), safe_(w.workName),
-        safe_(it.aspect), (sc >= 1 && sc <= 5) ? sc : '', safe_(it.comment), wAvg, sessAvg, safe_(rec.overall), now]);
+        safe_(it.aspect), (sc >= 1 && sc <= 5) ? sc : '', safe_(it.comment), wAvg, sessAvg, safe_(rec.overall), now, redoOf]);
     });
   });
   if (rows.length) sh.getRange(sh.getLastRow() + 1, 1, rows.length, HEAD.length).setValues(rows);
+  if (added) { try { buildSummary_(false); } catch (err) { /* 集計が作れなくても記録の書き込みは成功として返す */ } }   // 新しい評価者タブを集計の式に足す
   return rows.length;
+}
+function cleanIds_(v) {
+  const a = (Array.isArray(v) ? v : String(v == null ? '' : v).split(/[\s,、]+/)).map(cleanId_).filter(x => x && !/^_+$/.test(x));
+  return a.filter((x, i) => a.indexOf(x) === i).join(' ');
+}
+
+/* ==============================================================
+   集計タブ（Z20-2）: 全評価者タブ（台帳に載ったタブ）の行を1本の式で縦に並べ、今の農場とやり直しの採否を足す。
+   - A3 = LET+FILTER+CHOOSECOLS（空行を除く＝2人目以降の評価者の行が1000行目あたりに飛ばない）
+   - P3 = 今の農場（受験者タブの被評価者 → 農場。見つからなければ旧名の列で「、」区切りの完全一致 → 無ければ記録時の農場）
+   - Q3 = 採否（どこかの行の「やり直し元」にこの記録IDがあれば「やり直し前」、それ以外は「採用」）
+   式はタブの名前・受験者タブの列の位置から GAS が組む。setup と、GAS が評価者タブを新しく作った時に作り直す。
+   作り直すのは GAS 自身が作った集計タブ（文書プロパティ HSS_SUMMARY_TAB_ID）だけ。同じ名前の別タブがあれば触らない
+   ============================================================== */
+function colL_(i) { let s = '', n = i + 1; while (n > 0) { const m = (n - 1) % 26; s = String.fromCharCode(65 + m) + s; n = Math.floor((n - 1) / 26); } return s; }
+function qName_(nm) { return "'" + String(nm).replace(/'/g, "''") + "'"; }
+function summaryFormulas_(ss) {
+  const ids = evalTabIds_(ss), last = colL_(HEAD.length - 1);
+  const tabs = ss.getSheets().filter(sh => ids.indexOf(String(sh.getSheetId())) >= 0 && !isReserved_(sh.getName())).map(sh => sh.getName());
+  const out = { tabs: tabs };
+  out.data = tabs.length ? '=LET(d,{' + tabs.map(n => qName_(n) + '!A2:' + last).join(';') + '},IFERROR(FILTER(d,CHOOSECOLS(d,1)<>""),""))' : '';
+  const rs = ss.getSheetByName(ROSTER_SHEET);
+  const c = rs ? rosterCols_(rs) : null;
+  const R = ci => qName_(ROSTER_SHEET) + '!$' + colL_(ci) + '$2:$' + colL_(ci);
+  let farm = 'e';
+  if (c && c.farm >= 0) {
+    const alias = c.alias >= 0
+      ? 'XLOOKUP(TRUE,ARRAYFORMULA(ISNUMBER(FIND("、"&n&"、","、"&REGEXREPLACE(' + R(c.alias) + '&"","\\s*[、,，/／;；\\n]\\s*","、")&"、"))),' + R(c.farm) + ',e)'
+      : 'e';
+    farm = 'XLOOKUP(n,' + R(c.name) + ',' + R(c.farm) + ',' + alias + ')';
+  }
+  out.farm = '=MAP(D3:D,E3:E,LAMBDA(n,e,IF(n="",,' + farm + ')))';
+  out.use = '=MAP(A3:A,LAMBDA(id,IF(id="",,IF(COUNTIF(O3:O,"*"&id&"*"),"やり直し前","採用"))))';
+  return out;
+}
+function buildSummary_(create) {
+  const ss = SpreadsheetApp.getActive(), props = PropertiesService.getDocumentProperties();
+  let sh = ss.getSheetByName(SUMMARY_SHEET);
+  const mine = props.getProperty(SUMMARY_KEY);
+  if (sh && String(sh.getSheetId()) !== mine) return 'skip: 同じ名前の別タブ';   // 管理者が作ったタブは触らない
+  if (!sh) {
+    if (!create) return 'skip: 集計タブなし';   // 消された集計タブは setup の時だけ作り直す
+    sh = ss.insertSheet(SUMMARY_SHEET);
+    props.setProperty(SUMMARY_KEY, String(sh.getSheetId()));
+  }
+  const f = summaryFormulas_(ss);
+  sh.clear();
+  sh.getRange(1, 1).setValues([['集計（自動・手で直さない。setup と評価者タブが増えた時に GAS が作り直す）。採否が「採用」の行だけを数える（やり直し前＝やり直しで置き換わった前回）']]);
+  sh.getRange(2, 1, 1, HEAD.length + 2).setValues([HEAD.concat(['今の農場', '採否'])]).setFontWeight('bold').setBackground('#e6f2ee');
+  sh.setFrozenRows(2);
+  if (f.data) {
+    sh.getRange(3, 1).setFormula(f.data);
+    sh.getRange(3, HEAD.length + 1).setFormula(f.farm);
+    sh.getRange(3, HEAD.length + 2).setFormula(f.use);
+  }
+  return 'summary OK: ' + f.tabs.length + ' tabs';
 }
 
 function json_(o) {

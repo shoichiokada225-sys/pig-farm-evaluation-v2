@@ -267,7 +267,7 @@ function restoreDraft(){
     else setUserDate(dt);   // 評価者がその日付のままを選んだ＝選んだ日付として保つ（すぐ今日へ戻さない）
   }
   if(dt)document.getElementById('fDate').value=dt;
-  setCur(dc?{name:ee,farm:dc.farm,manual:dc.manual}:{name:ee,farm:(rosterEntry(ee,chipFarm,ro)||{}).farm||'',manual:false});
+  setCur(dc?{name:ee,farm:dc.farm,manual:dc.manual,redo:dc.redo,redoOf:dc.redoOf}:{name:ee,farm:(rosterEntry(ee,chipFarm,ro)||{}).farm||'',manual:false});
   document.getElementById('fOv').value=d.overall||'';
   fillForm(d.works);
   if(isEdit){
@@ -372,7 +372,7 @@ function doSave(){
     refreshSel();renderRoster();syncPending();
     return;
   }else{
-    all.push(normRec({id:crypto.randomUUID(),date:d.date,evaluator:d.evaluator.trim(),evaluatee:d.evaluatee.trim(),farm:who.farm,...(who.manual?{manual:true}:{}),works:d.works,overall:d.overall,createdAt:new Date().toISOString(),sent:false}));
+    all.push(normRec({id:crypto.randomUUID(),date:d.date,evaluator:d.evaluator.trim(),evaluatee:d.evaluatee.trim(),farm:who.farm,...(who.manual?{manual:true}:{}),...(curEe.redoOf&&!who.manual&&nmKey(d.evaluatee)===nmKey(curEe.name)?{redoOf:curEe.redoOf}:{}),works:d.works,overall:d.overall,createdAt:new Date().toISOString(),sent:false}));
     putAll(all);toast((partLeft?t('tSavedPart').replace('{n}',partLeft):t('tSaved'))+(dateNote?' ／ '+dateNote:''),0,null,dateNote?5000:0);   // 日付を直した知らせは送信済みの知らせで消さない
   }
   localStorage.removeItem(DRAFT_KEY);dirty=false;refreshSel();
@@ -559,6 +559,8 @@ function storedFarm(){try{return localStorage.getItem(FARM_KEY)||''}catch{return
 let curEe={name:'',farm:'',manual:false},chipFarm=storedFarm();
 function setCur(c){
   curEe={name:String(c&&c.name||'').trim(),farm:String(c&&c.farm||''),manual:!!(c&&c.manual)};
+  // やり直し中（下書きから戻した時も保つ）: redo=前回の日付（表示）・redoOf=置き換える前回の記録ID（保存する記録とシートの「やり直し元」列へ）
+  if(c&&c.redo&&!curEe.manual){curEe.redo=String(c.redo);const ro=normRedoOf(c.redoOf);if(ro)curEe.redoOf=ro}
   document.getElementById('fEe').value=curEe.name;
 }
 /* 名簿の農場（シートの並び順・所属未確定/空欄は最後） */
@@ -747,7 +749,7 @@ function selectEe(i){
   if(editId){toast(t('editingBanner'),1);return}
   if(p===selEntry(ro))return;
   // 全作業が済んでいる人（実施済みの区切りのタブ）: 押し間違いで2回目の採点にしない。やり直す時だけ続ける（点の修正は履歴の編集へ）
-  const pg=eeProgress(p,examRecs(),ro),last=pg.complete?lastRecOf(p,ro):null;
+  const pg=eeProgress(p,examRecs(),ro),last=pg.complete?lastRecOf(p,ro):null,ro0=ro;
   if(pg.complete&&!confirm(t('cRedo').replace('{n}',p.name).replace('{d}',last?mdOf(last.date):'—')))return;
   // 人がまだ決まっていないのに採点がある（前の版の下書き等）: 捨てずにこの人の採点として引き継ぐ
   const orphan=!curEe.name&&!curEe.manual&&!!document.querySelector('#cards .ec.scored');
@@ -757,7 +759,9 @@ function selectEe(i){
   clearForm();
   if(dt)document.getElementById('fDate').value=dt;
   setCur({name:p.name,farm:p.farm,manual:false});
-  if(pg.complete)curEe.redo=last?last.date:'-';   // やり直し（#eeCur に「やり直し（前回 M/D）」）
+  // やり直し（#eeCur に「やり直し（前回 M/D）」）。前回までの記録ID（この端末＋シートの要約）を控え、保存する記録の redoOf に入れる
+  // ＝シート・CSV で前回の行と見分けられる（集計では「やり直し元」に書かれた記録IDの行を除く）
+  if(pg.complete){curEe.redo=last?last.date:'-';const ro=normRedoOf(recsOf(p,ro0).map(r=>r.id));if(ro)curEe.redoOf=ro}
   // 試験期間に済んだ作業は外し、残りの作業だけを出す（前の日に途中保存した人も同じ。全部済んでいる人を選び直した時は全作業＝やり直し）
   const ds=doneWorksOf(p,examRecs(),ro);
   const left=p.works.filter(w=>!ds.has(w));

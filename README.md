@@ -30,10 +30,40 @@ works-v2.js（const WORKDATA_V2。直接編集禁止）
 基準を修正するときは `data-work/final-*.json` を直して `python build_data.py`。
 
 ## 構成
-- `index.html` + `styles.css`（V1流用） + `v2.css`（V2追加分） + `js/{util,i18n,data,store,ui,app}.js`（ロード順=依存順）
-- レコード形式: `{id,date,evaluator,evaluatee,overall,works:[{workId,workName,category,scores:{aspectId:1-5},comments}]}`
-- localStorage: `jitsugi_v2_data`（評価）/ `jitsugi_v2_sel`（選択作業）/ `jitsugi_v2_draft`（下書き）/ `jitsugi_v2_lang`
-- テスト: `node smoke.js`（Playwrightは farm-shift-app から借用）
+- `index.html` + `styles.css`（V1流用） + `v2.css`（V2追加分） + `sw.js`（オフライン・版の入れ替え）
+- JS の読み込み順（=依存順。index.html の `<script>` と同じ）: `works-v2.js` → `js/config.js` → `util` → `i18n` → `data` → `store` → `person` → `contract` → `ui` → `sync` → `app`
+  - `js/config.js`＝送信先 GAS の URL と `APP_VER`（sw.js の `CACHE` と同じ値）
+  - `js/store.js`＝記録の読み書き・正規化（`normRec`）・バックアップ
+  - `js/person.js`＝**人の特定の正本**（同名・所属未確定・農場名のゆれ・旧名で、どの記録が名簿のどの人か）
+  - `js/contract.js`＝**GAS との契約の正本**（操作・要求と応答の形・capabilities・`toPayload`）
+  - `js/sync.js`＝名簿の取得・未送信の送信・シートの削除待ち
+- 記録の形の正本は **`js/store.js` 冒頭のコメント**（`id, date, evaluator, evaluatee, farm, overall, createdAt, updatedAt?, manual?, sent, sentOnce?, redoOf?, works[]`）。`farm` はシートの農場列の元の値、`redoOf` はやり直しで置き換えた前回の記録ID。形を変える時は旧データも読めるようにする（任意の項目で足す）
+- localStorage（端末の保存。**評価データ・削除待ちは消さない**）
+  | キー | 中身 |
+  |---|---|
+  | `jitsugi_v2_data` | 評価の記録（本体） |
+  | `jitsugi_v2_deletes` | シートの削除待ち（端末で消した記録。電波が戻ったらシートの行を消す）。**消すとシートに行が残る** |
+  | `jitsugi_v2_draft` | 入力途中（採点中の人・やり直しの印を含む） |
+  | `jitsugi_v2_sel` | 選んでいる作業 |
+  | `jitsugi_v2_roster` | 取得した名簿（＋シートの記録の要約・GAS の版） |
+  | `jitsugi_v2_evaluator` | 評価者名 |
+  | `jitsugi_v2_sheet_url` | 送信先 GAS の URL（設定タブで変えた時だけ） |
+  | `jitsugi_v2_date` | 評価者が自分で選んだ評価日（その日のうちだけ） |
+  | `jitsugi_v2_exam_start` | 試験開始日 |
+  | `jitsugi_v2_farm` | 最後に開いた農場チップ |
+  | `jitsugi_v2_lang` | 表示言語 |
+- 生成物（**直接編集しない**）: `works-v2.js`（`python build_data.py` が作る）／`gas/Code.gs`・`gas/deploy/Code.js`（`gas/Code.src.gs` から `node gas/build_gas.js` が作る）。`gas/deploy/Seed.js` は実在の社員名が入るので **コミットしない**（テストは架空名）
+
+## テスト（変更したら4本とも通す）
+```
+node gas/build_gas.js && node gas/test_gas.js \
+ && PW_PATH=~/anpi-kakunin/node_modules/playwright PW_CHANNEL=chrome node smoke.js \
+ && PW_PATH=~/anpi-kakunin/node_modules/playwright PW_CHANNEL=chrome node smoke-sheet.js
+```
+- `gas/test_gas.js`＝GAS の単体テスト（シートをモック。名簿・書き込み・削除・評価者タブの台帳・集計タブ・アプリの `toPayload` を本物の `doPost` に通す契約テスト）
+- `smoke.js`＝画面の基本（版の一致・採点・保存・CSV・4言語）
+- `smoke-sheet.js`＝名簿・送信・編集・削除待ち・バックアップ・やり直し・複数端末など（シートの GAS は偽物に差し替え）
+- Playwright はほかのプロジェクトから借りる（`PW_PATH`。無ければ `~/farm-shift-app/node_modules/playwright`）。`PW_CHANNEL=chrome` は Mac の Chrome を使う指定
 
 ## 配布の手順（評価者の端末）
 1. 電波の良い所で本番URLを開く
@@ -49,6 +79,7 @@ works-v2.js（const WORKDATA_V2。直接編集禁止）
 - **済・途中・残り**: この端末の記録＋名簿と一緒に取ったシートの記録の要約（GAS `2026-09-24e` 以降。`roster.done`）で数える。ほかの端末の分は**名簿を取った時点まで**（2人で1農場を分ける時は、区切りごとに「名簿を更新」）。シートの分は試験開始日から数える（**未設定なら今日の分だけ**＝前回の試験・練習の記録を拾わない）。2日以上に分ける試験・途中で端末を替えた時は、設定で試験開始日を入れる
 - GAS が古い（要約を返さない）間は「この端末で採点した分だけ」と名簿の下に出る。その間は **1農場＝1台の端末** で評価する
 - 実施済みの人を押すと、やり直しの確認が出る（点数の修正だけなら履歴から編集）。やり直すと「やり直し（前回 M/D）」の印と、作業ごとに ✓済（前回の日付・点）が出る
+- **やり直しの記録は前回と区別できる**: やり直しで保存した記録は、置き換えた前回の記録ID（この端末の記録＋シートの要約にある分）を `redoOf` に持ち、シートの評価者タブの **O列「やり直し元」**・CSV の「やり直し元」列に出る（GAS `2026-09-24f` 以降。古い GAS はこの列を書かない）。**採用するのは最新の試行**＝どこかの行の「やり直し元」に書かれた記録IDの行は、集計から除く（シートの「集計（自動）」タブの「採否」列が「やり直し前」の行。gas/README.md「農場別に集計する」）。前回の記録を履歴から削除してもよい（シートの行も消える）
 
 ## 更新の出し方（開発者）
 - index.html / js / css を変えたら **sw.js の `CACHE` と js/config.js の `APP_VER` を同じ値に上げる**（smoke.js が一致と上げ忘れを検査）

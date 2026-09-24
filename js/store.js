@@ -1,6 +1,7 @@
 /* store.js — 永続化層：評価セッション（1保存=複数作業）の読み書き・バックアップ */
 /* レコード形式:
    {id,date,evaluator,evaluatee,farm,overall,createdAt,updatedAt?,manual?(名簿にない人を手入力=true),sent,sentOnce?(一度でもシートに届いた=true。無い旧データも読める),
+    redoOf?(やり直しの記録だけ: 置き換える前回の記録ID。複数は半角空白区切り。無い旧データ・通常の記録も読める),
     works:[{workId,workName,category,scores:{aspectId:1-5|null},comments:{aspectId:str}}]} */
 const SKEY='jitsugi_v2_data';
 const SEL_KEY='jitsugi_v2_sel';
@@ -34,8 +35,13 @@ function normRec(e){
     evaluator:String(e.evaluator||''),evaluatee:String(e.evaluatee||''),farm:String(e.farm||''),
     overall:e.overall==null?'':String(e.overall),
     createdAt:String(e.createdAt||''),...(e.updatedAt?{updatedAt:String(e.updatedAt)}:{}),
-    ...(e.manual===true?{manual:true}:{}),works,
+    ...(e.manual===true?{manual:true}:{}),...(normRedoOf(e.redoOf)?{redoOf:normRedoOf(e.redoOf)}:{}),works,
     sent:e.sent===true,...(e.sent===true||e.sentOnce===true?{sentOnce:true}:{})};
+}
+/* やり直し元（記録IDの並び）: 文字列・配列どちらも受け、ID ごとにサニタイズして半角空白でつなぐ（重複・空は落とす） */
+function normRedoOf(v){
+  const a=(Array.isArray(v)?v:String(v==null?'':v).split(/[\s,、]+/)).map(x=>sanitizeId(String(x==null?'':x).trim())).filter(Boolean);
+  return [...new Set(a)].join(' ');
 }
 function validRec(r){return r&&typeof r==='object'&&typeof r.id==='string'&&r.id&&typeof r.date==='string'&&Array.isArray(r.works)&&r.works.length>0}
 

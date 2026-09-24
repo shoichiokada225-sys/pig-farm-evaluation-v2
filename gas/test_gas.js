@@ -20,8 +20,9 @@ function mkSheet(name) {
       setFontWeight() { return this; }, setBackground() { return this; },
       setDataValidation(v) { for (let j = 0; j < nc; j++) dv[c + j] = v; return this; },
       setNote(t) { notes[r + ',' + c] = t; return this; },
+      setFormula(f) { fx[r + ',' + c] = f; return this; },
     }),
-    deleteRow: i => d.splice(i - 1, 1), setFrozenRows() {}, setColumnWidth() {}, clear() { d.length = 0; }, autoResizeColumns() {},
+    deleteRow: i => d.splice(i - 1, 1), setFrozenRows() {}, setColumnWidth() {}, clear() { d.length = 0; Object.keys(fx).forEach(k => delete fx[k]); }, autoResizeColumns() {},
   };
   return sh;
 }
@@ -201,6 +202,46 @@ r = post(APP.deleteReq({ id: 'fx-1', evaluator: 'テスト評価者' }));
 ok('契約: deleteReq を doPost が受け付け行が消える', r.ok === true && r.id === 'fx-1' && r.deleted === fw.aspects.length && shC.d.length === 1);
 ok('契約: 知らない操作は unknown action（アプリは古い GAS と判定）', (r = post({ action: 'rename', id: 'x' })).ok === false && r.error === 'unknown action' && APP.isUnsupportedOp(r) && APP.isUnsupportedOp({ ok: false, error: 'bad request' }));
 ok('契約: record 無しの submit・id 無しの delete は別の誤り（古い GAS と取り違えない）', post({ action: 'submit' }).error === 'no record' && post({ action: 'delete' }).error === 'no id' && !APP.isUnsupportedOp(post({ action: 'delete' })));
+// Z20-3: やり直しの記録は「やり直し元」列（15列目）に前回の記録IDを持つ＝シートで前回と見分けられる
+ok('Z20-3 capabilities に submit.redoOf', ping.capabilities.includes('submit.redoOf'));
+const redoRec = { ...appRec, id: 'rd-2', redoOf: 'rd-1 =x', evaluatee: 'テスト やり直し' };
+r = post(APP.submitReq(redoRec));
+const rdRows = shC.d.filter(x => x[0] === 'rd-2');
+ok('Z20-3 見出しの15列目は やり直し元', shC.d[0][14] === 'やり直し元' && shC.d[0].length === 15);
+ok('Z20-3 toPayload の redoOf が行の やり直し元 に入る（IDはサニタイズ＝数式にならない）', r.ok && rdRows.length === fw.aspects.length && rdRows.every(x => x[14] === 'rd-1 _x'));
+r = post(APP.submitReq({ ...appRec, id: 'rd-3', evaluatee: 'テスト 通常' }));
+ok('Z20-3 通常の記録の やり直し元 は空', shC.d.filter(x => x[0] === 'rd-3').every(x => x[14] === ''));
+{ // 前の版（14列の見出し）で作った評価者タブ: 次の書き込みで O1 に見出しを足す・行は消さない
+  const old = sheets['テスト評価者B']; old.d[0] = old.d[0].slice(0, 14); old.d.push(['old-1', '2026-09-20', 'テスト評価者B', 'テスト 旧行', '', '', fw.name, '', 3, '', 3, 3, '', '']);
+  post(APP.submitReq({ ...appRec, id: 'rd-4', evaluator: 'テスト評価者B', redoOf: 'old-1' }));
+  ok('Z20-3 14列の旧タブにも やり直し元 の見出しを足す・旧行は残る', old.d[0][14] === 'やり直し元' && old.d.some(x => x[0] === 'old-1') && old.d.filter(x => x[0] === 'rd-4').every(x => x[14] === 'old-1'));
+}
+// Z20-2: 集計タブ（全評価者タブを1本の式で並べる・今の農場・採否）。setup と、評価者タブが増えた時に GAS が作り直す
+{
+  const SM = sheets['集計（自動）'];
+  const fData = () => SM.fx['3,1'] || '', fFarm = () => SM.fx['3,16'] || '', fUse = () => SM.fx['3,17'] || '';
+  ok('Z20-2 setup で集計タブ（見出し2行目=評価者タブ15列＋今の農場・採否）', SM && SM.d[1].join() === ['記録ID', '評価日', '評価者', '被評価者', '農場', 'カテゴリ', '作業', '種目', 'スコア', 'コメント', '作業平均', 'セッション平均', '全体所感', '送信日時', 'やり直し元', '今の農場', '採否'].join() && SM.d[0][0] !== '記録ID');
+  ok('Z20-2 A3 は空行を除く1本の式（評価者タブの A2:O を縦に並べる）', /^=LET\(d,\{.*\},IFERROR\(FILTER\(d,CHOOSECOLS\(d,1\)<>""\),""\)\)$/.test(fData()) && fData().includes("'テスト評価者'!A2:O") && fData().includes("'テスト評価者B'!A2:O"));
+  ok('Z20-2 複製・控え・集計・受験者タブは式に入らない', !/のコピー|控え0924|[{;]'集計'!|[{;]'受験者'!|[{;]'農場一覧'!|[{;]'作業一覧'!|[{;]'集計（自動）'!/.test(fData()));
+  ok('Z20-2 農場列の無い旧形式の名簿では 今の農場=記録時の農場', fFarm() === '=MAP(D3:D,E3:E,LAMBDA(n,e,IF(n="",,e)))');
+  sheets['受験者'].d.length = 0;
+  sheets['受験者'].getRange(1, 1, 3, 4).setValues([['農場', '被評価者', '作業1', '旧名'], ['テスト東', 'テスト Hoang Nam', '給餌', 'テスト Hoang Nam旧、テスト 旧名'], ['テスト西', 'テスト Nam', '給餌', '']]);
+  post(APP.submitReq({ ...appRec, id: 'nw-1', evaluator: "テスト 新人's" }));   // 当日、新しい評価者が加わった
+  ok('Z20-2 新しい評価者タブは自動で式に足す（タブ名の \' は二重に）', fData().includes("'テスト 新人''s'!A2:O") && fData().includes("'テスト評価者'!A2:O"));
+  ok('Z20-2 今の農場=受験者タブの見出しの列で引く・旧名は「、」区切りの完全一致（部分一致しない）', /^=MAP\(D3:D,E3:E,LAMBDA\(n,e,IF\(n="",,XLOOKUP\(n,'受験者'!\$B\$2:\$B,'受験者'!\$A\$2:\$A,XLOOKUP\(TRUE,ARRAYFORMULA\(ISNUMBER\(FIND\("、"&n&"、"/.test(fFarm()) && fFarm().includes("REGEXREPLACE('受験者'!$D$2:$D&\"\"") && !/"\*"&/.test(fFarm()));
+  ok('Z20-2 採否=やり直し元に書かれた記録IDの行は「やり直し前」', fUse().includes('COUNTIF(O3:O,"*"&id&"*")') && fUse().includes('やり直し前') && fUse().includes('採用'));
+  const cols0 = sheets['受験者'].d[0].slice();
+  sheets['受験者'].d[0] = ['メモ', ...cols0]; sheets['受験者'].d.slice(1).forEach(x => x.unshift(''));   // 列を1つずらす（並べ替えても読める）
+  G.setup();
+  ok('Z20-2 受験者タブの列を動かしても setup で式の列が追従', sheets['集計（自動）'].fx['3,16'].includes("'受験者'!$C$2:$C,'受験者'!$B$2:$B") && sheets['集計（自動）'].fx['3,16'].includes("REGEXREPLACE('受験者'!$E$2:$E"));
+  sheets['受験者'].d[0] = cols0; sheets['受験者'].d.slice(1).forEach(x => x.shift());
+  // 管理者が同じ名前で作った別タブは触らない（集計タブの台帳は sheetId）
+  const keepSM = sheets['集計（自動）']; delete sheets['集計（自動）'];
+  const mySM = ss.insertSheet('集計（自動）'); mySM.getRange(1, 1, 1, 2).setValues([['自分の表', 1]]);
+  G.setup(); post(APP.submitReq({ ...appRec, id: 'nw-2', evaluator: 'テスト 新人2' }));
+  ok('Z20-2 同じ名前の管理者のタブは上書きしない', mySM.d.length === 1 && mySM.d[0][0] === '自分の表' && !mySM.fx['3,1']);
+  delete sheets['集計（自動）']; sheets['集計（自動）'] = keepSM;
+}
 // 名簿の初期データが無い時: 農場一覧は受験者タブにある農場（重複なし）＋所属未確定
 Object.keys(sheets).forEach(k => delete sheets[k]);
 const G3 = new Function('ROSTER_SEED', code + ';return {setup};')(undefined);

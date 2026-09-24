@@ -2432,8 +2432,23 @@ async function runZ19(devName) {
   ok('OK → #eeCur に「やり直し（前回 9/20）」', /やり直し（前回 9\/20）/.test(await page.locator('#eeCur').textContent()));
   ok('目次の作業に ✓済（前回 9/20 · 4.0）', await page.locator('#wnav .wnav-c.redo').count() === 2 && /✓ 済（前回 9\/20 · 4\.0）/.test(await page.locator('#wnav').textContent()));
   ok('作業の見出しの下にも ✓済（前回）', await page.locator('.wsub-prev').count() === 2);
+  const prevIds = (await recs()).filter(x => x.evaluatee === 'テスト 一号').map(x => x.id);
+  // Z20-3: 途中で再読み込みしても（下書きから戻す）やり直しの印と前回の記録IDは保つ
+  await page.locator('#cards .sb[data-s="5"]').first().tap(); await page.waitForTimeout(700);
+  await page.reload(); await page.waitForTimeout(700);
+  ok('Z20-3 再読み込み後もやり直しの印', /やり直し（前回 9\/20）/.test(await page.locator('#eeCur').textContent()));
   await scoreAll(5); await saveTap();
   ok('やり直しを保存すると記録が1件増える（確認のうえで）', (await recs()).length === nr + 1);
+  { const all = await recs(), nw = all[all.length - 1];
+    ok(`Z20-3 やり直しの記録は redoOf に前回の記録ID（${nw.redoOf}）`, nw.evaluatee === 'テスト 一号' && prevIds.length >= 1 && nw.redoOf === prevIds.join(' '));
+    ok('Z20-3 通常の記録には redoOf が無い', all.filter(x => x.id !== nw.id).every(x => !('redoOf' in x)));
+    await page.waitForTimeout(400);
+    ok('Z20-3 シートへ送る記録にも redoOf（やり直し元の列）', posts.some(p => p.record && p.record.id === nw.id && p.record.redoOf === nw.redoOf) && posts.filter(p => p.record && p.record.id !== nw.id).every(p => p.record.redoOf === ''));
+    const [dl] = await Promise.all([page.waitForEvent('download'), page.evaluate(() => doCSV())]);
+    const csv = fs.readFileSync(await dl.path(), 'utf8'), lines = csv.trim().split('\n');
+    ok('Z20-3 CSV の見出しの末尾に 記録ID・やり直し元', /"記録ID","やり直し元"\s*$/.test(lines[0]));
+    ok('Z20-3 CSV のやり直しの行に前回の記録ID・前回の行は空', lines.filter(l => l.endsWith(`"${nw.id}","${nw.redoOf}"`)).length > 0 && prevIds.every(id => lines.some(l => l.endsWith(`"${id}",""`))) && lines.slice(1).filter(l => !l.endsWith(',""')).every(l => l.endsWith(`"${nw.id}","${nw.redoOf}"`)));
+    ok('Z20-3 バックアップの取り込み（normRec）で redoOf を保つ・旧データ（無い）はそのまま', await page.evaluate(id => { const r = getAll().find(x => x.id === id); return normRec(r).redoOf === r.redoOf && !('redoOf' in normRec({ ...r, redoOf: undefined })) && normRec({ ...r, redoOf: ['a b', 'x=y', 'a'] }).redoOf === 'a_b x_y a'; }, nw.id)); }
   await ee('テスト 四号').tap(); await page.waitForTimeout(300);   // 済の人
   ok('ほかの済の人も確認つき（前回 9/20）', /前回 9\/20/.test(dialogs[dialogs.length - 1]));
   await page.evaluate(() => doReset()); await page.waitForTimeout(150);
