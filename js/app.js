@@ -121,8 +121,8 @@ function toggleWork(id,on){
 }
 function clearWorks(){
   if(!selWorks.length)return;
+  if(editId){cancelEdit();return}   // 編集中の「全て解除」は編集の取り消し（編集前に採点していた人と点数へ戻す）
   if(dirty&&!confirm(t('cCEdit')))return;
-  if(editId)exitEdit();
   selWorks=[];saveSel();buildWorkSel();buildCards();
   localStorage.removeItem(DRAFT_KEY);dirty=false;
 }
@@ -132,7 +132,19 @@ function clearWorks(){
    ============================================================== */
 function onCh(){dirty=true;clearTimeout(autoT);autoT=setTimeout(saveDraft,300)}
 ['fDate','fEe','fOv'].forEach(id=>document.getElementById(id).addEventListener('input',onCh));
-function saveDraft(){const d=collectForm();d._editId=editId;d._sel=selWorks;d._cur={...curEe};localStorage.setItem(DRAFT_KEY,JSON.stringify(d))}
+function saveDraft(){const d=collectForm();d._editId=editId;d._sel=selWorks;d._cur={...curEe};if(editId&&preEdit)d._pre=preEdit;localStorage.setItem(DRAFT_KEY,JSON.stringify(d))}
+/* 採点・コメント・所感が1つでもあるか（collectForm の形） */
+function formHasContent(d){
+  return !!(d&&((d.overall||'').trim()||(d.works||[]).some(we=>Object.values(we.scores||{}).some(v=>v!=null)||Object.values(we.comments||{}).some(v=>(v||'').trim()))));
+}
+/* 今のカードに点数・コメントを入れる（works = collectForm().works の形） */
+function fillForm(works){
+  getItems().forEach(it=>{
+    const we=(works||[]).find(x=>x.workId===it.workId);
+    const sc=we&&we.scores&&we.scores[it.aspectId];if(sc)setScoreUI(it.id,sc);
+    const ta=document.querySelector('textarea[data-cid="'+it.id+'"]');if(ta)ta.value=(we&&we.comments&&we.comments[it.aspectId])||'';
+  });
+}
 function collectForm(){
   const works=selWorks.map(wid=>{
     const w=workById(wid);
@@ -147,7 +159,7 @@ function collectForm(){
 }
 function restoreDraft(){
   let d=null;try{d=JSON.parse(localStorage.getItem(DRAFT_KEY))}catch{}
-  if(!d)return;
+  if(!d){if(selWorks.length&&!editId){selWorks=[];saveSel();buildWorkSel();buildCards()}return}   // 人の分からない作業だけが残っている＝人のいないカードは出さない
   // 下書きの作業選択を復元（カタログに実在するものだけ）
   if(Array.isArray(d._sel)){
     const sel=d._sel.filter(id=>workById(id));
@@ -157,9 +169,12 @@ function restoreDraft(){
   const ro=getRoster().list,ee=(d.evaluatee||'').trim();
   const dc=d._cur&&typeof d._cur==='object'&&nmKey(d._cur.name)===nmKey(ee)?d._cur:null;   // _cur の無い前の版の下書きも読む
   const eeManual=!!ee&&(!!(dc&&dc.manual)||!rosterHits(ee,'',ro).length);
-  const hasContent=eeManual||(d.overall||'').trim()
-    ||(d.works||[]).some(we=>Object.values(we.scores||{}).some(v=>v!=null)||Object.values(we.comments||{}).some(v=>(v||'').trim()));
-  if(!hasContent)return;
+  const hasContent=eeManual||formHasContent(d);
+  if(!hasContent){
+    // 名簿の人を押しただけ（採点はまだ）は入力途中ではない＝人は戻さない。その人の作業だけが残ると「人のいないカード」で採点させてしまうので作業も外す
+    if(selWorks.length){selWorks=[];saveSel();buildWorkSel();buildCards();renderRoster()}
+    return;
+  }
   const isEdit=!!(d._editId&&getAll().some(e=>e.id===d._editId));
   // 前日以前の入力途中: 日付を今日にするか確認（黙って昨日の日付で記録しない）。編集中の下書きは記録の日付のまま
   let dt=d.date;
@@ -170,16 +185,17 @@ function restoreDraft(){
   if(dt)document.getElementById('fDate').value=dt;
   setCur(dc?{name:ee,farm:dc.farm,manual:dc.manual}:{name:ee,farm:(rosterEntry(ee,chipFarm,ro)||{}).farm||'',manual:false});
   document.getElementById('fOv').value=d.overall||'';
-  getItems().forEach(it=>{
-    const we=(d.works||[]).find(x=>x.workId===it.workId);
-    const sc=we&&we.scores[it.aspectId];if(sc)setScoreUI(it.id,sc);
-    const ta=document.querySelector('textarea[data-cid="'+it.id+'"]');if(ta)ta.value=(we&&we.comments[it.aspectId])||'';
-  });
+  fillForm(d.works);
   if(isEdit){
-    editId=d._editId;preEditDate=null;preEditCur=null;
+    const rec=getAll().find(e=>e.id===d._editId);
+    editId=d._editId;
+    // 評価者は記録の評価者のまま（端末の評価者名を後から直しても、別の評価者タブに同じ記録を作らない）
+    editEv=typeof d.evaluator==='string'&&d.evaluator.trim()?d.evaluator:(rec?rec.evaluator:null);
+    preEdit=d._pre&&typeof d._pre==='object'?d._pre:null;   // 編集を終えたら、編集前に採点していた人と点数へ戻す
     document.getElementById('editBar').classList.add('show');
     document.getElementById('btnSave').textContent=t('btnUpdate');
   }
+  dirty=true;   // 復元した採点は入力途中＝別の人を押す・取り消す・閉じる時に確認を出す
   updProg();renderRoster();toast(t('tDraft'));
 }
 
@@ -219,7 +235,10 @@ function doSave(){
     const idx=all.findIndex(e=>e.id===editId);
     if(idx===-1){toast(t('eEditGone'),1);exitEdit(true);return}   // 採点は残す＝人も編集していた人のまま
     all[idx]=normRec({...all[idx],date:d.date,evaluator:d.evaluator.trim(),evaluatee:d.evaluatee.trim(),farm:all[idx].farm||who.farm,works:d.works,overall:d.overall,updatedAt:new Date().toISOString(),sent:false});
-    putAll(all);toast(t('tUpdated'));exitEdit();
+    putAll(all);toast(t('tUpdated'));
+    dirty=false;exitEdit();   // 編集前に採点していた人・作業・点数へ戻す（戻した内容は下書きにも残す）
+    refreshSel();renderRoster();syncPending();
+    return;
   }else{
     all.push(normRec({id:crypto.randomUUID(),date:d.date,evaluator:d.evaluator.trim(),evaluatee:d.evaluatee.trim(),farm:who.farm,...(who.manual?{manual:true}:{}),works:d.works,overall:d.overall,createdAt:new Date().toISOString(),sent:false}));
     putAll(all);toast(partLeft?t('tSavedPart').replace('{n}',partLeft):t('tSaved'));
@@ -275,7 +294,8 @@ function jumpWork(wid){
    ============================================================== */
 function startEdit(id){
   const rec=getAll().find(e=>e.id===id);if(!rec)return;
-  if(!editId){preEditDate=document.getElementById('fDate').value;preEditCur={...curEe}}   // 編集を終えたら、編集前に選んでいた評価日と人へ戻す
+  if(editId&&dirty&&!confirm(t('cCEdit')))return;   // 別の記録の編集へ移る前に、今の編集の修正を捨ててよいか確認（編集前の人の点数は preEdit に残る）
+  if(!editId){const f=collectForm();preEdit={date:document.getElementById('fDate').value,cur:{...curEe},sel:selWorks.slice(),works:f.works,overall:f.overall,dirty:!!dirty}}   // 編集を終えたら、編集前の評価日・人・作業・点数へ戻す（採点途中の人を消さない）
   editId=id;closeMo();
   const wids=(rec.works||[]).map(we=>we.workId).filter(wid=>workById(wid));
   if(!wids.length){toast(t('eImpCfg'),1);exitEdit();return}
@@ -288,20 +308,40 @@ function startEdit(id){
   editEv=rec.evaluator;
   setCur({name:rec.evaluatee,farm:rec.farm||'',manual:!!rec.manual});renderRoster();   // 農場チップの好み（FARM_KEY）は書き換えない
   document.getElementById('fOv').value=rec.overall||'';
-  getItems().forEach(it=>{
-    const we=(rec.works||[]).find(x=>x.workId===it.workId);
-    const sc=we&&we.scores[it.aspectId];if(sc)setScoreUI(it.id,sc);
-    const ta=document.querySelector('textarea[data-cid="'+it.id+'"]');if(ta)ta.value=(we&&we.comments[it.aspectId])||'';
-  });
+  document.querySelectorAll('#cards .ec.miss').forEach(c=>c.classList.remove('miss'));
+  fillForm(rec.works);
   document.getElementById('editBar').classList.add('show');
   document.getElementById('btnSave').textContent=t('btnUpdate');
   window.scrollTo({top:0,behavior:'smooth'});dirty=false;updProg();
+  saveDraft();   // 編集前の採点（preEdit）を下書きに残す（編集中にアプリが落ちても、採点途中の人の点数を失わない）
 }
-function cancelEdit(){if(dirty&&!confirm(t('cCEdit')))return;exitEdit();buildCards();clearForm()}
-function exitEdit(keepCur){
-  if(editId){document.getElementById('fDate').value=preEditDate||todayLocal();if(!keepCur)setCur(preEditCur)}
-  preEditDate=null;preEditCur=null;editId=null;editEv=null;document.getElementById('editBar').classList.remove('show');document.getElementById('btnSave').textContent=t('btnSave')}
-function doReset(){if(!confirm(t('cReset')))return;if(editId)exitEdit();clearForm();document.getElementById('fDate').value=todayLocal();renderRoster();toast(t('tReset'))}
+function cancelEdit(){if(!editId)return;if(dirty&&!confirm(t('cCEdit')))return;exitEdit()}
+/* 編集を終える。keep=true は画面をそのまま残す（編集中の記録が消えた時＝採点を失わない）。
+   それ以外は編集前の評価日・人・作業・点数（preEdit）へ戻す */
+function exitEdit(keep){
+  const was=!!editId,pe=preEdit;
+  preEdit=null;editId=null;editEv=null;document.getElementById('editBar').classList.remove('show');document.getElementById('btnSave').textContent=t('btnSave');
+  if(was&&!keep)restorePreEdit(pe);
+}
+function restorePreEdit(pe){
+  pe=pe&&typeof pe==='object'?pe:{};
+  clearTimeout(autoT);
+  selWorks=(Array.isArray(pe.sel)?pe.sel:[]).filter(id=>workById(id));saveSel();buildWorkSel();buildCards();
+  document.querySelectorAll('#cards .ec.miss').forEach(c=>c.classList.remove('miss'));
+  document.getElementById('fDate').value=pe.date||todayLocal();
+  setCur(pe.cur);
+  if(!curEe.name&&!curEe.manual&&selWorks.length){selWorks=[];saveSel();buildWorkSel();buildCards()}   // 人のいないカードは出さない
+  document.getElementById('fOv').value=pe.overall||'';
+  fillForm(pe.works);
+  dirty=!!pe.dirty||formHasContent(pe);
+  if(selWorks.length||curEe.name||curEe.manual)saveDraft();else localStorage.removeItem(DRAFT_KEY);
+  updProg();renderRoster();
+}
+function doReset(){
+  if(!confirm(t('cReset')))return;
+  if(editId){exitEdit();toast(t('tReset'));return}   // 編集中のリセット＝編集の取り消し（編集前に採点していた人を消さない）
+  clearForm();selWorks=[];saveSel();buildWorkSel();buildCards();   // 人を外したら作業も外す（人のいないカードで採点させない）
+  document.getElementById('fDate').value=todayLocal();renderRoster();toast(t('tReset'))}
 /* 評価日は評価者が選んだ日のまま（空の時だけ今日）。次の人へ進むたびに日付が変わると、同じ日の記録が2つの日付に分かれる */
 function clearForm(keepDraft){
   clearTimeout(autoT);
@@ -375,7 +415,7 @@ function rosterIsOld(rs){const d=new Date(rs&&rs.at||'');return isNaN(d)||Date.n
 const FARM_KEY='jitsugi_v2_farm';
 let eeQuery='',rosterKeptEmpty=false;
 function storedFarm(){try{return localStorage.getItem(FARM_KEY)||''}catch{return''}}
-let curEe={name:'',farm:'',manual:false},preEditCur=null,chipFarm=storedFarm();
+let curEe={name:'',farm:'',manual:false},chipFarm=storedFarm();
 function setCur(c){
   curEe={name:String(c&&c.name||'').trim(),farm:String(c&&c.farm||''),manual:!!(c&&c.manual)};
   document.getElementById('fEe').value=curEe.name;
@@ -531,7 +571,10 @@ function selectEe(i){
   const ro=getRoster().list,p=ro[i];if(!p)return;
   if(editId){toast(t('editingBanner'),1);return}
   if(p===selEntry(ro))return;
-  if(dirty&&document.querySelector('#cards .ec.scored')&&!confirm(t('cSwitchEe')))return;
+  // 人がまだ決まっていないのに採点がある（前の版の下書き等）: 捨てずにこの人の採点として引き継ぐ
+  const orphan=!curEe.name&&!curEe.manual&&!!document.querySelector('#cards .ec.scored');
+  if(!orphan&&dirty&&document.querySelector('#cards .ec.scored')&&!confirm(t('cSwitchEe')))return;
+  const snap=orphan?collectForm():null;
   const dt=document.getElementById('fDate').value;
   clearForm();
   if(dt)document.getElementById('fDate').value=dt;
@@ -539,7 +582,10 @@ function selectEe(i){
   // 試験期間に済んだ作業は外し、残りの作業だけを出す（前の日に途中保存した人も同じ。全部済んでいる人を選び直した時は全作業＝やり直し）
   const ds=doneWorksOf(p,examRecs(),ro);
   const left=p.works.filter(w=>!ds.has(w));
-  selWorks=(left.length?left:p.works).slice();saveSel();buildWorkSel();buildCards(true);   // 人を選んだ最初の構築だけフェード
+  selWorks=(left.length?left:p.works).slice();
+  if(snap)snap.works.forEach(we=>{if(!selWorks.includes(we.workId)&&formHasContent({works:[we]}))selWorks.push(we.workId)});
+  saveSel();buildWorkSel();buildCards(true);   // 人を選んだ最初の構築だけフェード
+  if(snap){fillForm(snap.works);document.getElementById('fOv').value=snap.overall||'';updProg()}
   const unk=p.unresolved&&p.unresolved.length;
   document.getElementById('wselBox').open=!selWorks.length||!!unk;   // 作業名不明の人は作業選択を開いたまま（評価者が補う）
   renderRoster();onCh();
@@ -595,4 +641,4 @@ function refreshSel(){
   cs.innerHTML=`<option value="">${t('selPh')}</option>`+opts;cs.value=cv;
 }
 
-let dirty=false,editId=null,editEv=null,autoT=null,preEditDate=null;
+let dirty=false,editId=null,editEv=null,autoT=null,preEdit=null;   // preEdit={date,cur,sel,works,overall,dirty}＝編集を始める前のフォーム

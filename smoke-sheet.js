@@ -55,6 +55,7 @@ async function run(devName) {
     }
     if (body.action !== 'submit') return route.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify({ ok: false, error: 'unknown action' }) });
     const r = body.record;
+    Object.values(sheet).forEach(tab => { delete tab[r.id]; });   // 本物の GAS と同じ: 同じ記録IDは全ての評価者タブから消してから書く
     (sheet[r.evaluator] = sheet[r.evaluator] || {})[r.id] = r;
     return route.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' },
       body: JSON.stringify({ ok: true, id: r.id }) });
@@ -1189,8 +1190,10 @@ async function runGuard(devName) {
   const page = await ctx.newPage();
   const errors = [], dialogs = [];
   page.on('pageerror', e => errors.push(String(e)));
-  page.on('dialog', d => { if (d.type() === 'beforeunload') return d.accept(); dialogs.push(d.message()); d.accept(); });
+  let dlgAccept = true;   // false の間は確認ダイアログを「キャンセル」する
+  page.on('dialog', d => { if (d.type() === 'beforeunload') return d.accept(); dialogs.push(d.message()); dlgAccept ? d.accept() : d.dismiss(); });
   const FG = 'テスト農場G';
+  const gsheet = {};   // 本物の GAS と同じ: タブ=評価者名・同じ記録IDは全タブから消してから書く
   const roster = [
     { name: 'テスト 甲太', farm: FG, works: ['給餌', 'エサ調整'] },
     { name: 'テスト 乙彦', farm: FG, works: ['除フン'] },
@@ -1201,6 +1204,8 @@ async function runGuard(devName) {
     const req = route.request(), hdr = { 'access-control-allow-origin': '*' };
     if (req.method() === 'GET') return route.fulfill({ status: 200, contentType: 'application/json', headers: hdr, body: JSON.stringify(rosterRes(roster)) });
     const body = JSON.parse(req.postData());
+    if (body.action === 'delete') Object.values(gsheet).forEach(tab => { delete tab[body.id]; });
+    else { Object.values(gsheet).forEach(tab => { delete tab[body.record.id]; }); (gsheet[body.record.evaluator] = gsheet[body.record.evaluator] || {})[body.record.id] = body.record; }
     return route.fulfill({ status: 200, contentType: 'application/json', headers: hdr, body: JSON.stringify({ ok: true, id: body.action === 'delete' ? body.id : body.record.id, deleted: 1 }) });
   });
   const ee = name => page.locator('.eetab').filter({ has: page.locator('.eetab-nm', { hasText: new RegExp('^' + name + '$') }) });
@@ -1261,6 +1266,93 @@ async function runGuard(devName) {
   ok('G4: 「元に戻す」はまだ押せる', await undo.isVisible());
   await undo.tap(); await page.waitForTimeout(300);
   ok('G4: 乙彦の作業は除フンだけのまま（丁子のエサ調整が入らない）', JSON.stringify(await page.evaluate(() => selWorks)) === '["dung-removal"]' && await page.inputValue('#fEe') === 'テスト 乙彦');
+
+  // ---- R15: 編集モードと下書き復元 ----
+  const reset = () => page.evaluate(() => { clearForm(); selWorks = []; saveSel(); buildWorkSel(); buildCards(); });
+  const scoreN = async (n, s) => { const ids = await page.locator('#cards .ec').evaluateAll(els => els.map(e => e.id.slice(2))); for (const cid of ids.slice(0, n)) await page.locator(`.sb[data-id="${cid}"][data-s="${s}"]`).tap(); };
+  const nScored = () => page.locator('#cards .ec.scored').count();
+  const st = () => page.evaluate(() => ({ ee: document.getElementById('fEe').value, sel: selWorks.slice(), dirty, edit: editId, draft: JSON.parse(localStorage.getItem('jitsugi_v2_draft') || 'null') }));
+  await reset(); await page.waitForTimeout(200);
+  const heiRec = (await recs()).find(x => x.evaluatee === 'テスト 丙介');
+
+  console.log('[G5] 採点途中（甲太3項目）→ 履歴から丙介を編集 → 取り消し／保存 → 甲太と3項目が戻る（R15-1）');
+  await ee('テスト 甲太').tap(); await page.waitForTimeout(300);
+  await scoreN(3, 4); await page.waitForTimeout(500);
+  const kSel = JSON.stringify((await st()).sel), kN = await nScored();
+  ok('G5: 甲太は採点途中（3項目・全部ではない）', kN === 3 && kN < await page.locator('#cards .ec').count());
+  let dn5 = dialogs.length;
+  await page.evaluate(id => startEdit(id), heiRec.id); await page.waitForTimeout(300);
+  ok('G5: 編集中は丙介の作業（給餌）・人は丙介', JSON.stringify((await st()).sel) === '["feeding-daily"]' && (await st()).ee === 'テスト 丙介');
+  await page.evaluate(() => cancelEdit()); await page.waitForTimeout(300);
+  let s5 = await st();
+  ok('G5: 変更なしの取り消しは確認を出さない', dialogs.length === dn5);
+  ok('G5: 取り消し → 甲太に戻る・作業も甲太の2作業', s5.ee === 'テスト 甲太' && JSON.stringify(s5.sel) === kSel && !s5.edit && /テスト 甲太/.test(await page.locator('#eeCur').textContent()));
+  ok('G5: 取り消し → 甲太の3項目が戻る・入力途中の扱い（dirty）・下書きも甲太', await nScored() === kN && s5.dirty === true && s5.draft && s5.draft.evaluatee === 'テスト 甲太' && !s5.draft._editId);
+  await page.evaluate(id => startEdit(id), heiRec.id); await page.waitForTimeout(300);
+  const hc5 = (await page.locator('#cards .ec').first().getAttribute('id')).slice(2);
+  await page.locator(`.sb[data-id="${hc5}"][data-s="1"]`).tap(); await page.waitForTimeout(100);
+  await page.locator('#btnSave').tap(); await page.waitForTimeout(800);
+  s5 = await st();
+  ok('G5: 編集を保存 → 丙介の記録は1点に直る（件数は増えない）', Object.values((await recs()).find(x => x.id === heiRec.id).works[0].scores)[0] === 1 && (await recs()).length === 2);
+  ok('G5: 保存後 → 甲太と3項目が戻る・甲太の記録はまだ0件', s5.ee === 'テスト 甲太' && JSON.stringify(s5.sel) === kSel && await nScored() === kN && s5.dirty === true && (await recs()).filter(x => x.evaluatee === 'テスト 甲太' && x.id !== 'old-edit').length === 0);
+  console.log('[G5b] 編集中に再起動 → 取り消しで確認が出る → 編集前の甲太3項目が戻る（R15-1/R15-2）');
+  await page.evaluate(id => startEdit(id), heiRec.id); await page.waitForTimeout(300);
+  await page.locator(`.sb[data-id="${hc5}"][data-s="2"]`).tap(); await page.waitForTimeout(600);
+  await page.reload(); await page.waitForTimeout(800);
+  ok('G5b: 再起動後も編集中（丙介・2点）', (await st()).edit === heiRec.id && await page.locator(`.sb[data-id="${hc5}"][data-s="2"].sel`).count() === 1);
+  dn5 = dialogs.length; dlgAccept = false;
+  await page.evaluate(() => cancelEdit()); await page.waitForTimeout(300);
+  ok('G5b: 復元した修正の取り消しは確認を出す・キャンセルなら編集のまま', dialogs.length === dn5 + 1 && (await st()).edit === heiRec.id);
+  dlgAccept = true;
+  await page.evaluate(() => cancelEdit()); await page.waitForTimeout(300);
+  s5 = await st();
+  ok('G5b: OK → 甲太と3項目が戻る', s5.ee === 'テスト 甲太' && !s5.edit && await nScored() === kN && JSON.stringify(s5.sel) === kSel);
+
+  console.log('[G6] 甲太を採点途中で再起動 → 乙彦を押すと確認が出る（R15-2）');
+  await page.waitForTimeout(400);
+  await page.reload(); await page.waitForTimeout(800);
+  ok('G6: 再起動で甲太の3項目が戻る', (await st()).ee === 'テスト 甲太' && await nScored() === kN);
+  dn5 = dialogs.length; dlgAccept = false;
+  await ee('テスト 乙彦').tap(); await page.waitForTimeout(300);
+  ok('G6: 別の人を押すと確認が出る・キャンセルなら甲太の3項目のまま', dialogs.length === dn5 + 1 && (await st()).ee === 'テスト 甲太' && await nScored() === kN);
+  dlgAccept = true;
+  ok('G6: 復元した直後は閉じる時も確認の対象（dirty）', (await st()).dirty === true);
+
+  console.log('[G7] 人を押しただけで再起動 → 人も作業も出さない／人が分からない作業は出さない／人のいない採点は次に選んだ人へ引き継ぐ（R15-3）');
+  await reset(); await page.waitForTimeout(200);
+  await ee('テスト 乙彦').tap(); await page.waitForTimeout(600);
+  await page.reload(); await page.waitForTimeout(800);
+  let s7 = await st();
+  ok('G7: 人を押しただけの再起動 → 人は戻さず、作業のカードも出さない（人のいないカードで採点させない）', s7.ee === '' && s7.sel.length === 0 && await page.locator('#cards .ec').count() === 0 && await page.locator('.eetab.on').count() === 0);
+  await page.evaluate(() => { localStorage.removeItem('jitsugi_v2_draft'); localStorage.setItem('jitsugi_v2_sel', '["feeding-daily","feed-adjust"]'); });
+  await page.reload(); await page.waitForTimeout(800);
+  s7 = await st();
+  ok('G7: 下書きが無く作業だけ残っている → 作業も出さない（人のいないカードで採点させない）', s7.ee === '' && s7.sel.length === 0 && await page.locator('#cards .ec').count() === 0);
+  await page.evaluate(() => { selWorks = ['dung-removal']; saveSel(); buildWorkSel(); buildCards(); });   // 前の版が残した「人のいないカード」
+  await scoreN(2, 3); await page.waitForTimeout(100);
+  dn5 = dialogs.length;
+  await ee('テスト 乙彦').tap(); await page.waitForTimeout(300);
+  s7 = await st();
+  ok('G7: 人のいない採点 → 乙彦を押すと確認なしで引き継ぐ（2項目のまま）', dialogs.length === dn5 && s7.ee === 'テスト 乙彦' && await nScored() === 2 && JSON.stringify(s7.sel) === '["dung-removal"]');
+  await reset(); await page.waitForTimeout(100);
+  await ee('テスト 丁子').tap(); await page.waitForTimeout(300);
+  await scoreN(2, 3);
+  await page.evaluate(() => doReset()); await page.waitForTimeout(300);
+  ok('G7: リセット → 人と作業の両方を外す', (await st()).ee === '' && (await st()).sel.length === 0);
+
+  console.log('[G8] 編集中に再起動 → 評価者名を直した端末でも、記録の評価者は元のまま・シートは1タブだけ（R15-4）');
+  await reset(); await page.waitForTimeout(100);
+  await page.evaluate(() => syncPending(true)); await page.waitForTimeout(800);
+  ok('G8: 丙介の記録は送信済み・シートは評価者タブ', (await recs()).find(x => x.id === heiRec.id).sent === true && !!(gsheet['テスト評価者'] || {})[heiRec.id]);
+  await page.evaluate(() => { setEvaluator('テスト評価者 正式'); renderEvaluator(); });
+  await page.evaluate(id => startEdit(id), heiRec.id); await page.waitForTimeout(300);
+  await page.locator(`.sb[data-id="${hc5}"][data-s="4"]`).tap(); await page.waitForTimeout(600);
+  await page.reload(); await page.waitForTimeout(800);
+  await page.locator('#btnSave').tap(); await page.waitForTimeout(1200);
+  const r8 = (await recs()).find(x => x.id === heiRec.id);
+  ok('G8: 記録の評価者は元の「テスト評価者」のまま・4点・送信済み', r8.evaluator === 'テスト評価者' && Object.values(r8.works[0].scores)[0] === 4 && r8.sent === true);
+  ok('G8: シートで同じ記録IDは1タブだけ（テスト評価者）', Object.keys(gsheet).filter(k => heiRec.id in gsheet[k]).join() === 'テスト評価者');
+  await page.evaluate(() => { setEvaluator('テスト評価者'); renderEvaluator(); });
 
   ok('JSエラーなし(安全弁)', errors.length === 0);
   if (errors.length) console.log(errors.join('\n'));

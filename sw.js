@@ -3,7 +3,7 @@
    電波が弱い豚舎（つながるが応答が返らない）でも、キャッシュ済みのアプリ本体を待たずに即起動する。
    新しい版は CACHE の版上げで取り込む（install で全ファイルを取り直し、次に開いた時から新しい版）。
    キャッシュに無いものだけネットワークへ（3秒で打ち切り → index.html にフォールバック） */
-const CACHE = 'jitsugi-v2-v17';
+const CACHE = 'jitsugi-v2-v18';
 const ASSETS = [
   './', './index.html', './styles.css', './v2.css', './works-v2.js',
   './js/config.js', './js/util.js', './js/i18n.js', './js/data.js', './js/store.js', './js/person.js', './js/contract.js', './js/ui.js', './js/sync.js', './js/app.js',

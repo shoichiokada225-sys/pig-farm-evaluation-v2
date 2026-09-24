@@ -99,7 +99,12 @@ ok('予約名は回避（農場一覧）', (post({ action: 'submit', record: { .
 // 削除（アプリで消した記録の行をシートからも消す）
 const idsOf = n => sheets[n].d.slice(1).map(r => r[0]);
 post({ action: 'submit', record: { ...rec, id: 'del-1', evaluator: '評価者B' } });
-post({ action: 'submit', record: { ...rec, id: 'del-1' } });   // 評価者名を変えて送り直した記録＝2タブに同じID
+const oldRowsB = sheets['評価者B'].d.slice(1).map(r => r.slice());
+post({ action: 'submit', record: { ...rec, id: 'del-1' } });   // 評価者名を変えて送り直した記録
+// R15-4: 評価者を変えて送り直しても、前の評価者タブに古い行を残さない（記録ID=1つの版だけ）
+ok('評価者変更の再送: 前の評価者タブから消える・新しいタブに1版だけ', !idsOf('評価者B').includes('del-1') && idsOf('岡田_正一').filter(x => x === 'del-1').length === rec.works[0].items.length);
+ok('評価者変更の再送: シート全体で同じ記録IDの行は1版分だけ', Object.values(sheets).reduce((n, s) => n + s.d.slice(1).filter(r => r[0] === 'del-1').length, 0) === rec.works[0].items.length);
+oldRowsB.forEach(r => sheets['評価者B'].d.push(r));   // 前の版の GAS が残した重複（2タブに同じID）を再現
 sheets['受験者'].getRange(6, 1, 1, 2).setValues([['del-1', 'del-1']]);   // 受験者タブの同じ文字列は消さない
 const nRo = sheets['受験者'].d.length;
 r = post({ action: 'delete', id: 'del-1' });

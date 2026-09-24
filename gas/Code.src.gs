@@ -199,17 +199,15 @@ function writeRecord_(rec) {
   const id = cleanId_(rec.id);
   if (!id) throw new Error('no id');
   const ss = SpreadsheetApp.getActive();
+  // 同じ記録IDの既存行を、全ての評価者タブから消す（編集・再送で重複させない。
+  // 評価者名の表記を直した端末から編集して送り直しても、前の評価者タブに古い行を残さない）
+  deleteRecord_(id);
   const name = sheetNameFor_(rec.evaluator);
   let sh = ss.getSheetByName(name);
   if (!sh) {
     sh = ss.insertSheet(name);
     sh.getRange(1, 1, 1, HEAD.length).setValues([HEAD]).setFontWeight('bold').setBackground('#e6f2ee');
     sh.setFrozenRows(1);
-  }
-  // 同じ記録IDの既存行を消す（編集・再送で重複させない）
-  if (sh.getLastRow() > 1) {
-    const ids = sh.getRange(2, 1, sh.getLastRow() - 1, 1).getValues();
-    for (let i = ids.length - 1; i >= 0; i--) if (String(ids[i][0]) === id) sh.deleteRow(i + 2);
   }
   const works = Array.isArray(rec.works) ? rec.works.slice(0, 50) : [];
   const allScores = [];
