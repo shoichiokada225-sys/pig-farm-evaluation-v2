@@ -70,7 +70,9 @@ function importAll(input){
         ids.add(r.id);cur.push(r);added++}
     });
     putAll(cur);
-    refreshSel();drawHist();if(typeof updSyncUI==='function')updSyncUI();
+    // 名簿の済/残りもすぐ変える（別の端末へ復元した評価者が、済んだ人をもう一度採点しないように）
+    refreshSel();drawHist();if(typeof updSyncUI==='function')updSyncUI();if(typeof renderRoster==='function')renderRoster();
+    if(added&&typeof syncPending==='function')syncPending(true);   // 復元した未送信（削除をやめた記録を含む）をすぐ送る
     toast(t('tBackupImp')+' (+'+added+')');
     input.value='';
   };

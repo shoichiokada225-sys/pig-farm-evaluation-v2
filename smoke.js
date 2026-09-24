@@ -9,6 +9,18 @@ function ok(name, cond) {
   else { fail++; console.log('  NG ' + name); }
 }
 
+// T10-5: index.html が読むファイル（script src / link href）はすべて sw.js の ASSETS に入っている（漏れると圏外で壊れて起動する）
+{
+  const fs = require('fs'), path = require('path');
+  const html = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8'), sw = fs.readFileSync(path.join(__dirname, 'sw.js'), 'utf8');
+  const assets = new Set(JSON.parse(/const ASSETS = (\[[\s\S]*?\]);/.exec(sw)[1].replace(/'/g, '"').replace(/,\s*\]/, ']')).map(a => a.replace(/^\.\//, '')));
+  const refs = [...html.matchAll(/<(?:script[^>]*\ssrc|link[^>]*\shref)="([^"]+)"/g)].map(m => m[1]).filter(u => !/^(https?:)?\/\//.test(u));
+  const miss = refs.filter(u => !assets.has(u.replace(/^\.\//, '')));
+  ok(`index.html の参照 ${refs.length} 件はすべて sw.js の ASSETS にある` + (miss.length ? ' 漏れ=' + miss.join(',') : ''), refs.length >= 15 && miss.length === 0);
+  const missFile = [...assets].filter(a => a && !fs.existsSync(path.join(__dirname, a)));
+  ok('ASSETS のファイルはすべて実在する' + (missFile.length ? ' 無い=' + missFile.join(',') : ''), missFile.length === 0);
+}
+
 (async () => {
   const browser = await chromium.launch(process.env.PW_CHANNEL ? { channel: process.env.PW_CHANNEL } : {});
   const ctx = await browser.newContext();

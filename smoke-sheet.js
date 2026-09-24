@@ -640,6 +640,54 @@ async function runRel(devName) {
   await page.locator('.eebox .wsel-hd button').tap(); await page.waitForTimeout(600);
   ok('GAS を更新すれば警告は消える', !(await gw.isVisible()) || !/古い版/.test(await gw.textContent()));
 
+  // ---- 送信中の編集・削除（周10 T10-1/T10-2: 分岐を消すと気付かれずにシートと端末がずれる所） ----
+  const fresh = async () => { online = true; postDelay = 0; await page.evaluate(() => { localStorage.removeItem('jitsugi_v2_data'); localStorage.removeItem('jitsugi_v2_deletes'); localStorage.removeItem('jitsugi_v2_draft'); }); await page.reload(); await page.waitForTimeout(600); };
+  const barTx = () => page.locator('#syncBar').textContent();
+  console.log('[R1b] 送信中に同じ記録を編集して保存 → 送信後に編集後の版を送り直す（古い点のまま「送信済み」にしない）');
+  await fresh();
+  online = false;
+  await page.locator('.tabs button[data-pg="pgIn"]').tap();
+  await saveEe('テスト 甲太', 3); await page.waitForTimeout(500);
+  const e1Id = (await recs())[0].id;
+  online = true; postDelay = 2500;
+  const npE = posts.length;
+  await page.evaluate(() => window.dispatchEvent(new Event('online')));   // 3点の版の送信が飛行中
+  await page.waitForTimeout(300);
+  ok('R1b: 送信中', /送信中/.test(await barTx()));
+  await page.evaluate(id => startEdit(id), e1Id); await page.waitForTimeout(200);
+  const e1c = (await page.locator('#cards .ec').first().getAttribute('id')).slice(2);
+  await page.locator(`.sb[data-id="${e1c}"][data-s="5"]`).tap();
+  await page.locator('#btnSave').tap();                                     // 送信中に5点へ直して保存
+  await page.waitForTimeout(6500);
+  const subsE = posts.slice(npE).filter(p => p.action === 'submit' && p.record.id === e1Id);
+  ok('R1b: 送信が終わった後のシートの点は編集後の5点', !!sheet[e1Id] && sheet[e1Id].works[0].items[0].score === 5);
+  ok('R1b: 最後に送った版が編集後（3点→5点の順に2回）', subsE.length === 2 && subsE[0].record.works[0].items[0].score === 3 && subsE[subsE.length - 1].record.works[0].items[0].score === 5);
+  ok('R1b: 端末は5点・送信済み・同期バーはすべて送信済み', await page.evaluate(id => { const r = getAll().find(x => x.id === id); return r.sent === true && Object.values(r.works[0].scores)[0] === 5; }, e1Id) && /すべてスプレッドシートに送信済み/.test(await barTx()));
+  postDelay = 0;
+
+  console.log('[R4b] 送信中に削除 → シートの行も消す・削除待ちの記録は後から送らない');
+  await fresh();
+  online = false;
+  await saveEe('テスト 甲太', 3); await page.waitForTimeout(400);
+  await saveEe('テスト 乙彦', 4); await page.waitForTimeout(400);
+  const r4b = await recs();
+  const kbId = r4b.find(r => r.evaluatee === 'テスト 甲太').id, obId = r4b.find(r => r.evaluatee === 'テスト 乙彦').id;
+  ok('R4b: どちらも一度も送っていない（sent/sentOnce/updatedAt なし）', r4b.every(r => !r.sent && !r.sentOnce && !r.updatedAt));
+  online = true; postDelay = 2500;
+  const npD = posts.length;
+  await page.evaluate(() => window.dispatchEvent(new Event('online')));   // 甲太の初回送信が飛行中
+  await page.waitForTimeout(300);
+  ok('R4b: 送信中', /送信中/.test(await barTx()));
+  dialogs.length = 0;
+  await page.evaluate(id => doDel(id), kbId);                              // 飛行中の記録を消す
+  await page.evaluate(id => doDel(id), obId);                              // まだ送っていない記録を消す
+  ok('R4b: 送信中の削除は確認文がシートの行の削除版（記録ID入り）', dialogs.length === 2 && dialogs.every(d => /スプレッドシート/.test(d)) && dialogs[0].includes(kbId) && dialogs[1].includes(obId));
+  await page.waitForTimeout(9000   /* 送信1＋削除2 = 2.5秒×3 */);
+  ok('R4b: 送信中だった記録もシートに行が残らない', !(kbId in sheet) && posts.slice(npD).some(p => p.action === 'delete' && p.id === kbId));
+  ok('R4b: 削除待ちに入った記録は後から送らない（submit 0回）', !posts.slice(npD).some(p => p.action === 'submit' && p.record.id === obId) && !(obId in sheet));
+  ok('R4b: 端末0件・削除待ち0・すべて送信済み', (await recs()).length === 0 && await page.evaluate(() => getDels().length === 0) && /すべてスプレッドシートに送信済み/.test(await barTx()));
+  postDelay = 0;
+
   ok('JSエラーなし(送信の信頼性)', errors.length === 0);
   if (errors.length) console.log(errors.join('\n'));
   await browser.close();
@@ -934,6 +982,38 @@ async function runAssign(devName) {
   await page.reload(); await page.waitForTimeout(900);
   ok('再起動後も農場チップはテスト農場B', await page.locator('.fchip.on').getAttribute('data-f') === FB);
 
+  console.log('[A7] 作業名不明の人: 補った作業の数では「済」にしない／同名2農場＋農場欄が空の旧記録はどちらの人にも数えない（T10-3）');
+  roster = [
+    { name: 'テスト 不明一', farm: FA, works: ['給餌', '不明作業Y'] },   // 解決1＋不明1 = 2作業
+    { name: 'テスト 同名乙', farm: FA, works: ['給餌', 'エサ調整'] },
+    { name: 'テスト 同名乙', farm: FB, works: ['給餌', 'エサ調整'] },
+  ];
+  await reloadRo();
+  await chip(FA).tap(); await page.waitForTimeout(200);
+  const leftA0 = await chip(FA).getAttribute('data-left');
+  await ee('テスト 不明一').tap(); await page.waitForTimeout(300);
+  ok('A7: 不明作業の人を選ぶと給餌だけ＋作業選択が開く', JSON.stringify(await page.evaluate(() => selWorks)) === '["feeding-daily"]' && await page.evaluate(() => document.getElementById('wselBox').open));
+  // 評価者が割り当て外の作業を2つ補い、給餌は今回やらない
+  await page.evaluate(() => { toggleWork('feeding-daily', false); toggleWork('feed-adjust', true); toggleWork('five-s', true); }); await page.waitForTimeout(200);
+  await scoreWork('feed-adjust', 4); await scoreWork('five-s', 4);
+  await page.locator('#btnSave').tap(); await page.waitForTimeout(900);
+  ok('A7: 補った2作業だけを保存した記録', (await recs()).some(x => x.evaluatee === 'テスト 不明一' && x.works.map(w => w.workId).join() === 'feed-adjust,five-s'));
+  ok('A7: 補った作業が2つでも「途中 1/2」（不明作業1つ分だけ数える）・済にならない', /途中 1\/2/.test(await ee('テスト 不明一').textContent()) && !(await ee('テスト 不明一').evaluate(e => e.classList.contains('done'))));
+  ok('A7: 農場チップの残り人数は減らない', await chip(FA).getAttribute('data-left') === leftA0);
+  await ee('テスト 不明一').tap(); await page.waitForTimeout(300);
+  ok('A7: 選び直すと割り当ての給餌が残っている', (await page.evaluate(() => selWorks)).includes('feeding-daily'));
+  await page.evaluate(() => clearForm());
+  // 同名2農場: 記録はA・Bに1件ずつ（給餌）＋農場欄が空の旧記録（エサ調整）
+  await page.evaluate(([FA, FB]) => { const mk = (id, farm, wid) => { const w = WORKDATA_V2.works.find(x => x.id === wid);
+      return { id, date: '2026-09-20', evaluator: 'テスト評価者', evaluatee: 'テスト 同名乙', farm, overall: '', createdAt: '2026-09-20T00:00:00Z', works: [{ workId: w.id, workName: w.name, category: w.category, scores: Object.fromEntries(w.aspects.map(a => [a.id, 3])), comments: {} }], sent: true }; };
+    const all = getAll(); all.push(mk('dz-a', FA, 'feeding-daily'), mk('dz-b', FB, 'feeding-daily'), mk('dz-blank', '', 'feed-adjust')); putAll(all); renderRoster(); refreshSel(); }, [FA, FB]);
+  const dzTab = async f => { await chip(f).tap(); await page.waitForTimeout(200); const t = ee('テスト 同名乙'); return { done: await t.evaluate(e => e.classList.contains('done')), part: /途中 1\/2/.test(await t.textContent()) }; };
+  const dzA = await dzTab(FA), dzB = await dzTab(FB);
+  ok('A7: 同名2農場＋農場欄が空の旧記録 → どちらの人も済にならない（1/2のまま）', !dzA.done && !dzB.done && dzA.part && dzB.part);
+  const dzP = await page.evaluate(() => eePeople(getAll()).filter(p => p.name === 'テスト 同名乙').map(p => ({ label: p.label, n: recsOfKey(p.key).length })));
+  ok('A7: 履歴でも「名前（農場A）」「名前（農場B）」は1件ずつに分かれたまま（空欄の旧記録をAに付けない）',
+    dzP.some(p => p.label === 'テスト 同名乙（' + FA + '）' && p.n === 1) && dzP.some(p => p.label === 'テスト 同名乙（' + FB + '）' && p.n === 1));
+
   ok('JSエラーなし(割り当て運用)', errors.length === 0);
   if (errors.length) console.log(errors.join('\n'));
   await browser.close();
@@ -1058,13 +1138,183 @@ async function runDate(devName) {
   await browser.close();
 }
 
+/* 編集と下書きの安全弁（T10-6）: 編集中の記録が消えた・編集を取り消した時の人・編集中の下書きの日付・手入力の名前だけの下書き・「元に戻す」の相手 */
+async function runGuard(devName) {
+  console.log(`\n===== ${devName}（編集と下書きの安全弁） =====`);
+  const browser = await chromium.launch(process.env.PW_CHANNEL ? { channel: process.env.PW_CHANNEL } : {});
+  const ctx = await browser.newContext({ ...devices[devName] });
+  const page = await ctx.newPage();
+  const errors = [], dialogs = [];
+  page.on('pageerror', e => errors.push(String(e)));
+  page.on('dialog', d => { if (d.type() === 'beforeunload') return d.accept(); dialogs.push(d.message()); d.accept(); });
+  const FG = 'テスト農場G';
+  const roster = [
+    { name: 'テスト 甲太', farm: FG, works: ['給餌', 'エサ調整'] },
+    { name: 'テスト 乙彦', farm: FG, works: ['除フン'] },
+    { name: 'テスト 丙介', farm: FG, works: ['給餌'] },
+    { name: 'テスト 丁子', farm: FG, works: ['給餌', 'エサ調整'] },
+  ];
+  await page.route(u => u.href.startsWith('https://script.google.com/'), async route => {
+    const req = route.request(), hdr = { 'access-control-allow-origin': '*' };
+    if (req.method() === 'GET') return route.fulfill({ status: 200, contentType: 'application/json', headers: hdr, body: JSON.stringify(rosterRes(roster)) });
+    const body = JSON.parse(req.postData());
+    return route.fulfill({ status: 200, contentType: 'application/json', headers: hdr, body: JSON.stringify({ ok: true, id: body.action === 'delete' ? body.id : body.record.id, deleted: 1 }) });
+  });
+  const ee = name => page.locator('.eetab').filter({ has: page.locator('.eetab-nm', { hasText: new RegExp('^' + name + '$') }) });
+  const scoreAll = async s => { for (const cid of await page.locator('#cards .ec').evaluateAll(els => els.map(e => e.id.slice(2)))) await page.locator(`.sb[data-id="${cid}"][data-s="${s}"]`).tap(); };
+  const recs = () => page.evaluate(() => getAll());
+  const hookToast = () => page.evaluate(() => { window._toasts = []; const o = toast; toast = (m, e, a) => { _toasts.push(m); return o(m, e, a); }; });
+  await page.goto(APP);
+  await page.evaluate(GAS => { localStorage.clear(); localStorage.setItem('jitsugi_v2_sheet_url', GAS); localStorage.setItem('jitsugi_v2_evaluator', 'テスト評価者'); }, GAS);
+  await page.reload(); await page.waitForTimeout(600);
+
+  console.log('[G1] 編集中にその記録が消えた → 保存しても「見つかりません」・採点は残る・人は編集していた人のまま（EG/U）');
+  await ee('テスト 丙介').tap(); await page.waitForTimeout(200);
+  await scoreAll(3); await page.locator('#btnSave').tap(); await page.waitForTimeout(800);
+  const heiId = (await recs())[0].id;
+  await ee('テスト 乙彦').tap(); await page.waitForTimeout(200);          // 編集前に別の人（乙彦）を選んでいた
+  await page.evaluate(id => startEdit(id), heiId); await page.waitForTimeout(300);
+  const hc = (await page.locator('#cards .ec').first().getAttribute('id')).slice(2);
+  await page.locator(`.sb[data-id="${hc}"][data-s="5"]`).tap();
+  await page.evaluate(id => doDel(id), heiId); await page.waitForTimeout(300);   // 別の操作（履歴・別タブ）で同じ記録が消えた
+  await hookToast();
+  await page.locator('#btnSave').tap(); await page.waitForTimeout(500);
+  ok('G1: 「編集中の記録が見つかりません」と出す（「更新しました」と言わない）', await page.evaluate(() => _toasts.some(m => /編集中の記録が見つかりません/.test(m)) && !_toasts.includes('更新しました')));
+  ok('G1: 記録は増えない（消えた記録を黙って作り直さない・0件）', (await recs()).length === 0);
+  ok('G1: 採点は画面に残る（5点・編集モードは抜ける）', await page.locator(`.sb[data-id="${hc}"][data-s="5"].sel`).count() === 1 && !(await page.locator('#editBar').evaluate(e => e.classList.contains('show'))));
+  ok('G1: 採点中の人は編集していた丙介のまま（編集前の乙彦に戻さない）', await page.inputValue('#fEe') === 'テスト 丙介' && /テスト 丙介/.test(await page.locator('#eeCur').textContent()));
+  await page.locator('#btnSave').tap(); await page.waitForTimeout(800);
+  ok('G1: そのまま保存し直せる（新しい記録として1件）', (await recs()).length === 1 && (await recs())[0].evaluatee === 'テスト 丙介');
+
+  console.log('[G2] 前日以前の記録を編集中に再起動 → 日付の確認を出さず、記録の日付のまま（DD）');
+  await page.evaluate(() => { const w = WORKDATA_V2.works.find(x => x.id === 'feeding-daily'); const all = getAll();
+    all.push({ id: 'old-edit', date: '2026-01-10', evaluator: 'テスト評価者', evaluatee: 'テスト 甲太', farm: 'テスト農場G', overall: '', createdAt: '2026-01-10T01:00:00Z', works: [{ workId: w.id, workName: w.name, category: w.category, scores: Object.fromEntries(w.aspects.map(a => [a.id, 3])), comments: {} }], sent: true, sentOnce: true });
+    putAll(all); });
+  await page.evaluate(() => startEdit('old-edit')); await page.waitForTimeout(300);
+  const oc = (await page.locator('#cards .ec').first().getAttribute('id')).slice(2);
+  await page.locator(`.sb[data-id="${oc}"][data-s="5"]`).tap(); await page.waitForTimeout(600);   // 下書きが保存される
+  let dn = dialogs.length;
+  await page.reload(); await page.waitForTimeout(700);
+  ok('G2: 日付の確認は出ない', dialogs.length === dn);
+  ok('G2: 評価日は記録の日付（2026-01-10）・編集中のまま', await page.inputValue('#fDate') === '2026-01-10' && await page.locator('#editBar').evaluate(e => e.classList.contains('show')));
+  await page.locator('#btnSave').tap(); await page.waitForTimeout(800);
+  const oe = (await recs()).find(x => x.id === 'old-edit');
+  ok('G2: 保存しても記録の日付は 2026-01-10・直した5点が入る', oe.date === '2026-01-10' && Object.values(oe.works[0].scores)[0] === 5 && (await recs()).length === 2);
+
+  console.log('[G3] 名簿にない人の名前だけを打って再起動 → 名前が戻る（K）');
+  await page.evaluate(() => openManualEe()); await page.waitForTimeout(200);
+  await page.fill('#fEe', 'テスト 名簿外K'); await page.waitForTimeout(600);
+  dn = dialogs.length;
+  await page.reload(); await page.waitForTimeout(700);
+  ok('G3: 手入力の名前が戻る・手入力欄が見える', await page.inputValue('#fEe') === 'テスト 名簿外K' && await page.locator('#fEe').isVisible());
+  await page.evaluate(() => clearForm()); await page.waitForTimeout(200);
+
+  console.log('[G4] 作業を外す → 別の人を選ぶ → 「元に戻す」を押しても今の人の作業は変わらない（UN）');
+  await ee('テスト 丁子').tap(); await page.waitForTimeout(300);
+  ok('G4: 丁子は2作業', JSON.stringify(await page.evaluate(() => selWorks)) === '["feeding-daily","feed-adjust"]');
+  await page.locator('.wsec[data-w="feed-adjust"] .wshd-skip').tap(); await page.waitForTimeout(300);
+  await ee('テスト 乙彦').tap(); await page.waitForTimeout(300);
+  const undo = page.locator('#toast .toast-act');
+  ok('G4: 「元に戻す」はまだ押せる', await undo.isVisible());
+  await undo.tap(); await page.waitForTimeout(300);
+  ok('G4: 乙彦の作業は除フンだけのまま（丁子のエサ調整が入らない）', JSON.stringify(await page.evaluate(() => selWorks)) === '["dung-removal"]' && await page.inputValue('#fEe') === 'テスト 乙彦');
+
+  ok('JSエラーなし(安全弁)', errors.length === 0);
+  if (errors.length) console.log(errors.join('\n'));
+  await browser.close();
+}
+
+/* バックアップ→別の端末へ復元（T10-4）: 記録・農場・名簿外・sentOnce が保たれる／名簿の済と残りがすぐ変わる／同じIDは二重に入らない／
+   削除待ちの記録を復元すると削除をやめて送り直す */
+async function runBackup(devName) {
+  console.log(`\n===== ${devName}（バックアップと復元） =====`);
+  const browser = await chromium.launch(process.env.PW_CHANNEL ? { channel: process.env.PW_CHANNEL } : {});
+  const FA = 'テスト農場K';
+  const roster = [
+    { name: 'テスト 甲太', farm: FA, works: ['給餌'] },
+    { name: 'テスト 乙彦', farm: FA, works: ['給餌'] },
+  ];
+  const sheet = {}, posts = [];
+  let online = true;
+  const open = async () => {
+    const ctx = await browser.newContext({ ...devices[devName], acceptDownloads: true });
+    const page = await ctx.newPage();
+    const errors = [], dialogs = [];
+    page.on('pageerror', e => errors.push(String(e)));
+    page.on('dialog', d => { dialogs.push(d.message()); d.accept(); });
+    await page.route(u => u.href.startsWith('https://script.google.com/'), async route => {
+      if (!online) return route.abort('internetdisconnected');
+      const req = route.request(), hdr = { 'access-control-allow-origin': '*' };
+      if (req.method() === 'GET') return route.fulfill({ status: 200, contentType: 'application/json', headers: hdr, body: JSON.stringify(rosterRes(roster)) });
+      const body = JSON.parse(req.postData()); posts.push(body);
+      if (body.action === 'delete') { delete sheet[body.id]; return route.fulfill({ status: 200, contentType: 'application/json', headers: hdr, body: JSON.stringify({ ok: true, id: body.id, deleted: 1 }) }); }
+      sheet[body.record.id] = body.record;
+      return route.fulfill({ status: 200, contentType: 'application/json', headers: hdr, body: JSON.stringify({ ok: true, id: body.record.id }) });
+    });
+    await page.goto(APP);
+    await page.evaluate(GAS => { localStorage.clear(); localStorage.setItem('jitsugi_v2_sheet_url', GAS); localStorage.setItem('jitsugi_v2_evaluator', 'テスト評価者'); }, GAS);
+    await page.reload(); await page.waitForTimeout(600);
+    return { ctx, page, errors, dialogs };
+  };
+  const ee = (page, name) => page.locator('.eetab').filter({ has: page.locator('.eetab-nm', { hasText: new RegExp('^' + name + '$') }) });
+  const recs = page => page.evaluate(() => getAll());
+
+  console.log('[B1] 端末1: 甲太を採点して送信・名簿外の人（未送信）→ 全データをバックアップ');
+  const d1 = await open();
+  await ee(d1.page, 'テスト 甲太').tap(); await d1.page.waitForTimeout(200);
+  for (const cid of await d1.page.locator('#cards .ec').evaluateAll(els => els.map(e => e.id.slice(2)))) await d1.page.locator(`.sb[data-id="${cid}"][data-s="4"]`).tap();
+  await d1.page.locator('#btnSave').tap(); await d1.page.waitForTimeout(800);
+  await d1.page.evaluate(() => { const w = WORKDATA_V2.works.find(x => x.id === 'feeding-daily'); const all = getAll();
+    all.push({ id: 'bk-manual', date: todayLocal(), evaluator: 'テスト評価者', evaluatee: 'テスト 名簿外', farm: '', manual: true, overall: '所感<b>', createdAt: new Date().toISOString(), works: [{ workId: w.id, workName: w.name, category: w.category, scores: Object.fromEntries(w.aspects.map(a => [a.id, 2])), comments: {} }], sent: false });
+    putAll(all); });
+  const src = await recs(d1.page);
+  const kotaId = src.find(r => r.evaluatee === 'テスト 甲太').id;
+  ok('B1: 甲太は送信済み（sent・sentOnce）・名簿外は manual', src.find(r => r.id === kotaId).sent === true && src.find(r => r.id === kotaId).sentOnce === true && src.find(r => r.id === 'bk-manual').manual === true);
+  const [dl] = await Promise.all([d1.page.waitForEvent('download'), d1.page.evaluate(() => exportAll())]);
+  const bkPath = __dirname + '/_shots/backup_test.json';
+  fs.copyFileSync(await dl.path(), bkPath);
+  const bk = JSON.parse(fs.readFileSync(bkPath, 'utf8'));
+  ok('B1: バックアップに2件', bk._type === 'jitsugi_v2_backup' && bk.data.evaluations.length === 2);
+  ok('JSエラーなし(バックアップ 端末1)', d1.errors.length === 0);
+  await d1.ctx.close();
+
+  console.log('[B2] 端末2（新しい端末）へ復元 → 記録・農場・名簿外・sentOnce が保たれ、名簿の済と残りがすぐ変わる');
+  const d2 = await open();
+  const p2 = d2.page;
+  ok('B2: 復元前は済0人・農場の残り2人', await p2.locator('.eetab.done').count() === 0 && await p2.locator(`.fchip[data-f="${FA}"]`).getAttribute('data-left') === '2');
+  // この端末では甲太の記録を削除して、シートの削除待ちに入っていた（圏外で消した・まだシートには行がある）
+  await p2.evaluate(id => localStorage.setItem('jitsugi_v2_deletes', JSON.stringify([{ id, evaluator: 'テスト評価者', at: new Date().toISOString() }])), kotaId);
+  await p2.evaluate(() => { window._toasts = []; const o = toast; toast = (m, e, a) => { _toasts.push(m); return o(m, e, a); }; });
+  d2.dialogs.length = 0;
+  const np = posts.length;
+  await p2.setInputFiles('#impAllFile', bkPath); await p2.waitForTimeout(1200);
+  const got = await recs(p2);
+  const gk = got.find(r => r.id === kotaId), gm = got.find(r => r.id === 'bk-manual');
+  ok('B2: 確認を出してから取り込む・2件（+2）', d2.dialogs.length === 1 && got.length === 2 && await p2.evaluate(() => _toasts.includes('復元しました (+2)')));
+  ok('B2: 農場・名簿外・所感・点が保たれる', !!gk && gk.farm === FA && !!gm && gm.manual === true && gm.farm === '' && gm.overall === '所感<b>' && Object.values(gk.works[0].scores).every(v => v === 4));
+  ok('B2: sentOnce は保たれる（一度シートに届いた記録）', !!gk && gk.sentOnce === true);
+  ok('B2: 取り込んだ直後に名簿の甲太が済・農場の残り1人（手で再描画しない）', await ee(p2, 'テスト 甲太').evaluate(e => e.classList.contains('done')) && await p2.locator(`.fchip[data-f="${FA}"]`).getAttribute('data-left') === '1');
+  ok('B2: 履歴の絞り込みにも出る', (await p2.locator('#hFil option').allTextContents()).includes('テスト 甲太'));
+  ok('B2: 復元した所感は文字として表示（タグにならない）', await p2.evaluate(() => { showDet('bk-manual'); const x = document.getElementById('moBody').textContent.includes('所感<b>'); closeMo(); return x; }));
+  ok('B2: 削除待ちの記録を復元 → 削除待ちから外れる', await p2.evaluate(() => getDels().length) === 0);
+  ok('B2: 復元した甲太は（ボタンを押さずに）送り直され、削除は送らない・シートに行が残る',
+    posts.slice(np).some(p => p.action === 'submit' && p.record.id === kotaId) && !posts.slice(np).some(p => p.action === 'delete') && kotaId in sheet && (await recs(p2)).find(r => r.id === kotaId).sent === true);
+  ok('B2: 名簿外（未送信）の記録も送られる', 'bk-manual' in sheet);
+  await p2.setInputFiles('#impAllFile', bkPath); await p2.waitForTimeout(600);   // 同じバックアップをもう一度
+  ok('B2: 同じIDは二重に入らない（2件のまま・+0）', (await recs(p2)).length === 2 && await p2.evaluate(() => _toasts.includes('復元しました (+0)')));
+  ok('JSエラーなし(バックアップ 端末2)', d2.errors.length === 0);
+  if (d2.errors.length) console.log(d2.errors.join('\n'));
+  await browser.close();
+}
+
 /* Service Worker: 電波が弱い（つながるが応答が返らない）時もキャッシュから即起動する（localhost で実際にSWを登録） */
 async function runSW() {
   console.log('\n===== Service Worker（応答が返らない回線で起動） =====');
   const http = require('http'), path = require('path');
-  let hang = false; const held = [];
+  let hang = false, down = false; const held = [];
   const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png' };
   const srv = http.createServer((req, res) => {
+    if (down) { req.socket.destroy(); return; }   // 圏外（つながらない）
     if (hang) { held.push(res); return; }   // 応答しない（lie-fi）
     let p = decodeURIComponent(new URL(req.url, 'http://x').pathname);
     if (p.endsWith('/')) p += 'index.html';
@@ -1096,6 +1346,25 @@ async function runSW() {
   else ok('グラフのライブラリも読み込まれる（defer）', false);
   ok('JSエラーなし(SW)', errors.length === 0);
   if (errors.length) console.log(errors.join('\n'));
+  // T10-5: 事務所で1回開いただけ（2回目をオンラインで開いていない）で圏外の豚舎へ → キャッシュ（ASSETS）だけで全部そろう
+  //   オンラインで reload すると ASSETS から漏れたファイルも実行中のキャッシュに入って漏れが隠れるので、登録直後に切る
+  const ctx2 = await browser.newContext();
+  const pg2 = await ctx2.newPage();
+  const err2 = [];
+  pg2.on('pageerror', e => err2.push(String(e)));
+  await pg2.route(u => u.href.startsWith('https://script.google.com/'), r => r.abort('internetdisconnected'));
+  await pg2.goto(base + 'index.html');
+  await pg2.evaluate(() => navigator.serviceWorker.register('sw.js').then(() => navigator.serviceWorker.ready));
+  down = true;
+  let loaded2 = true;
+  try { await pg2.reload({ waitUntil: 'load', timeout: 10000 }); } catch (e) { loaded2 = false; }
+  await pg2.waitForTimeout(800);
+  const st2 = loaded2 ? await pg2.evaluate(() => ({ ctl: !!navigator.serviceWorker.controller, fn: ['personKeyer', 'submitReq', 'syncPending', 'renderRoster', 'importAll', 'setLang'].filter(f => typeof window[f] !== 'function'), works: typeof WORKDATA_V2 === 'object', css: getComputedStyle(document.body).fontFamily !== '' && document.styleSheets.length >= 2, chart: typeof Chart === 'function' })) : null;
+  ok('登録直後に圏外 → キャッシュだけで起動（SWが制御）', loaded2 && st2 && st2.ctl);
+  ok('登録直後に圏外でも js がすべて読める（ASSETS の漏れなし）' + (st2 && st2.fn.length ? ' 欠け=' + st2.fn.join('/') : ''), !!st2 && st2.fn.length === 0 && st2.works && st2.chart && st2.css);
+  ok('JSエラーなし(SW 登録直後に圏外)', err2.length === 0);
+  if (err2.length) console.log(err2.slice(0, 3).join('\n'));
+  down = false;
   await browser.close().catch(() => {});
   srv.closeAllConnections && srv.closeAllConnections(); srv.close();
 }
@@ -1323,6 +1592,15 @@ async function runA11y(devName) {
 }
 
 (async () => {
+  if (process.env.ONLY) {   // 例: ONLY=rel,assign,guard,backup,sw（わざと壊して検証する時に一部だけ回す）
+    const on = new Set(process.env.ONLY.split(','));
+    if (on.has('rel')) await runRel('iPhone 13');
+    if (on.has('assign')) await runAssign('iPhone 13');
+    if (on.has('guard')) await runGuard('iPhone 13');
+    if (on.has('backup')) await runBackup('iPhone 13');
+    if (on.has('sw')) await runSW();
+    console.log(`\n合計: OK ${pass} / NG ${fail}`); process.exit(fail ? 1 : 0);
+  }
   if (process.env.ONLY_A11Y) { for (const d of ['iPhone SE', 'Pixel 7']) await runA11y(d); console.log(`\n合計: OK ${pass} / NG ${fail}`); process.exit(fail ? 1 : 0); }
   if (process.env.ONLY_DATE) { for (const d of ['iPhone 13', 'Pixel 7']) await runDate(d); console.log(`\n合計: OK ${pass} / NG ${fail}`); process.exit(fail ? 1 : 0); }
   if (process.env.ONLY_I18N) { await runI18n('iPhone SE'); console.log(`\n合計: OK ${pass} / NG ${fail}`); process.exit(fail ? 1 : 0); }
@@ -1330,6 +1608,7 @@ async function runA11y(devName) {
   if (!process.env.ONLY_REL && !process.env.ONLY_ASSIGN) await runSlow('iPhone SE');
   if (!process.env.ONLY_ASSIGN) await runRel('iPhone 13');
   for (const d of ['iPhone 13', 'iPhone SE']) await runAssign(d);
+  if (!process.env.ONLY_REL && !process.env.ONLY_ASSIGN) { await runGuard('iPhone 13'); await runBackup('iPhone 13'); }
   if (!process.env.ONLY_REL && !process.env.ONLY_ASSIGN) for (const d of ['iPhone 13', 'Pixel 7']) await runDate(d);
   if (!process.env.ONLY_REL && !process.env.ONLY_ASSIGN) for (const d of ['iPhone SE', 'Pixel 7']) await runI18n(d);
   if (!process.env.ONLY_REL && !process.env.ONLY_ASSIGN) for (const d of ['iPhone SE', 'Pixel 7']) await runA11y(d);
