@@ -765,6 +765,73 @@ async function runAssign(devName) {
   for (const l of [1, 2, 3]) { await page.locator('.lsw button').nth(l).tap(); await page.waitForTimeout(100); }
   await page.locator('.lsw button').nth(0).tap();
 
+  console.log('[S1] 所属未確定→農場が決まった・名前を直した（旧名）後も「済」のまま');
+  const reloadRo = async () => { await page.locator('.eebox .wsel-hd button').tap(); await page.waitForTimeout(600); };
+  const chip = f => page.locator(`.fchip[data-f="${f}"]`);
+  roster = [
+    { name: 'テスト 甲', farm: FA, works: ['給餌'] },
+    { name: 'テスト 乙', farm: '所属未確定', works: ['給餌', 'エサ調整'] },
+    { name: 'Nguyen Van T', farm: FA, works: ['給餌'] },
+  ];
+  await reloadRo();
+  await chip('所属未確定').tap(); await page.waitForTimeout(200);
+  await ee('テスト 乙').tap(); await page.waitForTimeout(300);
+  await scoreWork('feeding-daily', 4); await scoreWork('feed-adjust', 4);
+  let nP = posts.length;
+  await page.locator('#btnSave').tap(); await page.waitForTimeout(900);
+  ok('所属未確定のまま保存 → 送信の farm は所属未確定', posts.length === nP + 1 && posts[nP].record.farm === '所属未確定');
+  ok('所属未確定のチップは ✓', await chip('所属未確定').getAttribute('data-left') === '0');
+  await chip(FA).tap(); await page.waitForTimeout(200);
+  await ee('Nguyen Van T').tap(); await page.waitForTimeout(300);
+  await scoreWork('feeding-daily', 4);
+  await page.locator('#btnSave').tap(); await page.waitForTimeout(900);
+  roster = [
+    { name: 'テスト 甲', farm: FA, works: ['給餌'] },
+    { name: 'テスト 乙', farm: FA, works: ['給餌', 'エサ調整'] },                         // 所属が決まった
+    { name: 'Nguyễn Văn T', farm: FA, works: ['給餌'], aliases: ['Nguyen Van T'] },       // つづりを直した（旧名つき）
+  ];
+  await reloadRo();
+  await chip(FA).tap(); await page.waitForTimeout(200);
+  ok('農場が決まった後も乙は実施済み（未実施に戻らない）', await ee('テスト 乙').evaluate(e => e.classList.contains('done')));
+  ok('名前を直しても旧名の記録で実施済み', await ee('Nguyễn Văn T').evaluate(e => e.classList.contains('done')));
+  ok('農場チップの残りは甲の1人だけ', await chip(FA).getAttribute('data-left') === '1');
+  // 同じ名前が2農場にいる時は、記録の農場で見分ける（取り違えない）
+  roster = [
+    { name: 'テスト 同名', farm: FA, works: ['給餌'] },
+    { name: 'テスト 同名', farm: FB, works: ['給餌'] },
+  ];
+  await reloadRo();
+  await chip(FA).tap(); await page.waitForTimeout(200);
+  await ee('テスト 同名').tap(); await page.waitForTimeout(300);
+  await scoreWork('feeding-daily', 3);
+  await page.locator('#btnSave').tap(); await page.waitForTimeout(900);
+  ok('同名2人: 採点した農場の人だけ済', await ee('テスト 同名').evaluate(e => e.classList.contains('done')) && await chip(FB).getAttribute('data-left') === '1');
+
+  console.log('[S2] 農場名のゆれ: 全角半角・空白は1つにまとめる／「〇〇農場」の1人は警告');
+  roster = [
+    { name: 'テスト 大1', farm: 'テスト大田原A', works: ['給餌'] },
+    { name: 'テスト 大2', farm: 'テスト大田原A', works: ['給餌'] },
+    { name: 'テスト 大3', farm: 'テスト大田原A', works: ['給餌'] },
+    { name: 'テスト 大4', farm: 'テスト大田原Ａ', works: ['給餌'] },          // 全角Ａ
+    { name: 'テスト 大5', farm: 'テスト大田原　A', works: ['給餌'] },         // 全角空白
+    { name: 'テスト 大6', farm: 'テスト大田原A農場', works: ['給餌'] },       // 「農場」つき（別の農場か判断できないので警告だけ）
+    { name: 'テスト 未1', farm: '所属未確定', works: ['給餌'] },
+  ];
+  await reloadRo();
+  const fchips = await page.locator('.fchip').evaluateAll(els => els.map(e => e.dataset.f + ':' + e.dataset.n));
+  ok('全角半角・空白のゆれは1つのチップ（多い表記・5人）', fchips.includes('テスト大田原A:5') && !fchips.some(f => /Ａ|　/.test(f)));
+  const w2 = await page.locator('#eeWarn').textContent();
+  ok('#eeWarn に農場名のゆれ（ゆれた表記→そろえた先）', /農場名のゆれ/.test(w2) && w2.includes('「テスト大田原Ａ」(1) ≈ 「テスト大田原A」') && w2.includes('「テスト大田原A農場」(1) ≈ 「テスト大田原A」'));
+  ok('所属未確定はゆれ扱いしない', !/所属未確定」/.test(w2));
+  await chip('テスト大田原A').tap(); await page.waitForTimeout(200);
+  await ee('テスト 大4').tap(); await page.waitForTimeout(300);
+  await scoreWork('feeding-daily', 5);
+  nP = posts.length;
+  await page.locator('#btnSave').tap(); await page.waitForTimeout(900);
+  ok('送信の farm はそろえた表記', posts.length === nP + 1 && posts[nP].record.farm === 'テスト大田原A');
+  for (const l of [1, 2, 3]) { await page.locator('.lsw button').nth(l).tap(); await page.waitForTimeout(100); ok(`${['', 'en', 'vi', 'id'][l]}: 農場名のゆれの警告が訳される`, !/農場名のゆれ/.test(await page.locator('#eeWarn').textContent()) && /テスト大田原A農場/.test(await page.locator('#eeWarn').textContent())); }
+  await page.locator('.lsw button').nth(0).tap();
+
   ok('JSエラーなし(割り当て運用)', errors.length === 0);
   if (errors.length) console.log(errors.join('\n'));
   await browser.close();

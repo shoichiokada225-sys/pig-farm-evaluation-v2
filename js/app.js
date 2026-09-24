@@ -392,7 +392,7 @@ function renderRoster(){
   const rs=getRoster(),ro=rs.list;
   const cur=document.getElementById('fEe').value.trim();
   const recs=examRecs();
-  const pr=new Map();ro.forEach(p=>pr.set(p,eeProgress(p,recs)));
+  const pr=new Map();ro.forEach(p=>pr.set(p,eeProgress(p,recs,ro)));
   const isDone=p=>pr.get(p).complete;
   const sel=selEntry(ro);
   const fs=rosterFarms(ro),farm=curFarm(ro);
@@ -408,7 +408,7 @@ function renderRoster(){
   const findOn=ps.length>8;                      // 8名を超える農場は名前で絞り込めるように
   document.getElementById('eeFindBox').hidden=!findOn;
   const q=findOn?normQ(eeQuery):'';
-  const hit=q?ps.filter(i=>normQ(ro[i].name).includes(q)):ps;
+  const hit=q?ps.filter(i=>[ro[i].name,...(ro[i].aliases||[])].some(n=>normQ(n).includes(q))):ps;
   const todo=hit.filter(i=>!isDone(ro[i])),dn=hit.filter(i=>isDone(ro[i]));   // 未実施を先・実施済みは後ろ
   const tab=i=>{
     const p=ro[i],on=p===sel,g=pr.get(p),d=g.complete,part=!d&&g.done>0;
@@ -445,17 +445,33 @@ function setExamStart(v){
   renderRoster();toast(v?t('tExamStart').replace('{d}',v):t('tExamStartAll'));
 }
 function examRecs(){const st=examStart();return getAll().filter(r=>!st||(r.date||'')>=st)}
-/* その人の試験期間の記録にある作業（農場が空の記録=農場列の無い旧記録・名簿外は名前で数える） */
-function doneWorksOf(p,recs){
-  const s=new Set();
-  recs.forEach(r=>{if(r.evaluatee===p.name&&(!r.farm||r.farm===p.farm))(r.works||[]).forEach(we=>s.add(we.workId))});
+/* その人の試験期間の記録にある作業
+   記録の農場は「保存した時の農場」。所属未確定→農場が決まった・農場名の表記を直した後も「済」のままにするため、
+   名簿で同じ名前（旧名を含む）が1人だけなら農場を見ずに名前で数える。同じ名前が2人以上いる時だけ農場も見る（農場が空の旧記録は名前で数える） */
+function nmKey(v){return String(v==null?'':v).normalize('NFC').trim()}
+const nameIdxCache=new WeakMap();
+function nameIndex(ro){
+  let m=nameIdxCache.get(ro);if(m)return m;
+  m=new Map();
+  ro.forEach(p=>[p.name,...(Array.isArray(p.aliases)?p.aliases:[])].forEach(n=>{const k=nmKey(n);if(!k)return;const a=m.get(k)||[];if(!a.includes(p))a.push(p);m.set(k,a)}));
+  nameIdxCache.set(ro,m);return m;
+}
+function doneWorksOf(p,recs,ro){
+  const idx=nameIndex(ro||getRoster().list),s=new Set();
+  const keys=new Set([p.name,...(Array.isArray(p.aliases)?p.aliases:[])].map(nmKey));
+  recs.forEach(r=>{
+    const k=nmKey(r.evaluatee);if(!keys.has(k))return;
+    const cs=idx.get(k)||[p];
+    if(cs.length>1&&r.farm&&normFarm(r.farm)!==normFarm(p.farm))return;
+    (r.works||[]).forEach(we=>s.add(we.workId));
+  });
   return s;
 }
 /* 進み具合: 割り当てた作業のうち試験期間の記録にある作業の数。全部そろった時だけ完了
    作業名不明の作業は評価者が作業選択で補うので、記録にある作業の数が割り当ての数に届いた時に完了とみなす
    作業未設定の人は、記録が1つでもあれば完了（従来どおり） */
-function eeProgress(p,recs){
-  const ds=doneWorksOf(p,recs),nu=p.unresolved?p.unresolved.length:0,total=p.works.length+nu;
+function eeProgress(p,recs,ro){
+  const ds=doneWorksOf(p,recs,ro),nu=p.unresolved?p.unresolved.length:0,total=p.works.length+nu;
   if(!total)return{done:ds.size?1:0,total:0,complete:ds.size>0,doneSet:ds};
   const dAssigned=p.works.filter(w=>ds.has(w)).length;
   const extra=[...ds].filter(w=>!p.works.includes(w)).length;
@@ -465,8 +481,8 @@ function eeProgress(p,recs){
 /* 選択中の名簿の人の、試験期間にすでに記録のある作業（編集中は出さない） */
 function curDoneWorks(){
   if(editId)return[];
-  const p=selEntry(getRoster().list);if(!p)return[];
-  return [...doneWorksOf(p,examRecs())];
+  const ro=getRoster().list,p=selEntry(ro);if(!p)return[];
+  return [...doneWorksOf(p,examRecs(),ro)];
 }
 function scrollToEe(){
   const eb=document.querySelector('.eebox');if(!eb)return;
@@ -486,7 +502,7 @@ function selectEe(i){
   document.getElementById('fEe').value=p.name;
   try{localStorage.setItem(FARM_KEY,p.farm)}catch{}
   // 試験期間に済んだ作業は外し、残りの作業だけを出す（前の日に途中保存した人も同じ。全部済んでいる人を選び直した時は全作業＝やり直し）
-  const ds=doneWorksOf(p,examRecs());
+  const ds=doneWorksOf(p,examRecs(),ro);
   const left=p.works.filter(w=>!ds.has(w));
   selWorks=(left.length?left:p.works).slice();saveSel();buildWorkSel();buildCards();
   const unk=p.unresolved&&p.unresolved.length;

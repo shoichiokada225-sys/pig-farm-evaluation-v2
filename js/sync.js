@@ -60,6 +60,8 @@ async function fetchRoster(){
     const unknown=[],dup=[],common={},seen=new Set();
     const all=j.roster.map(p=>{
       const name=String(p&&p.name||'').trim(),farm=String(p&&p.farm||'').trim(),works=[],unresolved=[];
+      // 旧名（別名）: 名前を直した人の、直す前の名前で保存した記録も「済」に数える
+      const aliases=(Array.isArray(p&&p.aliases)?p.aliases:String(p&&p.aliases||'').split(/[、,，\/／;；\n]/)).map(a=>String(a==null?'':a).trim()).filter(a=>a&&a!==name);
       (p&&Array.isArray(p.works)?p.works:[]).forEach(v=>{
         const raw=String(v==null?'':v).trim();if(!raw)return;
         const id=resolveWork(raw);
@@ -67,8 +69,10 @@ async function fetchRoster(){
         else if(!unresolved.includes(raw))unresolved.push(raw);
       });
       if(name)unresolved.forEach(w=>unknown.push({name,farm,work:w}));
-      return{name,farm,works,unresolved};
+      return{name,farm,works,unresolved,aliases};
     }).filter(p=>p.name);
+    // 人の行の農場名も全角半角・空白をそろえて1つの農場にまとめる（表記は多い方）。ゆれは警告に出す
+    const fvar=farmVariants(all.filter(p=>!isCommonRow(p.name)));
     // 共通行: 農場名は作業名と同じく全角半角・空白をそろえて照合。同じ農場に2行以上あれば統合して警告（後の行で前の行を黙って消さない）
     const cdup=[],corphan=[];
     all.forEach(p=>{
@@ -87,6 +91,7 @@ async function fetchRoster(){
       if(seen.has(k)){if(!dup.some(d=>d.name===p.name&&d.farm===p.farm))dup.push({name:p.name,farm:p.farm});return}   // 同じ農場の同名行: 2行目以降は区別できないので警告
       seen.add(k);
       const e={name:p.name,farm:p.farm,works:p.works};
+      if(p.aliases.length)e.aliases=p.aliases;
       const c=common[normFarm(p.farm)];
       if(p.unresolved.length)e.unresolved=p.unresolved;
       else if(!p.works.length&&c&&(c.works.length||c.unresolved.length)){
@@ -96,20 +101,45 @@ async function fetchRoster(){
       list.push(e);
     });
     const prev=getRoster();
-    if(!list.length&&prev.list.length)return{ok:true,list:prev.list,unknown:prev.unknown||[],dup:prev.dup||[],cdup:prev.cdup||[],corphan:prev.corphan||[],keptEmpty:true};
-    try{localStorage.setItem(ROSTER_KEY,JSON.stringify({list,at:new Date().toISOString(),unknown,dup,cdup,corphan}))}catch{}
-    return{ok:true,list,unknown,dup,cdup,corphan};
+    if(!list.length&&prev.list.length)return{ok:true,list:prev.list,unknown:prev.unknown||[],dup:prev.dup||[],cdup:prev.cdup||[],corphan:prev.corphan||[],fvar:prev.fvar||[],keptEmpty:true};
+    try{localStorage.setItem(ROSTER_KEY,JSON.stringify({list,at:new Date().toISOString(),unknown,dup,cdup,corphan,fvar}))}catch{}
+    return{ok:true,list,unknown,dup,cdup,corphan,fvar};
   }catch(e){return{ok:false,reason:'net'}}
+}
+/* 農場名のゆれ: ps（人の行）の farm を書き換えてそろえ、[{farm:ゆれた表記, n:人数, like:そろえた先/似た農場}] を返す
+   ① 全角半角・空白だけの違い（normFarm が同じ）→ 人数の多い表記（同数なら先の行）に統一
+   ② 1〜2人しかいない農場の名前が、ほかの農場の名前を含む/含まれる（「大田原農場」と「大田原」）→ 統一はせず警告だけ */
+function farmVariants(ps){
+  const out=[],grp=new Map();
+  ps.forEach(p=>{const k=normFarm(p.farm);if(!grp.has(k))grp.set(k,new Map());const g=grp.get(k);g.set(p.farm,(g.get(p.farm)||0)+1)});
+  const canon=new Map();
+  grp.forEach((g,k)=>{
+    let best='',bn=-1;g.forEach((n,f)=>{if(n>bn){best=f;bn=n}});
+    canon.set(k,best);
+    g.forEach((n,f)=>{if(f!==best)out.push({farm:f,n,like:best})});
+  });
+  ps.forEach(p=>{p.farm=canon.get(normFarm(p.farm))});
+  const cnt=new Map();ps.forEach(p=>cnt.set(p.farm,(cnt.get(p.farm)||0)+1));
+  const fs=[...cnt.keys()].filter(f=>f&&!/未確定/.test(f));
+  const core=f=>normFarm(f).replace(/農場$/,'');
+  fs.forEach(a=>{
+    if(cnt.get(a)>2)return;
+    const ca=core(a);if(!ca)return;
+    const b=fs.find(b=>b!==a&&cnt.get(b)>cnt.get(a)&&(()=>{const cb=core(b);return cb&&(ca===cb||ca.includes(cb)||cb.includes(ca))})());
+    if(b)out.push({farm:a,n:cnt.get(a),like:b});
+  });
+  return out;
 }
 /* 名簿の警告（誰の・何が）。max を渡すと各項目をその件数で打ち切り「…+残り」 */
 function rosterWarnText(r,max){
-  const u=r&&r.unknown||[],d=r&&r.dup||[],cd=r&&r.cdup||[],co=r&&r.corphan||[];const parts=[];
+  const u=r&&r.unknown||[],d=r&&r.dup||[],cd=r&&r.cdup||[],co=r&&r.corphan||[],fv=r&&r.fvar||[];const parts=[];
   const cut=a=>max&&a.length>max?a.slice(0,max).join('、')+' …+'+(a.length-max):a.join('、');
   const fn=f=>f||t('farmNone');
   if(u.length)parts.push(t('eUnknownWork')+' ('+u.length+'): '+cut(u.map(x=>x.name+(isCommonRow(x.name)&&x.farm?'（'+x.farm+'）':'')+': '+x.work)));
   if(d.length)parts.push(t('eDupName')+' ('+d.length+'): '+cut(d.map(x=>x.name+(x.farm?'（'+x.farm+'）':''))));
   if(cd.length)parts.push(t('eCommonDup')+' ('+cd.length+'): '+cut(cd.map(fn)));
   if(co.length)parts.push(t('eCommonOrphan')+' ('+co.length+'): '+cut(co.map(fn)));
+  if(fv.length)parts.push(t('eFarmVar')+' ('+fv.length+'): '+cut(fv.map(x=>'「'+x.farm+'」('+x.n+') ≈ 「'+x.like+'」')));
   return parts.join(' ／ ');
 }
 
