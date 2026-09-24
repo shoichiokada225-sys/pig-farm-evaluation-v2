@@ -913,13 +913,136 @@ async function runI18n(devName) {
   await browser.close();
 }
 
+/* アクセシビリティ（周6）: 人を選んだ直後の位置とフォーカス・未採点の印・「今回は実施しない」の誤タップ */
+async function runA11y(devName) {
+  console.log(`\n===== ${devName}（アクセシビリティ） =====`);
+  const browser = await chromium.launch(process.env.PW_CHANNEL ? { channel: process.env.PW_CHANNEL } : {});
+  const ctx = await browser.newContext({ ...devices[devName] });
+  const page = await ctx.newPage();
+  const errors = [];
+  page.on('pageerror', e => errors.push(String(e)));
+  const dialogs = [];
+  page.on('dialog', d => { dialogs.push(d.message()); d.accept(); });
+  // 架空の名簿: 12農場＋所属未確定、最大の農場は25名、1人3作業
+  const BIG = 'テスト農場L', W3 = ['給餌', 'エサ調整', '除フン'];
+  const roster = [];
+  for (let f = 1; f <= 11; f++) for (let i = 1; i <= 5; i++) roster.push({ name: `テスト ${f}-${i}`, farm: `テスト農場${String(f).padStart(2, '0')}`, works: W3 });
+  for (let i = 1; i <= 25; i++) roster.push({ name: `テスト 大${String(i).padStart(2, '0')}`, farm: BIG, works: W3 });
+  for (let i = 1; i <= 18; i++) roster.push({ name: `テスト 未${i}`, farm: '所属未確定', works: W3 });
+  await page.route(u => u.href.startsWith('https://script.google.com/'), async route => {
+    const req = route.request(), hdr = { 'access-control-allow-origin': '*' };
+    if (req.method() === 'GET') return route.fulfill({ status: 200, contentType: 'application/json', headers: hdr, body: JSON.stringify({ ok: true, roster }) });
+    const body = JSON.parse(req.postData());
+    return route.fulfill({ status: 200, contentType: 'application/json', headers: hdr, body: JSON.stringify({ ok: true, id: body.record.id }) });
+  });
+  const ee = name => page.locator('.eetab').filter({ has: page.locator('.eetab-nm', { hasText: new RegExp('^' + name + '$') }) });
+  const noHScroll = () => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1);
+  const setL = async l => { await page.evaluate(l => setLang(l), l); await page.waitForTimeout(250); };
+  // 要素の中央が貼り付く帯の下に見えていて、そこを押すとその要素自身に当たるか
+  const visibleHit = sel => page.evaluate(sel => {
+    const e = document.querySelector(sel); if (!e) return 'none';
+    const r = e.getBoundingClientRect(), stk = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--stk')) || 0;
+    if (r.top < stk - 1) return 'top=' + Math.round(r.top) + '<stk=' + stk;
+    if (r.bottom > innerHeight) return 'below';
+    const h = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+    return h && (h === e || e.contains(h)) ? 'ok' : 'hit=' + (h ? h.className || h.tagName : 'null');
+  }, sel);
+  await page.goto(APP);
+  await page.evaluate(GAS => { localStorage.clear(); localStorage.setItem('jitsugi_v2_sheet_url', GAS); localStorage.setItem('jitsugi_v2_evaluator', 'テスト評価者'); }, GAS);
+  await page.reload(); await page.waitForTimeout(600);
+  await page.locator(`.fchip[data-f="${BIG}"]`).tap(); await page.waitForTimeout(200);
+  ok('25名の農場', await page.locator('.eetab').count() === 25);
+
+  for (const l of ['ja', 'vi']) {
+    console.log(`[X1] ${l}: 人を選ぶと「採点中」・目次・1つ目の作業が貼り付く帯の下に見え、フォーカスが採点の入口へ`);
+    await setL(l);
+    const name = l === 'ja' ? 'テスト 大01' : 'テスト 大02';
+    await ee(name).tap(); await page.waitForTimeout(1500);
+    const cur = await visibleHit('#eeCur');
+    ok(`${l}: 「採点中」が帯の下に見える (${cur})`, cur === 'ok');
+    ok(`${l}: 採点中の名前が正しい`, (await page.locator('#eeCur').textContent()).includes(name));
+    const nav = await visibleHit('#wnav'), sk = await visibleHit('.wshd-skip');
+    ok(`${l}: 作業の目次が見える (${nav})・1つ目の「今回は実施しない」が押せる (${sk})`, nav === 'ok' && sk === 'ok');
+    ok(`${l}: フォーカスは「採点中」へ移る（押したタブに残らない）`, await page.evaluate(() => document.activeElement && document.activeElement.id === 'eeCur'));
+    ok(`${l}: 「採点中」は tabindex=-1（Tab順には入らない）`, await page.locator('#eeCur').getAttribute('tabindex') === '-1');
+  }
+  await setL('ja');
+
+  console.log('[X2] 未採点のまま保存 → 印は消えずに残る・フォーカス・件数と「次へ」');
+  await ee('テスト 大03').tap(); await page.waitForTimeout(600);
+  const first = await page.locator('#cards .ec').first().evaluate(e => e.id.slice(2));
+  await page.locator(`.sb[data-id="${first}"][data-s="4"]`).tap();
+  await page.locator('#btnSave').tap(); await page.waitForTimeout(2000);
+  const missIds = await page.locator('#cards .ec.miss').evaluateAll(els => els.map(e => e.id));
+  ok(`2秒後も未採点の印が4枚に残る (${missIds.length})`, missIds.length === 4);
+  ok('印は文字でも出る（⚠ 未採点のバッジが見える）', await page.locator('#cards .ec.miss .miss-bd').first().isVisible() && /⚠ 未採点/.test(await page.locator('#cards .ec.miss .miss-bd').first().textContent()));
+  ok('未採点でないカードにはバッジが出ない', !(await page.locator(`#c-${first} .miss-bd`).isVisible()));
+  ok('枠は太い赤（3px以上）', await page.locator('#cards .ec.miss').first().evaluate(e => parseFloat(getComputedStyle(e).borderTopWidth) >= 3));
+  ok('フォーカスは1枚目の未採点カードの点数ボタン群', await page.evaluate(id => { const a = document.activeElement; return !!a && a.classList.contains('sr') && a.closest('.ec').id === id; }, missIds[0]));
+  ok('点数ボタン群は種目名と「未採点」で読み上げられる', await page.evaluate(id => { const sr = document.querySelector('#' + id + ' .sr'); return document.getElementById(sr.getAttribute('aria-labelledby')).textContent.length > 0 && /未採点/.test(document.getElementById(sr.getAttribute('aria-describedby')).textContent); }, missIds[0]));
+  ok('進捗の横に「未採点 4 件・次へ」', await page.locator('#missNext').isVisible() && /未採点 4 件/.test(await page.locator('#missNext').textContent()));
+  const mnb = await page.locator('#missNext').boundingBox();
+  ok(`「次へ」のタップ領域 ${Math.round(mnb.height)}px ≥ 44`, mnb.height >= 44);
+  ok('「次へ」を出しても貼り付く帯の高さ(--stk)を測り直す', await page.evaluate(() => { const p = document.querySelector('.prog'), h = document.querySelector('.hdr'); return Math.abs(parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--stk')) - (h.offsetHeight + p.offsetHeight)) < 1; }));
+  ok('横スクロールなし(未採点の表示)', await noHScroll());
+  await page.locator('#missNext').tap(); await page.waitForTimeout(300);
+  ok('「次へ」で2枚目の未採点へフォーカス', await page.evaluate(id => document.activeElement && document.activeElement.closest('.ec') && document.activeElement.closest('.ec').id === id, missIds[1]));
+  await page.locator(`#${missIds[1]} .sb[data-s="3"]`).tap(); await page.waitForTimeout(200);
+  ok('点を付けたカードだけ印が消え、件数が減る（3件）', !(await page.locator(`#${missIds[1]}`).evaluate(e => e.classList.contains('miss'))) && await page.locator('#cards .ec.miss').count() === 3 && /未採点 3 件/.test(await page.locator('#missNext').textContent()));
+  await setL('vi');
+  ok('言語を切り替えても印は残る（vi: Chưa chấm）', await page.locator('#cards .ec.miss').count() === 3 && /Chưa chấm/.test(await page.locator('#cards .ec.miss .miss-bd').first().textContent()) && /Chưa chấm 3/.test(await page.locator('#missNext').textContent()));
+  ok('vi: 横スクロールなし(未採点の表示)', await noHScroll());
+  await setL('ja');
+  for (const id of await page.locator('#cards .ec.miss').evaluateAll(els => els.map(e => e.id))) await page.locator(`#${id} .sb[data-s="3"]`).tap();
+  ok('全部付けると「次へ」は消える', await page.locator('#cards .ec.miss').count() === 0 && !(await page.locator('#missNext').isVisible()));
+
+  console.log('[X3] 「今回は実施しない」: 44px・下のリンクと8px以上・誤タップは「元に戻す」で戻る');
+  for (const l of ['ja', 'vi']) {
+    await setL(l);
+    const hs = await page.locator('.wshd-skip').evaluateAll(els => els.map(e => Math.round(e.getBoundingClientRect().height)));
+    ok(`${l}: 「今回は実施しない」の高さ ${Math.min(...hs)}px ≥ 44`, Math.min(...hs) >= 44);
+    const gaps = await page.locator('.wsec').evaluateAll(els => els.map(s => { const b = s.querySelector('.wshd-skip'), m = s.querySelector('.man-link'); return b && m ? m.getBoundingClientRect().top - b.getBoundingClientRect().bottom : 99; }));
+    ok(`${l}: マニュアルへのリンクとの間 ${Math.min(...gaps)}px ≥ 8`, Math.min(...gaps) >= 8);
+  }
+  await setL('ja');
+  const lsw = await page.locator('.lsw button').evaluateAll(els => els.map(e => Math.round(e.getBoundingClientRect().width)));
+  ok(`言語ボタンの幅 ${Math.min(...lsw)}px ≥ 44`, Math.min(...lsw) >= 44);
+  ok('横スクロールなし(言語ボタン)', await noHScroll());
+  // 未採点の作業を外す → 「元に戻す」で同じ位置に戻る
+  const before = await page.evaluate(() => selWorks.slice());
+  await page.locator(`.wsec[data-w="${before[1]}"] .wshd-skip`).tap(); await page.waitForTimeout(300);
+  ok('外すと作業が減る', await page.evaluate(() => selWorks.length) === before.length - 1);
+  const undo = page.locator('#toast .toast-act');
+  ok('トーストに「元に戻す」（44px以上）', await undo.isVisible() && /元に戻す/.test(await undo.textContent()) && (await undo.boundingBox()).height >= 44);
+  await undo.tap(); await page.waitForTimeout(300);
+  ok('「元に戻す」で同じ位置に戻る', JSON.stringify(await page.evaluate(() => selWorks)) === JSON.stringify(before));
+  ok('戻した後はトーストが消える', !(await page.locator('#toast').evaluate(e => e.classList.contains('show'))));
+  // 採点済みの作業を（確認を経て）外しても、「元に戻す」で点とコメントごと戻る
+  const w0 = before[0], c0 = await page.locator(`#cards .ec[data-w="${w0}"]`).first().evaluate(e => e.id.slice(2));
+  await page.locator(`.sb[data-id="${c0}"][data-s="2"]`).tap();
+  await page.fill(`textarea[data-cid="${c0}"]`, 'テストのコメント');
+  const nd = dialogs.length;
+  await page.locator(`.wsec[data-w="${w0}"] .wshd-skip`).tap(); await page.waitForTimeout(300);
+  ok('採点済みの作業は確認を出す', dialogs.length === nd + 1);
+  await page.locator('#toast .toast-act').tap(); await page.waitForTimeout(300);
+  const back = await page.evaluate(id => ({ s: (document.querySelector('.sb[data-id="' + id + '"].sel') || {}).dataset?.s, c: (document.querySelector('textarea[data-cid="' + id + '"]') || {}).value }), c0);
+  ok('採点済みでも「元に戻す」で点とコメントが戻る', back.s === '2' && back.c === 'テストのコメント' && await page.evaluate(() => selWorks[0]) === w0);
+  ok('普通のトーストは押せない（下の画面を邪魔しない）', await page.evaluate(() => { toast('x'); return getComputedStyle(document.getElementById('toast')).pointerEvents === 'none' && !document.querySelector('#toast .toast-act'); }));
+
+  ok('JSエラーなし(アクセシビリティ)', errors.length === 0);
+  if (errors.length) console.log(errors.join('\n'));
+  await browser.close();
+}
+
 (async () => {
+  if (process.env.ONLY_A11Y) { for (const d of ['iPhone SE', 'Pixel 7']) await runA11y(d); console.log(`\n合計: OK ${pass} / NG ${fail}`); process.exit(fail ? 1 : 0); }
   if (process.env.ONLY_I18N) { await runI18n('iPhone SE'); console.log(`\n合計: OK ${pass} / NG ${fail}`); process.exit(fail ? 1 : 0); }
   if (!process.env.ONLY_REL && !process.env.ONLY_ASSIGN) for (const d of ['iPhone SE', 'iPhone 13', 'Pixel 7']) await run(d);
   if (!process.env.ONLY_REL && !process.env.ONLY_ASSIGN) await runSlow('iPhone SE');
   if (!process.env.ONLY_ASSIGN) await runRel('iPhone 13');
   for (const d of ['iPhone 13', 'iPhone SE']) await runAssign(d);
   if (!process.env.ONLY_REL && !process.env.ONLY_ASSIGN) for (const d of ['iPhone SE', 'Pixel 7']) await runI18n(d);
+  if (!process.env.ONLY_REL && !process.env.ONLY_ASSIGN) for (const d of ['iPhone SE', 'Pixel 7']) await runA11y(d);
   await runSW();
   console.log(`\n合計: OK ${pass} / NG ${fail}`);
   process.exit(fail ? 1 : 0);

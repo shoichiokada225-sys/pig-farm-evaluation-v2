@@ -42,7 +42,7 @@
 
 <!-- 入力 -->
 <div id="pgIn" class="pg on">
-  <div class="prog"><div class="prog-b" id="progB" role="progressbar" aria-valuemin="0" aria-valuemax="0" aria-valuenow="0"><div class="prog-f" id="progF"></div></div><span class="prog-t" id="progT"></span></div>
+  <div class="prog"><div class="prog-b" id="progB" role="progressbar" aria-valuemin="0" aria-valuemax="0" aria-valuenow="0"><div class="prog-f" id="progF"></div></div><span class="prog-t" id="progT"></span><button type="button" id="missNext" class="miss-next" onclick="missNext()" hidden></button></div>
 
   <div id="syncBar" class="syncbar" role="status" aria-live="polite"></div>
 
@@ -101,7 +101,7 @@
     <input type="date" id="fDate">
   </div>
 
-  <div id="eeCur" class="eecur" role="status" hidden></div>
+  <div id="eeCur" class="eecur" role="status" tabindex="-1" hidden></div>
   <div id="cards"></div>
 
   <div class="cd oasec">

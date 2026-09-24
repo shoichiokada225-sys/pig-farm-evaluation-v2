@@ -55,12 +55,34 @@ document.addEventListener('DOMContentLoaded',()=>{
     if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}
     else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
   });
-  // 進捗バーはヘッダーの下・作業見出しは進捗バーの下に貼り付く（高さは言語・画面幅で変わるので実測）
-  const fixProg=()=>{const p=document.querySelector('.prog'),h=document.querySelector('.hdr').offsetHeight;if(p)p.style.top=h+'px';
-    document.documentElement.style.setProperty('--stk',(h+(p?p.offsetHeight:0))+'px')};
   fixProg();window.addEventListener('resize',fixProg);
   if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(()=>{});
 });
+
+/* 進捗バーはヘッダーの下・作業見出しは進捗バーの下に貼り付く（高さは言語・画面幅・未採点ボタンの有無で変わるので実測） */
+function fixProg(){const p=document.querySelector('.prog'),hd=document.querySelector('.hdr');if(!hd)return;const h=hd.offsetHeight;if(p)p.style.top=h+'px';
+  document.documentElement.style.setProperty('--stk',(h+(p?p.offsetHeight:0))+'px')}
+function stkH(){return parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--stk'))||0}
+/* 貼り付く帯（ヘッダー＋進捗＋作業見出し）の下に要素の頭が来るようにスクロール */
+function scrollBelowStk(el,extra,smooth){
+  window.scrollTo({top:Math.max(0,el.getBoundingClientRect().top+window.scrollY-stkH()-(extra||8)),behavior:smooth?'smooth':'auto'});
+}
+/* 未採点のカードへ（点数ボタンの群にフォーカス＝スクリーンリーダーはその種目名と「未採点」を読む） */
+let _missAt=null;   // 最後に案内した未採点カード（「次へ」を押すとフォーカスはボタンに移るので、ここから次を数える）
+function focusMiss(c){
+  if(!c)return;_missAt=c;
+  c.scrollIntoView({block:'center'});
+  const sr=c.querySelector('.sr');if(sr)sr.focus({preventScroll:true});
+}
+function missNext(){
+  const ms=[...document.querySelectorAll('#cards .ec.miss')];if(!ms.length)return;
+  const ae=document.activeElement&&document.activeElement.closest?document.activeElement.closest('.ec'):null;
+  const cur=ae||(_missAt&&document.body.contains(_missAt)?_missAt:null);
+  let nx;
+  if(cur){const all=[...document.querySelectorAll('#cards .ec')],ci=all.indexOf(cur);nx=ms.find(c=>all.indexOf(c)>ci)||ms[0]}
+  else{const top=stkH();nx=ms.find(c=>c.getBoundingClientRect().top>top)||ms[0]}
+  focusMiss(nx);
+}
 
 /* ==============================================================
    作業の選択/解除
@@ -148,8 +170,11 @@ function doSave(){
       d.works=d.works.filter(we=>full.some(x=>x.wid===we.workId));partLeft=empty.length;miss=[];
     }
   }
-  if(miss.length){miss.forEach(it=>{const c=document.getElementById('c-'+it.id);if(c){c.classList.add('warn');setTimeout(()=>c.classList.remove('warn'),1000)}});
-    toast(t('eSc')+'('+miss.length+')',1);const c0=document.getElementById('c-'+miss[0].id);if(c0)c0.scrollIntoView({behavior:'smooth',block:'center'});return}
+  // 未採点の印（⚠ 未採点・太い赤枠）は点を付けるまで残す。件数と「次へ」は進捗の横に残る。1枚目の点数ボタンへフォーカス
+  if(miss.length){document.querySelectorAll('#cards .ec.miss').forEach(c=>c.classList.remove('miss'));
+    miss.forEach(it=>{const c=document.getElementById('c-'+it.id);if(c){c.classList.remove('miss');void c.offsetWidth;c.classList.add('miss')}});
+    updProg();
+    toast(t('eSc')+'('+miss.length+')',1);focusMiss(document.getElementById('c-'+miss[0].id));return}
   const all=getAll();
   const who=eeSaveInfo(d.evaluatee.trim());
   if(editId){
@@ -183,16 +208,28 @@ function skipWork(wid){
   const w=workById(wid);const nm=w?loc(w,'name'):wid;
   const sc=document.querySelector('#cards .ec.scored[data-w="'+wid+'"]');
   if(sc&&!confirm(t('cSkipScored').replace('{w}',nm)))return;
-  const y=window.scrollY;
+  const y=window.scrollY,idx=selWorks.indexOf(wid),snap=collectForm().works.find(we=>we.workId===wid),who=document.getElementById('fEe').value;
   toggleWork(wid,false);
   window.scrollTo({top:y});   // 位置を保つ（外した作業の場所に次の作業が来る）
-  toast(t('tSkipped').replace('{w}',nm));
+  // 誤タップ対策: トーストの「元に戻す」で、外した作業を同じ位置に採点ごと戻す（同じ人を選んでいる間だけ）
+  toast(t('tSkipped').replace('{w}',nm),0,{label:t('undo'),fn:()=>unskipWork(wid,idx,snap,who)});
+}
+function unskipWork(wid,idx,snap,who){
+  if(editId||selWorks.includes(wid)||document.getElementById('fEe').value!==who)return;
+  selWorks.splice(Math.max(0,Math.min(idx,selWorks.length)),0,wid);
+  saveSel();saveSt();buildWorkSel();buildCards();restoreSt();
+  if(snap)workItems(wid).forEach(it=>{
+    const sc=snap.scores[it.aspectId];if(sc)setScoreUI(it.id,sc);
+    const ta=document.querySelector('textarea[data-cid="'+it.id+'"]');if(ta&&snap.comments[it.aspectId])ta.value=snap.comments[it.aspectId];
+  });
+  onCh();updProg();buildWorkSel();
+  jumpWork(wid);
+  const b=document.querySelector('.wshd-skip[data-w="'+wid+'"]');if(b)b.focus({preventScroll:true});
 }
 /* 作業の見出しへ移動（目次のチップから） */
 function jumpWork(wid){
   const h=document.getElementById('wh-'+wid);if(!h)return;
-  const stk=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--stk'))||0;
-  window.scrollTo({top:Math.max(0,h.getBoundingClientRect().top+window.scrollY-stk-4)});   // 40枚=1万px超を一気に（なめらかスクロールは遠いと遅い）
+  window.scrollTo({top:Math.max(0,h.getBoundingClientRect().top+window.scrollY-stkH()-4)});   // 40枚=1万px超を一気に（なめらかスクロールは遠いと遅い）
 }
 
 /* ==============================================================
@@ -230,7 +267,7 @@ function clearForm(keepDraft){
   document.getElementById('fDate').value=new Date().toISOString().split('T')[0];
   ['fEe','fOv'].forEach(id=>document.getElementById(id).value='');
   document.querySelectorAll('.sb.sel,.crit-lv.sel').forEach(b=>b.classList.remove('sel'));
-  document.querySelectorAll('.ec.scored').forEach(c=>c.classList.remove('scored'));
+  document.querySelectorAll('.ec.scored,.ec.miss').forEach(c=>c.classList.remove('scored','miss'));
   document.querySelectorAll('.ec textarea').forEach(ta=>ta.value='');
   if(!keepDraft)localStorage.removeItem(DRAFT_KEY);
   dirty=false;updProg();renderRoster();
@@ -435,7 +472,9 @@ function selectEe(i){
   document.getElementById('wselBox').open=!selWorks.length||!!unk;   // 作業名不明の人は作業選択を開いたまま（評価者が補う）
   renderRoster();onCh();
   if(unk)toast(p.name+' — '+t('unkWorkLbl')+': '+p.unresolved.join('、'),1);
-  const c=document.getElementById('cards');if(c&&selWorks.length&&!unk)c.scrollIntoView({behavior:'smooth',block:'start'});
+  // 「採点中: 名前（農場）」を貼り付く帯の下に出し、フォーカスも採点の入口へ（押したタブに残すと、読み上げは残りの人のタブを全部通ることになる）
+  const ec=document.getElementById('eeCur');
+  if(ec&&!ec.hidden&&selWorks.length&&!unk){scrollBelowStk(ec,8,true);ec.focus({preventScroll:true})}
 }
 /* 名簿にいない人（当日来た新人・登録漏れ・表記違い）をその場で手入力して評価する */
 function openManualEe(){

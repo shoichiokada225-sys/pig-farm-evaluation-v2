@@ -35,10 +35,10 @@
 #cards .wsec>.cd{animation:cdin .3s ease-out backwards}
 .wshd-ct{font-size:.8rem;font-weight:800;background:#fff;color:#0f5a49;border-radius:999px;padding:2px 9px;font-variant-numeric:tabular-nums;white-space:nowrap}
 .wshd-ct.full{background:#e3f5ec}
-.wsub{display:flex;align-items:flex-start;gap:8px;margin:0 2px 8px;padding:0 4px}
+.wsub{display:flex;align-items:flex-start;gap:8px;margin:0 2px 12px;padding:0 4px}
 .wsub-nm{flex:1;min-width:0;font-size:.85rem;font-weight:700;color:var(--sub,#54635d);line-height:1.4;overflow-wrap:anywhere}
 .wsub-cat{font-weight:500}
-.wshd-skip{flex:none;margin-left:auto;min-height:40px;max-width:48%;padding:4px 10px;border-radius:8px;border:1.5px solid var(--brand,#177863);background:#fff;color:var(--brand,#177863);font:inherit;font-size:.78rem;font-weight:700;cursor:pointer;line-height:1.25;text-align:center}
+.wshd-skip{flex:none;margin-left:auto;min-height:var(--tap,44px);max-width:48%;padding:4px 10px;border-radius:8px;border:1.5px solid var(--brand,#177863);background:#fff;color:var(--brand,#177863);font:inherit;font-size:.78rem;font-weight:700;cursor:pointer;line-height:1.25;text-align:center}
 .wshd-skip:focus-visible{outline:3px solid #f0a500;outline-offset:2px}
 #cards .ec{scroll-margin-top:calc(var(--stk,96px) + 64px)}
 /* 作業の目次（タップでその作業へ・作業ごとの x/5・今日済んだ作業は「済」） */
@@ -149,3 +149,22 @@ details.wsel[open]>summary h3::before{content:'▾ '}
 .eecur{margin:0 2px 10px;padding:8px 12px;border-radius:10px;background:rgba(23,120,99,.08);border:1px solid rgba(23,120,99,.3);color:#0f5a49;font-size:.9rem;font-weight:700;line-height:1.4;overflow-wrap:anywhere}
 .eecur[hidden]{display:none}
 .eecur b{font-weight:800}
+
+/* 未採点の印（保存を押した時に見つかった漏れ）: 点を付けるまで残す。色だけに頼らず「⚠ 未採点」の文字と太い赤枠 */
+.miss-bd{display:none}
+.ec.miss{border:3px solid var(--s1,#c62828);border-left-width:6px;box-shadow:0 0 0 2px var(--s1-l,#fdecea),var(--sh);animation:shake .4s}
+.ec.miss .miss-bd{display:inline-block;margin:2px 0 4px;padding:2px 10px;border-radius:999px;background:var(--s1,#c62828);color:#fff;font-size:.8rem;font-weight:800;line-height:1.5}
+.ec .sr:focus{outline:none}
+.ec .sr:focus-visible,.ec.miss .sr:focus{outline:3px solid #f0a500;outline-offset:3px;border-radius:10px}
+/* 未採点の件数と「次へ」（貼り付く進捗の横に残る） */
+.miss-next{flex:none;min-height:var(--tap,44px);padding:6px 12px;border-radius:10px;border:2px solid var(--s1,#c62828);background:#fff;color:#a01d1d;font:inherit;font-size:.82rem;font-weight:800;cursor:pointer;white-space:nowrap}
+.miss-next[hidden]{display:none}
+.miss-next:focus-visible{outline:3px solid #f0a500;outline-offset:2px}
+/* 選んだ人の「採点中」: 貼り付く帯の下で止まる・フォーカスの枠 */
+.eecur{scroll-margin-top:calc(var(--stk,96px) + 8px)}
+.eecur:focus{outline:none}
+.eecur:focus-visible{outline:3px solid #f0a500;outline-offset:2px}
+/* 「元に戻す」付きトースト（押せる・折り返す） */
+.toast.act{pointer-events:auto;display:flex;align-items:center;gap:10px;white-space:normal;border-radius:14px;padding:8px 8px 8px 16px;width:max-content;line-height:1.4}
+.toast-act{flex:none;min-height:var(--tap,44px);min-width:var(--tap,44px);padding:6px 14px;border-radius:10px;border:2px solid #fff;background:transparent;color:#fff;font:inherit;font-weight:800;cursor:pointer}
+.toast-act:focus-visible{outline:3px solid #f0a500;outline-offset:2px}

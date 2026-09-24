@@ -86,7 +86,7 @@ button{touch-action:manipulation}
 .lsw{display:flex;flex-shrink:0;background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.24);border-radius:10px;padding:2px;gap:2px}
 .lsw button{
   background:transparent;border:0;color:rgba(255,255,255,.85);
-  min-width:36px;min-height:44px;padding:7px 5px;border-radius:8px;
+  min-width:44px;min-height:44px;padding:7px 5px;border-radius:8px;
   font-size:.72rem;font-weight:700;letter-spacing:.02em;cursor:pointer;
   transition:background .15s,color .15s;
 }

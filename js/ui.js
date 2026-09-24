@@ -57,26 +57,29 @@ function buildCards(){
     workItems(wid).forEach((it,ii)=>{
       h+=`<div class="cd ec" id="c-${it.id}" data-w="${esc(wid)}" style="animation-delay:${Math.min(ci++,8)*0.03}s">
         <div class="en">${ii+1}</div>
-        <div class="enm">${esc(it.name)}</div>
+        <div class="enm" id="enm-${it.id}">${esc(it.name)}</div>
+        <span class="miss-bd" id="miss-${it.id}">⚠ ${esc(t('missLbl'))}</span>
         <button class="crit-tg" id="critb-${it.id}" onclick="toggleCrit('${it.id}')" aria-expanded="false" aria-controls="crit-${it.id}">▼ ${t('showCrit')}</button>
         <div class="crit" id="crit-${it.id}">
           <div class="crit-k"><b>${t('kantenLbl')}</b>${esc(it.kanten)}</div>
           ${it.levels.map((lv,li)=>`<div class="crit-lv" data-id="${it.id}" data-s="${li+1}" role="button" tabindex="0" onclick="pick('${it.id}',${li+1})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();pick('${it.id}',${li+1})}"><span class="crit-n sb${li+1}">${li+1}</span><div class="crit-t"><b>${t('s'+(li+1))}</b>${esc(lv)}</div></div>`).join('')}
         </div>
-        <div class="sr" role="group">${[1,2,3,4,5].map(s=>`<button class="sb" data-id="${it.id}" data-s="${s}" onclick="pick('${it.id}',${s})" aria-pressed="false">${s}<span class="sl">${t('s'+s)}</span></button>`).join('')}</div>
+        <div class="sr" role="group" tabindex="-1" aria-labelledby="enm-${it.id}" aria-describedby="miss-${it.id}">${[1,2,3,4,5].map(s=>`<button class="sb" data-id="${it.id}" data-s="${s}" onclick="pick('${it.id}',${s})" aria-pressed="false">${s}<span class="sl">${t('s'+s)}</span></button>`).join('')}</div>
         <div class="clbl">${t('cmtLbl')}</div>
         <textarea data-cid="${it.id}" placeholder="${t('phCmt')}" oninput="onCh()"></textarea>
       </div>`;
     });
     h+='</section>';
   });
+  const miss=[...el.querySelectorAll('.ec.miss')].map(c=>c.id);   // 言語切替・作業の追加/外しで作り直しても未採点の印は残す
   el.innerHTML=h;
+  miss.forEach(id=>{const c=document.getElementById(id);if(c)c.classList.add('miss')});
   updProg();
 }
 function setScoreUI(id,s){
   document.querySelectorAll('.sb[data-id="'+id+'"]').forEach(b=>{const on=+b.dataset.s===s;b.classList.toggle('sel',on);b.setAttribute('aria-pressed',on)});
   document.querySelectorAll('.crit-lv[data-id="'+id+'"]').forEach(r=>r.classList.toggle('sel',+r.dataset.s===s));
-  const c=document.getElementById('c-'+id);if(c)c.classList.add('scored');
+  const c=document.getElementById('c-'+id);if(c){c.classList.add('scored');c.classList.remove('miss')}   // 点を付けたら「未採点」の印を外す
 }
 function pick(id,s){setScoreUI(id,s);onCh();updProg();if(navigator.vibrate)try{navigator.vibrate(8)}catch(e){}}
 function updProg(){
@@ -92,6 +95,11 @@ function updProg(){
     const n=workItems(wid).length,d=document.querySelectorAll('#cards .ec.scored[data-w="'+wid+'"]').length;
     document.querySelectorAll('#cards [data-wct="'+wid+'"]').forEach(el=>{el.textContent=(d===n?'✓ ':'')+d+'/'+n;el.classList.toggle('full',d===n)});
   });
+  // 保存時に見つかった未採点（.miss）の件数を貼り付く進捗の横に残す（印は点を付けるまで消えない）
+  const mb=document.getElementById('missNext');
+  if(mb){const nm=document.querySelectorAll('#cards .ec.miss').length,was=!mb.hidden;
+    mb.hidden=!nm;mb.textContent=nm?t('missNext').replace('{n}',nm):'';
+    if(was!==!mb.hidden&&typeof fixProg==='function')fixProg()}
   const bar=document.getElementById('progB');
   if(bar){bar.setAttribute('aria-valuemax',total);bar.setAttribute('aria-valuenow',done);bar.setAttribute('aria-label',t('progDone'))}
 }
