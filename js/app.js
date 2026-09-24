@@ -448,6 +448,25 @@ function startEdit(id){
   saveDraft();   // 編集前の採点（preEdit）を下書きに残す（編集中にアプリが落ちても、採点途中の人の点数を失わない）
 }
 function cancelEdit(){if(!editId)return;if(dirty&&!confirm(t('cCEdit')))return;exitEdit()}
+/* 目次の「✓済」の作業を押す＝その作業を採点した記録（この端末の最新）を開いて修正。ほかの端末の記録なら知らせるだけ */
+function openDoneWork(wid){
+  if(editId)return;
+  const ro=getRoster().list,p=selEntry(ro);if(!p)return;
+  const r=recsOf(p,ro).find(r=>(r.works||[]).some(we=>we.workId===wid)&&getAll().some(e=>e.id===r.id));
+  if(!r){toast(t('eOtherDev'),1);return}
+  startEdit(r.id);
+}
+/* 編集バーの「やり直し」: 編集中の記録の人を、もう一度全作業で採点する（新しい記録・redoOf に前回の記録ID）。編集中の修正は捨てる（確認） */
+function redoFromEdit(){
+  if(!editId)return;
+  const rec=getAll().find(e=>e.id===editId);
+  if(dirty&&!confirm(t('cCEdit')))return;
+  exitEdit();
+  const ro=getRoster().list;
+  const ent=rec?personKeyer(examRecs(),ro)(rec).entry:null,i=ent?ro.indexOf(ent):-1;
+  if(i<0){toast(t('eRedoNoRoster'),1);return}
+  selectEe(i,{redo:true});
+}
 /* 編集を終える。keep=true は画面をそのまま残す（編集中の記録が消えた時＝採点を失わない）。
    それ以外は編集前の評価日・人・作業・点数（preEdit）へ戻す */
 function exitEdit(keep){
@@ -668,16 +687,13 @@ function renderRosterBody(){
   // 失敗の理由で文言を分ける: 電波（net）だけを「電波の良い所で」。受験者タブが無い・応答が不正は管理者へ（#eeWarn に理由）
   const atTx=fmtAt(rs.at),stale=!!ro.length&&!rosterLoading&&!!sheetUrl()&&(rosterErr||rosterIsOld(rs)),admin=rosterErr&&rosterErrReason!=='net';
   // 最初の操作（名前をタップ）の案内は名簿の先頭＝農場チップの直前に1行で（名簿の下だと最初の画面に入らない）
-  const lead=document.getElementById('eeLead');
-  if(lead){const on=!!ro.length&&!cur&&!curEe.manual&&!editId;lead.hidden=!on;lead.textContent=on?t('eeTabHint'):''}
   const pw=document.querySelector('#cards .pickwork .pw-tx');if(pw)pw.innerHTML=pickworkTx();   // 名簿が届いた・人を外した時に空表示の案内も合わせる
-  note.textContent=rosterLoading?t('eeLoading')+(ro.length?' ／ '+t('rosterAt').replace('{t}',atTx):'')
-    :ro.length?(stale?(rosterErr?(admin?t('rosterPrev'):t('rosterStale')):t('rosterOld')).replace('{t}',atTx):t('rosterAt').replace('{t}',atTx))
+  // 名簿が正常に取れている時は何も出さない（取得日時の行は出さない）。読み込み中・古い名簿・失敗の時だけ1行
+  note.textContent=rosterLoading?t('eeLoading')
+    :ro.length?(stale?(rosterErr?(admin?t('rosterPrev'):t('rosterStale')):t('rosterOld')).replace('{t}',atTx):'')
     :(!sheetUrl()?t('noSheet'):rosterErr?(admin?t('eRosterAdmin'):t('eRosterNet')):t('eeNoRoster'));
+  note.hidden=!note.textContent;
   note.classList.toggle('eenote-stale',stale);
-  // 「実施済み・残り」をどこまで数えているか（シートの要約が無い＝この端末の分だけ。2台で分けると相手の済が見えない）
-  const sc=document.getElementById('eeScope');
-  if(sc){const on=!!ro.length&&!rosterLoading;sc.hidden=!on;sc.textContent=on?(Array.isArray(rs.done)?t('doneShared').replace('{t}',atTx):t('doneLocalOnly')):''}
   // 名簿の警告は画面に残す（トーストは消える・キャッシュから起動した時は出ない）
   const wn=document.getElementById('eeWarn');
   const errW=rosterLoading?'':rosterErrMsg(),rw=rosterWarnText(rs),gOld=rosterLoading?'':rosterErrGasOld();
@@ -744,13 +760,20 @@ function scrollToEe(){
   const off=hdrStk()+(pr?pr.offsetHeight:0)+8;
   window.scrollTo({top:Math.max(0,eb.getBoundingClientRect().top+window.scrollY-off),behavior:'smooth'});
 }
-function selectEe(i){
+function selectEe(i,opt){
+  opt=opt||{};
   const ro=getRoster().list,p=ro[i];if(!p)return;
   if(editId){toast(t('editingBanner'),1);return}
-  if(p===selEntry(ro))return;
-  // 全作業が済んでいる人（実施済みの区切りのタブ）: 押し間違いで2回目の採点にしない。やり直す時だけ続ける（点の修正は履歴の編集へ）
+  if(p===selEntry(ro)&&!opt.redo)return;
   const pg=eeProgress(p,examRecs(),ro),last=pg.complete?lastRecOf(p,ro):null,ro0=ro;
-  if(pg.complete&&!confirm(t('cRedo').replace('{n}',p.name).replace('{d}',last?mdOf(last.date):'—')))return;
+  // 全作業が済んでいる人を押す＝その記録を開いて修正（この端末の記録がある時。最新の記録を開く）。
+  // やり直し（もう一度採点して新しい記録にする）は編集バーの「やり直し」から（opt.redo）。
+  // ほかの端末の記録しか無い人は、この端末では修正できないので、やり直しだけ確認して続ける
+  if(pg.complete&&!opt.redo){
+    const mine=recsOf(p,ro).filter(r=>getAll().some(e=>e.id===r.id));
+    if(mine.length){startEdit(mine[0].id);if(mine.length>1&&editId===mine[0].id)toast(t('tMoreRecs').replace('{n}',mine.length-1));return}
+    if(!confirm(t('cRedo').replace('{n}',p.name).replace('{d}',last?mdOf(last.date):'—')))return;
+  }
   // 人がまだ決まっていないのに採点がある（前の版の下書き等）: 捨てずにこの人の採点として引き継ぐ
   const orphan=!curEe.name&&!curEe.manual&&!!document.querySelector('#cards .ec.scored');
   if(!orphan&&dirty&&document.querySelector('#cards .ec.scored')&&!confirm(t('cSwitchEe')))return;

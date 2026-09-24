@@ -609,7 +609,7 @@ async function runRel(devName) {
   const at = await page.evaluate(() => JSON.parse(localStorage.getItem('jitsugi_v2_roster')).at);
   const d = new Date(at), hm = (d.getMonth() + 1) + '/' + d.getDate() + ' ' + String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
   const note = () => page.locator('#eeNote');
-  ok('取得日時を常に表示', (await note().textContent()).includes('名簿: ' + hm + ' 取得') && !(await note().evaluate(e => e.classList.contains('eenote-stale'))));
+  ok('名簿が正常なら #eeNote は空で非表示（取得日時の行は出さない）', (await note().textContent()) === '' && await note().isHidden());
   online = false;
   await page.reload(); await page.waitForTimeout(900);
   ok('圏外で起動 → 「前回の名簿（日時）・最新ではありません」を警告色', /前回の名簿（/.test(await note().textContent()) && (await note().textContent()).includes(hm) && /最新ではありません/.test(await note().textContent()) && await note().evaluate(e => e.classList.contains('eenote-stale')));
@@ -618,7 +618,7 @@ async function runRel(devName) {
   ok('12時間より古い名簿で圏外起動 → トーストでも知らせる', /前回の名簿/.test(await toastTx()) && await page.locator('#toast').evaluate(e => e.classList.contains('show')));
   online = true;
   await page.reload(); await page.waitForTimeout(900);
-  ok('取り直せれば警告は消える', !(await note().evaluate(e => e.classList.contains('eenote-stale'))) && /取得/.test(await note().textContent()));
+  ok('取り直せれば警告は消える（#eeNote も消える）', !(await note().evaluate(e => e.classList.contains('eenote-stale'))) && await note().isHidden());
   await page.evaluate(() => { const r = JSON.parse(localStorage.getItem('jitsugi_v2_roster')); r.at = new Date(Date.now() - 30 * 3600 * 1000).toISOString(); localStorage.setItem('jitsugi_v2_roster', JSON.stringify(r)); renderRoster(); });
   ok('古い名簿を表示中は（取得失敗でなくても）警告色', /古い可能性/.test(await note().textContent()) && await note().evaluate(e => e.classList.contains('eenote-stale')));
   await tapLang(page, 2); await page.waitForTimeout(200);
@@ -791,7 +791,7 @@ async function runAssign(devName) {
   ok('選び直すと残りの2作業（5S清掃・治療）だけ', await page.locator('.wshd').count() === 2 && (await page.locator('.wshd').evaluateAll(e => e.map(x => x.dataset.w))).join() === 'five-s,treatment');
   await page.evaluate(() => window.scrollTo(0, document.getElementById('cards').getBoundingClientRect().top + scrollY - 120)); await page.waitForTimeout(200);
   await page.screenshot({ path: `${__dirname}/_shots/${devName.replace(/\W/g, '_')}_A4_left.png` });
-  ok('済んだ6作業は目次に「✓ 済」で出る（押せない）', await page.locator('#wnav .wnav-c.done').count() === 6 && /✓ 済/.test(await page.locator('#wnav .wnav-c.done').first().textContent()) && await page.locator('#wnav button.wnav-c.done').count() === 0);
+  ok('済んだ6作業は目次に「✓ 済」で出る（押すとその記録を開ける＝ボタン）', await page.locator('#wnav .wnav-c.done').count() === 6 && /✓ 済/.test(await page.locator('#wnav .wnav-c.done').first().textContent()) && await page.locator('#wnav button.wnav-c.done').count() === 6);
   await page.evaluate(() => { document.getElementById('wselBox').open = true; document.querySelectorAll('.wcat').forEach(c => c.open = true); });
   ok('作業選択にも「済」の印', await page.locator('.wchk-dn').count() === 6);
   await scoreWork('five-s', 5); await scoreWork('treatment', 5);
@@ -1134,7 +1134,9 @@ async function runDate(devName) {
   ok('甲太は「途中 1/2」', /途中 1\/2/.test(await ee('テスト 甲太').textContent()));
 
   console.log('[D4] 翌日: 前日に後日へ回した作業は「途中」のまま・選ぶと残りの作業だけ');
-  await ee('テスト 丙助').tap(); await page.waitForTimeout(500);   // タブを押しただけ（採点0）で閉じる
+  await ee('テスト 丙助').tap(); await page.waitForTimeout(500);   // 済の人を押す＝記録（09-23）を開く
+  ok('済の丙助を押すと記録を開いて修正できる（編集バー・09-23）', await page.locator('#editBar.show').count() === 1 && await fDate() === '2026-09-23');
+  await page.evaluate(() => cancelEdit()); await page.waitForTimeout(300);   // 何も直さず閉じる（採点0）
   await at('2026-09-25T10:00:00+09:00');
   const d0 = dialogs.length;
   await page.reload(); await page.waitForTimeout(600);
@@ -1159,7 +1161,9 @@ async function runDate(devName) {
 
   console.log('[D6] 前日の入力途中（採点あり）は日付を確認してから復元');
   await at('2026-09-25T15:00:00+09:00');
-  await ee('テスト 丙助').tap(); await page.waitForTimeout(300);
+  await ee('テスト 丙助').tap(); await page.waitForTimeout(300);   // 済の人＝記録を開く → 「やり直し」で新しく採点
+  await page.locator('#editBar button[data-t="btnRedo"]').tap(); await page.waitForTimeout(300);
+  ok('やり直し＝編集を抜けて丙助の全作業を新しく採点', await page.locator('#editBar.show').count() === 0 && await page.inputValue('#fEe') === 'テスト 丙助' && /やり直し/.test(await page.locator('#eeCur').textContent()));
   await scoreWork('dung-removal', 2, 2); await page.waitForTimeout(500);
   await at('2026-09-26T08:00:00+09:00');
   accept = true; let d1 = dialogs.length;
@@ -1701,9 +1705,8 @@ async function runI18n(devName) {
     ok(`${l}: 作業の目次は1段（高さ ${hs[l].nav}px ≤ 64）・横スクロールなし`, hs[l].nav <= 64 && hs[l].hs);
   }
   await setL('vi');
-  const sub = await page.locator('.wsec[data-w="move-preg"] .wsub-nm').textContent();
   const full = await page.evaluate(() => WORKDATA_V2.works.find(w => w.id === 'move-preg').name_vi);
-  ok('vi: 作業名の全文は貼り付かない行に出る（見出しは省略・title に全文）', sub.includes(full) && await page.locator('#wh-move-preg .wshd-nm').getAttribute('title') === full && await page.locator('.wsec[data-w="move-preg"] .wsub').evaluate(e => getComputedStyle(e).position !== 'sticky'));
+  ok('vi: 見出し下に作業名の行は出さない（見出しの title に全文）', await page.locator('.wsub-nm').count() === 0 && await page.locator('#wh-move-preg .wshd-nm').getAttribute('title') === full && await page.locator('.wsec[data-w="move-preg"] .wsub').evaluate(e => getComputedStyle(e).position !== 'sticky'));
   ok('vi: 「今回は実施しない」は作業ごとに押せる', await page.locator('.wshd-skip').count() === 8 && /Lần này không làm/.test(await page.locator('.wshd-skip').first().textContent()));
   await page.evaluate(() => { const c = document.querySelectorAll('#cards .ec[data-w="move-preg"]')[2]; window.scrollTo(0, c.getBoundingClientRect().top + scrollY - 250); });
   await page.waitForTimeout(300);
@@ -1843,8 +1846,7 @@ async function runA11y(devName) {
     await setL(l);
     const hs = await page.locator('.wshd-skip').evaluateAll(els => els.map(e => Math.round(e.getBoundingClientRect().height)));
     ok(`${l}: 「今回は実施しない」の高さ ${Math.min(...hs)}px ≥ 44`, Math.min(...hs) >= 44);
-    const gaps = await page.locator('.wsec').evaluateAll(els => els.map(s => { const b = s.querySelector('.wshd-skip'), m = s.querySelector('.man-link'); return b && m ? m.getBoundingClientRect().top - b.getBoundingClientRect().bottom : 99; }));
-    ok(`${l}: マニュアルへのリンクとの間 ${Math.min(...gaps)}px ≥ 8`, Math.min(...gaps) >= 8);
+    ok(`${l}: マニュアルへのリンクは無い`, await page.locator('.man-link').count() === 0);
   }
   await setL('ja');
   await page.locator('#lswBtn').tap();
@@ -2275,14 +2277,11 @@ async function runFirstUse(devName) {
   ok('作業パネルの見出しは「作業の追加・変更」・閉じている', (await page.locator('#wselBox > summary h3').textContent()) === '作業の追加・変更' && !(await page.evaluate(() => document.getElementById('wselBox').open)));
   ok('作業パネルの説明は名簿の人は自動・名簿にない人用と明記', /自動/.test(await page.locator('#wselBox > .wsel-hint').textContent()) && /名簿にない人/.test(await page.locator('#wselBox > .wsel-hint').textContent()));
   ok('どこにも「評価する作業を選ぶ」が見えない', await page.evaluate(() => ![...document.querySelectorAll('body *')].some(e => e.offsetParent !== null && e.children.length === 0 && /評価する作業を選ぶ/.test(e.textContent))));
-  const lead = page.locator('#eeLead');
-  const lb = await lead.boundingBox(), fb = await page.locator('#eeFarms').boundingBox();
-  ok(`名簿の先頭に「名前をタップ」の1行（農場チップの直前・y=${lb && Math.round(lb.y)}）`, await lead.isVisible() && /名前をタップ/.test(await lead.textContent()) && lb.y + lb.height <= fb.y + 1 && lb.height <= 30);
-  ok(`案内は最初の画面に入る（下端${Math.round(lb.y + lb.height)} ≤ 画面${vh}）`, lb.y + lb.height <= vh);
-  ok('#eeNote は「名前をタップ」を繰り返さない（取得日時のみ）', !/タップ/.test(await page.locator('#eeNote').textContent()));
+  ok('名簿の先頭の案内行（#eeLead）・要約の説明（#eeScope）は無い（09-25 社長指示＝説明文は出さない）', await page.locator('#eeLead, #eeScope').count() === 0);
+  ok('#eeNote は名簿が正常なら非表示', await page.locator('#eeNote').isHidden());
   for (const [i, re] of [[1, /Tap/], [2, /Chạm/], [3, /Ketuk/]]) {
     await tapLang(page, i); await page.waitForTimeout(150);
-    ok(`言語${i}: 空表示と先頭の案内も切り替わる`, re.test(await page.locator('#cards .pickwork').textContent()) && re.test(await lead.textContent()));
+    ok(`言語${i}: 空表示も切り替わる`, re.test(await page.locator('#cards .pickwork').textContent()));
   }
   await tapLang(page, 0); await page.waitForTimeout(150);
 
@@ -2291,7 +2290,6 @@ async function runFirstUse(devName) {
   await page.locator('#fEv').pressSequentially('評価 花子');   // 決定も Enter も押さない
   await ee('テスト 一郎').tap(); await page.waitForTimeout(300);
   ok('人を選んだ時点で打った名前を記憶', await page.evaluate(() => localStorage.getItem('jitsugi_v2_evaluator')) === '評価 花子');
-  ok('#eeLead は人を選ぶと消える', await lead.isHidden());
   await scoreAll(4);
   await page.locator('#btnSave').tap(); await page.waitForTimeout(600);
   ok('保存できる（記録1件・評価者=評価 花子）', await nRecs() === 1 && await page.evaluate(() => JSON.parse(localStorage.getItem('jitsugi_v2_data')).evaluations[0].evaluator) === '評価 花子');
@@ -2421,16 +2419,21 @@ async function runZ19(devName) {
   await page.reload(); await page.waitForTimeout(600);
   ok('翌日に開き直すと、前日に選んだ日付は持ち越さず今日（09-27）', await fDate() === '2026-09-27');
 
-  console.log('[Z19-4] 全作業が済んだ人を押す → 確認・やり直しの印・✓済（前回の点）');
+  console.log('[Z19-4] 全作業が済んだ人を押す → 記録を開いて修正（確認なし）。編集バーの「やり直し」で新しく採点');
   const nr = (await recs()).length;
-  accept = false; dn = dialogs.length;
+  dn = dialogs.length;
   await ee('テスト 一号').tap(); await page.waitForTimeout(300);
-  ok('確認が出る（全作業が実施済み・前回 9/20）', dialogs.length === dn + 1 && /全作業が実施済み/.test(dialogs[dn]) && /9\/20/.test(dialogs[dn]) && /履歴/.test(dialogs[dn]));
-  ok('キャンセル → 人は選ばれない', await page.locator('.eetab.on').count() === 0 && await page.locator('#cards .ec').count() === 0);
-  accept = true;
+  const e1 = (await recs()).find(x => x.evaluatee === 'テスト 一号');
+  ok('確認なしで編集モード（編集バー・記録の日付 09-20・点は前回の 4）', dialogs.length === dn && await page.locator('#editBar.show').count() === 1 && await fDate() === e1.date && await page.locator('#cards .sb[data-s="4"].sel').count() > 0);
+  ok('編集中は「済」の印・やり直しの印を出さない', !/やり直し/.test(await page.locator('#eeCur').textContent()) && await page.locator('#wnav .wnav-c.redo').count() === 0);
+  await page.locator('#cards .sb[data-s="2"]').first().tap(); await page.waitForTimeout(200);
+  await page.locator('#btnSave').tap(); await page.waitForTimeout(600);
+  ok('「更新」で同じ記録が書き換わる（件数は増えない・点が 2 に）', (await recs()).length === nr && Object.values((await recs()).find(x => x.id === e1.id).works[0].scores).includes(2) && await page.locator('#editBar.show').count() === 0);
   await ee('テスト 一号').tap(); await page.waitForTimeout(300);
-  ok('OK → #eeCur に「やり直し（前回 9/20）」', /やり直し（前回 9\/20）/.test(await page.locator('#eeCur').textContent()));
-  ok('目次の作業に ✓済（前回 9/20 · 4.0）', await page.locator('#wnav .wnav-c.redo').count() === 2 && /✓ 済（前回 9\/20 · 4\.0）/.test(await page.locator('#wnav').textContent()));
+  ok('もう一度押すと再び開ける', await page.locator('#editBar.show').count() === 1);
+  await page.locator('#editBar button[data-t="btnRedo"]').tap(); await page.waitForTimeout(300);
+  ok('編集バーの「やり直し」→ 編集を抜けて #eeCur に「やり直し（前回 9/20）」', dialogs.length === dn && await page.locator('#editBar.show').count() === 0 && /やり直し（前回 9\/20）/.test(await page.locator('#eeCur').textContent()));
+  ok('目次の作業に ✓済（前回 9/20 · 点）', await page.locator('#wnav .wnav-c.redo').count() === 2 && /✓ 済（前回 9\/20 · \d\.\d）/.test(await page.locator('#wnav').textContent()));
   ok('作業の見出しの下にも ✓済（前回）', await page.locator('.wsub-prev').count() === 2);
   const prevIds = (await recs()).filter(x => x.evaluatee === 'テスト 一号').map(x => x.id);
   // Z20-3: 途中で再読み込みしても（下書きから戻す）やり直しの印と前回の記録IDは保つ
@@ -2450,11 +2453,19 @@ async function runZ19(devName) {
     ok('Z20-3 CSV のやり直しの行に前回の記録ID・前回の行は空', lines.filter(l => l.endsWith(`"${nw.id}","${nw.redoOf}"`)).length > 0 && prevIds.every(id => lines.some(l => l.endsWith(`"${id}",""`))) && lines.slice(1).filter(l => !l.endsWith(',""')).every(l => l.endsWith(`"${nw.id}","${nw.redoOf}"`)));
     ok('Z20-3 バックアップの取り込み（normRec）で redoOf を保つ・旧データ（無い）はそのまま', await page.evaluate(id => { const r = getAll().find(x => x.id === id); return normRec(r).redoOf === r.redoOf && !('redoOf' in normRec({ ...r, redoOf: undefined })) && normRec({ ...r, redoOf: ['a b', 'x=y', 'a'] }).redoOf === 'a_b x_y a'; }, nw.id)); }
   await ee('テスト 四号').tap(); await page.waitForTimeout(300);   // 済の人
-  ok('ほかの済の人も確認つき（前回 9/20）', /前回 9\/20/.test(dialogs[dialogs.length - 1]));
+  ok('ほかの済の人も押すと記録を開く（編集バー・四号）', await page.locator('#editBar.show').count() === 1 && await page.inputValue('#fEe') === 'テスト 四号');
+  await page.evaluate(() => doReset()); await page.waitForTimeout(150);
+  ok('編集中のリセット＝編集の取り消し', await page.locator('#editBar.show').count() === 0);
+  // 途中の人（一部の作業だけ済）: 目次の「✓済」を押すとその記録を開く
+  await page.evaluate(() => { const all = getAll().map(x => x.evaluatee === 'テスト 一号' ? { ...x, works: x.works.slice(0, 1) } : x); putAll(all); location.reload(); }); await page.waitForTimeout(700);
+  await ee('テスト 一号').tap(); await page.waitForTimeout(300);
+  ok(`途中の人（一号 1/2）は残りの作業だけ出る・目次の ✓済 はボタン（wsec=${await page.locator('#cards .wsec').count()} done=${await page.locator('#wnav button.wnav-c.done').count()}）`, /途中/.test(await ee('テスト 一号').textContent()) && await page.locator('#cards .wsec').count() === 1 && await page.locator('#wnav button.wnav-c.done').count() === 1);
+  await page.locator('#wnav button.wnav-c.done').tap(); await page.waitForTimeout(300);
+  ok('✓済 を押すとその記録を開いて修正できる', await page.locator('#editBar.show').count() === 1 && await page.inputValue('#fEe') === 'テスト 一号');
   await page.evaluate(() => doReset()); await page.waitForTimeout(150);
 
   console.log('[Z19-3] シートの要約で、ほかの端末で済んだ人も数える');
-  ok('要約の無いシート（古い GAS）: 「この端末で採点した分だけ」と出す', /この端末で採点した分だけ/.test(await page.locator('#eeScope').textContent()) && await page.locator('#eeScope').isVisible());
+  ok('要約の説明（#eeScope）は出さない', await page.locator('#eeScope').count() === 0);
   sheetDone = [
     { id: 'other-1', date: '2026-09-27', name: 'テスト 不明太', farm: FZ, works: ['給餌', 'エサ調整'] },   // 今日・ほかの端末
     { id: 'other-old', date: '2026-08-01', name: 'テスト 二号', farm: FZ, works: ['給餌'] },   // 前回の試験（試験開始日なしでは数えない）
@@ -2463,14 +2474,13 @@ async function runZ19(devName) {
   await page.reload(); await page.waitForTimeout(700);
   ok('ほかの端末で今日済んだ人は実施済み（この端末に記録なし）', await ee('テスト 不明太').evaluate(e => e.classList.contains('done')));
   ok('試験開始日なしでは、シートの前日以前の記録は数えない', !(await ee('テスト 二号').evaluate(e => e.classList.contains('done'))));
-  ok('#eeScope は「ほかの端末の採点も」', /ほかの端末の採点も/.test(await page.locator('#eeScope').textContent()));
   await page.evaluate(() => setExamStart('2026-08-01')); await page.waitForTimeout(150);
   ok('試験開始日を入れると、その日以降のシートの記録も数える', await ee('テスト 二号').evaluate(e => e.classList.contains('done')));
   await page.evaluate(() => { dropSheetDone('other-old'); renderRoster(); });
   ok('この端末で消した記録はシートの要約からも外す', !(await ee('テスト 二号').evaluate(e => e.classList.contains('done'))));
   await page.evaluate(() => setExamStart('')); await page.waitForTimeout(150);
   await ee('テスト 不明太').tap(); await page.waitForTimeout(300);
-  ok('ほかの端末で済んだ人も、押すとやり直しの確認（前回 9/27）', /全作業が実施済み/.test(dialogs[dialogs.length - 1]) && /9\/27/.test(dialogs[dialogs.length - 1]));
+  ok('ほかの端末で済んだ人（この端末に記録なし）は、押すとやり直しの確認（前回 9/27・この端末では修正できない）', /全作業が実施済み/.test(dialogs[dialogs.length - 1]) && /9\/27/.test(dialogs[dialogs.length - 1]) && /修正できません/.test(dialogs[dialogs.length - 1]));
   ok('シートの記録は点を持たないので前回は日付だけ', /✓ 済（前回 9\/27）/.test(await page.locator('.wsub-prev').first().textContent()));
   await page.evaluate(() => doReset()); await page.waitForTimeout(150);
   sheetDone = null;
@@ -2491,7 +2501,7 @@ async function runZ19(devName) {
 
   for (const l of [1, 2, 3]) {
     await tapLang(page, l); await page.waitForTimeout(100);
-    ok(`言語${l}: #eeScope が訳されている`, await page.evaluate(() => { const s = document.getElementById('eeScope').textContent; return !!s && !/[ぁ-ん]/.test(s); }));
+    ok(`言語${l}: 編集バーの「やり直し」が訳されている`, await page.evaluate(() => { const s = document.querySelector('#editBar button[data-t="btnRedo"]').textContent; return !!s && !/[ぁ-ん]/.test(s); }));
   }
   await tapLang(page, 0);
   ok('JSエラーなし(Z19)', errors.length === 0);

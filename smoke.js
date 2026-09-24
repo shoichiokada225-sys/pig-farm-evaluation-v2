@@ -47,7 +47,7 @@ function ok(name, cond) {
   console.log('[1] 初期表示（作業未選択）');
   await page.goto(URL);
   ok('選択促しプレースホルダ', await page.locator('#cards .pickwork').count() === 1);
-  ok('R18-2 名簿が無い時は「作業を選ぶ」の案内・名簿の先頭の「名前をタップ」は出さない', /評価する作業を選ぶ/.test(await page.locator('#cards .pickwork').textContent()) && await page.locator('#eeLead').isHidden());
+  ok('R18-2 名簿が無い時は「作業を選ぶ」の案内・名簿の先頭の案内行（#eeLead）は無い', /評価する作業を選ぶ/.test(await page.locator('#cards .pickwork').textContent()) && await page.locator('#eeLead').count() === 0);
   ok('カテゴリ7つ', await page.locator('.wcat').count() === 7);
   ok('進捗 0/0', (await page.locator('#progT').textContent()).includes('0/0'));
   const dv = await page.locator('#dataVer').textContent();
@@ -68,10 +68,9 @@ function ok(name, cond) {
   const perWork = nCards / 2;
   ok(`カード数=${nCards}（作業2つぶん）`, nCards > 0 && nCards % 2 === 0);
   ok('作業見出し2つ', await page.locator('.wshd').count() === 2);
-  ok('マニュアル深リンク2つ', await page.locator('.man-link').count() === 2);
+  ok('マニュアルへのリンクは出さない（09-25 社長指示）', await page.locator('.man-link').count() === 0);
+  ok('見出し下の「作業名 · カテゴリ」の灰色行は出さない（見出しと重複）', await page.locator('.wsub-nm, .wsub-cat').count() === 0);
   ok('進捗 0/' + nCards, (await page.locator('#progT').textContent()).includes('0/' + nCards));
-  const href = await page.locator('.man-link').first().getAttribute('href');
-  ok('深リンクhref形式', /genba-manual\.vercel\.app\/#g_\d+/.test(href));
 
   console.log('[3] 基準アコーディオンと採点');
   const firstCrit = page.locator('.crit-tg').first();

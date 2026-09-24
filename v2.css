@@ -37,8 +37,8 @@
 .wshd-ct{font-size:.8rem;font-weight:800;background:#fff;color:#0f5a49;border-radius:999px;padding:2px 9px;font-variant-numeric:tabular-nums;white-space:nowrap}
 .wshd-ct.full{background:#e3f5ec}
 .wsub{display:flex;align-items:flex-start;gap:8px;margin:0 2px 12px;padding:0 4px}
-.wsub-nm{flex:1;min-width:0;font-size:.85rem;font-weight:700;color:var(--sub,#54635d);line-height:1.4;overflow-wrap:anywhere}
-.wsub-cat{font-weight:500}
+
+
 .wshd-skip{flex:none;margin-left:auto;min-height:var(--tap,44px);max-width:48%;padding:4px 10px;border-radius:8px;border:1.5px solid var(--brand,#177863);background:#fff;color:var(--brand,#177863);font:inherit;font-size:.78rem;font-weight:700;cursor:pointer;line-height:1.25;text-align:center}
 .wshd-skip:focus-visible{outline:3px solid #f0a500;outline-offset:2px}
 #cards .ec{scroll-margin-top:calc(var(--stk,96px) + 64px)}

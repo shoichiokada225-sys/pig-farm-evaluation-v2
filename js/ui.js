@@ -40,7 +40,7 @@ function wnavHtml(){
   if(!(selWorks.length>1||dn.length))return'';
   return `<nav class="wnav" id="wnav" aria-label="${esc(t('wnavLbl'))}">`+
     selWorks.filter(workById).map(wid=>{const w=workById(wid),pv=all.includes(wid)?prevDoneTx(wid):'';return `<button type="button" class="wnav-c${pv?' redo':''}" data-w="${esc(wid)}" title="${esc(loc(w,'name'))}" onclick="jumpWork(this.dataset.w)"><span class="wnav-nm">${esc(loc(w,'name'))}</span><span class="wnav-ct" data-wct="${esc(wid)}">0/${workItems(wid).length}</span>${pv?`<span class="wnav-prev">${esc(pv)}</span>`:''}</button>`}).join('')+
-    dn.map(wid=>`<span class="wnav-c done" data-w="${esc(wid)}" title="${esc(loc(workById(wid),'name'))}"><span class="wnav-nm">${esc(loc(workById(wid),'name'))}</span><span class="wnav-ct">✓ ${esc(t('doneMark'))}</span></span>`).join('')+
+    dn.map(wid=>`<button type="button" class="wnav-c done" data-w="${esc(wid)}" title="${esc(loc(workById(wid),'name'))}" onclick="openDoneWork(this.dataset.w)"><span class="wnav-nm">${esc(loc(workById(wid),'name'))}</span><span class="wnav-ct">✓ ${esc(t('doneMark'))}</span></button>`).join('')+
     `</nav>`;
 }
 /* 1作業ぶんの区切り（見出し＋5種目のカード）。ci=通し番号（最初の構築のフェードの遅れ）。作業が無ければ '' */
@@ -53,8 +53,7 @@ function wsecHtml(wid,ci){
       <span class="wshd-nm" title="${esc(loc(w,'name'))}">${esc(loc(w,'name'))}</span>
       <span class="wshd-ct" data-wct="${esc(w.id)}">0/${workItems(wid).length}</span>
     </div>
-    <div class="wsub"><span class="wsub-nm">${esc(loc(w,'name'))} ${w.category?`<span class="wsub-cat">· ${esc(catLabel(w.category))}</span>`:''}${(()=>{const pv=typeof curDoneWorks==='function'&&curDoneWorks().includes(wid)?prevDoneTx(wid):'';return pv?` <span class="wsub-prev">${esc(pv)}</span>`:''})()}</span>${editId?'':`<button type="button" class="wshd-skip" data-w="${esc(w.id)}" onclick="skipWork(this.dataset.w)">${esc(t('skipWork'))}</button>`}</div>`;
-  if(w.gyomu)h+=`<a class="man-link" href="https://genba-manual.vercel.app/#g_${esc(w.gyomu)}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1zm0 13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"/></svg>${t('manualLink')}</a>`;
+    ${(()=>{const pv=typeof curDoneWorks==='function'&&curDoneWorks().includes(wid)?prevDoneTx(wid):'';const sk=editId?'':`<button type="button" class="wshd-skip" data-w="${esc(w.id)}" onclick="skipWork(this.dataset.w)">${esc(t('skipWork'))}</button>`;return pv||sk?`<div class="wsub">${pv?`<span class="wsub-prev">${esc(pv)}</span>`:''}${sk}</div>`:''})()}`;
   workItems(wid).forEach((it,ii)=>{
     h+=`<div class="cd ec" id="c-${it.id}" data-w="${esc(wid)}" style="animation-delay:${Math.min(ci.n++,8)*0.03}s">
         <div class="en">${ii+1}</div>
