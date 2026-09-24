@@ -251,30 +251,50 @@ function drawCharts(){
   if(!all.length){area.style.display='none';none.style.display='block';none.textContent=t('chNone');return}
   area.style.display='block';none.style.display='none';
   all.sort((a,b)=>a.date.localeCompare(b.date)||(a.createdAt||'').localeCompare(b.createdAt||''));
-  const avgOf=r=>{if(!wid)return sessionAvg(r);const we=(r.works||[]).find(x=>x.workId===wid);return we?workAvg(we):null};
-  if(cL)cL.destroy();
-  cL=new Chart(document.getElementById('cvL'),{type:'line',data:{labels:all.map(e=>e.date),datasets:[{label:t('chAvg'),data:all.map(avgOf),borderColor:'#177863',backgroundColor:'rgba(23,120,99,.10)',fill:true,tension:.3,pointRadius:5,pointHoverRadius:7,pointBackgroundColor:'#177863'}]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{min:1,max:5,ticks:{stepSize:1,color:'#54635d'},grid:{color:'#e3eae7'}},x:{ticks:{color:'#54635d'},grid:{color:'#eef2f0'}}},plugins:{legend:{display:false}}}});
-  const lat=all[all.length-1],prev=all.length>1?all[all.length-2]:null;
   const trunc=n=>{const mx=lang==='ja'?8:16;return n.length>mx?n.slice(0,mx)+'…':n};
-  let labels,cur,prv;
+  const lineOpt=legend=>({responsive:true,maintainAspectRatio:false,spanGaps:true,scales:{y:{min:1,max:5,ticks:{stepSize:1,color:'#54635d'},grid:{color:'#e3eae7'}},x:{ticks:{color:'#54635d'},grid:{color:'#eef2f0'}}},plugins:{legend:{display:legend,position:'bottom'}}});
+  if(cL){cL.destroy();cL=null}
+  if(cR){cR.destroy();cR=null}
+  let labels,cur,prv,curLbl,prvLbl;
   if(wid){
-    // 作業指定: 5種目のレーダー
+    // 作業指定: その作業の平均の推移＋5種目のレーダー（直近と前回）
+    const avgOf=r=>{const we=(r.works||[]).find(x=>x.workId===wid);return we?workAvg(we):null};
+    cL=new Chart(document.getElementById('cvL'),{type:'line',data:{labels:all.map(e=>e.date),datasets:[{label:t('chAvg'),data:all.map(avgOf),borderColor:'#177863',backgroundColor:'rgba(23,120,99,.10)',fill:true,tension:.3,pointRadius:5,pointHoverRadius:7,pointBackgroundColor:'#177863'}]},options:lineOpt(false)});
+    const lat=all[all.length-1],prev=all.length>1?all[all.length-2]:null;
     const w=workById(wid);
     const aspects=w?w.aspects:[];
     labels=aspects.map(a=>trunc(loc(a,'name')));
     const pickSc=r=>{const we=(r.works||[]).find(x=>x.workId===wid);return aspects.map(a=>we&&we.scores[a.id]||0)};
-    cur=pickSc(lat);prv=prev?pickSc(prev):null;
+    cur=pickSc(lat);prv=prev?pickSc(prev):null;curLbl=lat.date;prvLbl=prev?prev.date+'（'+t('prevLbl')+'）':'';
   }else{
-    // 総合: 直近セッションの作業別平均レーダー
-    labels=(lat.works||[]).map(we=>trunc(dispWorkName(we)));
-    cur=(lat.works||[]).map(we=>workAvg(we)||0);
-    prv=prev?(lat.works||[]).map(we=>{const p=(prev.works||[]).find(x=>x.workId===we.workId);return p?workAvg(p)||0:0}):null;
+    /* 総合: 記録単位でなく人単位でまとめる（分割保存・人ごとの作業割り当てでは記録ごとに作業が違うため）
+       ・線グラフ = 作業ごとの系列（x軸は日付。同じ日に同じ作業が2回あれば後の記録）。別の作業どうしを1本の線でつながない
+       ・レーダー = その人の記録にある全作業。値は各作業の直近の作業平均と、その1つ前（無ければ null＝描かない。0点にしない） */
+    const seq=new Map();   // workId → [{date, avg, we}]（日付順）
+    all.forEach(r=>(r.works||[]).forEach(we=>{const v=workAvg(we);if(v==null)return;const a=seq.get(we.workId)||[];a.push({date:r.date,avg:v,we});seq.set(we.workId,a)}));
+    if(!seq.size){area.style.display='none';none.style.display='block';none.textContent=t('chNone');return}
+    const dates=[...new Set(all.map(r=>r.date))];
+    const pal=['#177863','#c0622b','#3b6fb6','#8e44ad','#b8860b','#c0392b','#16a085','#5d6d7e'];
+    const ids=[...seq.keys()],nm=id=>dispWorkName(seq.get(id)[0].we);
+    cL=new Chart(document.getElementById('cvL'),{type:'line',data:{labels:dates,datasets:ids.map((id,i)=>{const c=pal[i%pal.length],by=new Map();seq.get(id).forEach(e=>by.set(e.date,e.avg));
+      return{label:nm(id),workId:id,data:dates.map(d=>by.has(d)?by.get(d):null),borderColor:c,backgroundColor:c,fill:false,tension:.3,pointRadius:5,pointHoverRadius:7,pointBackgroundColor:c}})},options:lineOpt(true)});
+    labels=ids.map(id=>trunc(nm(id)));
+    cur=ids.map(id=>{const a=seq.get(id);return a[a.length-1].avg});
+    prv=ids.map(id=>{const a=seq.get(id);return a.length>1?a[a.length-2].avg:null});
+    if(prv.every(v=>v==null))prv=null;
+    curLbl=t('chLatest');prvLbl=t('prevLbl');
   }
-  if(cR)cR.destroy();
-  cR=new Chart(document.getElementById('cvR'),{type:'radar',data:{labels,datasets:[
-    {label:lat.date,data:cur,borderColor:'#177863',backgroundColor:'rgba(23,120,99,.18)',pointBackgroundColor:'#177863'},
-    ...(prv?[{label:prev.date+'（'+t('prevLbl')+'）',data:prv,borderColor:'#9e9e9e',backgroundColor:'rgba(158,158,158,.08)',pointBackgroundColor:'#9e9e9e',borderDash:[5,4],borderWidth:1.5}]:[])
-  ]},options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:5,ticks:{stepSize:1,font:{size:10},color:'#54635d',backdropColor:'rgba(255,255,255,.75)'},grid:{color:'#e3eae7'},angleLines:{color:'#e3eae7'},pointLabels:{font:{size:11},color:'#14211c'}}},plugins:{legend:{display:true,position:'bottom'}}}});
+  const ds=[
+    {label:curLbl,data:cur,borderColor:'#177863',backgroundColor:'rgba(23,120,99,.18)',pointBackgroundColor:'#177863'},
+    ...(prv?[{label:prvLbl,data:prv,borderColor:'#9e9e9e',backgroundColor:'rgba(158,158,158,.08)',pointBackgroundColor:'#9e9e9e',borderDash:[5,4],borderWidth:1.5}]:[])
+  ];
+  if(labels.length<=2){
+    // 軸が2本以下ではレーダーが面にならない → 棒グラフ
+    ds.forEach(d=>{d.backgroundColor=d.borderColor;d.borderDash=undefined});
+    cR=new Chart(document.getElementById('cvR'),{type:'bar',data:{labels,datasets:ds},options:{responsive:true,maintainAspectRatio:false,scales:{y:{min:0,max:5,ticks:{stepSize:1,color:'#54635d'},grid:{color:'#e3eae7'}},x:{ticks:{color:'#14211c'},grid:{display:false}}},plugins:{legend:{display:true,position:'bottom'}}}});
+  }else{
+    cR=new Chart(document.getElementById('cvR'),{type:'radar',data:{labels,datasets:ds},options:{responsive:true,maintainAspectRatio:false,spanGaps:false,scales:{r:{min:0,max:5,ticks:{stepSize:1,font:{size:10},color:'#54635d',backdropColor:'rgba(255,255,255,.75)'},grid:{color:'#e3eae7'},angleLines:{color:'#e3eae7'},pointLabels:{font:{size:11},color:'#14211c'}}},plugins:{legend:{display:true,position:'bottom'}}}});
+  }
 }
 
 /* 採点フォームの状態退避/復元（言語切替・再描画時） */

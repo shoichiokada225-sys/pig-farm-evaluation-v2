@@ -7,7 +7,8 @@
      （所属未確定→農場が決まった・農場名の表記を直した・名前を直した後も同じ人）
    ・名簿に同じ名前が2人以上 → 記録の農場で見分ける（農場が空で見分けられない記録は、どの人にも数えない）
    ・名簿にいない名前（名簿外・名簿の無い端末）→ 農場＋名前（同名異人を合算しない）
-   ・農場が空の記録は、同じ名前の記録の農場が1つだけならその農場とみなす（農場列ができる前の記録） */
+   ・農場が空の記録は、名簿でその名前が0人か1人で、同じ名前の記録の農場が1つだけならその農場とみなす（農場列ができる前の記録）
+     名簿に同名が2人以上なら推定しない（片方の農場の記録しか無くても、もう片方の人の旧記録かもしれない） */
 function nmKey(v){return String(v==null?'':v).normalize('NFC').trim()}
 function normFarm(v){return String(v||'').normalize('NFKC').replace(/\s+/g,'')}
 
@@ -35,7 +36,8 @@ function personKeyer(all,ro){
   all.forEach(r=>{if(!r.farm)return;const n=nmKey(r.evaluatee);if(!fs.has(n))fs.set(n,new Map());const m=fs.get(n),k=normFarm(r.farm);if(!m.has(k))m.set(k,r.farm)});
   return r=>{
     const n=nmKey(r.evaluatee);let f=r.farm||'';
-    if(!f){const m=fs.get(n);if(m&&m.size===1)f=[...m.values()][0]}
+    // 名簿に同じ名前が2人以上いる時は推定しない（片方の農場にだけ新しい記録がある時に、もう片方の人の旧記録を付け替えてしまう）
+    if(!f&&rosterHits(n,'',ro).length<2){const m=fs.get(n);if(m&&m.size===1)f=[...m.values()][0]}
     const p=rosterEntry(n,f,ro);
     if(p){
       const pn=nmKey(p.name),multi=(nameIndex(ro).get(pn)||[]).length>1;

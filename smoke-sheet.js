@@ -941,7 +941,10 @@ async function runAssign(devName) {
   await page.evaluate(() => { document.activeElement && document.activeElement.blur(); window.scrollTo(0, 0); });
   await page.locator('.tabs button[data-pg="pgCh"]').dispatchEvent('click'); await page.waitForTimeout(200);
   await page.locator('#chSel').selectOption({ label: 'テスト 一郎' }); await page.waitForTimeout(400);
-  ok('グラフも1人で2回分（平均2→4）', await page.evaluate(() => !!cL && cL.data.datasets[0].data.join() === '2,4'));
+  // H11-2: 総合は作業ごとの系列（給餌2・エサ調整4を1本の「上達」につながない）・軸2本はレーダーでなく棒
+  const chSum = () => page.evaluate(() => cL && cR ? { line: cL.data.datasets.map(d => d.workId + '=' + d.data.join('/')), type: cR.config.type, cur: cR.data.datasets[0].data.join(), nds: cR.data.datasets.length } : null);
+  let cs = await chSum();
+  ok('グラフも1人で2回分（作業ごとの系列: 給餌2・エサ調整4）', !!cs && cs.line.join() === 'feeding-daily=2,feed-adjust=4' && cs.type === 'bar' && cs.cur === '2,4' && cs.nds === 1);
   roster = [
     { name: 'テスト 一朗', farm: FA, works: ['給餌', 'エサ調整'], aliases: ['テスト 一郎'] },   // 名前を直した（旧名つき）
     { name: 'テスト 二郎', farm: FB, works: ['給餌'] },
@@ -959,7 +962,8 @@ async function runAssign(devName) {
   await page.evaluate(() => { document.activeElement && document.activeElement.blur(); window.scrollTo(0, 0); });
   await page.locator('.tabs button[data-pg="pgCh"]').dispatchEvent('click'); await page.waitForTimeout(200);
   await page.locator('#chSel').selectOption({ label: 'テスト 一朗' }); await page.waitForTimeout(400);
-  ok('改名後のグラフも2回分', await page.evaluate(() => !!cL && cL.data.datasets[0].data.join() === '2,4'));
+  cs = await chSum();
+  ok('改名後のグラフも2回分（作業ごと）', !!cs && cs.line.join() === 'feeding-daily=2,feed-adjust=4');
   // 名簿外の人: 農場名の全角半角・空白のゆれで分かれない（normFarm）
   await page.evaluate(() => { const w = WORKDATA_V2.works.find(x => x.id === 'feeding-daily'); const all = getAll();
     ['テスト農場Ｘ', 'テスト農場 X'].forEach((f, i) => all.push({ id: 'fv-' + i, date: '2026-09-20', evaluator: 'テスト評価者', evaluatee: 'テスト 名簿外', farm: f, overall: '', createdAt: '2026-09-20T0' + i + ':00:00Z',
@@ -1008,11 +1012,47 @@ async function runAssign(devName) {
       return { id, date: '2026-09-20', evaluator: 'テスト評価者', evaluatee: 'テスト 同名乙', farm, overall: '', createdAt: '2026-09-20T00:00:00Z', works: [{ workId: w.id, workName: w.name, category: w.category, scores: Object.fromEntries(w.aspects.map(a => [a.id, 3])), comments: {} }], sent: true }; };
     const all = getAll(); all.push(mk('dz-a', FA, 'feeding-daily'), mk('dz-b', FB, 'feeding-daily'), mk('dz-blank', '', 'feed-adjust')); putAll(all); renderRoster(); refreshSel(); }, [FA, FB]);
   const dzTab = async f => { await chip(f).tap(); await page.waitForTimeout(200); const t = ee('テスト 同名乙'); return { done: await t.evaluate(e => e.classList.contains('done')), part: /途中 1\/2/.test(await t.textContent()) }; };
+  const dzTabOf = async (nm, f, re) => { await chip(f).tap(); await page.waitForTimeout(200); const t = ee(nm); return { done: await t.evaluate(e => e.classList.contains('done')), hit: re.test(await t.textContent()) }; };
   const dzA = await dzTab(FA), dzB = await dzTab(FB);
   ok('A7: 同名2農場＋農場欄が空の旧記録 → どちらの人も済にならない（1/2のまま）', !dzA.done && !dzB.done && dzA.part && dzB.part);
   const dzP = await page.evaluate(() => eePeople(getAll()).filter(p => p.name === 'テスト 同名乙').map(p => ({ label: p.label, n: recsOfKey(p.key).length })));
   ok('A7: 履歴でも「名前（農場A）」「名前（農場B）」は1件ずつに分かれたまま（空欄の旧記録をAに付けない）',
     dzP.some(p => p.label === 'テスト 同名乙（' + FA + '）' && p.n === 1) && dzP.some(p => p.label === 'テスト 同名乙（' + FB + '）' && p.n === 1));
+
+  console.log('[A7b] 同名2農場で、片方の農場にだけ新しい記録がある＋農場欄が空の旧記録（H11-1）');
+  roster = [
+    { name: 'テスト 同名丙', farm: FA, works: ['給餌', 'エサ調整'] },
+    { name: 'テスト 同名丙', farm: FB, works: ['給餌'] },
+  ];
+  await reloadRo();
+  await page.evaluate(([FA]) => { const mk = (id, date, farm, wid, sc) => { const w = WORKDATA_V2.works.find(x => x.id === wid);
+      return { id, date, evaluator: 'テスト評価者', evaluatee: 'テスト 同名丙', farm, overall: '', createdAt: date + 'T00:00:00Z', works: [{ workId: w.id, workName: w.name, category: w.category, scores: Object.fromEntries(w.aspects.map(a => [a.id, sc])), comments: {} }], sent: true }; };
+    const all = getAll(); all.push(mk('hc-old', '2026-09-10', '', 'feeding-daily', 2), mk('hc-new', '2026-09-23', FA, 'feed-adjust', 4)); putAll(all); renderRoster(); refreshSel(); }, [FA]);
+  const hcA = await dzTabOf('テスト 同名丙', FA, /途中 1\/2/), hcB = await dzTabOf('テスト 同名丙', FB, /./);
+  ok('A7b: 農場Aの人は済にならない（途中 1/2・空欄の旧記録の給餌を付けない）', !hcA.done && hcA.hit);
+  ok('A7b: 農場Bの人も済にならない（空欄の旧記録はどちらの人にも数えない）', !hcB.done);
+  const hcK = await page.evaluate(() => { const k = personKeyer(getAll()); const r = id => k(getAll().find(x => x.id === id)); return { o: r('hc-old'), n: r('hc-new') }; });
+  ok('A7b: 旧記録と新記録は別の人のキー・旧記録は名簿のどの人にも付かない', hcK.o.key !== hcK.n.key && hcK.o.entry === null && hcK.n.entry !== null);
+  const hcP = await page.evaluate(() => eePeople(getAll()).filter(p => p.name === 'テスト 同名丙').map(p => ({ label: p.label, n: recsOfKey(p.key).length })));
+  ok('A7b: 履歴の「名前（農場A）」は新しい記録の1件だけ', hcP.some(p => p.label === 'テスト 同名丙（' + FA + '）' && p.n === 1) && !hcP.some(p => p.n === 2));
+
+  console.log('[A7c] グラフの総合: 分割保存・人ごとの作業で、別の作業どうしを比べない（H11-2）');
+  roster = [{ name: 'テスト 分割', farm: FA, works: ['給餌', 'エサ調整', '5S清掃'] }];
+  await reloadRo();
+  await page.evaluate(([FA]) => { const mk = (id, date, wid, sc) => { const w = WORKDATA_V2.works.find(x => x.id === wid);
+      return { id, date, evaluator: 'テスト評価者', evaluatee: 'テスト 分割', farm: FA, overall: '', createdAt: date + 'T0' + sc + ':00:00Z', works: [{ workId: w.id, workName: w.name, category: w.category, scores: Object.fromEntries(w.aspects.map(a => [a.id, sc])), comments: {} }], sent: true }; };
+    const all = getAll(); all.push(mk('sp1', '2026-09-21', 'feeding-daily', 2), mk('sp2', '2026-09-22', 'feed-adjust', 3), mk('sp3', '2026-09-23', 'feeding-daily', 4), mk('sp4', '2026-09-23', 'five-s', 5)); putAll(all); refreshSel(); }, [FA]);
+  await page.evaluate(() => { document.activeElement && document.activeElement.blur(); window.scrollTo(0, 0); });
+  await page.locator('.tabs button[data-pg="pgCh"]').dispatchEvent('click'); await page.waitForTimeout(200);
+  await page.locator('#chSel').selectOption({ label: 'テスト 分割' }); await page.waitForTimeout(400);
+  const sp = await page.evaluate(() => ({ labels: cL.data.labels.join(), line: cL.data.datasets.map(d => d.workId + '=' + d.data.map(v => v == null ? '-' : v).join('/')),
+    type: cR.config.type, axes: cR.data.labels.length, cur: cR.data.datasets[0].data.join(), prv: cR.data.datasets[1] ? cR.data.datasets[1].data.map(v => v == null ? '-' : v).join() : null }));
+  ok('A7c: 線グラフのx軸は日付が1つずつ（同じ日付を2つ並べない）', sp.labels === '2026-09-21,2026-09-22,2026-09-23');
+  ok('A7c: 線グラフは作業ごとの系列（給餌2→4・エサ調整3・5S5）', sp.line.join() === 'feeding-daily=2/-/4,feed-adjust=-/3/-,five-s=-/-/5');
+  ok('A7c: レーダーの軸はその人の全作業（3本）', sp.type === 'radar' && sp.axes === 3);
+  ok('A7c: 直近は各作業の最新の平均（4,3,5）', sp.cur === '4,3,5');
+  ok('A7c: 前回は同じ作業の1つ前だけ（給餌2・他は描かない＝0点にしない）', sp.prv === '2,-,-');
+  await page.locator('.tabs button[data-pg="pgIn"]').tap(); await page.waitForTimeout(100);
 
   ok('JSエラーなし(割り当て運用)', errors.length === 0);
   if (errors.length) console.log(errors.join('\n'));
