@@ -12,7 +12,7 @@
    - setup() を一度エディタで実行 → 「受験者」「作業一覧」「農場一覧」タブと、作業・農場のプルダウンを作る
      何度実行しても受験者タブの行・農場一覧（管理者が直した分）は消さない。作業一覧だけ作り直す */
 
-const CODE_VERSION = '2026-09-24c';
+const CODE_VERSION = '2026-09-24d';
 /* アプリはこれを見て「シート側が古い（旧名・削除が使えない）」を警告する（js/contract.js の GAS_REQUIRED_CAPS） */
 const API_CAPABILITIES = ['roster', 'roster.aliases', 'submit', 'delete'];
 const ROSTER_SHEET = '受験者';
@@ -182,15 +182,57 @@ function avg_(arr) {
 }
 
 function cleanId_(v) { return String(v || '').replace(/[^a-zA-Z0-9_\-]/g, '_'); }
-/* 記録IDの行を、評価者タブ（A1=記録ID のタブ）すべてから消す。評価者名が変わった記録も取りこぼさない */
+/* 評価者タブの目印＝GAS が作ったタブの sheetId の台帳（文書プロパティ）。
+   A1=記録ID だけで決めると、管理者が複製したタブ・値を貼った控え・集計タブ（A1 に見出しを出す式）まで
+   「評価者タブ」とみなして再送・削除のたびに行を消してしまう（G17-1）。複製タブは sheetId が変わるので台帳に載らない。
+   台帳がまだ無い時（この版を入れた直後・文書を複製した時）だけ、見出し14列が HEAD と一致し式でないタブを登録する（移行） */
+const EVAL_TABS_KEY = 'HSS_EVAL_TAB_IDS';
+function isReserved_(nm) { return nm === ROSTER_SHEET || nm === WORKS_SHEET || nm === FARMS_SHEET; }
+function isEvalHead_(sh) {
+  if (sh.getLastColumn() < HEAD.length) return false;
+  const rg = sh.getRange(1, 1, 1, HEAD.length);
+  const v = rg.getValues()[0], f = rg.getFormulas()[0];
+  return HEAD.every((h, i) => String(v[i]) === h && !f[i]);
+}
+function evalTabIds_(ss) {
+  const props = PropertiesService.getDocumentProperties();
+  const raw = props.getProperty(EVAL_TABS_KEY);
+  let ids = null;
+  if (raw) { try { const a = JSON.parse(raw); if (Array.isArray(a)) ids = a.map(String); } catch (e) { ids = null; } }
+  if (!ids) {
+    // 移行: 前の版の GAS が作った評価者タブを登録する。名前が「〜のコピー」「Copy of 〜」のタブ（Sheets の複製）は除く
+    ids = ss.getSheets().filter(sh => {
+      const nm = sh.getName();
+      return !isReserved_(nm) && !/(の)?コピー(\s*\d+)?$|^Copy of /i.test(nm) && isEvalHead_(sh);
+    }).map(sh => String(sh.getSheetId()));
+    props.setProperty(EVAL_TABS_KEY, JSON.stringify(ids));
+  }
+  return ids;
+}
+function addEvalTab_(ss, sh) {
+  const ids = evalTabIds_(ss);
+  const id = String(sh.getSheetId());
+  if (ids.indexOf(id) >= 0) return;
+  const live = {};
+  ss.getSheets().forEach(s => { live[String(s.getSheetId())] = 1; });
+  const next = ids.filter(x => live[x]).concat([id]);   // 消されたタブの番号は捨てる
+  PropertiesService.getDocumentProperties().setProperty(EVAL_TABS_KEY, JSON.stringify(next));
+}
+function isEvalTab_(ss, sh) { return evalTabIds_(ss).indexOf(String(sh.getSheetId())) >= 0; }
+
+/* 記録IDの行を、評価者タブ（台帳に載ったタブ）すべてから消す。評価者名が変わった記録も取りこぼさない。
+   複製・控え・集計のタブは台帳に無いので触らない */
 function deleteRecord_(id) {
   let n = 0;
-  SpreadsheetApp.getActive().getSheets().forEach(sh => {
+  const ss = SpreadsheetApp.getActive();
+  const ids = evalTabIds_(ss);
+  ss.getSheets().forEach(sh => {
     const nm = sh.getName();
-    if (nm === ROSTER_SHEET || nm === WORKS_SHEET || nm === FARMS_SHEET || sh.getLastRow() < 2) return;
-    if (String(sh.getRange(1, 1).getValues()[0][0]) !== HEAD[0]) return;
-    const ids = sh.getRange(2, 1, sh.getLastRow() - 1, 1).getValues();
-    for (let i = ids.length - 1; i >= 0; i--) if (String(ids[i][0]) === id) { sh.deleteRow(i + 2); n++; }
+    if (isReserved_(nm) || sh.getLastRow() < 2) return;
+    if (ids.indexOf(String(sh.getSheetId())) < 0) return;
+    if (String(sh.getRange(1, 1).getValues()[0][0]) !== HEAD[0]) return;   // 見出しを消された台帳のタブも触らない
+    const rows = sh.getRange(2, 1, sh.getLastRow() - 1, 1).getValues();
+    for (let i = rows.length - 1; i >= 0; i--) if (String(rows[i][0]) === id) { sh.deleteRow(i + 2); n++; }
   });
   return n;
 }
@@ -202,12 +244,19 @@ function writeRecord_(rec) {
   // 同じ記録IDの既存行を、全ての評価者タブから消す（編集・再送で重複させない。
   // 評価者名の表記を直した端末から編集して送り直しても、前の評価者タブに古い行を残さない）
   deleteRecord_(id);
-  const name = sheetNameFor_(rec.evaluator);
-  let sh = ss.getSheetByName(name);
+  const base = sheetNameFor_(rec.evaluator);
+  let name = base, sh = ss.getSheetByName(name);
+  // 同じ名前のタブが評価者タブでない時（管理者が作った別のタブ）は書き込まない＝「〜_記録」「〜_記録2」…へ
+  for (let k = 1; sh && !isEvalTab_(ss, sh); k++) {
+    if (isEvalHead_(sh)) { addEvalTab_(ss, sh); break; }   // 台帳から漏れた評価者タブ（見出し一致）は登録し直す
+    name = base.slice(0, 85) + '_記録' + (k > 1 ? k : '');
+    sh = ss.getSheetByName(name);
+  }
   if (!sh) {
     sh = ss.insertSheet(name);
     sh.getRange(1, 1, 1, HEAD.length).setValues([HEAD]).setFontWeight('bold').setBackground('#e6f2ee');
     sh.setFrozenRows(1);
+    addEvalTab_(ss, sh);
   }
   const works = Array.isArray(rec.works) ? rec.works.slice(0, 50) : [];
   const allScores = [];

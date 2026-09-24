@@ -1,18 +1,22 @@
 /* Code.gs の単体テスト（SpreadsheetApp等をモック）: node gas/test_gas.js */
 const fs = require('fs');
 const sheets = {};
+let nextSheetId = 1000;
 function mkSheet(name) {
   const d = []; // 2D
+  const fx = {};   // 'r,c' → 式（A1 が式のタブ）
+  const sid = nextSheetId++;
   const dv = {};   // 列番号(1始まり) → 入力規則（null=外した）
   const notes = {};
   const sh = {
-    name, d, dv, notes, getName: () => name,
+    name, d, dv, notes, fx, getName: () => name, getSheetId: () => sid,
     getLastRow: () => d.length, getLastColumn: () => d.reduce((m, r) => Math.max(m, r.length), 0),
     getRange: (r, c, nr = 1, nc = 1) => ({
       _sheet: name,
       setValues(v) { v.forEach((row, i) => { d[r - 1 + i] = d[r - 1 + i] || []; row.forEach((x, j) => d[r - 1 + i][c - 1 + j] = x); }); return this; },
       getValues() { return Array.from({ length: nr }, (_, i) => Array.from({ length: nc }, (_, j) => (d[r - 1 + i] || [])[c - 1 + j] ?? '')); },
       getDisplayValues() { return this.getValues().map(r => r.map(String)); },
+      getFormulas() { return Array.from({ length: nr }, (_, i) => Array.from({ length: nc }, (_, j) => fx[(r + i) + ',' + (c + j)] || '')); },
       setFontWeight() { return this; }, setBackground() { return this; },
       setDataValidation(v) { for (let j = 0; j < nc; j++) dv[c + j] = v; return this; },
       setNote(t) { notes[r + ',' + c] = t; return this; },
@@ -26,6 +30,10 @@ global.SpreadsheetApp = { getActive: () => ss, newDataValidation: () => {
   const v = {};
   return { requireValueInRange(rg) { v.range = rg; return this; }, setAllowInvalid(b) { v.allowInvalid = b; return this; }, build() { return v; } };
 } };
+const docProps = {};
+global.PropertiesService = { getDocumentProperties: () => ({ getProperty: k => (k in docProps ? docProps[k] : null), setProperty(k, v) { docProps[k] = String(v); return this; } }) };
+/* Sheets の「複製」＝中身も見出しも同じで sheetId だけ新しいタブ */
+const dupSheet = (from, to) => { const s2 = ss.insertSheet(to); sheets[from].d.forEach((row, i) => { s2.d[i] = row.slice(); }); return s2; };
 global.LockService = { getScriptLock: () => ({ tryLock: () => true, releaseLock() {} }) };
 global.Utilities = { formatDate: () => '2026-09-23 10:00:00' };
 global.ContentService = { MimeType: { JSON: 'j' }, createTextOutput: s => ({ s, setMimeType() { return this; } }) };
@@ -115,6 +123,42 @@ ok('delete: 受験者タブは触らない', sheets['受験者'].d.length === nR
 r = post({ action: 'delete', id: 'del-1' });
 ok('delete: 2回目（再送）も ok・deleted 0', r.ok === true && r.id === 'del-1' && r.deleted === 0);
 ok('delete: IDなしは拒否', post({ action: 'delete' }).ok === false && post({ action: 'delete', id: '' }).ok === false);
+// G17-1: 評価者タブの目印は GAS が作ったタブの台帳。A1=記録ID でも、複製タブ・値貼りの控え・A1が式の集計タブの行は消さない
+const recY = { ...rec, id: 'y-1', evaluator: '評価者Y', works: [rec.works[0], { workName: 'エサ調整', category: '飼養管理', items: rec.works[0].items }] };
+post({ action: 'submit', record: recY });
+post({ action: 'submit', record: { ...recY, id: 'y-2' } });
+const nY = sheets['評価者Y'].d.length;
+dupSheet('評価者Y', '評価者Y のコピー');                                     // タブの複製
+dupSheet('評価者Y', '控え0924');                                             // 値を貼った控え
+const agg = dupSheet('評価者Y', '集計'); agg.fx['1,1'] = "={'評価者Y'!A1:N}";   // README どおりの A1 が式の集計タブ
+agg.d.forEach((row, i) => { if (i) row[14] = '今の農場' + i; });              // 管理者が足した O 列
+const snap = n => JSON.stringify(sheets[n].d);
+const before = { c: snap('評価者Y のコピー'), k: snap('控え0924'), a: snap('集計') };
+post({ action: 'submit', record: recY });                                     // 圏外からの自動再送
+ok('G17-1 再送: 評価者タブは上書き（行数不変）', sheets['評価者Y'].d.length === nY && idsOf('評価者Y').filter(x => x === 'y-1').length === 4);
+ok('G17-1 再送: 複製タブの行は残る', snap('評価者Y のコピー') === before.c);
+ok('G17-1 再送: 値貼りの控えの行は残る', snap('控え0924') === before.k);
+ok('G17-1 再送: A1が式の集計タブの行（足したO列も）は残る', snap('集計') === before.a);
+r = post({ action: 'delete', id: 'y-2' });
+ok('G17-1 削除: 評価者タブからだけ消える', r.ok && r.deleted === 4 && !idsOf('評価者Y').includes('y-2'));
+ok('G17-1 削除: 複製・控え・集計は残る', snap('評価者Y のコピー') === before.c && snap('控え0924') === before.k && snap('集計') === before.a);
+// 評価者名と同じ名前の、評価者タブでないタブ（管理者のメモ等）には書き込まず別名タブへ
+ss.insertSheet('評価者Z').getRange(1, 1, 1, 2).setValues([['メモ', '大事']]);
+post({ action: 'submit', record: { ...rec, id: 'z-1', evaluator: '評価者Z' } });
+ok('G17-1 同名の別タブは触らず「_記録」タブへ', sheets['評価者Z'].d.length === 1 && sheets['評価者Z_記録'] && idsOf('評価者Z_記録').includes('z-1'));
+post({ action: 'submit', record: { ...rec, id: 'z-2', evaluator: '評価者Z' } });
+ok('G17-1 2回目も同じ「_記録」タブへ追記', sheets['評価者Z'].d.length === 1 && idsOf('評価者Z_記録').join() === 'z-1,z-1,z-2,z-2');
+// 移行: 台帳の無い（前の版の GAS で作った）シート。見出し一致のタブは評価者タブ、複製名・A1が式のタブは対象外
+{
+  const keep = { ...sheets }; Object.keys(sheets).forEach(k => delete sheets[k]); const keepProp = docProps.HSS_EVAL_TAB_IDS; delete docProps.HSS_EVAL_TAB_IDS;
+  const HEADV = ['記録ID', '評価日', '評価者', '被評価者', '農場', 'カテゴリ', '作業', '種目', 'スコア', 'コメント', '作業平均', 'セッション平均', '全体所感', '送信日時'];
+  const mkOld = n => { const s2 = ss.insertSheet(n); s2.d.push(HEADV.slice(), ['m-1', '', '', '', '', '', '', '', 3, '', 3, 3, '', '']); return s2; };
+  mkOld('旧評価者'); mkOld('旧評価者 のコピー'); mkOld('Copy of 旧評価者'); mkOld('旧集計').fx['1,1'] = '={旧評価者!A1:N}';
+  r = post({ action: 'delete', id: 'm-1' });
+  ok('G17-1 移行: 前の版の評価者タブは消せる・複製名/式の集計は残す', r.deleted === 1 && sheets['旧評価者'].d.length === 1 && ['旧評価者 のコピー', 'Copy of 旧評価者', '旧集計'].every(n => sheets[n].d.length === 2));
+  ok('G17-1 移行: 台帳は1回だけ作る', JSON.parse(docProps.HSS_EVAL_TAB_IDS).length === 1);
+  Object.keys(sheets).forEach(k => delete sheets[k]); Object.assign(sheets, keep); docProps.HSS_EVAL_TAB_IDS = keepProp;
+}
 ok('不正JSON', post.call(null, null) && JSON.parse(G.doPost({ postData: { contents: '{' } }).s).ok === false);
 // C9-3: 契約（正本=js/contract.js）。アプリ側の本物のコード（works-v2.js＋data.js＋contract.js）で作った要求を、本物の doPost に通す
 const rd = f => fs.readFileSync(__dirname + '/../' + f, 'utf8');
