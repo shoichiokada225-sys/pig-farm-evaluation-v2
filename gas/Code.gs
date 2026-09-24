@@ -14,7 +14,7 @@
    - setup() を一度エディタで実行 → 「受験者」「作業一覧」「農場一覧」「集計（自動）」タブと、作業・農場のプルダウンを作る
      何度実行しても受験者タブの行・農場一覧（管理者が直した分）は消さない。作業一覧だけ作り直す */
 
-const CODE_VERSION = '2026-09-24f';
+const CODE_VERSION = '2026-09-25a';
 /* アプリはこれを見て「シート側が古い（旧名・削除が使えない）」を警告する（js/contract.js の GAS_REQUIRED_CAPS） */
 const API_CAPABILITIES = ['roster', 'roster.aliases', 'roster.done', 'submit', 'submit.redoOf', 'delete'];
 const ROSTER_SHEET = '受験者';
@@ -110,7 +110,49 @@ function doGet(e) {
     try { res.done = readDone_(); } catch (err) { /* 要約が読めなくても名簿は返す（アプリはこの端末の記録だけで数える） */ }
     return json_(res);
   }
+  if (action === 'admin') return admin_(e);
   return json_({ ok: true, version: CODE_VERSION, capabilities: API_CAPABILITIES });
+}
+
+/* 管理用の入口: GET ?action=admin&token=… で setup() を実行し、（農場共通）行を足りない農場だけ補う。
+   ADMIN_TOKEN と COMMON_SEED（[[農場, [作業名…]], …]）は git 管理外の Seed.js にだけ置く。無ければこの入口は常に拒否 */
+function admin_(e) {
+  const tok = String((e && e.parameter && e.parameter.token) || '');
+  if (typeof ADMIN_TOKEN === 'undefined' || String(ADMIN_TOKEN).length < 16 || tok !== String(ADMIN_TOKEN)) return json_({ ok: false, error: 'forbidden' });
+  const lock = LockService.getScriptLock();
+  if (!lock.tryLock(20000)) return json_({ ok: false, error: 'busy' });
+  try {
+    const r = setup();
+    const added = typeof COMMON_SEED !== 'undefined' ? addCommonRows_(COMMON_SEED) : [];
+    return json_({ ok: true, version: CODE_VERSION, setup: r, commonAdded: added });
+  } finally {
+    lock.releaseLock();
+  }
+}
+/* （農場共通）行が無い農場にだけ追記する（既存の行・人の行は触らない）。追記した農場名を返す */
+function addCommonRows_(seed) {
+  const rs = SpreadsheetApp.getActive().getSheetByName(ROSTER_SHEET);
+  if (!rs) return [];
+  const c = rosterCols_(rs);
+  if (c.farm < 0) return [];
+  const nf = v => String(v || '').normalize('NFKC').replace(/\s+/g, '');
+  const has = new Set();
+  if (rs.getLastRow() > 1) {
+    const w = rs.getLastColumn();
+    rs.getRange(2, 1, rs.getLastRow() - 1, w).getDisplayValues().forEach(r => {
+      if (/^[（(]?\s*農場共通\s*[）)]?$/.test(String(r[c.name] || '').trim())) has.add(nf(r[c.farm]));
+    });
+  }
+  const w = rs.getLastColumn(), out = [];
+  (seed || []).forEach(([farm, works]) => {
+    if (!farm || has.has(nf(farm))) return;
+    const row = new Array(w).fill('');
+    row[c.farm] = farm; row[c.name] = '（農場共通）';
+    (works || []).slice(0, c.works.length).forEach((wk, i) => { row[c.works[i]] = wk; });
+    rs.getRange(rs.getLastRow() + 1, 1, 1, w).setValues([row]);
+    has.add(nf(farm)); out.push(farm);
+  });
+  return out;
 }
 
 function doPost(e) {

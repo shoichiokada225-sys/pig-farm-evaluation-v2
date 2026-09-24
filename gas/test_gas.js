@@ -248,4 +248,23 @@ const G3 = new Function('ROSTER_SEED', code + ';return {setup};')(undefined);
 ss.insertSheet('受験者').getRange(1, 1, 4, 3).setValues([['農場', '被評価者', '作業1'], ['テスト東', 'テスト 甲', ''], ['所属未確定', 'テスト 乙', ''], ['テスト東', 'テスト 丙', '']]);
 G3.setup();
 ok('シード無し: 農場一覧=受験者タブの農場＋所属未確定（重複なし）', sheets['農場一覧'].d.map(r => r[0]).join() === '農場,テスト東,所属未確定' && sheets['受験者'].d.length === 4);
+// 管理用の入口（合言葉は Seed.js にだけ置く想定。ここでは架空の値）
+{
+  const TOK = 'test-token-0123456789abcdef';
+  const G4 = new Function('ROSTER_SEED', 'ADMIN_TOKEN', 'COMMON_SEED', code + ';return {doGet};')(undefined, TOK,
+    [['テスト東', ['給餌', '消毒']], ['所属未確定', ['給餌']], ['テスト北', ['除フン']]]);
+  const adm = t => JSON.parse(G4.doGet({ parameter: { action: 'admin', token: t } }).s);
+  const G5 = new Function('ROSTER_SEED', code + ';return {doGet};')(undefined);
+  ok('admin: 合言葉違い・空は拒否', adm('x').ok === false && adm('').ok === false && adm(TOK + 'x').error === 'forbidden');
+  ok('admin: Seed.js に合言葉が無ければ常に拒否', JSON.parse(G5.doGet({ parameter: { action: 'admin', token: '' } }).s).error === 'forbidden');
+  const n0 = sheets['受験者'].d.length;
+  const r1 = adm(TOK);
+  const rows = sheets['受験者'].d.filter(x => x[1] === '（農場共通）');
+  ok('admin: setup を実行し、共通行が無い農場に追記', r1.ok && r1.setup === 'setup OK' && r1.commonAdded.join() === 'テスト東,所属未確定,テスト北' && sheets['受験者'].d.length === n0 + 3);
+  const hd = sheets['受験者'].d[0], wc = hd.map((h, i) => /^作業\s*\d+$/.test(h) ? i : -1).filter(i => i >= 0);
+  ok('admin: 共通行の作業は作業列へ（列が足りない分は入れない）', rows[0][0] === 'テスト東' && rows[0][wc[0]] === '給餌' && (wc.length > 1 ? rows[0][wc[1]] === '消毒' : !rows[0].includes('消毒')));
+  const r2 = adm(TOK);
+  ok('admin: 2回目は追記しない（既存の共通行を尊重）', r2.ok && r2.commonAdded.length === 0 && sheets['受験者'].d.length === n0 + 3);
+  ok('admin: 人の行は変えない', sheets['受験者'].d.slice(1, n0).every(x => x[1] !== '（農場共通）'));
+}
 console.log(`\n合計: OK ${pass} / NG ${fail}`); process.exit(fail ? 1 : 0);
