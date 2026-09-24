@@ -12,7 +12,11 @@ function sheetUrl(){
 function setSheetUrl(u){
   u=String(u||'').trim();
   if(u&&!/^https:\/\/script\.google\.com\/macros\/s\/[\w-]+\/exec$/.test(u)){toast(t('eUrl'),1);return false}
-  localStorage.setItem(SHEET_KEY,u);return true;
+  const before=sheetUrl();
+  localStorage.setItem(SHEET_KEY,u);
+  // 送信先が変わったら、前のシートの名簿（と版の情報）は捨てる＝別のシートの人名・農場で採点させない。記録（jitsugi_v2_records）には触れない
+  if(sheetUrl()!==before){try{localStorage.removeItem(ROSTER_KEY)}catch{}setSheetState('',null)}
+  return true;
 }
 
 /* 評価者名（一度入れたら端末に記憶） */
@@ -46,16 +50,28 @@ async function fetchT(url,opt,ms){
   finally{if(tm)clearTimeout(tm)}
 }
 let rosterLoading=false,rosterErr=false;   // 読み込み中 / 直近の読み込みが失敗
-function getRoster(){try{const r=JSON.parse(localStorage.getItem(ROSTER_KEY));return r&&Array.isArray(r.list)?r:{list:[],at:''}}catch{return{list:[],at:''}}}
+/* 直近の名簿取得の失敗理由（''=失敗していない / 'net'=電波・通信 / 'nosheet'=受験者タブが無い（setup 未実行）/ 'bad'=応答が不正（GASの版・デプロイ違い））
+   と、その応答が名乗った GAS の版（古い GAS の判定用）。電波では直らない nosheet/bad は、画面にも同期バーにも残す */
+let rosterErrReason='',rosterErrGas=null,sheetReached=false;   // sheetReached: 名簿の取得（net）に失敗した後、送信がシートに届いた
+function setSheetState(reason,gas){rosterErrReason=reason||'';rosterErrGas=gas||null;rosterErr=!!reason;sheetReached=false}
+/* 名簿キャッシュ: 取得元の url を持つ。今の送信先と違うシートの名簿は表示しない（url の無い旧キャッシュは今の送信先のものとして読む＝互換） */
+function getRoster(){
+  const none={list:[],at:''};
+  try{const r=JSON.parse(localStorage.getItem(ROSTER_KEY));if(!r||!Array.isArray(r.list))return none;if(r.url&&r.url!==sheetUrl())return none;return r}catch{return none}
+}
 /* 名簿を取り直す。0件が返った時は前回の名簿（1件以上）を上書きしない（貼り替え中・タブ取り違えで全員が消えないように）
    戻り値 {ok, list, unknown:[{name,farm,work}], dup:[{name,farm}], cdup:[共通行が2行以上の農場], corphan:[受験者と一致しない共通行の農場], keptEmpty?} / {ok:false, reason:'nourl'|'bad'|'nosheet'|'net'} */
 async function fetchRoster(){
   const u=sheetUrl();if(!u)return{ok:false,reason:'nourl'};
+  let res,j;
+  try{res=await fetchT(u+'?action=roster',{cache:'no-store'},ROSTER_TIMEOUT_MS)}catch(e){return{ok:false,reason:'net'}}
+  // 届いたが JSON でない（doGet の無い版・誤った版のエラーページ）・HTTP エラー = シート側の問題（電波では直らない）
+  let tx;try{tx=await res.text()}catch(e){return{ok:false,reason:'net'}}
+  try{j=JSON.parse(tx)}catch(e){return{ok:false,reason:'bad'}}
+  const jg=j&&typeof j==='object'&&(j.version||Array.isArray(j.capabilities))?gasInfo(j):null;
+  if(j&&j.ok===false&&j.error==='no roster sheet')return{ok:false,reason:'nosheet',gas:jg};
+  if(!j||!j.ok||!Array.isArray(j.roster))return{ok:false,reason:'bad',gas:jg};
   try{
-    const res=await fetchT(u+'?action=roster',{cache:'no-store'},ROSTER_TIMEOUT_MS);
-    const j=await res.json();
-    if(j&&j.ok===false&&j.error==='no roster sheet')return{ok:false,reason:'nosheet'};
-    if(!j||!j.ok||!Array.isArray(j.roster))return{ok:false,reason:'bad'};
     const gas=gasInfo(j);   // シート側の版と機能（古い GAS は旧名・削除が使えない → 警告）
     const unknown=[],dup=[],common={},seen=new Set();
     const all=j.roster.map(p=>{
@@ -102,12 +118,12 @@ async function fetchRoster(){
     });
     const prev=getRoster();
     if(!list.length&&prev.list.length){
-      try{localStorage.setItem(ROSTER_KEY,JSON.stringify({...prev,gas}))}catch{}
+      try{localStorage.setItem(ROSTER_KEY,JSON.stringify({...prev,gas,url:u}))}catch{}
       return{ok:true,list:prev.list,unknown:prev.unknown||[],dup:prev.dup||[],cdup:prev.cdup||[],corphan:prev.corphan||[],fvar:prev.fvar||[],gas,keptEmpty:true};
     }
-    try{localStorage.setItem(ROSTER_KEY,JSON.stringify({list,at:new Date().toISOString(),unknown,dup,cdup,corphan,fvar,gas}))}catch{}
+    try{localStorage.setItem(ROSTER_KEY,JSON.stringify({list,at:new Date().toISOString(),unknown,dup,cdup,corphan,fvar,gas,url:u}))}catch{}
     return{ok:true,list,unknown,dup,cdup,corphan,fvar,gas};
-  }catch(e){return{ok:false,reason:'net'}}
+  }catch(e){return{ok:false,reason:'bad',gas:jg}}
 }
 /* 農場名のゆれ: ps（人の行）の farm を書き換えてそろえ、[{farm:ゆれた表記, n:人数, like:そろえた先/似た農場}] を返す
    ① 全角半角・空白だけの違い（normFarm が同じ）→ 人数の多い表記（同数なら先の行）に統一
@@ -158,7 +174,9 @@ async function sendRec(r){
     // 打ち切り後に届いていても、同じ記録IDで上書きされるので再送で重複しない
     const res=await fetchT(u,{method:'POST',body:JSON.stringify(submitReq(r))},SEND_TIMEOUT_MS);
     const j=await res.json();
-    return !!(j&&j.ok&&j.id===r.id);
+    const good=!!(j&&j.ok&&j.id===r.id);
+    if(good&&rosterErrReason==='net')sheetReached=true;   // 名簿は取れなかったが、その後シートに届いた
+    return good;
   }catch(e){return false}
 }
 /* ==============================================================
@@ -178,7 +196,9 @@ async function sendDel(d){
     const res=await fetchT(u,{method:'POST',body:JSON.stringify(deleteReq(d))},SEND_TIMEOUT_MS);
     const j=await res.json();
     if(isUnsupportedOp(j))delOld=true;   // 削除を知らない古い GAS（契約は contract.js）
-    return !!(j&&j.ok&&j.id===d.id);
+    const good=!!(j&&j.ok&&j.id===d.id);
+    if(good&&rosterErrReason==='net')sheetReached=true;
+    return good;
   }catch(e){return false}
 }
 function pendCount(){return getAll().filter(r=>!r.sent).length+getDels().length}
@@ -238,6 +258,9 @@ function updSyncUI(){
   const el=document.getElementById('syncBar');if(!el)return;
   if(!sheetUrl()){el.className='syncbar off';el.innerHTML=`<span>${esc(t('noSheet'))}</span>`;return}
   if(syncing){el.className='syncbar busy';el.innerHTML=`<span>${esc(t('sending'))}</span>`;return}
+  // 送る記録が無くても、シートを確認できていない時は緑の「送信済み」にしない（シート側の問題を見落とさない）
+  if(!n&&!nd&&(rosterErrReason==='nosheet'||rosterErrReason==='bad')){el.className='syncbar warn';el.innerHTML=`<span>⚠ ${esc(t('sheetCheck'))}</span>`;return}
+  if(!n&&!nd&&rosterErrReason==='net'&&!sheetReached){el.className='syncbar warn';el.innerHTML=`<span>${esc(t('sheetUnreach'))}</span>`;return}
   if(!n&&!nd){el.className='syncbar ok';el.innerHTML=`<span>✓ ${esc(t('allSent'))}</span>`;return}
   el.className='syncbar warn';
   const parts=[];if(n)parts.push(`${esc(t('unsent'))}: ${n}`);if(nd)parts.push(`${esc(t('delPend'))}: ${nd}`);

@@ -397,7 +397,8 @@ async function run(devName) {
   ok('共通行だけ（人0人）でも上書きしない', await page.evaluate(() => JSON.parse(localStorage.getItem('jitsugi_v2_roster')).list.length) === nBefore);
   roster = 'NOSHEET';
   await page.locator('.eebox .wsel-hd button').tap(); await page.waitForTimeout(500);
-  ok('受験者タブが無い → 名簿は残し、タブが無いと知らせる', await page.evaluate(() => JSON.parse(localStorage.getItem('jitsugi_v2_roster')).list.length) === nBefore && /「受験者」タブが見つかりません/.test(await page.locator('#toast').textContent()));
+  ok('受験者タブが無い → 名簿は残し、タブが無いと知らせる（前回の名簿がある時だけ「前回の名簿を表示中」）', await page.evaluate(() => JSON.parse(localStorage.getItem('jitsugi_v2_roster')).list.length) === nBefore && /「受験者」タブがありません.*setup.*（前回の名簿を表示中）/.test(await page.locator('#toast').textContent()));
+  ok('受験者タブが無い → #eeWarn に残る・同期バーは緑の「送信済み」にしない（E12-1）', /setup/.test(await page.locator('#eeWarn').textContent()) && await page.locator('#eeWarn').isVisible() && !/すべてスプレッドシートに送信済み/.test(await page.locator('#syncBar').textContent()));
   roster = [{ name: 'テスト 七郎', farm: HIGASHI, works: ['給餌'] }];
   await page.locator('.eebox .wsel-hd button').tap(); await page.waitForTimeout(500);
   ok('名簿が戻れば新しい名簿に更新・警告は消える', await page.evaluate(() => JSON.parse(localStorage.getItem('jitsugi_v2_roster')).list.length) === 1 && !(await page.locator('#eeWarn').isVisible()));
@@ -1631,6 +1632,109 @@ async function runA11y(devName) {
   await browser.close();
 }
 
+/* E12: 名簿の取得失敗を理由ごとに（電波／受験者タブが無い／応答が不正／古い GAS）・送信先を切り替えたら前のシートの名簿を出さない（架空名） */
+async function runSheetErr(devName) {
+  console.log(`\n===== ${devName}（名簿の失敗理由・送信先の切り替え） =====`);
+  const browser = await chromium.launch(process.env.PW_CHANNEL ? { channel: process.env.PW_CHANNEL } : {});
+  const ctx = await browser.newContext({ ...devices[devName] });
+  const page = await ctx.newPage();
+  const errors = [];
+  page.on('pageerror', e => errors.push(String(e)));
+  page.on('dialog', d => d.accept('ooiri'));
+  const URL_A = 'https://script.google.com/macros/s/TESTA_sheet-1/exec', URL_B = 'https://script.google.com/macros/s/PRODB_sheet-2/exec';
+  const mode = { [URL_A]: 'ok', [URL_B]: 'ok' }, rosters = { [URL_A]: [{ name: 'テスト甲', farm: '試験農場', works: ['給餌'] }, { name: 'テスト乙', farm: '試験農場', works: ['給餌'] }], [URL_B]: [] };
+  const hdr = { 'access-control-allow-origin': '*' };
+  await page.route(u => u.href.startsWith('https://script.google.com/'), async route => {
+    const req = route.request(), base = req.url().split('?')[0], m = mode[base];
+    if (m === 'offline') return route.abort('internetdisconnected');
+    if (req.method() === 'GET') {
+      if (m === 'nosheet') return route.fulfill({ status: 200, contentType: 'application/json', headers: hdr, body: JSON.stringify({ ok: false, ...GAS_META, error: 'no roster sheet' }) });
+      if (m === 'html') return route.fulfill({ status: 200, contentType: 'text/html', headers: hdr, body: '<!DOCTYPE html><html><body>Script function not found: doGet</body></html>' });
+      if (m === 'old') return route.fulfill({ status: 200, contentType: 'application/json', headers: hdr, body: JSON.stringify({ ok: true, version: '2026-08-01' }) });
+      return route.fulfill({ status: 200, contentType: 'application/json', headers: hdr, body: JSON.stringify(rosterRes(rosters[base])) });
+    }
+    const body = JSON.parse(req.postData());
+    return route.fulfill({ status: 200, contentType: 'application/json', headers: hdr, body: JSON.stringify({ ok: true, id: body.record ? body.record.id : body.id }) });
+  });
+  const note = () => page.locator('#eeNote').textContent(), warn = page.locator('#eeWarn'), bar = () => page.locator('#syncBar').textContent();
+  const toastTx = () => page.locator('#toast').textContent();
+  await page.goto(APP);
+  await page.evaluate(A => { localStorage.clear(); localStorage.setItem('jitsugi_v2_sheet_url', A); localStorage.setItem('jitsugi_v2_evaluator', 'テスト評価者'); }, URL_A);
+
+  console.log('[E1] キャッシュの無い初回起動: 失敗の理由ごとに文言を分ける');
+  const cases = [
+    ['nosheet', /「受験者」タブがありません.*setup/, null],
+    ['html', /応答が不正/, null],
+    ['old', /応答が不正/, /古い版です（2026-08-01）/],
+  ];
+  for (const [m, reW, reG] of cases) {
+    mode[URL_A] = m;
+    await page.reload(); await page.waitForTimeout(700);
+    const n = await note(), w = await warn.textContent();
+    ok(`${m}: #eeNote は「電波の良い所で」と言わない・シート側の問題と言う`, !/電波の良い所/.test(n) && /シート側の問題/.test(n));
+    ok(`${m}: #eeWarn に理由を常に出す`, await warn.isVisible() && reW.test(w) && (!reG || reG.test(w)));
+    ok(`${m}: 起動時もトーストで知らせる・前回の名簿は無いので「前回の名簿を表示中」と言わない`, reW.test(await toastTx()) && !/前回の名簿/.test(await toastTx()));
+    ok(`${m}: 同期バーは緑の「すべて送信済み」にしない`, !/すべてスプレッドシートに送信済み/.test(await bar()) && /シート側の設定に問題/.test(await bar()) && await page.locator('#syncBar').evaluate(e => e.classList.contains('warn')));
+  }
+  mode[URL_A] = 'old';
+  await page.locator('.eebox .wsel-hd button').tap(); await page.waitForTimeout(600);
+  ok('old: 「名簿を更新」でも前回の名簿が無いのに「前回の名簿を表示中」と言わない・古い版も知らせる', /応答が不正/.test(await toastTx()) && /古い版です/.test(await toastTx()) && !/前回の名簿/.test(await toastTx()));
+  mode[URL_A] = 'offline';
+  await page.reload(); await page.waitForTimeout(700);
+  ok('offline: 電波の時だけ「電波の良い所で」', /電波の良い所/.test(await note()) && !(await warn.isVisible()));
+  ok('offline: 同期バーは「シートに接続できていません」', /接続できていません/.test(await bar()) && !/すべてスプレッドシートに送信済み/.test(await bar()));
+  mode[URL_A] = 'nosheet';
+  await page.locator('.eebox .wsel-hd button').tap(); await page.waitForTimeout(600);
+  for (const [l, re] of [[1, /Ask the administrator to run setup/], [2, /quản trị viên chạy setup/], [3, /admin menjalankan setup/]]) {
+    await page.locator('.lsw button').nth(l).tap(); await page.waitForTimeout(100);
+    ok(`${['', 'en', 'vi', 'id'][l]}: 受験者タブが無いの警告・同期バーが訳される`, re.test(await warn.textContent()) && !/受験者」タブ/.test(await note()) && !/シート側/.test(await bar()));
+  }
+  await page.locator('.lsw button').nth(0).tap(); await page.waitForTimeout(100);
+  mode[URL_A] = 'ok';
+  await page.locator('.eebox .wsel-hd button').tap(); await page.waitForTimeout(600);
+  ok('取れれば警告は消え、同期バーは送信済みに戻る', !(await warn.isVisible()) && /すべてスプレッドシートに送信済み/.test(await bar()) && await page.locator('.eetab').count() === 2);
+  ok('名簿キャッシュに取得元の URL', await page.evaluate(A => JSON.parse(localStorage.getItem('jitsugi_v2_roster')).url === A, URL_A));
+  mode[URL_A] = 'nosheet';
+  await page.locator('.eebox .wsel-hd button').tap(); await page.waitForTimeout(600);
+  ok('前回の名簿がある時だけ「（前回の名簿を表示中）」・#eeNote は前回の名簿（シート側の問題）', /タブがありません.*（前回の名簿を表示中）/.test(await toastTx()) && /前回の名簿（.*シート側の問題/.test(await note()) && await page.locator('.eetab').count() === 2);
+  mode[URL_A] = 'ok';
+  await page.locator('.eebox .wsel-hd button').tap(); await page.waitForTimeout(600);
+
+  console.log('[E2] 送信先URLを別のシートへ切り替え → 前のシートの名簿を出さない（記録には触れない）');
+  await page.evaluate(() => { const w = WORKDATA_V2.works[0]; putAll([{ id: 'keep-1', date: '2026-09-24', evaluator: 'テスト評価者', evaluatee: 'テスト甲', farm: '試験農場', overall: '', createdAt: '2026-09-24T00:00:00Z', works: [{ workId: w.id, workName: w.name, category: w.category, scores: Object.fromEntries(w.aspects.map(a => [a.id, 3])), comments: {} }], sent: true, sentOnce: true }]); });
+  const recsBefore = await page.evaluate(() => localStorage.getItem('jitsugi_v2_data'));
+  const switchTo = async u => { await page.evaluate(u => { document.getElementById('cfgUrl').value = u; return saveSheetUrl(); }, u); await page.waitForTimeout(600); };
+  mode[URL_B] = 'nosheet';
+  await switchTo(URL_B);
+  ok('B=受験者タブ無し: A の人のタブ・農場チップが消える', await page.locator('.eetab').count() === 0 && await page.locator('.fchip').count() === 0);
+  ok('B=受験者タブ無し: 「前回の名簿」と言わず、タブが無いと出す', !/前回の名簿/.test(await note()) && !/前回の名簿/.test(await toastTx()) && /タブがありません/.test(await warn.textContent()));
+  ok('B=受験者タブ無し: 名簿キャッシュは捨てられている', await page.evaluate(() => getRoster().list.length === 0 && !localStorage.getItem('jitsugi_v2_roster')));
+  mode[URL_B] = 'ok'; rosters[URL_B] = [];
+  await page.locator('.eebox .wsel-hd button').tap(); await page.waitForTimeout(600);
+  ok('B=名簿が空: A の名簿を「前回の名簿」として残さない', await page.locator('.eetab').count() === 0 && !/前回の名簿/.test(await warn.textContent() || '') && /名簿がありません/.test(await note()));
+  await switchTo(URL_A); await switchTo(URL_B);   // 名簿を取った後に切り替え（A→B）
+  ok('A で名簿を取った後に B（名簿が空）へ切り替えても A の2名は出ない', await page.locator('.eetab').count() === 0 && !/テスト甲/.test(await page.locator('#eeTabs').textContent()));
+  rosters[URL_B] = [{ name: 'テスト丙', farm: '本番農場', works: ['給餌'] }];
+  await page.locator('.eebox .wsel-hd button').tap(); await page.waitForTimeout(600);
+  ok('B の名簿が入れば B の人だけ', await page.locator('.eetab').count() === 1 && /テスト丙/.test(await page.locator('#eeTabs').textContent()) && await page.evaluate(B => JSON.parse(localStorage.getItem('jitsugi_v2_roster')).url === B, URL_B));
+  ok('切り替えで記録は変わらない', await page.evaluate(() => localStorage.getItem('jitsugi_v2_data')) === recsBefore);
+  await switchTo(URL_B);   // 同じURLを保存し直しても名簿は捨てない
+  ok('同じURLの保存し直しでは名簿を捨てない', await page.locator('.eetab').count() === 1);
+
+  console.log('[E3] 取得元URLの無い旧キャッシュ（前の版のアプリ）は今の送信先の名簿として読む（互換）');
+  mode[URL_B] = 'offline';
+  await page.evaluate(() => { const r = JSON.parse(localStorage.getItem('jitsugi_v2_roster')); delete r.url; localStorage.setItem('jitsugi_v2_roster', JSON.stringify(r)); });
+  await page.reload(); await page.waitForTimeout(700);
+  ok('旧キャッシュは圏外起動でも表示', await page.locator('.eetab').count() === 1 && /前回の名簿（/.test(await note()));
+  mode[URL_A] = 'offline';
+  await switchTo(URL_A);
+  ok('旧キャッシュでも送信先を変えたら表示しない', await page.locator('.eetab').count() === 0);
+
+  ok('JSエラーなし(名簿の失敗理由)', errors.length === 0);
+  if (errors.length) console.log(errors.join('\n'));
+  await browser.close();
+}
+
 (async () => {
   if (process.env.ONLY) {   // 例: ONLY=rel,assign,guard,backup,sw（わざと壊して検証する時に一部だけ回す）
     const on = new Set(process.env.ONLY.split(','));
@@ -1639,6 +1743,7 @@ async function runA11y(devName) {
     if (on.has('guard')) await runGuard('iPhone 13');
     if (on.has('backup')) await runBackup('iPhone 13');
     if (on.has('sw')) await runSW();
+    if (on.has('err')) await runSheetErr('iPhone SE');
     console.log(`\n合計: OK ${pass} / NG ${fail}`); process.exit(fail ? 1 : 0);
   }
   if (process.env.ONLY_A11Y) { for (const d of ['iPhone SE', 'Pixel 7']) await runA11y(d); console.log(`\n合計: OK ${pass} / NG ${fail}`); process.exit(fail ? 1 : 0); }
@@ -1652,6 +1757,7 @@ async function runA11y(devName) {
   if (!process.env.ONLY_REL && !process.env.ONLY_ASSIGN) for (const d of ['iPhone 13', 'Pixel 7']) await runDate(d);
   if (!process.env.ONLY_REL && !process.env.ONLY_ASSIGN) for (const d of ['iPhone SE', 'Pixel 7']) await runI18n(d);
   if (!process.env.ONLY_REL && !process.env.ONLY_ASSIGN) for (const d of ['iPhone SE', 'Pixel 7']) await runA11y(d);
+  if (!process.env.ONLY_REL && !process.env.ONLY_ASSIGN) await runSheetErr('iPhone SE');
   await runSW();
   console.log(`\n合計: OK ${pass} / NG ${fail}`);
   process.exit(fail ? 1 : 0);

@@ -315,18 +315,18 @@ async function reloadRoster(silent){
   const btn=document.querySelector('.eebox .wsel-hd button');if(btn){btn.disabled=true;btn.setAttribute('aria-busy','true')}
   rosterLoading=true;renderRoster();
   const r=await fetchRoster();
-  rosterLoading=false;rosterErr=!r.ok;
+  rosterLoading=false;setSheetState(r.ok?'':r.reason,r.gas);
   if(btn){btn.disabled=false;btn.removeAttribute('aria-busy')}
   rosterKeptEmpty=!!(r.ok&&r.keptEmpty);
-  renderRoster();
+  renderRoster();updSyncUI();
   // 名簿の管理ミス（空・タブが無い・作業名不明・同名）は電波と違って放っても直らないので、起動時も知らせる
   if(r.ok){
     const w=rosterWarnText(r,5);
     if(r.keptEmpty)toast(t('eRosterEmptyKept'),1);
     else if(w)toast(w,1);
     else if(!silent)toast(t('tRoster')+' ('+r.list.length+')');
-  }else if(r.reason==='nosheet')toast(t('eRosterNoSheet'),1);
-  else if(!silent)toast(t('eRoster'),1);
+  }else if(r.reason==='nosheet'||r.reason==='bad')toast(rosterErrMsg()+(getRoster().list.length?t('showingPrev'):'')+(rosterErrGasOld()?' ／ '+rosterErrGasOld():''),1);   // 電波では直らない＝起動時も知らせる
+  else if(!silent)toast(t('eRoster')+(getRoster().list.length?t('showingPrev'):''),1);
   else{const rs=getRoster();if(rs.list.length&&rosterIsOld(rs))toast(t('rosterStale').replace('{t}',fmtAt(rs.at)),1)}   // 起動時でも、古い名簿のまま試験しないよう知らせる
 }
 /* 名簿の取得日時（端末の時刻で M/D HH:MM）と古さ */
@@ -336,6 +336,13 @@ function fmtAt(at){
   const p=n=>String(n).padStart(2,'0');
   return (d.getMonth()+1)+'/'+d.getDate()+' '+p(d.getHours())+':'+p(d.getMinutes());
 }
+/* 電波では直らない名簿の失敗（受験者タブが無い・応答が不正）の知らせ。古い GAS が名乗った版があれば添える */
+function rosterErrMsg(){
+  if(rosterErrReason==='nosheet')return t('eRosterNoSheet');
+  if(rosterErrReason==='bad')return t('eRosterBad');
+  return'';
+}
+function rosterErrGasOld(){return rosterErrGas&&gasMissing(rosterErrGas).length?t('eGasOld').replace('{v}',rosterErrGas.version||'?'):''}
 function rosterIsOld(rs){const d=new Date(rs&&rs.at||'');return isNaN(d)||Date.now()-d.getTime()>ROSTER_OLD_MS}
 /* 採点中の人はメモリの curEe={name,farm,manual} だけが持つ（画面の #fEe はその表示）。
    端末に残すのは「最後に開いた農場チップ」の好み（FARM_KEY）だけで、農場チップを押した時（selectFarm）にだけ書く
@@ -433,14 +440,16 @@ function renderRoster(){
   const ec=document.getElementById('eeCur');
   if(ec){ec.hidden=!sel;ec.innerHTML=sel?`${esc(t('scoringFor'))}: <b>${esc(sel.name)}</b>（${esc(farmDisp(sel.farm))}）`:''}
   // 名簿の取得日時を常に出す。今回の取得に失敗・古い名簿の時は警告色（圏外の豚舎で古い名簿のまま試験しないように）
-  const atTx=fmtAt(rs.at),stale=!!ro.length&&!rosterLoading&&!!sheetUrl()&&(rosterErr||rosterIsOld(rs));
+  // 失敗の理由で文言を分ける: 電波（net）だけを「電波の良い所で」。受験者タブが無い・応答が不正は管理者へ（#eeWarn に理由）
+  const atTx=fmtAt(rs.at),stale=!!ro.length&&!rosterLoading&&!!sheetUrl()&&(rosterErr||rosterIsOld(rs)),admin=rosterErr&&rosterErrReason!=='net';
   note.textContent=rosterLoading?t('eeLoading')+(ro.length?' ／ '+t('rosterAt').replace('{t}',atTx):'')
-    :ro.length?(stale?(rosterErr?t('rosterStale'):t('rosterOld')).replace('{t}',atTx):t('eeTabHint')+' ／ '+t('rosterAt').replace('{t}',atTx))
-    :(!sheetUrl()?t('noSheet'):rosterErr?t('eRosterNet'):t('eeNoRoster'));
+    :ro.length?(stale?(rosterErr?(admin?t('rosterPrev'):t('rosterStale')):t('rosterOld')).replace('{t}',atTx):t('eeTabHint')+' ／ '+t('rosterAt').replace('{t}',atTx))
+    :(!sheetUrl()?t('noSheet'):rosterErr?(admin?t('eRosterAdmin'):t('eRosterNet')):t('eeNoRoster'));
   note.classList.toggle('eenote-stale',stale);
   // 名簿の警告は画面に残す（トーストは消える・キャッシュから起動した時は出ない）
   const wn=document.getElementById('eeWarn');
-  if(wn){const w=[rosterKeptEmpty?t('eRosterEmptyKept'):'',rosterWarnText(rs)].filter(Boolean).join(' ／ ');wn.textContent=w?'⚠ '+w:'';wn.hidden=!w}
+  const errW=rosterLoading?'':rosterErrMsg(),rw=rosterWarnText(rs),gOld=rosterLoading?'':rosterErrGasOld();
+  if(wn){const w=[errW,rosterKeptEmpty?t('eRosterEmptyKept'):'',rw,gOld&&!rw.includes(gOld)?gOld:''].filter(Boolean).join(' ／ ');wn.textContent=w?'⚠ '+w:'';wn.hidden=!w}
 }
 /* 試験期間の記録（設定の「試験開始日」以降。未設定なら全部）。作業の済/残りは日付をまたいで数える（豚がいない作業は後日に回すため） */
 const EXAM_START_KEY='jitsugi_v2_exam_start';
