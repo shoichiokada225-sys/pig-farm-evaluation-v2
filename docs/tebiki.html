@@ -1,0 +1,561 @@
+<title>HSS実技試験 手引き</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans:wght@400;500;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+:root{
+  --pri:#0f5c4a; --pri-2:#177863; --pri-ll:#eaf3f0;
+  --bg:#f2f5f3; --card:#ffffff; --txt:#14211c; --sub:#54635d;
+  --bdr:#dce4e1; --bdr-2:#bfcbc7;
+  --s1:#c62828; --s2:#f57c00; --s3:#f6b100; --s4:#7cb342; --s5:#12753a;
+  --s1-tx:#fff; --s2-tx:#401f00; --s3-tx:#4a3800; --s4-tx:#1f3308; --s5-tx:#fff;
+  --warn-bg:#fdf4e3; --warn-bd:#e8c56a;
+  --disp:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN","Yu Gothic UI",Meiryo,sans-serif;
+  --body:"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic UI",Meiryo,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --pri:#5fd0b0; --pri-2:#7fdcc0; --pri-ll:#16302a;
+    --bg:#101816; --card:#17211e; --txt:#e8efec; --sub:#9aaaa4;
+    --bdr:#26332f; --bdr-2:#3a4a45;
+    --s1:#e05a5a; --s2:#e08a34; --s3:#d4a520; --s4:#8fc255; --s5:#3fa96a;
+    --s1-tx:#1a0808; --s2-tx:#1c0f02; --s3-tx:#1c1502; --s4-tx:#101c06; --s5-tx:#04160c;
+    --warn-bg:#2a2314; --warn-bd:#6b5622;
+  }
+}
+:root[data-theme="dark"]{
+  --pri:#5fd0b0; --pri-2:#7fdcc0; --pri-ll:#16302a;
+  --bg:#101816; --card:#17211e; --txt:#e8efec; --sub:#9aaaa4;
+  --bdr:#26332f; --bdr-2:#3a4a45;
+  --s1:#e05a5a; --s2:#e08a34; --s3:#d4a520; --s4:#8fc255; --s5:#3fa96a;
+  --s1-tx:#1a0808; --s2-tx:#1c0f02; --s3-tx:#1c1502; --s4-tx:#101c06; --s5-tx:#04160c;
+  --warn-bg:#2a2314; --warn-bd:#6b5622;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);font-family:var(--body);font-size:16px;line-height:1.75;-webkit-text-size-adjust:100%}
+.wrap{max-width:46rem;margin:0 auto;padding:0 20px 72px}
+
+.mast{padding:40px 0 26px;border-bottom:3px solid var(--pri);margin-bottom:34px}
+.eyebrow{font-family:var(--mono);font-size:.72rem;font-weight:600;letter-spacing:.14em;color:var(--pri-2);margin:0 0 10px}
+h1{font-family:var(--disp);font-weight:900;font-size:clamp(2rem,6vw,2.75rem);line-height:1.2;letter-spacing:.01em;margin:0 0 12px;text-wrap:balance}
+.lede{font-size:1.02rem;color:var(--sub);margin:0 0 18px;max-width:34em}
+.applink{display:inline-flex;align-items:center;gap:8px;font-size:.88rem;font-weight:700;color:var(--pri-2);text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:1px;word-break:break-all}
+.applink:hover{color:var(--txt)}
+a:focus-visible,.applink:focus-visible{outline:2px solid var(--pri-2);outline-offset:3px;border-radius:3px}
+
+section{margin:0 0 46px}
+h2{font-family:var(--disp);font-weight:700;font-size:1.32rem;line-height:1.4;margin:0 0 6px;padding-bottom:8px;border-bottom:1px solid var(--bdr);text-wrap:balance}
+h2 .num{font-family:var(--mono);font-size:.78rem;font-weight:600;color:var(--pri-2);margin-right:.7em;vertical-align:.12em}
+p{margin:14px 0}
+strong{font-weight:700}
+.thesis{font-family:var(--disp);font-weight:700;font-size:1.5rem;line-height:1.55;margin:22px 0 14px;text-wrap:balance}
+.note{color:var(--sub);font-size:.93rem}
+
+.ladder{list-style:none;margin:22px 0 0;padding:0;display:flex;flex-direction:column;gap:2px}
+.ladder li{display:grid;grid-template-columns:44px 5.5em 1fr;gap:14px;align-items:baseline;background:var(--card);padding:13px 16px;border-left:4px solid var(--rail,var(--bdr-2))}
+.ladder li:first-child{border-radius:10px 10px 0 0}
+.ladder li:last-child{border-radius:0 0 10px 10px}
+.lv{font-family:var(--mono);font-weight:600;font-size:1.05rem;text-align:center;border-radius:7px;padding:3px 0;line-height:1.5}
+.lv1{background:var(--s1);color:var(--s1-tx)}
+.lv2{background:var(--s2);color:var(--s2-tx)}
+.lv3{background:var(--s3);color:var(--s3-tx)}
+.lv4{background:var(--s4);color:var(--s4-tx)}
+.lv5{background:var(--s5);color:var(--s5-tx)}
+.lv-nm{font-family:var(--disp);font-weight:700;font-size:.97rem}
+.lv-tx{font-size:.95rem;line-height:1.65}
+
+.qs{list-style:none;margin:24px 0 0;padding:0;counter-reset:q}
+.qs li{counter-increment:q;position:relative;padding:12px 0 12px 42px;border-top:1px solid var(--bdr);font-size:.97rem}
+.qs li:last-child{border-bottom:1px solid var(--bdr)}
+.qs li::before{content:"Q" counter(q);position:absolute;left:0;top:12px;font-family:var(--mono);font-size:.76rem;font-weight:600;color:var(--pri-2);letter-spacing:.04em}
+.verdict{font-weight:700;white-space:nowrap}
+
+.callout{background:var(--warn-bg);border:1px solid var(--warn-bd);border-radius:10px;padding:16px 18px;margin:26px 0 0}
+.callout p{margin:0;font-size:.96rem}
+.callout p+p{margin-top:8px}
+
+.steps{list-style:none;margin:20px 0 0;padding:0;counter-reset:st}
+.steps>li{counter-increment:st;position:relative;padding:0 0 26px 54px}
+.steps>li::before{content:counter(st);position:absolute;left:0;top:-2px;width:34px;height:34px;display:grid;place-items:center;border-radius:50%;background:var(--pri);color:var(--card);font-family:var(--mono);font-weight:600;font-size:.95rem}
+.steps>li:not(:last-child)::after{content:"";position:absolute;left:17px;top:38px;bottom:8px;width:1px;background:var(--bdr-2)}
+.steps h3{font-family:var(--disp);font-weight:700;font-size:1.05rem;margin:2px 0 6px}
+.steps p{margin:0 0 6px;font-size:.96rem}
+.eg{font-size:.9rem;margin:8px 0 0;padding-left:1.1em;border-left:2px solid var(--bdr-2);color:var(--sub)}
+.eg b{font-family:var(--mono);font-size:.78rem;letter-spacing:.06em;margin-right:.6em;color:var(--pri-2)}
+.eg.ng b{color:var(--s1)}
+
+.rules{list-style:none;margin:18px 0 0;padding:0}
+.rules li{padding:13px 0;border-bottom:1px solid var(--bdr);font-size:.97rem}
+.rules li:first-child{border-top:1px solid var(--bdr)}
+.rules b{display:block;font-family:var(--disp);font-weight:700;margin-bottom:2px}
+
+.cat{margin:0 0 30px}
+.cat-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:0 0 10px;padding-bottom:6px;border-bottom:2px solid var(--pri)}
+.cat-nm{font-family:var(--disp);font-weight:700;font-size:1.08rem}
+.cat-ct{font-family:var(--mono);font-size:.76rem;color:var(--sub);white-space:nowrap}
+.wl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.w{background:var(--card);border-radius:8px;padding:13px 16px}
+.w-hd{display:flex;align-items:baseline;gap:10px;margin:0}
+.w-no{font-family:var(--mono);font-size:.78rem;font-weight:600;color:var(--card);background:var(--pri-2);border-radius:5px;padding:1px 6px;line-height:1.55}
+.w-nm{font-family:var(--disp);font-weight:700;font-size:1rem}
+.w-pp{margin:4px 0 8px;font-size:.89rem;color:var(--sub);line-height:1.6}
+.asp{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:5px}
+.asp li{font-size:.79rem;line-height:1.5;color:var(--txt);background:var(--pri-ll);border-radius:5px;padding:3px 9px}
+
+footer{margin-top:54px;padding-top:18px;border-top:1px solid var(--bdr);font-size:.82rem;color:var(--sub)}
+footer p{margin:4px 0}
+
+@media (max-width:520px){
+  .ladder li{grid-template-columns:40px 1fr;gap:8px 12px}
+  .lv-tx{grid-column:2}
+  .steps>li{padding-left:46px}
+}
+@media print{
+  :root{--bg:#fff;--card:#fff}
+  body{font-size:10.5pt}
+  .wrap{max-width:none;padding:0}
+  section{margin-bottom:26px}
+  .w,.ladder li,.steps>li{break-inside:avoid}
+  .cat{break-inside:avoid-page}
+  .applink{border:0}
+}
+
+/* ---- 言語切替（アプリのヘッダと同じ並び） ---- */
+.lsw{position:sticky;top:0;z-index:20;display:flex;justify-content:flex-end;gap:4px;
+  max-width:46rem;margin:0 auto;padding:10px 20px 8px;background:var(--bg)}
+.lsw button{font-family:var(--mono);font-size:.78rem;font-weight:600;letter-spacing:.06em;
+  color:var(--sub);background:var(--card);border:1px solid var(--bdr);border-radius:6px;
+  padding:5px 11px;cursor:pointer;line-height:1.4}
+.lsw button:hover{color:var(--txt);border-color:var(--bdr-2)}
+.lsw button.on{background:var(--pri);border-color:var(--pri);color:var(--card)}
+.lsw button:focus-visible{outline:2px solid var(--pri-2);outline-offset:2px}
+
+/* ラテン文字圏はベトナム語の声調記号まで持つ Noto Sans に寄せる */
+.wrap[data-l="en"],.wrap[data-l="vi"],.wrap[data-l="id"]{
+  --disp:"Noto Sans","Zen Kaku Gothic New","Yu Gothic UI",Meiryo,sans-serif;
+  --body:"Noto Sans","Noto Sans JP","Yu Gothic UI",Meiryo,sans-serif;
+}
+.wrap[data-l="en"] h1,.wrap[data-l="vi"] h1,.wrap[data-l="id"] h1{font-weight:800}
+
+@media print{
+  .lsw{display:none}
+}
+
+</style>
+<nav class="lsw" aria-label="Language"><button type="button" data-go="ja" class="on" aria-current="true">JP</button><button type="button" data-go="en">EN</button><button type="button" data-go="vi">VI</button><button type="button" data-go="id">ID</button></nav>
+<div class="wrap" lang="ja" data-l="ja">
+<header class="mast"><p class="eyebrow">HSS 実技試験 V2 ／ 睦沢農場</p><h1>実技試験の手引き</h1><p class="lede">試験をする人のための手引きです。点のつけ方と、当日の進め方だけを書いています。</p><a class="applink" href="https://shoichiokada225-sys.github.io/pig-farm-evaluation-v2/" target="_blank" rel="noopener">採点アプリを開く</a></header>
+<section><h2><span class="num">01</span>この試験で測るもの</h2><p class="thesis">作業を、指示なしで、正しくできるか。</p><p>知識ではなく、現場での動きを見ます。7分野・40作業。作業ごとに見る種目が5つ決まっていて、種目ごとに1〜5点をつけます。</p></section>
+<section><h2><span class="num">02</span>点のつけ方</h2><p>点数の意味は、40作業200種目すべてで同じです。<strong>どこまで人の手を借りずにできるか</strong>、それだけで決まります。</p><ul class="ladder">
+<li style="--rail:var(--s1)"><span class="lv lv1">1</span><span class="lv-nm">要指導</span><span class="lv-tx">やらない。確認しない。まかせられない。</span></li>
+<li style="--rail:var(--s2)"><span class="lv lv2">2</span><span class="lv-nm">要改善</span><span class="lv-tx">言えばできるが、抜けや漏れが多い。</span></li>
+<li style="--rail:var(--s3)"><span class="lv lv3">3</span><span class="lv-nm">標準</span><span class="lv-tx">言えば、確実にできる。</span></li>
+<li style="--rail:var(--s4)"><span class="lv lv4">4</span><span class="lv-nm">上回る</span><span class="lv-tx">言わなくても、自分で気づいてやる。異常があれば原因を追う。</span></li>
+<li style="--rail:var(--s5)"><span class="lv lv5">5</span><span class="lv-nm">模範的</span><span class="lv-tx">なぜそうするかを分かっていて、新人に教えられる。</span></li>
+</ul><p style="margin-top:26px">迷ったら、この3つを順に聞くだけで決まります。</p><ol class="qs">
+<li>言われなくても、やるか。　<span class="verdict">いいえ → 3以下</span></li>
+<li>言われれば、間違いなくやるか。　<span class="verdict">いいえ → 2以下</span></li>
+<li>人に教えられるか。　<span class="verdict">はい → 5</span></li>
+</ol><div class="callout"><p><strong>3は合格ラインではありません。</strong>3は「指示待ちだが確実」という状態です。</p><p>一人で任せられるのは4からです。ここを取り違えると、評価が全部甘くなります。</p></div></section>
+<section><h2><span class="num">03</span>当日の進め方</h2><ol class="steps">
+<li><h3>評価する作業を決める</h3><p>分野ごとに作業を選びます。複数まとめて選べます。1回の試験で3〜5作業が目安です。</p>
+</li>
+<li><h3>実際にやってもらう</h3><p>作業をさせて、横で見ます。聞き取りだけで点をつけないでください。</p>
+</li>
+<li><h3>種目ごとに点をつける</h3><p>「基準を見る（レベル1〜5）」を開くと、その種目の1〜5の文が出ます。<strong>目の前の動きに一番近い文を選びます。</strong>印象で選ばないこと。</p>
+</li>
+<li><h3>コメントを書く</h3><p>点だけでは、次に何をすればいいかが伝わりません。3以下の種目には必ず書いてください。</p>
+<p class="eg"><b>良い</b>給水器の流量を見ていなかった。3頭分が止まっていた。</p><p class="eg ng"><b>悪い</b>もう少し頑張りましょう。</p>
+</li>
+<li><h3>保存する</h3><p>評価日・評価者・被評価者を入れて保存します。<strong>全種目に点がついていないと保存できません。</strong></p></li></ol></section>
+<section><h2><span class="num">04</span>迷ったときの決めごと</h2><ul class="rules">
+<li><b>見ていないことは採点しない。</b>その作業を選ばないか、やらせてから点をつける。</li>
+<li><b>たまたま今日できた・できなかったは採点しない。</b>いつもの動きで判断する。</li>
+<li><b>1回の失敗で1点にしない。</b>逆に、注意して直ったからといって上げない。直る前の動きが実力です。</li>
+<li><b>手順が分からなくなったら。</b>各作業の「現場マニュアルを見る」から、その作業の手順書に飛べます。</li>
+<li><b>やり直しは自由。</b>保存した記録は履歴からいつでも直せます。</li>
+</ul></section>
+<section><h2><span class="num">05</span>記録の扱い</h2><ul class="rules">
+<li><b>履歴</b>過去の評価が一覧で出ます。押すと種目ごとの点とコメントが見えます。</li>
+<li><b>グラフ</b>人を選ぶと、平均点の推移と、5種目のレーダーチャートが前回と重ねて出ます。伸びた種目と止まっている種目が一目で分かります。</li>
+<li><b>CSV出力</b>1行＝1種目で書き出します。集計や報告書に使います。</li>
+<li><b>バックアップ</b>記録はその端末の中だけに残ります。他の人の端末には出ません。設定タブ（パスワード OOIRI）から、ときどきバックアップを取ってください。</li>
+</ul></section>
+<section><h2><span class="num">06</span>受ける人に先に伝えること</h2><ul class="rules">
+<li><b>何の作業を見るか。</b>隠さない。</li>
+<li><b>点の意味。</b>3は「言われればできる」、4から一人前。</li>
+<li><b>落とす試験ではないこと。</b>次に何を覚えるかを決めるための試験です。</li>
+</ul></section>
+<section><h2><span class="num">07</span>作業一覧（40作業）</h2><p class="note">各作業の下に並ぶのが、その作業で見る5種目です。</p><section class="cat"><h3 class="cat-h"><span class="cat-nm">飼養管理</span><span class="cat-ct">7作業</span></h3><ul class="wl">
+<li class="w"><p class="w-hd"><span class="w-no">11</span><span class="w-nm">給餌</span></p><p class="w-pp">成長・繁殖を安定させ、全頭がムラなく食べ、ムダな飼料を出さない</p><ul class="asp"><li>給与量の管理と個体・季節調整</li><li>残餌と給水の確認</li><li>飼料の種類・状態の確認と報告</li><li>給餌後の食い込み観察</li><li>日報記入と豚舎間の防疫</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">02</span><span class="w-nm">エサ調整</span></p><p class="w-pp">BCS・生理ステージに応じて栄養過不足を防ぎ、繁殖成績を高める</p><ul class="asp"><li>ステージ・時期に合わせた調整</li><li>個体ごとの採食・残飼の確認</li><li>段階的な増減</li><li>産次・季節への配慮</li><li>BCS触診と即時記録</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">16</span><span class="w-nm">エサ回収</span></p><p class="w-pp">病気・腐敗リスクを減らし飼料コストを削減し、給餌量見直しに役立てる</p><ul class="asp"><li>変質餌の見分けと短時間回収</li><li>専用容器・器具の管理</li><li>エサ箱の点検と毎日の清掃</li><li>残餌量の記録と給餌量への反映</li><li>残餌からの体調サイン察知</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">43</span><span class="w-nm">えつけ（哺乳期給餌）</span></p><p class="w-pp">泌乳量を確保し、子豚の離乳頭数・体重を高め、母豚の削痩を防ぐ</p><ul class="asp"><li>分娩後の段階的増給と暑熱対応</li><li>産子数と乳頭数のバランス管理</li><li>「エサの前に水」の飲水確認</li><li>残飯チェックと給餌量の決定</li><li>クリープフィードの管理</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">27</span><span class="w-nm">育成受け</span></p><p class="w-pp">育成管理への引き継ぎを確実に行う</p><ul class="asp"><li>個体情報の引き継ぎ</li><li>受入れ環境の事前確認と初期観察</li><li>体重別グルーピングと弱小豚の別管理</li><li>安全な移動と頭数照合</li><li>飲水・エサの教え込み</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">34</span><span class="w-nm">去勢</span></p><p class="w-pp">雄臭のない豚肉を生産し、ケンカ・乗駕を減らし、群管理を安全にする</p><ul class="asp"><li>日齢・方法の遵守と短時間実施</li><li>清潔な器具と術後の確認</li><li>保定と刃物の安全</li><li>左右摘出の確認とヘルニア対応</li><li>季節への配慮と処置記録</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">18</span><span class="w-nm">添加剤準備</span></p><p class="w-pp">添加剤の効果をムラなく出し、豚の健康・成績を安定させる</p><ul class="asp"><li>正確な計量と混合</li><li>抗菌性添加物の重複・休薬管理</li><li>指示・ラベル・状態の照合</li><li>防護具と粉のあつかい</li><li>取り違え防止と保管・器具清掃</li></ul></li>
+</ul></section>
+<section class="cat"><h3 class="cat-h"><span class="cat-nm">衛生管理</span><span class="cat-ct">9作業</span></h3><ul class="wl">
+<li class="w"><p class="w-hd"><span class="w-no">12</span><span class="w-nm">除フン</span></p><p class="w-pp">病気・有害ガスを減らし豚の健康を守り、糞から異常を早期発見する</p><ul class="asp"><li>除糞→洗浄→消毒の順序</li><li>床下・ピット・残渣の確認</li><li>糞の観察と異常便の即報告</li><li>ピット・除糞機の安全確保</li><li>豚舎専用道具の管理</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">31</span><span class="w-nm">5S清掃</span></p><p class="w-pp">衛生レベルを底上げし、作業をやりやすくし、設備トラブルを早く見つける</p><ul class="asp"><li>定位置管理の徹底</li><li>きれいさの基準共有と異常発見</li><li>整理（不要物の処分判断）</li><li>汚れやすい場所の重点清掃</li><li>チェックリストの正直な記録</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">04</span><span class="w-nm">治療</span></p><p class="w-pp">体調の悪い豚を早く回復させ、悪化と感染拡大を防ぐ</p><ul class="asp"><li>休薬期間の確認と治療豚の識別</li><li>指示・用法の遵守と針の本数管理</li><li>治療記録のその場記入</li><li>体調不良豚の発見と報告</li><li>隔離と感染拡大防止の作業順</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">06</span><span class="w-nm">母豚ワクチン接種</span></p><p class="w-pp">母豚と子豚を守る免疫をつけ、農場の免疫レベルをそろえる</p><ul class="asp"><li>日齢・スケジュールの遵守</li><li>ワクチンの取り扱いと針交換</li><li>対象母豚の体調確認と接種可否</li><li>接種部位と保定・注入手技</li><li>その場での記録と接種後の観察</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">41</span><span class="w-nm">CSF（豚熱）子ワクチン接種</span></p><p class="w-pp">子豚の免疫を立ち上げ、豚熱の発生・死亡と経済被害を防ぐ</p><ul class="asp"><li>移行抗体を考えた接種日齢</li><li>全頭接種と記録</li><li>保定・連携と確実な筋注</li><li>針の本数照合・交換・針刺し対応</li><li>ワクチンの冷蔵管理と品質確認</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">40</span><span class="w-nm">洗浄（離乳後）</span></p><p class="w-pp">汚れと病原体を物理的に落とし、消毒が効く状態を作り舎内をリセットする</p><ul class="asp"><li>除糞→洗浄→乾燥→消毒の順序</li><li>隅・溝・裏側の重点洗浄</li><li>オールアウト確認と洗浄時の安全</li><li>洗浄剤の浸漬と完全すすぎ</li><li>乾燥時間の確保と次ロット準備</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">15</span><span class="w-nm">消毒</span></p><p class="w-pp">病原体を入れない・広げない・持ち出さず、農場の防疫レベルを保つ</p><ul class="asp"><li>濃度・量・接触時間の遵守</li><li>汚れ除去の徹底と防護具着用</li><li>洗浄後・消毒後の乾燥徹底</li><li>消毒剤の混合禁止と事故時対応</li><li>踏み込み消毒槽の管理と実施記録</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">44</span><span class="w-nm">石灰散布</span></p><p class="w-pp">農場出入口に防疫バリアを作り、病原体の侵入・拡散を抑える</p><ul class="asp"><li>水分と散布量の管理</li><li>風向き確認と防護</li><li>天候と在庫の事前確認</li><li>均一散布と仕上がり確認</li><li>皮膚付着時の対応と石灰の保管</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">37</span><span class="w-nm">死獣回収</span></p><p class="w-pp">病原体の拡散と悪臭・害獣被害を防ぎ、法令を守る</p><ul class="asp"><li>速やかな回収と専用保管</li><li>法令遵守と死亡記録</li><li>感染症サインの察知と作業停止</li><li>防護具着用と回収後の消毒</li><li>死亡確認と同居豚の観察</li></ul></li>
+</ul></section>
+<section class="cat"><h3 class="cat-h"><span class="cat-nm">繁殖管理</span><span class="cat-ct">8作業</span></h3><ul class="wl">
+<li class="w"><p class="w-hd"><span class="w-no">14</span><span class="w-nm">AI（人工授精）注入作業</span></p><p class="w-pp">受胎数・産子数を高く保ち、精液を無駄なく計画的に使う</p><ul class="asp"><li>事前準備と精子活性の確認</li><li>許容確認と挿入の判断</li><li>器具・外陰部の清潔と精液の温度管理</li><li>自然流入での注入とカテーテル対応</li><li>記録・医療ゴミ処理と資材補充</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">33</span><span class="w-nm">許容確認</span></p><p class="w-pp">交配に入れる最適なタイミングを見極め、受胎率と産子数を上げる</p><ul class="asp"><li>対象母豚の絞り込み</li><li>雄豚接触＋背圧での確認</li><li>外陰部・粘液・行動の複合判断</li><li>静かな母豚・夜間発情の見落とし防止</li><li>時刻の即時記録と未発情の報告</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">03</span><span class="w-nm">精液検査・反転</span></p><p class="w-pp">問題のある精液を使用前に除外し、繁殖成績の低下を防ぐ</p><ul class="asp"><li>17℃保管と温度変化の抑制</li><li>精子活力確認と穏やかな反転</li><li>不良精液の除外と報告</li><li>使用期限の管理（先入れ先出し）</li><li>検査記録と機器の点検</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">17</span><span class="w-nm">精液攪拌</span></p><p class="w-pp">精子濃度を均一化する</p><ul class="asp"><li>保管温度の確認と逸脱時の対応</li><li>穏やかな攪拌と温度・浸透圧の配慮</li><li>沈殿・結露・色の点検</li><li>遮光の徹底</li><li>短時間の取り扱いと先入れ先出し・記録</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">09</span><span class="w-nm">妊娠鑑定</span></p><p class="w-pp">分娩・離乳頭数を計画通り確保し、空胎母豚を早く見つけて対応する</p><ul class="asp"><li>鑑定時期の厳守と再確認</li><li>エコー画像の正しい読み取り</li><li>迷ったときの保留判断と再検査設定</li><li>鑑定後の再発情チェック</li><li>その場での記録とプローブ消毒</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">08</span><span class="w-nm">PMS投与</span></p><p class="w-pp">発情が弱い・来ない母豚に発情を誘起し、タイミングをそろえる</p><ul class="asp"><li>投与時期と黄体確認</li><li>自己判断の回避と対象母豚の確認</li><li>薬剤のラベル確認と温度管理</li><li>確実な筋肉注射と針の安全管理</li><li>投与記録と発情観察の予定管理</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">36</span><span class="w-nm">PG（プロスタグランジン）接種</span></p><p class="w-pp">分娩のタイミングをそろえ、分娩管理・立会いをしやすくする</p><ul class="asp"><li>妊娠日数の確認と適期投与</li><li>個体番号の照合とダブルチェック</li><li>確実な注射と分娩受け入れ準備</li><li>人への安全と針・医療ゴミの処理</li><li>接種記録と観察予定の管理</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">42</span><span class="w-nm">子宮内洗浄</span></p><p class="w-pp">子宮内の汚染物を減らし、子宮炎・発熱を防ぎ産後回復を促す</p><ul class="asp"><li>対象選定と獣医師指示の遵守</li><li>洗浄液の調製と加温</li><li>滅菌器具と外陰部消毒・穏やかな操作</li><li>抵抗・暴れ時の中断判断</li><li>体温・排出液の記録と休薬管理</li></ul></li>
+</ul></section>
+<section class="cat"><h3 class="cat-h"><span class="cat-nm">分娩管理</span><span class="cat-ct">3作業</span></h3><ul class="wl">
+<li class="w"><p class="w-hd"><span class="w-no">26</span><span class="w-nm">入室（分娩舎）</span></p><p class="w-pp">分娩が近い母豚だけを入れ、落ち着いた状態で分娩を迎えさせる</p><ul class="asp"><li>入室前の舎内準備</li><li>適期の一斉入室と入室後観察</li><li>静かな誘導と人の安全</li><li>個体番号の照合と記入</li><li>入室直後の飲水・初回給餌</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">35</span><span class="w-nm">分娩介助</span></p><p class="w-pp">母豚と子豚の命を守り、死産・直後の死亡を減らし初乳を飲ませる</p><ul class="asp"><li>介助タイミングの見極めと難産の報告</li><li>清潔と潤滑の徹底</li><li>新生子豚の乾燥・保温・蘇生</li><li>初乳の早期摂取</li><li>分娩後の確認・記録・片付け</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">39</span><span class="w-nm">送り里子</span></p><p class="w-pp">乳頭数と子豚数のバランスを整え、離乳頭数を増やし弱子を助ける</p><ul class="asp"><li>初乳摂取後の里子と対象選び</li><li>病気の子豚の除外と手指衛生</li><li>静かな移動と受け入れ確認</li><li>里子後の飲乳確認と経過観察</li><li>マッチングシートと記録</li></ul></li>
+</ul></section>
+<section class="cat"><h3 class="cat-h"><span class="cat-nm">施設管理</span><span class="cat-ct">7作業</span></h3><ul class="wl">
+<li class="w"><p class="w-hd"><span class="w-no">13</span><span class="w-nm">母豚の並びの整理</span></p><p class="w-pp">母豚をまとめて管理しやすくし、ケンカ・ストレスを減らす</p><ul class="asp"><li>分娩予定日順の整列と台帳反映</li><li>妊娠初期（35日以内）の移動除外</li><li>体格差・攻撃性への配慮</li><li>追い板誘導と自分の安全確保</li><li>移動後の水・エサ・カード確認</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">10</span><span class="w-nm">移動指示</span></p><p class="w-pp">ピッグフローを滞らせず、豚にストレスをかけず安全に移動させる</p><ul class="asp"><li>移動指示の復唱確認と頭数照合</li><li>通路確認と移動先の清浄性</li><li>病豚・起立不能豚の移動中止</li><li>少頭数ずつの静かな誘導</li><li>混群後のケンカ観察と後始末</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">25</span><span class="w-nm">妊娠舎→交配舎・育成舎 移動</span></p><p class="w-pp">ピッグフローを守って次の舎へつなぐ</p><ul class="asp"><li>移動リスト照合と妊娠初期除外</li><li>斜め後ろからの静かな誘導</li><li>移動先の受け入れ準備と水・エサ確認</li><li>舎間移動の防疫（消毒マット）</li><li>頭数照合と記録・プレート更新</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">19</span><span class="w-nm">スクレーパー動作確認</span></p><p class="w-pp">除糞機能を正常に保ち、機械トラブルを早期発見して大故障を防ぐ</p><ul class="asp"><li>電源遮断など安全手順</li><li>刃・通り道の目視点検と異物除去</li><li>試運転での動きとかき出し確認</li><li>チェーン・ワイヤ点検と異常時の停止・報告</li><li>点検結果の記録と具体的な報告</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">29</span><span class="w-nm">ファン清掃</span></p><p class="w-pp">換気能力を保ち、呼吸器トラブル・暑熱ストレスを防ぎ設備を長持ちさせる</p><ul class="asp"><li>電源遮断と安全な清掃</li><li>乾いた埃払いと羽根裏の洗浄</li><li>ファンベルトの張り・劣化点検</li><li>シャッター開閉と試運転確認</li><li>作業の周知と清掃記録・報告</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">30</span><span class="w-nm">パドタンク清掃（夏季）</span></p><p class="w-pp">クーリング性能を保ち、藻・細菌・悪臭を防ぎ設備を長持ちさせる</p><ul class="asp"><li>定期清掃と藻・ぬめりの早期発見</li><li>傷をつけないやさしい洗い方</li><li>フィルター・ポンプ・配管の点検</li><li>張り直しと均一な水回り確認</li><li>記録・報告と夏場の自己管理</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">20</span><span class="w-nm">エサスイッチ</span></p><p class="w-pp">給餌を安定させ、ムダな飼料を減らし機械トラブルを防ぐ</p><ul class="asp"><li>スイッチ位置と異常時の停止</li><li>飼料の種類・残量の事前確認</li><li>ブリッジング詰まりの安全対処</li><li>トラフ量と食べ具合の見回り</li><li>タイマー変更後の動作確認と記録</li></ul></li>
+</ul></section>
+<section class="cat"><h3 class="cat-h"><span class="cat-nm">記録管理</span><span class="cat-ct">4作業</span></h3><ul class="wl">
+<li class="w"><p class="w-hd"><span class="w-no">05</span><span class="w-nm">日報記入</span></p><p class="w-pp">豚の状態を記録して病気を早期発見し、成績を数字で残し改善に役立てる</p><ul class="asp"><li>その場での正確な記録</li><li>共通ルールでの記入と活用</li><li>頭数変動の検算</li><li>死亡・異常の具体的な記述</li><li>前日比較と急変の報告</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">07</span><span class="w-nm">プレート作成</span></p><p class="w-pp">個体・群をすぐ見分けられるようにし、ワクチン・治療・休薬中を示す</p><ul class="asp"><li>最新状態への更新と旧プレート処理</li><li>誰にでも分かる表記・色分けルールの遵守</li><li>記録を見ながらの転記と読み合わせ</li><li>治療カードの休薬情報記入</li><li>取り付け位置と誤飲防止</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">21</span><span class="w-nm">タグ付け</span></p><p class="w-pp">1頭ずつ確実に見分け、健康・繁殖・治療・出荷を一貫管理し追跡可能にする</p><ul class="asp"><li>正しい位置と装着前消毒</li><li>脱落・破損時の再装着</li><li>番号順の準備と頭数照合</li><li>保定と一回での確実な装着</li><li>その場記録と装着後の観察</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">32</span><span class="w-nm">分娩予定記入</span></p><p class="w-pp">分娩時期を把握して舎・人手を計画的に準備し、不受胎を早期発見する</p><ul class="asp"><li>妊娠日齢の統一計算</li><li>再交配時の書き直しと母豚観察</li><li>カレンダーでの日付再確認</li><li>予定表への記入と週単位の見える化</li><li>鑑定日の記入と頭数突き合わせ</li></ul></li>
+</ul></section>
+<section class="cat"><h3 class="cat-h"><span class="cat-nm">出荷管理</span><span class="cat-ct">2作業</span></h3><ul class="wl">
+<li class="w"><p class="w-hd"><span class="w-no">22</span><span class="w-nm">廃豚出荷（母豚出し）</span></p><p class="w-pp">繁殖群を計画的に更新し、母豚に無理をさせず安全に出荷する</p><ul class="asp"><li>リスト照合とマーキング</li><li>歩様確認と法令遵守</li><li>休薬期間のダブルチェック</li><li>絶食開始と通路・積み込み場所の準備</li><li>積み込み・頭数照合と出荷後消毒</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">23</span><span class="w-nm">育成舎へ廃豚移動</span></p><p class="w-pp">出荷前管理を円滑にする</p><ul class="asp"><li>移動前の照合と歩様確認</li><li>移動ルートと受け入れ豚房の準備</li><li>追い板の使い方と自身の安全確保</li><li>他群との接触回避（隔離）</li><li>収容後の確認・記録と消毒</li></ul></li>
+</ul></section></section>
+<footer><p>評価基準は睦沢農場「業務の目的と注意点」と現場マニュアルに基づく。</p><p>データ版 2026-08-27 ／ 40作業・200種目</p></footer>
+</div>
+<div class="wrap" lang="en" data-l="en" hidden>
+<header class="mast"><p class="eyebrow">HSS PRACTICAL EXAM V2 · MUTSUZAWA FARM</p><h1>Practical Exam Guide</h1><p class="lede">A guide for the person running the exam. It covers only how to score and how the day runs.</p><a class="applink" href="https://shoichiokada225-sys.github.io/pig-farm-evaluation-v2/" target="_blank" rel="noopener">Open the scoring app</a></header>
+<section><h2><span class="num">01</span>What this exam measures</h2><p class="thesis">Can they do the job right, without being told?</p><p>This is not a knowledge test. You watch what the person actually does in the barn. 7 areas, 40 jobs. Each job has 5 fixed points to watch, and each point is scored 1 to 5.</p></section>
+<section><h2><span class="num">02</span>How to score</h2><p>A score means the same thing in all 200 points across the 40 jobs. One thing decides it: <strong>how much help from others they still need.</strong></p><ul class="ladder">
+<li style="--rail:var(--s1)"><span class="lv lv1">1</span><span class="lv-nm">Urgent</span><span class="lv-tx">Does not do it. Does not check. Cannot be left to them.</span></li>
+<li style="--rail:var(--s2)"><span class="lv lv2">2</span><span class="lv-nm">Improve</span><span class="lv-tx">Does it when told, but with many gaps and misses.</span></li>
+<li style="--rail:var(--s3)"><span class="lv lv3">3</span><span class="lv-nm">Standard</span><span class="lv-tx">When told, does it reliably.</span></li>
+<li style="--rail:var(--s4)"><span class="lv lv4">4</span><span class="lv-nm">Above</span><span class="lv-tx">Does it without being told. Looks for the cause when something is wrong.</span></li>
+<li style="--rail:var(--s5)"><span class="lv lv5">5</span><span class="lv-nm">Exemplary</span><span class="lv-tx">Understands why it is done that way, and can teach a new worker.</span></li>
+</ul><p style="margin-top:26px">When you are unsure, these three questions decide it.</p><ol class="qs">
+<li>Do they do it without being told?　<span class="verdict">No → 3 or lower</span></li>
+<li>When told, do they do it without fail?　<span class="verdict">No → 2 or lower</span></li>
+<li>Can they teach it to someone?　<span class="verdict">Yes → 5</span></li>
+</ol><div class="callout"><p><strong>3 is not the pass mark.</strong> A 3 means reliable, but waiting to be told.</p><p>A job can be left to someone from 4 upward. Mixing this up makes every score too generous.</p></div></section>
+<section><h2><span class="num">03</span>On the day</h2><ol class="steps">
+<li><h3>Choose the jobs to assess</h3><p>Pick jobs by area. You can select several at once. 3 to 5 jobs per session is a good size.</p>
+</li>
+<li><h3>Have them do the work</h3><p>Let them work and watch from beside them. Do not score from an interview alone.</p>
+</li>
+<li><h3>Score each point</h3><p>Open “View criteria (Levels 1–5)” to see the five sentences for that point. <strong>Choose the sentence closest to what you just saw.</strong> Do not score on impression.</p>
+</li>
+<li><h3>Write a comment</h3><p>A score alone does not tell the person what to do next. Always write something for any point scored 3 or lower.</p>
+<p class="eg"><b>GOOD</b>Did not check the water flow. Three drinkers were not running.</p><p class="eg ng"><b>BAD</b>Please try a bit harder.</p>
+</li>
+<li><h3>Save</h3><p>Enter the date, your name and the person’s name, then save. <strong>You cannot save until every point has a score.</strong></p></li></ol></section>
+<section><h2><span class="num">04</span>Rules for the grey areas</h2><ul class="rules">
+<li><b>Do not score what you did not see.</b>Either leave that job out, or have them do it first.</li>
+<li><b>Do not score a one-off good or bad day.</b>Judge by how they normally work.</li>
+<li><b>One mistake is not a 1.</b>And do not raise the score because they fixed it after you told them. What they did before the correction is their real level.</li>
+<li><b>If you lose track of the procedure.</b>Each job has a “View field manual” link to its own procedure sheet.</li>
+<li><b>Redoing is fine.</b>Saved records can be edited from the history at any time.</li>
+</ul></section>
+<section><h2><span class="num">05</span>The records</h2><ul class="rules">
+<li><b>History</b>Past assessments in a list. Tap one to see every point score and comment.</li>
+<li><b>Charts</b>Pick a person to see the average over time and a 5-point radar chart laid over the previous session. What has improved and what has stalled shows at a glance.</li>
+<li><b>CSV export</b>One row per point. Use it for totals and reports.</li>
+<li><b>Backup</b>Records stay only on that device. They do not appear on anyone else’s. Take a backup now and then from the Settings tab (password OOIRI).</li>
+</ul></section>
+<section><h2><span class="num">06</span>Tell the person beforehand</h2><ul class="rules">
+<li><b>Which jobs you will watch.</b>Do not hide it.</li>
+<li><b>What the scores mean.</b>3 is “does it when told”; from 4 they work on their own.</li>
+<li><b>This is not an exam to fail people.</b>It decides what they learn next.</li>
+</ul></section>
+<section><h2><span class="num">07</span>Job list (40 jobs)</h2><p class="note">Under each job are the five points you watch.</p><section class="cat"><h3 class="cat-h"><span class="cat-nm">Feeding</span><span class="cat-ct">7 jobs</span></h3><ul class="wl">
+<li class="w"><p class="w-hd"><span class="w-no">11</span><span class="w-nm">Feeding</span></p><p class="w-pp">Stabilize growth and reproduction, ensure all pigs eat evenly, and avoid feed waste</p><ul class="asp"><li>Feed amount control with individual and seasonal adjustment</li><li>Checking leftover feed and water supply</li><li>Checking and reporting feed type and condition</li><li>Observing feed intake after feeding</li><li>Daily report entry and biosecurity between barns</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">02</span><span class="w-nm">Feed adjustment</span></p><p class="w-pp">Prevent nutritional excess or deficiency according to BCS and physiological stage, and improve reproductive performance</p><ul class="asp"><li>Adjustment by stage and timing</li><li>Checking each sow&#x27;s eating and leftover feed</li><li>Gradual increases and decreases</li><li>Consideration of parity and season</li><li>BCS palpation and immediate recording</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">16</span><span class="w-nm">Feed recovery</span></p><p class="w-pp">Reduce disease and spoilage risk, cut feed costs, and inform feed amount reviews</p><ul class="asp"><li>Identifying spoiled feed and quick recovery</li><li>Management of dedicated containers and tools</li><li>Feed trough inspection and daily cleaning</li><li>Recording leftover feed and feeding it back into feed amounts</li><li>Reading condition signs from leftover feed</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">43</span><span class="w-nm">Lactation feeding</span></p><p class="w-pp">Secure milk production, increase the number and weight of weaned piglets, and prevent sow body condition loss</p><ul class="asp"><li>Gradual increase after farrowing and heat stress response</li><li>Balancing litter size and functional teats</li><li>&quot;Water before feed&quot; drinking-water check</li><li>Leftover check and deciding the feed amount</li><li>Creep feed management</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">27</span><span class="w-nm">Grower intake</span></p><p class="w-pp">Ensure a reliable handover to grower management</p><ul class="asp"><li>Handover of individual animal information</li><li>Pre-checking the receiving environment and initial observation</li><li>Grouping by weight and separate care for weak piglets</li><li>Safe transport and head count verification</li><li>Teaching piglets to drink and eat</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">34</span><span class="w-nm">Castration</span></p><p class="w-pp">Produce pork free of boar taint, reduce fighting and mounting, and make group management safer</p><ul class="asp"><li>Following age and method with quick execution</li><li>Clean instruments and post-operative checks</li><li>Restraint and blade safety</li><li>Checking removal of both testicles and handling hernias</li><li>Seasonal consideration and treatment records</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">18</span><span class="w-nm">Additive preparation</span></p><p class="w-pp">Deliver the effects of additives evenly and stabilize pig health and performance</p><ul class="asp"><li>Accurate measurement and mixing</li><li>Managing overlap and withdrawal of antibacterial additives</li><li>Verifying instructions, labels, and condition</li><li>Protective gear and handling powder</li><li>Preventing mix-ups, storage, and tool cleaning</li></ul></li>
+</ul></section>
+<section class="cat"><h3 class="cat-h"><span class="cat-nm">Hygiene</span><span class="cat-ct">9 jobs</span></h3><ul class="wl">
+<li class="w"><p class="w-hd"><span class="w-no">12</span><span class="w-nm">Manure removal</span></p><p class="w-pp">Reduce disease and harmful gases to protect pig health, and detect abnormalities early from the manure</p><ul class="asp"><li>Order of manure removal, washing, then disinfection</li><li>Checking underfloor areas, pits, and residue</li><li>Observing manure and immediately reporting abnormal feces</li><li>Safety around pits and manure removal equipment</li><li>Managing barn-dedicated tools</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">31</span><span class="w-nm">5S cleaning</span></p><p class="w-pp">Raise the overall hygiene level, make work easier, and detect equipment trouble early</p><ul class="asp"><li>Thorough fixed-location management</li><li>Sharing cleanliness standards and finding abnormalities</li><li>Sorting (deciding what to discard)</li><li>Focused cleaning of spots that get dirty easily</li><li>Honest checklist records</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">04</span><span class="w-nm">Treatment</span></p><p class="w-pp">Help sick pigs recover quickly and prevent deterioration and spread of infection</p><ul class="asp"><li>Checking withdrawal periods and identifying treated pigs</li><li>Following instructions and dosage, and needle count management</li><li>On-the-spot treatment records</li><li>Finding and reporting unwell pigs</li><li>Isolation and work order to prevent infection spread</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">06</span><span class="w-nm">Sow vaccination</span></p><p class="w-pp">Build immunity that protects sows and piglets, and even out the farm&#x27;s immunity level</p><ul class="asp"><li>Following age and vaccination schedule</li><li>Vaccine handling and needle changes</li><li>Checking each sow&#x27;s condition and fitness for vaccination</li><li>Injection site, restraint, and injection technique</li><li>On-the-spot records and post-vaccination observation</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">41</span><span class="w-nm">CSF (classical swine fever) piglet vaccination</span></p><p class="w-pp">Establish piglet immunity and prevent CSF outbreaks, deaths, and economic damage</p><ul class="asp"><li>Vaccination age accounting for maternal antibodies</li><li>Whole-herd vaccination and records</li><li>Restraint, teamwork, and reliable intramuscular injection</li><li>Needle count checks, changes, and needlestick response</li><li>Vaccine refrigeration and quality checks</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">40</span><span class="w-nm">Washing (post-weaning)</span></p><p class="w-pp">Physically remove dirt and pathogens, create conditions where disinfection works, and reset the barn</p><ul class="asp"><li>Order of manure removal, washing, drying, then disinfection</li><li>Focused washing of corners, grooves, and undersides</li><li>All-out confirmation and safety during washing</li><li>Detergent soaking and complete rinsing</li><li>Securing drying time and preparing for the next lot</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">15</span><span class="w-nm">Disinfection</span></p><p class="w-pp">Keep pathogens out, contained, and off the farm, maintaining the farm&#x27;s biosecurity level</p><ul class="asp"><li>Following concentration, volume, and contact time</li><li>Thorough dirt removal first and wearing protective gear</li><li>Thorough drying after washing and after disinfection</li><li>No mixing of disinfectants and accident response</li><li>Footbath management and implementation records</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">44</span><span class="w-nm">Lime spreading</span></p><p class="w-pp">Create a biosecurity barrier at farm entrances and suppress pathogen entry and spread</p><ul class="asp"><li>Managing moisture and application amount</li><li>Checking wind direction and protection</li><li>Checking the weather and stock in advance</li><li>Even spreading and finish checks</li><li>Response to skin contact and lime storage</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">37</span><span class="w-nm">Dead pig collection</span></p><p class="w-pp">Prevent pathogen spread, odor, and pest damage, and comply with the law</p><ul class="asp"><li>Prompt collection and dedicated storage</li><li>Legal compliance and mortality records</li><li>Detecting infectious disease signs and stopping work</li><li>Wearing protective gear and disinfection after collection</li><li>Confirming death and observing pen mates</li></ul></li>
+</ul></section>
+<section class="cat"><h3 class="cat-h"><span class="cat-nm">Breeding</span><span class="cat-ct">8 jobs</span></h3><ul class="wl">
+<li class="w"><p class="w-hd"><span class="w-no">14</span><span class="w-nm">AI (artificial insemination)</span></p><p class="w-pp">Keep conception and litter size high, and use semen efficiently and according to plan</p><ul class="asp"><li>Advance preparation and checking sperm activity</li><li>Confirming standing heat and judging insertion</li><li>Cleanliness of equipment and vulva, and semen temperature control</li><li>Insemination by natural inflow and catheter handling</li><li>Records, medical waste disposal, and restocking supplies</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">33</span><span class="w-nm">Standing heat check</span></p><p class="w-pp">Identify the optimal timing for breeding and raise conception rate and litter size</p><ul class="asp"><li>Narrowing down the target sows</li><li>Checking with boar contact plus back pressure</li><li>Combined judgment from vulva, mucus, and behavior</li><li>Avoiding missed quiet sows and night-time heats</li><li>Immediate time recording and reporting sows not in heat</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">03</span><span class="w-nm">Semen check and inversion</span></p><p class="w-pp">Exclude problem semen before use and prevent declines in reproductive performance</p><ul class="asp"><li>Storage at 17°C and minimizing temperature changes</li><li>Checking sperm motility and gentle inversion</li><li>Excluding bad semen and reporting</li><li>Managing expiration dates (first-in, first-out)</li><li>Test records and equipment checks</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">17</span><span class="w-nm">Semen mixing</span></p><p class="w-pp">Even out the sperm concentration</p><ul class="asp"><li>Checking storage temperature and responding to deviations</li><li>Gentle mixing with attention to temperature and osmotic pressure</li><li>Inspecting sediment, condensation, and color</li><li>Thorough light shielding</li><li>Short handling time, first-in first-out, and records</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">09</span><span class="w-nm">Pregnancy Check</span></p><p class="w-pp">Secure planned farrowing and weaning numbers, and find open sows early to take action</p><ul class="asp"><li>Strict Timing and Recheck</li><li>Correct Reading of Ultrasound Images</li><li>Holding Judgment When Unsure and Scheduling Retests</li><li>Return-to-Estrus Checks After Diagnosis</li><li>On-the-Spot Recording and Probe Disinfection</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">08</span><span class="w-nm">PMS Administration</span></p><p class="w-pp">Induce estrus in sows with weak or absent heat and synchronize timing</p><ul class="asp"><li>Administration Timing and Corpus Luteum Check</li><li>Avoiding Self-Judgment and Confirming Target Sows</li><li>Checking the Drug Label and Temperature Control</li><li>Reliable Intramuscular Injection and Needle Safety</li><li>Administration Records and Heat-Observation Scheduling</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">36</span><span class="w-nm">PG (Prostaglandin) Injection</span></p><p class="w-pp">Synchronize farrowing timing to make farrowing management and attendance easier</p><ul class="asp"><li>Confirming Gestation Days and Timely Administration</li><li>Verifying ID Numbers and Double-Checking</li><li>Reliable Injection and Preparing to Receive the Farrowing</li><li>Human Safety and Disposal of Needles and Medical Waste</li><li>Injection Records and Observation Scheduling</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">42</span><span class="w-nm">Uterine Flushing</span></p><p class="w-pp">Reduce uterine contamination, prevent metritis and fever, and promote postpartum recovery</p><ul class="asp"><li>Case Selection and Following Veterinary Instructions</li><li>Preparing and Warming the Flushing Solution</li><li>Sterile Equipment, Vulva Disinfection, and Gentle Handling</li><li>Deciding to Stop on Resistance or Struggling</li><li>Recording Temperature and Effluent, and Withdrawal Management</li></ul></li>
+</ul></section>
+<section class="cat"><h3 class="cat-h"><span class="cat-nm">Farrowing</span><span class="cat-ct">3 jobs</span></h3><ul class="wl">
+<li class="w"><p class="w-hd"><span class="w-no">26</span><span class="w-nm">Entry (Farrowing House)</span></p><p class="w-pp">Move in only sows close to farrowing so they can farrow in a calm state</p><ul class="asp"><li>House Preparation Before Entry</li><li>Timely Batch Entry and Observation After Entry</li><li>Calm Moving and Human Safety</li><li>Checking and Recording ID Numbers</li><li>Water Check and First Feeding Right After Entry</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">35</span><span class="w-nm">Farrowing Assistance</span></p><p class="w-pp">Protect the lives of sows and piglets, reduce stillbirths and early deaths, and ensure colostrum intake</p><ul class="asp"><li>Judging When to Assist and Reporting Dystocia</li><li>Thorough Cleanliness and Lubrication</li><li>Drying, Warming, and Resuscitating Newborn Piglets</li><li>Early Colostrum Intake</li><li>Post-Farrowing Checks, Records, and Cleanup</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">39</span><span class="w-nm">Cross-Fostering</span></p><p class="w-pp">Balance teat numbers and litter sizes, increase weaned piglets, and help weak piglets</p><ul class="asp"><li>Fostering After Colostrum Intake and Selecting Candidates</li><li>Excluding Sick Piglets and Hand Hygiene</li><li>Calm Moving and Acceptance Checks</li><li>Suckling Checks and Follow-Up After Fostering</li><li>Matching Sheet and Records</li></ul></li>
+</ul></section>
+<section class="cat"><h3 class="cat-h"><span class="cat-nm">Facility</span><span class="cat-ct">7 jobs</span></h3><ul class="wl">
+<li class="w"><p class="w-hd"><span class="w-no">13</span><span class="w-nm">Organizing the Sow Lineup</span></p><p class="w-pp">Group sows for easier management and reduce fighting and stress</p><ul class="asp"><li>Lining Up by Due Date and Updating the Ledger</li><li>Excluding Early-Gestation Sows (Within 35 Days) from Moves</li><li>Accounting for Size Differences and Aggression</li><li>Driving-Board Guidance and Securing Your Own Safety</li><li>Post-Move Checks of Water, Feed, and Cards</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">10</span><span class="w-nm">Movement Orders</span></p><p class="w-pp">Keep the pig flow moving and move pigs safely without stress</p><ul class="asp"><li>Repeating Back Movement Orders and Verifying Head Counts</li><li>Checking Routes and Destination Cleanliness</li><li>Stopping Moves of Sick and Downed Pigs</li><li>Quiet Driving in Small Groups</li><li>Watching Fights After Mixing and Cleanup Afterward</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">25</span><span class="w-nm">Gestation House to Breeding/Grower House Movement</span></p><p class="w-pp">Keep the pig flow and connect sows to the next house</p><ul class="asp"><li>Verifying the Move List and Excluding Early Gestation</li><li>Quiet Driving from Diagonally Behind</li><li>Destination Readiness and Water and Feed Checks</li><li>Biosecurity for Between-House Moves (Disinfection Mats)</li><li>Head-Count Verification, Records, and Plate Updates</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">19</span><span class="w-nm">Manure Scraper Operation Check</span></p><p class="w-pp">Keep manure removal working, detect mechanical trouble early, and prevent major breakdowns</p><ul class="asp"><li>Safety Procedures Including Power Shutoff</li><li>Visual Inspection of the Blade and Path, and Removing Foreign Objects</li><li>Checking Movement and Scraping in a Test Run</li><li>Chain and Wire Inspection, and Stopping and Reporting on Abnormality</li><li>Recording Inspection Results and Reporting Concretely</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">29</span><span class="w-nm">Fan Cleaning</span></p><p class="w-pp">Maintain ventilation capacity, prevent respiratory trouble and heat stress, and extend equipment life</p><ul class="asp"><li>Power Shutoff and Safe Cleaning</li><li>Dry Dusting First and Washing Behind the Blades</li><li>Inspecting Fan-Belt Tension and Deterioration</li><li>Shutter Movement and Test-Run Checks</li><li>Announcing the Work, and Cleaning Records and Reports</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">30</span><span class="w-nm">Pad Tank Cleaning (Summer)</span></p><p class="w-pp">Maintain cooling performance, prevent algae, bacteria, and odor, and extend equipment life</p><ul class="asp"><li>Regular Cleaning and Early Detection of Algae and Slime</li><li>Gentle Washing That Avoids Scratches</li><li>Inspecting the Filter, Pump, and Piping</li><li>Refilling and Checking Even Water Flow</li><li>Records, Reports, and Self-Care in Summer</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">20</span><span class="w-nm">Feed Switch</span></p><p class="w-pp">Keep feeding stable, reduce feed waste, and prevent mechanical trouble</p><ul class="asp"><li>Switch Position and Stopping on Abnormality</li><li>Checking Feed Type and Remaining Amount in Advance</li><li>Safe Handling of Bridging Clogs</li><li>Checking Trough Amounts and How Well Pigs Eat</li><li>Operation Check and Recording After Timer Changes</li></ul></li>
+</ul></section>
+<section class="cat"><h3 class="cat-h"><span class="cat-nm">Records</span><span class="cat-ct">4 jobs</span></h3><ul class="wl">
+<li class="w"><p class="w-hd"><span class="w-no">05</span><span class="w-nm">Daily Report Entry</span></p><p class="w-pp">Record pig conditions for early disease detection and keep performance in numbers for improvement</p><ul class="asp"><li>Accurate On-the-Spot Recording</li><li>Writing by Shared Rules and Putting Records to Use</li><li>Verifying Head-Count Changes</li><li>Specific Description of Deaths and Abnormalities</li><li>Comparing with Previous Days and Reporting Sudden Changes</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">07</span><span class="w-nm">Plate Preparation</span></p><p class="w-pp">Make individuals and groups instantly identifiable and show vaccination, treatment, and withdrawal status</p><ul class="asp"><li>Keeping Plates Current and Disposing of Old Ones</li><li>Notation Anyone Can Read and Following Color-Coding Rules</li><li>Copying from Records and Read-Back Verification</li><li>Entering Withdrawal Information on Treatment Cards</li><li>Attachment Position and Preventing Accidental Ingestion</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">21</span><span class="w-nm">Tagging</span></p><p class="w-pp">Identify each pig reliably for consistent health, breeding, treatment, and shipping management and traceability</p><ul class="asp"><li>Correct Position and Pre-Attachment Disinfection</li><li>Reattachment After Loss or Damage</li><li>Preparing Tags in Number Order and Matching Head Counts</li><li>Restraint and Secure One-Motion Attachment</li><li>On-the-Spot Recording and Post-Attachment Observation</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">32</span><span class="w-nm">Farrowing Due-Date Entry</span></p><p class="w-pp">Grasp farrowing timing to prepare housing and staff systematically and detect failed conception early</p><ul class="asp"><li>Standardized Gestation-Day Calculation</li><li>Rewriting on Rebreeding and Observing the Sow</li><li>Rechecking Dates on the Calendar</li><li>Entering the Schedule Board and Weekly Visualization</li><li>Entering Check Dates and Matching Head Counts</li></ul></li>
+</ul></section>
+<section class="cat"><h3 class="cat-h"><span class="cat-nm">Shipping</span><span class="cat-ct">2 jobs</span></h3><ul class="wl">
+<li class="w"><p class="w-hd"><span class="w-no">22</span><span class="w-nm">Cull Sow Shipping</span></p><p class="w-pp">Renew the breeding herd systematically and ship sows safely without overstraining them</p><ul class="asp"><li>List Verification and Marking</li><li>Gait Checks and Legal Compliance</li><li>Double-Checking Withdrawal Periods</li><li>Starting Fasting and Preparing the Aisle and Loading Area</li><li>Loading, Head-Count Verification, and Post-Shipping Disinfection</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">23</span><span class="w-nm">Moving Cull Sows to the Grower House</span></p><p class="w-pp">Keep pre-shipping management running smoothly</p><ul class="asp"><li>Pre-Move Verification and Gait Checks</li><li>Preparing the Route and the Receiving Pen</li><li>Using the Pig Board and Keeping Yourself Safe</li><li>Avoiding Contact with Other Groups (Isolation)</li><li>Post-Housing Checks, Recording, and Disinfection</li></ul></li>
+</ul></section></section>
+<footer><p>Criteria are based on Mutsuzawa farm’s “Purpose and cautions for each job” and the field manual.</p><p>Data version 2026-08-27 · 40 jobs, 200 points</p></footer>
+</div>
+<div class="wrap" lang="vi" data-l="vi" hidden>
+<header class="mast"><p class="eyebrow">HSS PRACTICAL EXAM V2 · MUTSUZAWA FARM</p><h1>Sổ tay chấm thi thực hành</h1><p class="lede">Sổ tay dành cho người chấm thi. Chỉ ghi cách chấm điểm và cách tiến hành trong ngày.</p><a class="applink" href="https://shoichiokada225-sys.github.io/pig-farm-evaluation-v2/" target="_blank" rel="noopener">Mở ứng dụng chấm điểm</a></header>
+<section><h2><span class="num">01</span>Bài kiểm tra này đo điều gì</h2><p class="thesis">Có làm đúng công việc mà không cần ai nhắc không.</p><p>Đây không phải kiểm tra kiến thức. Chúng ta xem cách làm thực tế tại trại. 7 lĩnh vực, 40 công việc. Mỗi công việc có 5 mục cố định để xem, mỗi mục chấm từ 1 đến 5 điểm.</p></section>
+<section><h2><span class="num">02</span>Cách chấm điểm</h2><p>Ý nghĩa của điểm giống nhau ở cả 200 mục của 40 công việc. Chỉ dựa vào một điều: <strong>cần người khác giúp đến mức nào.</strong></p><ul class="ladder">
+<li style="--rail:var(--s1)"><span class="lv lv1">1</span><span class="lv-nm">Khẩn cấp</span><span class="lv-tx">Không làm. Không kiểm tra. Không giao được.</span></li>
+<li style="--rail:var(--s2)"><span class="lv lv2">2</span><span class="lv-nm">Cải thiện</span><span class="lv-tx">Nói thì làm được, nhưng hay thiếu sót và bỏ qua.</span></li>
+<li style="--rail:var(--s3)"><span class="lv lv3">3</span><span class="lv-nm">Đạt</span><span class="lv-tx">Khi được nhắc thì làm chắc chắn.</span></li>
+<li style="--rail:var(--s4)"><span class="lv lv4">4</span><span class="lv-nm">Tốt</span><span class="lv-tx">Không cần nhắc cũng tự nhận ra và làm. Có bất thường thì tìm nguyên nhân.</span></li>
+<li style="--rail:var(--s5)"><span class="lv lv5">5</span><span class="lv-nm">Xuất sắc</span><span class="lv-tx">Hiểu vì sao phải làm như vậy, và dạy được cho người mới.</span></li>
+</ul><p style="margin-top:26px">Khi phân vân, chỉ cần hỏi ba câu này.</p><ol class="qs">
+<li>Không ai nhắc, có làm không?　<span class="verdict">Không → 3 trở xuống</span></li>
+<li>Được nhắc thì có làm chắc chắn không?　<span class="verdict">Không → 2 trở xuống</span></li>
+<li>Có dạy được cho người khác không?　<span class="verdict">Có → 5</span></li>
+</ol><div class="callout"><p><strong>3 không phải là mức đạt yêu cầu.</strong> 3 nghĩa là chắc chắn, nhưng phải chờ người khác nhắc.</p><p>Giao việc được một mình là từ 4 trở lên. Hiểu nhầm chỗ này thì toàn bộ đánh giá sẽ dễ dãi.</p></div></section>
+<section><h2><span class="num">03</span>Tiến hành trong ngày</h2><ol class="steps">
+<li><h3>Chọn công việc cần đánh giá</h3><p>Chọn công việc theo từng lĩnh vực. Có thể chọn nhiều cùng lúc. Mỗi lần khoảng 3 đến 5 công việc.</p>
+</li>
+<li><h3>Cho làm thật</h3><p>Để người đó làm và đứng bên cạnh quan sát. Không chấm điểm chỉ bằng hỏi miệng.</p>
+</li>
+<li><h3>Chấm từng mục</h3><p>Mở “Xem tiêu chuẩn (Mức 1–5)” sẽ thấy năm câu của mục đó. <strong>Chọn câu gần nhất với điều vừa nhìn thấy.</strong> Không chấm theo cảm tính.</p>
+</li>
+<li><h3>Viết nhận xét</h3><p>Chỉ có điểm thì người đó không biết lần sau phải làm gì. Mục nào từ 3 điểm trở xuống thì bắt buộc phải viết.</p>
+<p class="eg"><b>TỐT</b>Không kiểm tra nước ở núm uống. Ba núm không ra nước.</p><p class="eg ng"><b>KHÔNG TỐT</b>Hãy cố gắng thêm một chút.</p>
+</li>
+<li><h3>Lưu lại</h3><p>Nhập ngày, tên người đánh giá và tên người được đánh giá rồi lưu. <strong>Chưa chấm đủ tất cả các mục thì không lưu được.</strong></p></li></ol></section>
+<section><h2><span class="num">04</span>Quy định khi phân vân</h2><ul class="rules">
+<li><b>Không chấm điều mình không nhìn thấy.</b>Hoặc bỏ công việc đó ra, hoặc cho làm rồi mới chấm.</li>
+<li><b>Không chấm theo một ngày may rủi.</b>Đánh giá theo cách làm thường ngày.</li>
+<li><b>Một lần sai không phải là 1 điểm.</b>Ngược lại, nhắc xong sửa được cũng không nâng điểm. Cách làm trước khi được nhắc mới là thực lực.</li>
+<li><b>Nếu quên mất trình tự.</b>Mỗi công việc có liên kết “Xem sổ tay hiện trường” dẫn tới bản hướng dẫn của công việc đó.</li>
+<li><b>Làm lại thoải mái.</b>Bản ghi đã lưu có thể sửa bất cứ lúc nào từ mục lịch sử.</li>
+</ul></section>
+<section><h2><span class="num">05</span>Cách xử lý bản ghi</h2><ul class="rules">
+<li><b>Lịch sử</b>Các lần đánh giá trước hiện thành danh sách. Bấm vào sẽ thấy điểm và nhận xét của từng mục.</li>
+<li><b>Biểu đồ</b>Chọn một người sẽ thấy điểm trung bình theo thời gian và biểu đồ radar 5 mục chồng lên lần trước. Mục nào tiến bộ, mục nào đứng yên nhìn là biết.</li>
+<li><b>Xuất CSV</b>Mỗi dòng là một mục. Dùng để tổng hợp và làm báo cáo.</li>
+<li><b>Sao lưu</b>Bản ghi chỉ nằm trong máy đó. Máy người khác không có. Thỉnh thoảng hãy sao lưu ở thẻ Cài đặt (mật khẩu OOIRI).</li>
+</ul></section>
+<section><h2><span class="num">06</span>Nói trước với người được đánh giá</h2><ul class="rules">
+<li><b>Sẽ xem những công việc nào.</b>Không giấu.</li>
+<li><b>Ý nghĩa của điểm.</b>3 là “được nhắc thì làm được”, từ 4 là làm được một mình.</li>
+<li><b>Đây không phải kỳ thi để đánh trượt.</b>Đây là để quyết định lần tới học gì.</li>
+</ul></section>
+<section><h2><span class="num">07</span>Danh sách công việc (40 công việc)</h2><p class="note">Bên dưới mỗi công việc là năm mục sẽ xem.</p><section class="cat"><h3 class="cat-h"><span class="cat-nm">Nuôi dưỡng</span><span class="cat-ct">7 công việc</span></h3><ul class="wl">
+<li class="w"><p class="w-hd"><span class="w-no">11</span><span class="w-nm">Cho ăn</span></p><p class="w-pp">Giúp lợn lớn và sinh sản ổn định, cả đàn ăn đều nhau, không lãng phí thức ăn</p><ul class="asp"><li>Quản lý lượng thức ăn và điều chỉnh theo từng con, theo mùa</li><li>Kiểm tra thức ăn thừa và nước uống</li><li>Kiểm tra và báo cáo loại và tình trạng thức ăn</li><li>Quan sát lợn ăn sau khi cho ăn</li><li>Ghi nhật ký và phòng dịch giữa các chuồng</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">02</span><span class="w-nm">Điều chỉnh lượng thức ăn</span></p><p class="w-pp">Tránh thừa hoặc thiếu dinh dưỡng theo BCS (điểm thể trạng) và giai đoạn sinh lý, nâng cao thành tích sinh sản</p><ul class="asp"><li>Điều chỉnh theo giai đoạn và thời điểm</li><li>Kiểm tra việc ăn và thức ăn thừa của từng con</li><li>Tăng giảm theo từng bước</li><li>Chú ý đến lứa đẻ và mùa</li><li>Sờ nắn chấm điểm BCS và ghi chép ngay tại chỗ</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">16</span><span class="w-nm">Thu gom thức ăn thừa</span></p><p class="w-pp">Giảm nguy cơ bệnh và thức ăn thối hỏng, giảm chi phí thức ăn, giúp xem lại lượng cho ăn</p><ul class="asp"><li>Phân biệt thức ăn hỏng và thu gom nhanh</li><li>Quản lý thùng và dụng cụ chuyên dùng</li><li>Kiểm tra máng ăn và vệ sinh hằng ngày</li><li>Ghi lượng thức ăn thừa và phản ánh vào lượng cho ăn</li><li>Nhận ra dấu hiệu sức khỏe từ thức ăn thừa</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">43</span><span class="w-nm">Tập cho ăn (cho ăn thời kỳ nuôi con bú sữa)</span></p><p class="w-pp">Bảo đảm lượng sữa, tăng số con và cân nặng lúc cai sữa, tránh lợn nái bị gầy sút</p><ul class="asp"><li>Tăng dần thức ăn sau đẻ và ứng phó nắng nóng</li><li>Quản lý cân bằng số con đẻ ra và số vú</li><li>Kiểm tra nước uống theo nguyên tắc &quot;nước trước, thức ăn sau&quot;</li><li>Kiểm tra thức ăn thừa rồi mới quyết định lượng cho ăn</li><li>Quản lý creep feed (thức ăn tập ăn)</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">27</span><span class="w-nm">Nhận lợn cai sữa vào chuồng cai sữa (bàn giao nuôi dưỡng)</span></p><p class="w-pp">Bàn giao chắc chắn sang khâu quản lý lợn choai</p><ul class="asp"><li>Bàn giao thông tin từng con</li><li>Kiểm tra trước môi trường nhận lợn và quan sát ban đầu</li><li>Chia nhóm theo cân nặng và quản lý riêng lợn con yếu</li><li>Vận chuyển an toàn và đối chiếu số con</li><li>Tập cho lợn con uống nước và ăn</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">34</span><span class="w-nm">Thiến lợn con</span></p><p class="w-pp">Sản xuất thịt lợn không có mùi hôi đực, giảm đánh nhau và nhảy lên nhau, quản lý đàn an toàn hơn</p><ul class="asp"><li>Giữ đúng tuổi ngày, cách làm và thực hiện nhanh gọn</li><li>Dụng cụ sạch và kiểm tra sau thiến</li><li>Giữ lợn con và an toàn dao kéo</li><li>Kiểm tra đã lấy đủ hai tinh hoàn và xử lý thoát vị</li><li>Chú ý theo mùa và ghi chép xử lý</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">18</span><span class="w-nm">Chuẩn bị chất bổ sung (trộn vào thức ăn)</span></p><p class="w-pp">Giúp chất bổ sung phát huy hiệu quả đều, giữ sức khỏe và thành tích của lợn ổn định</p><ul class="asp"><li>Cân đo chính xác và trộn đều</li><li>Quản lý trùng lặp và ngừng thuốc của chất bổ sung kháng khuẩn</li><li>Đối chiếu chỉ thị, nhãn và tình trạng</li><li>Đồ bảo hộ và cách xử lý bột</li><li>Chống nhầm lẫn, bảo quản và vệ sinh dụng cụ</li></ul></li>
+</ul></section>
+<section class="cat"><h3 class="cat-h"><span class="cat-nm">Vệ sinh</span><span class="cat-ct">9 công việc</span></h3><ul class="wl">
+<li class="w"><p class="w-hd"><span class="w-no">12</span><span class="w-nm">Dọn phân</span></p><p class="w-pp">Giảm bệnh và khí độc hại, bảo vệ sức khỏe lợn, phát hiện sớm bất thường qua phân</p><ul class="asp"><li>Thứ tự dọn phân → rửa → khử trùng</li><li>Kiểm tra dưới sàn, hố chứa phân và phân sót lại</li><li>Quan sát phân và báo cáo ngay phân bất thường</li><li>Bảo đảm an toàn với hố chứa phân và máy dọn phân</li><li>Quản lý dụng cụ chuyên dùng của từng chuồng</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">31</span><span class="w-nm">Vệ sinh 5S (Sàng lọc - Sắp xếp - Sạch sẽ - Săn sóc - Sẵn sàng)</span></p><p class="w-pp">Nâng cao mức vệ sinh, làm việc dễ hơn, phát hiện sớm sự cố thiết bị</p><ul class="asp"><li>Giữ nghiêm việc để đồ đúng vị trí quy định</li><li>Chia sẻ tiêu chuẩn sạch sẽ và phát hiện bất thường</li><li>Sàng lọc (phán đoán xử lý đồ không cần)</li><li>Vệ sinh trọng điểm những chỗ dễ bẩn</li><li>Ghi chép trung thực bảng kiểm tra</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">04</span><span class="w-nm">Điều trị</span></p><p class="w-pp">Giúp lợn ốm hồi phục nhanh, ngăn bệnh nặng thêm và lây lan</p><ul class="asp"><li>Kiểm tra thời gian ngừng thuốc và nhận biết lợn đang điều trị</li><li>Tuân thủ chỉ dẫn, cách dùng thuốc và quản lý số kim tiêm</li><li>Ghi sổ điều trị ngay tại chỗ</li><li>Phát hiện và báo cáo lợn có sức khỏe kém</li><li>Cách ly và thứ tự làm việc để chống lây lan</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">06</span><span class="w-nm">Tiêm vắc-xin cho lợn nái</span></p><p class="w-pp">Tạo miễn dịch bảo vệ lợn nái và lợn con, làm đồng đều mức miễn dịch của trại</p><ul class="asp"><li>Giữ đúng tuổi ngày và lịch tiêm</li><li>Cách xử lý vắc-xin và thay kim tiêm</li><li>Kiểm tra sức khỏe lợn nái và quyết định tiêm hay không</li><li>Vị trí tiêm, cách giữ lợn và thao tác tiêm</li><li>Ghi chép ngay tại chỗ và quan sát sau tiêm</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">41</span><span class="w-nm">Tiêm vắc-xin CSF (dịch tả lợn cổ điển) cho lợn con</span></p><p class="w-pp">Tạo miễn dịch cho lợn con, phòng bệnh dịch tả lợn phát sinh, chết và thiệt hại kinh tế</p><ul class="asp"><li>Tuổi ngày tiêm có tính đến kháng thể mẹ truyền</li><li>Tiêm đủ cả đàn và ghi chép</li><li>Giữ lợn, phối hợp và tiêm bắp chắc chắn</li><li>Đối chiếu số kim, thay kim và xử lý khi bị kim đâm</li><li>Bảo quản lạnh vắc-xin và kiểm tra chất lượng</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">40</span><span class="w-nm">Rửa chuồng (sau cai sữa)</span></p><p class="w-pp">Loại bỏ chất bẩn và mầm bệnh bằng cách rửa, tạo trạng thái để khử trùng có tác dụng, làm mới lại chuồng</p><ul class="asp"><li>Thứ tự dọn phân → rửa → làm khô → khử trùng</li><li>Rửa kỹ góc, rãnh và mặt sau</li><li>Xác nhận đã chuyển hết lợn (all-out) và an toàn khi rửa</li><li>Ngâm chất tẩy rửa và xối sạch hoàn toàn</li><li>Bảo đảm thời gian làm khô và chuẩn bị cho lứa tiếp theo</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">15</span><span class="w-nm">Khử trùng</span></p><p class="w-pp">Không cho mầm bệnh vào, không làm lan rộng, không mang ra ngoài, giữ mức phòng dịch của trại</p><ul class="asp"><li>Giữ đúng nồng độ, lượng và thời gian tiếp xúc</li><li>Loại bỏ bẩn kỹ trước và đeo đồ bảo hộ</li><li>Làm khô kỹ sau khi rửa và sau khi khử trùng</li><li>Cấm pha trộn thuốc khử trùng và xử lý khi có sự cố</li><li>Quản lý hố khử trùng chân và ghi chép thực hiện</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">44</span><span class="w-nm">Rắc vôi bột (khử trùng bằng vôi)</span></p><p class="w-pp">Tạo hàng rào phòng dịch ở lối ra vào trại, ngăn mầm bệnh xâm nhập và lan rộng</p><ul class="asp"><li>Quản lý nước và lượng rắc</li><li>Kiểm tra hướng gió và bảo hộ</li><li>Kiểm tra trước thời tiết và tồn kho</li><li>Rắc đều và kiểm tra kết quả</li><li>Xử lý khi vôi dính da và bảo quản vôi</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">37</span><span class="w-nm">Thu gom lợn chết</span></p><p class="w-pp">Ngăn mầm bệnh lan rộng, mùi hôi và thú hại, tuân thủ pháp luật</p><ul class="asp"><li>Thu gom nhanh và cất giữ ở nơi chuyên dùng</li><li>Tuân thủ pháp luật và ghi chép lợn chết</li><li>Nhận biết dấu hiệu bệnh truyền nhiễm và dừng công việc</li><li>Đeo đồ bảo hộ và khử trùng sau khi thu gom</li><li>Xác nhận lợn chết và quan sát lợn cùng ô chuồng</li></ul></li>
+</ul></section>
+<section class="cat"><h3 class="cat-h"><span class="cat-nm">Sinh sản</span><span class="cat-ct">8 công việc</span></h3><ul class="wl">
+<li class="w"><p class="w-hd"><span class="w-no">14</span><span class="w-nm">Công việc bơm tinh AI (thụ tinh nhân tạo)</span></p><p class="w-pp">Giữ số con thụ thai và số con đẻ ra ở mức cao, dùng tinh dịch có kế hoạch, không lãng phí</p><ul class="asp"><li>Chuẩn bị trước và kiểm tra hoạt lực tinh trùng</li><li>Kiểm tra phản xạ đứng yên và phán đoán đưa ống vào</li><li>Giữ sạch dụng cụ, bộ phận sinh dục ngoài và quản lý nhiệt độ tinh dịch</li><li>Bơm tinh bằng cách để tự chảy và xử lý catheter</li><li>Ghi chép, xử lý rác y tế và bổ sung vật tư</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">33</span><span class="w-nm">Kiểm tra phản xạ đứng yên khi động dục</span></p><p class="w-pp">Nhìn ra thời điểm tốt nhất để phối giống, nâng tỷ lệ thụ thai và số con đẻ ra</p><ul class="asp"><li>Chọn lọc lợn nái đối tượng</li><li>Kiểm tra bằng tiếp xúc lợn đực và ấn lưng</li><li>Phán đoán tổng hợp từ âm hộ, dịch nhầy và hành vi</li><li>Phòng bỏ sót lợn nái động dục thầm lặng và động dục ban đêm</li><li>Ghi giờ ngay tại chỗ và báo cáo nái chưa động dục</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">03</span><span class="w-nm">Kiểm tra tinh dịch và đảo chai tinh</span></p><p class="w-pp">Loại bỏ tinh dịch có vấn đề trước khi dùng, ngăn thành tích sinh sản giảm sút</p><ul class="asp"><li>Bảo quản 17℃ và hạn chế thay đổi nhiệt độ</li><li>Kiểm tra hoạt lực tinh trùng và đảo chai nhẹ nhàng</li><li>Loại bỏ tinh dịch kém và báo cáo</li><li>Quản lý hạn sử dụng (nhập trước xuất trước)</li><li>Ghi chép kiểm tra và kiểm tra máy móc</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">17</span><span class="w-nm">Lắc đều tinh dịch (lắc nhẹ)</span></p><p class="w-pp">Làm đều nồng độ tinh trùng</p><ul class="asp"><li>Kiểm tra nhiệt độ bảo quản và xử lý khi lệch chuẩn</li><li>Lắc nhẹ nhàng và chú ý nhiệt độ, áp suất thẩm thấu</li><li>Kiểm tra cặn lắng, đọng sương và màu sắc</li><li>Che sáng kỹ càng</li><li>Thao tác trong thời gian ngắn, nhập trước xuất trước và ghi chép</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">09</span><span class="w-nm">Chẩn đoán mang thai</span></p><p class="w-pp">Đảm bảo số con đẻ ra và số con cai sữa theo kế hoạch, phát hiện sớm lợn nái không mang thai để xử lý</p><ul class="asp"><li>Tuân thủ thời điểm chẩn đoán và kiểm tra lại</li><li>Đọc đúng hình ảnh siêu âm</li><li>Tạm hoãn kết luận khi phân vân và đặt lịch kiểm tra lại</li><li>Kiểm tra động dục trở lại sau chẩn đoán</li><li>Ghi ngay tại chỗ và khử trùng đầu dò</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">08</span><span class="w-nm">Tiêm PMS (hormone kích thích động dục)</span></p><p class="w-pp">Gây động dục cho lợn nái động dục yếu hoặc không động dục, làm đồng đều thời điểm</p><ul class="asp"><li>Thời điểm tiêm và kiểm tra thể vàng</li><li>Tránh tự ý quyết định và xác nhận lợn nái đối tượng</li><li>Kiểm tra nhãn thuốc và quản lý nhiệt độ</li><li>Tiêm bắp chắc chắn và quản lý an toàn kim tiêm</li><li>Ghi chép tiêm và quản lý lịch quan sát động dục</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">36</span><span class="w-nm">Tiêm PG (prostaglandin)</span></p><p class="w-pp">Làm đồng đều thời điểm đẻ, giúp quản lý đẻ và trực đẻ dễ dàng hơn</p><ul class="asp"><li>Kiểm tra số ngày mang thai và tiêm đúng thời điểm</li><li>Đối chiếu số hiệu cá thể và kiểm tra chéo</li><li>Tiêm chắc chắn và chuẩn bị đón đẻ</li><li>An toàn cho người và xử lý kim, rác y tế</li><li>Ghi chép tiêm và quản lý lịch theo dõi</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">42</span><span class="w-nm">Rửa tử cung (sau khi đẻ)</span></p><p class="w-pp">Giảm chất bẩn trong tử cung, phòng viêm tử cung, sốt và giúp hồi phục sau đẻ</p><ul class="asp"><li>Chọn đối tượng và tuân theo chỉ thị của bác sĩ thú y</li><li>Pha chế và làm ấm dung dịch rửa</li><li>Dụng cụ tiệt trùng, khử trùng âm hộ và thao tác nhẹ nhàng</li><li>Phán đoán dừng lại khi vướng hoặc lợn giãy giụa</li><li>Ghi thân nhiệt, dịch thải và quản lý ngừng thuốc</li></ul></li>
+</ul></section>
+<section class="cat"><h3 class="cat-h"><span class="cat-nm">Đẻ</span><span class="cat-ct">3 công việc</span></h3><ul class="wl">
+<li class="w"><p class="w-hd"><span class="w-no">26</span><span class="w-nm">Đưa nái vào chuồng đẻ</span></p><p class="w-pp">Chỉ đưa lợn nái sắp đẻ vào, để nái đón cuộc đẻ trong trạng thái yên tĩnh</p><ul class="asp"><li>Chuẩn bị trong chuồng trước khi đưa lợn vào</li><li>Đưa vào đồng loạt đúng thời điểm và theo dõi sau khi vào</li><li>Lùa nhẹ nhàng và an toàn cho người</li><li>Đối chiếu và ghi số tai</li><li>Kiểm tra uống nước và cho ăn lần đầu ngay sau khi vào</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">35</span><span class="w-nm">Hỗ trợ đỡ đẻ</span></p><p class="w-pp">Bảo vệ tính mạng lợn nái và lợn con, giảm chết lưu, chết ngay sau đẻ và cho bú sữa đầu</p><ul class="asp"><li>Phán đoán thời điểm can thiệp và báo cáo đẻ khó</li><li>Triệt để sạch sẽ và bôi trơn</li><li>Lau khô, giữ ấm, hồi sức lợn con sơ sinh</li><li>Cho bú sữa đầu sớm</li><li>Kiểm tra, ghi chép và dọn dẹp sau khi đẻ</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">39</span><span class="w-nm">Ghép bầy (cho nái khác nuôi)</span></p><p class="w-pp">Cân bằng số vú và số lợn con, tăng số con cai sữa và cứu con yếu</p><ul class="asp"><li>Ghép bầy sau khi bú sữa đầu và chọn đối tượng</li><li>Loại lợn con bệnh và vệ sinh tay</li><li>Chuyển nhẹ nhàng và kiểm tra nái nhận con</li><li>Kiểm tra bú sữa và theo dõi sau ghép bầy</li><li>Bảng ghép bầy và ghi chép</li></ul></li>
+</ul></section>
+<section class="cat"><h3 class="cat-h"><span class="cat-nm">Thiết bị</span><span class="cat-ct">7 công việc</span></h3><ul class="wl">
+<li class="w"><p class="w-hd"><span class="w-no">13</span><span class="w-nm">Sắp xếp lại vị trí lợn nái</span></p><p class="w-pp">Gom lợn nái lại cho dễ quản lý, giảm đánh nhau và stress</p><ul class="asp"><li>Xếp theo thứ tự ngày dự sinh và cập nhật sổ quản lý</li><li>Loại trừ khỏi di chuyển lợn nái đầu thai kỳ (trong vòng 35 ngày)</li><li>Chú ý chênh lệch thể trạng và tính hung dữ</li><li>Lùa bằng tấm chắn và bảo đảm an toàn cho bản thân</li><li>Kiểm tra nước, thức ăn, thẻ nái sau khi di chuyển</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">10</span><span class="w-nm">Chỉ thị di chuyển (di chuyển lợn)</span></p><p class="w-pp">Không làm tắc luồng luân chuyển lợn (pig flow), di chuyển an toàn không gây stress cho lợn</p><ul class="asp"><li>Nhắc lại chỉ thị di chuyển và đối chiếu số con</li><li>Kiểm tra lối đi và độ sạch của nơi chuyển đến</li><li>Ngừng di chuyển lợn bệnh, lợn không đứng dậy được</li><li>Lùa nhẹ nhàng theo từng nhóm nhỏ</li><li>Quan sát đánh nhau sau khi trộn nhóm và dọn dẹp sau việc</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">25</span><span class="w-nm">Di chuyển từ chuồng lợn nái mang thai → chuồng phối giống / chuồng hậu bị</span></p><p class="w-pp">Giữ đúng luồng luân chuyển lợn (pig flow), nối tiếp sang chuồng kế</p><ul class="asp"><li>Đối chiếu danh sách di chuyển và loại trừ đầu thai kỳ</li><li>Lùa nhẹ nhàng từ chéo phía sau</li><li>Chuẩn bị tiếp nhận ở nơi đến và kiểm tra nước, thức ăn</li><li>Phòng dịch khi di chuyển giữa các chuồng (thảm khử trùng)</li><li>Đối chiếu số con, ghi chép và cập nhật bảng thông tin</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">19</span><span class="w-nm">Kiểm tra hoạt động máy cào phân</span></p><p class="w-pp">Giữ chức năng dọn phân hoạt động bình thường, phát hiện sớm trục trặc máy để tránh hỏng lớn</p><ul class="asp"><li>Quy trình an toàn như ngắt điện</li><li>Kiểm tra bằng mắt lưỡi cào, đường chạy và loại bỏ dị vật</li><li>Chạy thử để kiểm tra chuyển động và việc cào phân</li><li>Kiểm tra xích, dây cáp; dừng và báo cáo khi bất thường</li><li>Ghi chép kết quả kiểm tra và báo cáo cụ thể</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">29</span><span class="w-nm">Vệ sinh quạt</span></p><p class="w-pp">Duy trì năng lực thông gió, phòng bệnh hô hấp, stress do nóng và giúp thiết bị bền lâu</p><ul class="asp"><li>Ngắt điện và vệ sinh an toàn</li><li>Phủi bụi khô trước và rửa mặt sau cánh quạt</li><li>Kiểm tra độ căng và xuống cấp của dây curoa quạt</li><li>Đóng mở cửa chớp và kiểm tra chạy thử</li><li>Thông báo trước khi làm và ghi chép, báo cáo vệ sinh</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">30</span><span class="w-nm">Vệ sinh bể nước của tấm làm mát (pad tank) — mùa hè</span></p><p class="w-pp">Duy trì hiệu quả làm mát, phòng rêu tảo, vi khuẩn, mùi hôi và giúp thiết bị bền lâu</p><ul class="asp"><li>Vệ sinh định kỳ và phát hiện sớm rêu tảo, nhớt</li><li>Cách rửa nhẹ nhàng không làm xước</li><li>Kiểm tra lưới lọc, máy bơm, đường ống</li><li>Châm nước lại và kiểm tra nước chảy đều</li><li>Ghi chép, báo cáo và tự chăm sóc bản thân mùa hè</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">20</span><span class="w-nm">Công tắc cấp cám (vận hành cho ăn tự động)</span></p><p class="w-pp">Giữ việc cho ăn ổn định, giảm lãng phí thức ăn và phòng trục trặc máy</p><ul class="asp"><li>Vị trí công tắc và dừng khi bất thường</li><li>Kiểm tra trước loại thức ăn và lượng còn lại</li><li>Xử lý an toàn tắc do bridging</li><li>Đi kiểm tra lượng thức ăn trong máng và mức ăn</li><li>Kiểm tra hoạt động sau khi đổi hẹn giờ và ghi chép</li></ul></li>
+</ul></section>
+<section class="cat"><h3 class="cat-h"><span class="cat-nm">Ghi chép</span><span class="cat-ct">4 công việc</span></h3><ul class="wl">
+<li class="w"><p class="w-hd"><span class="w-no">05</span><span class="w-nm">Ghi nhật ký công việc</span></p><p class="w-pp">Ghi lại tình trạng lợn để phát hiện bệnh sớm, lưu thành tích bằng con số để phục vụ cải thiện</p><ul class="asp"><li>Ghi chính xác ngay tại chỗ</li><li>Ghi theo quy tắc chung và sử dụng ghi chép</li><li>Kiểm lại biến động số đầu con</li><li>Mô tả cụ thể về chết và bất thường</li><li>So sánh với hôm trước và báo cáo thay đổi đột ngột</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">07</span><span class="w-nm">Làm thẻ thông tin (plate)</span></p><p class="w-pp">Giúp nhận biết ngay từng con, từng nhóm; hiển thị vắc-xin, điều trị, đang ngừng thuốc</p><ul class="asp"><li>Cập nhật trạng thái mới nhất và xử lý thẻ cũ</li><li>Cách ghi ai cũng hiểu và tuân thủ quy tắc phân màu</li><li>Chép theo ghi chép và đối chiếu lại</li><li>Ghi thông tin ngừng thuốc trên thẻ điều trị</li><li>Vị trí gắn và phòng nuốt nhầm</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">21</span><span class="w-nm">Gắn thẻ tai (bấm thẻ số)</span></p><p class="w-pp">Nhận biết chắc chắn từng con, quản lý nhất quán sức khỏe, sinh sản, điều trị, xuất chuồng và truy xuất được nguồn gốc</p><ul class="asp"><li>Vị trí đúng và khử trùng trước khi gắn</li><li>Gắn lại khi thẻ rơi, hỏng</li><li>Chuẩn bị theo thứ tự số và đối chiếu số đầu con</li><li>Giữ chặt và gắn chắc chắn trong một lần</li><li>Ghi ngay tại chỗ và quan sát sau khi gắn</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">32</span><span class="w-nm">Ghi ngày dự sinh</span></p><p class="w-pp">Nắm thời kỳ đẻ để chuẩn bị chuồng và nhân lực có kế hoạch, phát hiện sớm không thụ thai</p><ul class="asp"><li>Tính ngày tuổi thai theo cách thống nhất</li><li>Ghi lại khi phối lại và quan sát lợn nái</li><li>Kiểm tra lại ngày trên lịch</li><li>Ghi vào bảng kế hoạch và nhìn thấy theo tuần</li><li>Ghi ngày kiểm tra và đối chiếu số đầu con</li></ul></li>
+</ul></section>
+<section class="cat"><h3 class="cat-h"><span class="cat-nm">Xuất chuồng</span><span class="cat-ct">2 công việc</span></h3><ul class="wl">
+<li class="w"><p class="w-hd"><span class="w-no">22</span><span class="w-nm">Xuất chuồng lợn loại thải (đưa lợn nái đi)</span></p><p class="w-pp">Đổi mới đàn sinh sản có kế hoạch, xuất chuồng an toàn không ép lợn nái quá sức</p><ul class="asp"><li>Đối chiếu danh sách và đánh dấu</li><li>Kiểm tra dáng đi và tuân thủ pháp luật</li><li>Hai người cùng kiểm tra thời gian ngừng thuốc</li><li>Bắt đầu nhịn ăn và chuẩn bị lối đi, chỗ chất lợn lên xe</li><li>Chất lợn lên xe, đối chiếu số con và khử trùng sau xuất chuồng</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">23</span><span class="w-nm">Chuyển lợn loại thải sang chuồng lợn choai</span></p><p class="w-pp">Giúp việc quản lý trước xuất chuồng thuận lợi</p><ul class="asp"><li>Đối chiếu và kiểm tra dáng đi trước khi chuyển</li><li>Chuẩn bị đường di chuyển và ô chuồng tiếp nhận</li><li>Cách dùng tấm chắn lùa lợn và bảo đảm an toàn cho bản thân</li><li>Tránh tiếp xúc với nhóm khác (cách ly)</li><li>Kiểm tra, ghi chép và khử trùng sau khi đưa lợn vào chuồng</li></ul></li>
+</ul></section></section>
+<footer><p>Tiêu chuẩn đánh giá dựa trên “Mục đích và điểm lưu ý của từng công việc” của trại Mutsuzawa và sổ tay hiện trường.</p><p>Phiên bản dữ liệu 2026-08-27 · 40 công việc, 200 mục</p></footer>
+</div>
+<div class="wrap" lang="id" data-l="id" hidden>
+<header class="mast"><p class="eyebrow">HSS PRACTICAL EXAM V2 · MUTSUZAWA FARM</p><h1>Panduan Ujian Praktik</h1><p class="lede">Panduan untuk orang yang menguji. Isinya hanya cara memberi nilai dan jalannya hari ujian.</p><a class="applink" href="https://shoichiokada225-sys.github.io/pig-farm-evaluation-v2/" target="_blank" rel="noopener">Buka aplikasi penilaian</a></header>
+<section><h2><span class="num">01</span>Yang diukur dalam ujian ini</h2><p class="thesis">Bisakah pekerjaan dilakukan dengan benar tanpa diberi tahu?</p><p>Ini bukan ujian pengetahuan. Yang dilihat adalah cara kerja nyata di kandang. 7 bidang, 40 pekerjaan. Setiap pekerjaan punya 5 poin tetap yang dilihat, dan tiap poin dinilai 1 sampai 5.</p></section>
+<section><h2><span class="num">02</span>Cara memberi nilai</h2><p>Arti nilai sama untuk seluruh 200 poin dari 40 pekerjaan. Hanya satu yang menentukan: <strong>seberapa besar bantuan orang lain yang masih dibutuhkan.</strong></p><ul class="ladder">
+<li style="--rail:var(--s1)"><span class="lv lv1">1</span><span class="lv-nm">Mendesak</span><span class="lv-tx">Tidak dikerjakan. Tidak diperiksa. Tidak bisa diserahkan.</span></li>
+<li style="--rail:var(--s2)"><span class="lv lv2">2</span><span class="lv-nm">Perbaikan</span><span class="lv-tx">Kalau disuruh bisa, tetapi sering ada yang terlewat.</span></li>
+<li style="--rail:var(--s3)"><span class="lv lv3">3</span><span class="lv-nm">Standar</span><span class="lv-tx">Kalau disuruh, dikerjakan dengan pasti.</span></li>
+<li style="--rail:var(--s4)"><span class="lv lv4">4</span><span class="lv-nm">Baik</span><span class="lv-tx">Tanpa disuruh pun sadar sendiri dan mengerjakannya. Kalau ada yang tidak beres, dicari penyebabnya.</span></li>
+<li style="--rail:var(--s5)"><span class="lv lv5">5</span><span class="lv-nm">Teladan</span><span class="lv-tx">Paham alasannya, dan bisa mengajari karyawan baru.</span></li>
+</ul><p style="margin-top:26px">Kalau ragu, cukup tiga pertanyaan ini.</p><ol class="qs">
+<li>Tanpa disuruh, apakah dikerjakan?　<span class="verdict">Tidak → 3 ke bawah</span></li>
+<li>Kalau disuruh, apakah pasti dikerjakan?　<span class="verdict">Tidak → 2 ke bawah</span></li>
+<li>Bisakah mengajari orang lain?　<span class="verdict">Ya → 5</span></li>
+</ol><div class="callout"><p><strong>3 bukan batas lulus.</strong> 3 berarti pasti bisa, tetapi menunggu disuruh.</p><p>Bisa diserahkan sendiri mulai dari 4. Kalau ini keliru dipahami, semua penilaian jadi terlalu longgar.</p></div></section>
+<section><h2><span class="num">03</span>Jalannya pada hari ujian</h2><ol class="steps">
+<li><h3>Tentukan pekerjaan yang dinilai</h3><p>Pilih pekerjaan per bidang. Bisa memilih beberapa sekaligus. Sekitar 3 sampai 5 pekerjaan sekali ujian.</p>
+</li>
+<li><h3>Minta dikerjakan langsung</h3><p>Biarkan mengerjakan dan lihat dari samping. Jangan menilai hanya dari tanya jawab.</p>
+</li>
+<li><h3>Beri nilai tiap poin</h3><p>Buka “Lihat kriteria (Level 1–5)” untuk melihat lima kalimat poin itu. <strong>Pilih kalimat yang paling dekat dengan yang baru saja dilihat.</strong> Jangan menilai dari kesan.</p>
+</li>
+<li><h3>Tulis komentar</h3><p>Nilai saja tidak memberi tahu apa yang harus dilakukan berikutnya. Poin yang bernilai 3 ke bawah wajib diberi catatan.</p>
+<p class="eg"><b>BAIK</b>Aliran air di nipel tidak diperiksa. Tiga nipel tidak keluar air.</p><p class="eg ng"><b>BURUK</b>Tolong lebih semangat lagi.</p>
+</li>
+<li><h3>Simpan</h3><p>Isi tanggal, nama penilai, dan nama yang dinilai, lalu simpan. <strong>Selama masih ada poin yang belum dinilai, data tidak bisa disimpan.</strong></p></li></ol></section>
+<section><h2><span class="num">04</span>Ketentuan saat ragu</h2><ul class="rules">
+<li><b>Jangan menilai yang tidak dilihat.</b>Keluarkan pekerjaan itu, atau minta dikerjakan dulu baru dinilai.</li>
+<li><b>Jangan menilai dari kebetulan hari itu.</b>Nilailah dari cara kerja sehari-hari.</li>
+<li><b>Satu kesalahan bukan berarti nilai 1.</b>Sebaliknya, jangan menaikkan nilai hanya karena langsung diperbaiki setelah ditegur. Cara kerja sebelum ditegur itulah kemampuan sebenarnya.</li>
+<li><b>Kalau lupa urutannya.</b>Tiap pekerjaan punya tautan “Lihat manual lapangan” ke panduan pekerjaan itu.</li>
+<li><b>Boleh diulang.</b>Catatan yang sudah disimpan bisa diperbaiki kapan saja dari riwayat.</li>
+</ul></section>
+<section><h2><span class="num">05</span>Pengelolaan catatan</h2><ul class="rules">
+<li><b>Riwayat</b>Penilaian sebelumnya tampil sebagai daftar. Ditekan akan muncul nilai dan komentar tiap poin.</li>
+<li><b>Grafik</b>Pilih seorang untuk melihat rata-rata dari waktu ke waktu dan grafik radar 5 poin yang ditumpuk dengan penilaian sebelumnya. Poin yang naik dan yang berhenti langsung terlihat.</li>
+<li><b>Ekspor CSV</b>Satu baris satu poin. Dipakai untuk rekap dan laporan.</li>
+<li><b>Cadangan</b>Catatan hanya tersimpan di perangkat itu. Tidak muncul di perangkat orang lain. Sesekali buat cadangan dari tab Pengaturan (kata sandi OOIRI).</li>
+</ul></section>
+<section><h2><span class="num">06</span>Sampaikan lebih dulu kepada yang dinilai</h2><ul class="rules">
+<li><b>Pekerjaan apa saja yang akan dilihat.</b>Jangan disembunyikan.</li>
+<li><b>Arti nilai.</b>3 berarti “kalau disuruh bisa”, mulai 4 sudah bisa sendiri.</li>
+<li><b>Ini bukan ujian untuk menggugurkan.</b>Ini untuk menentukan apa yang dipelajari berikutnya.</li>
+</ul></section>
+<section><h2><span class="num">07</span>Daftar pekerjaan (40 pekerjaan)</h2><p class="note">Di bawah tiap pekerjaan adalah lima poin yang dilihat.</p><section class="cat"><h3 class="cat-h"><span class="cat-nm">Pemberian pakan</span><span class="cat-ct">7 pekerjaan</span></h3><ul class="wl">
+<li class="w"><p class="w-hd"><span class="w-no">11</span><span class="w-nm">Pemberian pakan</span></p><p class="w-pp">Menstabilkan pertumbuhan dan reproduksi, semua babi makan merata, tidak ada pakan terbuang</p><ul class="asp"><li>Pengelolaan jumlah pakan dan penyesuaian per individu dan musim</li><li>Pemeriksaan sisa pakan dan air minum</li><li>Memeriksa dan melaporkan jenis dan kondisi pakan</li><li>Mengamati babi makan setelah pemberian pakan</li><li>Mengisi laporan harian dan biosekuriti antar kandang</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">02</span><span class="w-nm">Penyesuaian Jumlah Pakan</span></p><p class="w-pp">Mencegah kelebihan atau kekurangan gizi sesuai BCS dan tahap fisiologis, meningkatkan hasil reproduksi</p><ul class="asp"><li>Penyesuaian sesuai tahap dan waktu</li><li>Memeriksa cara makan dan sisa pakan tiap individu</li><li>Menambah dan mengurangi secara bertahap</li><li>Memperhatikan paritas dan musim</li><li>Palpasi BCS dan pencatatan langsung</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">16</span><span class="w-nm">Mengumpulkan sisa pakan</span></p><p class="w-pp">Mengurangi risiko penyakit dan pembusukan, menekan biaya pakan, dan membantu peninjauan jumlah pakan</p><ul class="asp"><li>Mengenali pakan rusak dan pengumpulan cepat</li><li>Pengelolaan wadah dan alat khusus</li><li>Pemeriksaan tempat pakan dan pembersihan harian</li><li>Mencatat jumlah sisa pakan dan memakainya untuk meninjau jumlah pakan</li><li>Membaca tanda kondisi babi dari sisa pakan</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">43</span><span class="w-nm">Melatih makan (pemberian pakan masa menyusui)</span></p><p class="w-pp">Menjaga produksi susu, meningkatkan jumlah dan berat anak babi saat sapih, dan mencegah induk babi menjadi kurus</p><ul class="asp"><li>Penambahan bertahap setelah melahirkan dan penanganan cuaca panas</li><li>Pengelolaan keseimbangan jumlah anak dan jumlah puting</li><li>Pemeriksaan air minum &quot;air dulu sebelum pakan&quot;</li><li>Memeriksa sisa pakan lalu menentukan jumlah pakan</li><li>Pengelolaan creep feed</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">27</span><span class="w-nm">Penerimaan babi sapih ke kandang sapih (serah terima pemeliharaan)</span></p><p class="w-pp">Memastikan serah terima ke pengelolaan pembesaran berjalan dengan pasti</p><ul class="asp"><li>Serah terima informasi individu</li><li>Pemeriksaan awal lingkungan penerima dan pengamatan awal</li><li>Pengelompokan menurut berat dan perawatan terpisah anak babi lemah</li><li>Pemindahan yang aman dan pencocokan jumlah ekor</li><li>Mengajari anak babi minum dan makan</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">34</span><span class="w-nm">Kastrasi anak babi</span></p><p class="w-pp">Menghasilkan daging babi tanpa bau pejantan, mengurangi perkelahian dan menunggangi, membuat pengelolaan kelompok lebih aman</p><ul class="asp"><li>Mematuhi umur dan metode serta pelaksanaan cepat</li><li>Alat yang bersih dan pemeriksaan pascaoperasi</li><li>Penahanan anak babi dan keamanan pisau</li><li>Memastikan kedua testis terangkat dan penanganan hernia</li><li>Perhatian musiman dan pencatatan tindakan</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">18</span><span class="w-nm">Persiapan imbuhan pakan (dicampur ke pakan)</span></p><p class="w-pp">Mengeluarkan efek imbuhan pakan secara merata, menstabilkan kesehatan dan performa babi</p><ul class="asp"><li>Penakaran akurat dan pencampuran</li><li>Pengelolaan tumpang tindih imbuhan antibakteri dan masa henti obat</li><li>Mencocokkan instruksi, label, dan kondisi</li><li>Alat pelindung dan penanganan serbuk</li><li>Mencegah tertukar, penyimpanan, dan pembersihan alat</li></ul></li>
+</ul></section>
+<section class="cat"><h3 class="cat-h"><span class="cat-nm">Kebersihan</span><span class="cat-ct">9 pekerjaan</span></h3><ul class="wl">
+<li class="w"><p class="w-hd"><span class="w-no">12</span><span class="w-nm">Membersihkan kotoran</span></p><p class="w-pp">Mengurangi penyakit dan gas berbahaya untuk menjaga kesehatan babi, dan menemukan kelainan lebih awal dari kotoran</p><ul class="asp"><li>Urutan bersihkan kotoran → cuci → disinfeksi</li><li>Pemeriksaan bawah lantai, pit, dan sisa kotoran</li><li>Pengamatan kotoran dan segera melaporkan kotoran abnormal</li><li>Menjaga keselamatan di sekitar pit dan alat pembersih kotoran</li><li>Pengelolaan alat khusus per kandang</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">31</span><span class="w-nm">Kebersihan 5S (Ringkas - Rapi - Resik - Rawat - Rajin)</span></p><p class="w-pp">Menaikkan tingkat kebersihan, membuat pekerjaan lebih mudah, dan menemukan masalah peralatan lebih cepat</p><ul class="asp"><li>Menjalankan pengaturan tempat tetap</li><li>Berbagi standar kebersihan dan menemukan kelainan</li><li>Ringkas (menilai pembuangan barang tak perlu)</li><li>Pembersihan intensif tempat yang mudah kotor</li><li>Pencatatan daftar periksa secara jujur</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">04</span><span class="w-nm">Pengobatan</span></p><p class="w-pp">Memulihkan babi yang sakit dengan cepat, mencegah kondisi memburuk dan penyebaran infeksi</p><ul class="asp"><li>Pemeriksaan masa henti obat dan penandaan babi yang diobati</li><li>Mematuhi instruksi dan aturan pakai serta pengelolaan jumlah jarum</li><li>Pencatatan pengobatan langsung di tempat</li><li>Menemukan dan melaporkan babi yang tidak sehat</li><li>Isolasi dan urutan kerja untuk mencegah penyebaran infeksi</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">06</span><span class="w-nm">Vaksinasi induk babi</span></p><p class="w-pp">Membangun kekebalan yang melindungi induk babi dan anak babi, dan menyeragamkan tingkat kekebalan peternakan</p><ul class="asp"><li>Mematuhi umur dan jadwal</li><li>Penanganan vaksin dan penggantian jarum</li><li>Pemeriksaan kondisi induk babi sasaran dan boleh-tidaknya divaksin</li><li>Lokasi suntik, cara memegang, dan teknik penyuntikan</li><li>Pencatatan langsung di tempat dan pengamatan setelah penyuntikan</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">41</span><span class="w-nm">Vaksinasi CSF (demam babi klasik) untuk anak babi</span></p><p class="w-pp">Membangun kekebalan anak babi, mencegah kejadian dan kematian demam babi klasik serta kerugian ekonomi</p><ul class="asp"><li>Umur penyuntikan yang mempertimbangkan antibodi dari induk</li><li>Penyuntikan semua ekor dan pencatatan</li><li>Pemegangan, kerja sama, dan suntikan intramuskular yang pasti</li><li>Pencocokan jumlah jarum, penggantian, dan penanganan tertusuk jarum</li><li>Penyimpanan dingin vaksin dan pemeriksaan mutu</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">40</span><span class="w-nm">Mencuci kandang (setelah sapih)</span></p><p class="w-pp">Menghilangkan kotoran dan bibit penyakit secara fisik, membuat kondisi agar disinfeksi bekerja, dan mereset bagian dalam kandang</p><ul class="asp"><li>Urutan bersihkan kotoran → cuci → keringkan → disinfeksi</li><li>Pencucian intensif sudut, parit, dan bagian belakang</li><li>Konfirmasi kandang kosong (all-out) dan keselamatan saat mencuci</li><li>Perendaman deterjen dan pembilasan tuntas</li><li>Memastikan waktu pengeringan dan persiapan kelompok berikutnya</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">15</span><span class="w-nm">Disinfeksi</span></p><p class="w-pp">Tidak memasukkan, tidak menyebarkan, dan tidak membawa keluar bibit penyakit, menjaga tingkat biosekuriti peternakan</p><ul class="asp"><li>Mematuhi konsentrasi, jumlah, dan waktu kontak</li><li>Menghilangkan kotoran dengan tuntas dan memakai alat pelindung</li><li>Pengeringan menyeluruh setelah mencuci dan setelah disinfeksi</li><li>Larangan mencampur disinfektan dan penanganan kecelakaan</li><li>Pengelolaan bak celup disinfektan kaki dan pencatatan pelaksanaan</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">44</span><span class="w-nm">Menaburkan kapur (disinfeksi dengan kapur)</span></p><p class="w-pp">Membuat penghalang biosekuriti di pintu masuk-keluar peternakan, menekan masuk dan menyebarnya bibit penyakit</p><ul class="asp"><li>Pengelolaan air dan jumlah taburan</li><li>Pemeriksaan arah angin dan perlindungan diri</li><li>Pemeriksaan cuaca dan stok sebelumnya</li><li>Penaburan merata dan pemeriksaan hasil akhir</li><li>Penanganan saat kapur mengenai kulit dan penyimpanan kapur</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">37</span><span class="w-nm">Pengumpulan babi mati</span></p><p class="w-pp">Mencegah penyebaran bibit penyakit, bau busuk, dan kerusakan oleh hewan liar, serta mematuhi peraturan</p><ul class="asp"><li>Pengumpulan segera dan penyimpanan khusus</li><li>Kepatuhan peraturan dan pencatatan kematian</li><li>Mengenali tanda penyakit menular dan menghentikan pekerjaan</li><li>Memakai alat pelindung dan disinfeksi setelah pengumpulan</li><li>Memastikan kematian dan mengamati babi sekandang</li></ul></li>
+</ul></section>
+<section class="cat"><h3 class="cat-h"><span class="cat-nm">Reproduksi</span><span class="cat-ct">8 pekerjaan</span></h3><ul class="wl">
+<li class="w"><p class="w-hd"><span class="w-no">14</span><span class="w-nm">Pekerjaan inseminasi AI (inseminasi buatan)</span></p><p class="w-pp">Menjaga angka kebuntingan dan jumlah anak tetap tinggi, dan memakai semen secara terencana tanpa pemborosan</p><ul class="asp"><li>Persiapan awal dan pemeriksaan daya gerak sperma</li><li>Pemeriksaan refleks diam dan keputusan memasukkan kateter</li><li>Kebersihan alat dan vulva serta pengelolaan suhu semen</li><li>Inseminasi dengan aliran alami dan penanganan kateter</li><li>Pencatatan, pembuangan sampah medis, dan pengisian ulang perlengkapan</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">33</span><span class="w-nm">Pemeriksaan refleks diam saat birahi</span></p><p class="w-pp">Menentukan waktu terbaik untuk perkawinan, menaikkan angka kebuntingan dan jumlah anak</p><ul class="asp"><li>Menyaring induk babi sasaran</li><li>Pemeriksaan dengan kontak babi jantan + tekanan punggung</li><li>Penilaian gabungan dari vulva, lendir, dan perilaku</li><li>Mencegah terlewatnya induk pendiam dan birahi malam hari</li><li>Mencatat waktu langsung di tempat dan melaporkan induk yang belum birahi</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">03</span><span class="w-nm">Pemeriksaan semen dan membalik botol semen</span></p><p class="w-pp">Menyingkirkan semen yang bermasalah sebelum dipakai, mencegah turunnya hasil reproduksi</p><ul class="asp"><li>Penyimpanan 17°C dan menekan perubahan suhu</li><li>Pemeriksaan motilitas sperma dan membalik botol dengan lembut</li><li>Menyingkirkan semen jelek dan melapor</li><li>Pengelolaan tanggal kedaluwarsa (masuk dulu keluar dulu)</li><li>Catatan pemeriksaan dan pengecekan alat</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">17</span><span class="w-nm">Mengaduk semen (kocok pelan)</span></p><p class="w-pp">Menyeragamkan konsentrasi sperma</p><ul class="asp"><li>Memeriksa suhu penyimpanan dan menangani penyimpangan</li><li>Pengadukan lembut dan perhatian pada suhu serta tekanan osmotik</li><li>Memeriksa endapan, embun, dan warna</li><li>Menjalankan pelindungan dari cahaya</li><li>Penanganan singkat, masuk dulu keluar dulu, dan pencatatan</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">09</span><span class="w-nm">Diagnosa kebuntingan</span></p><p class="w-pp">Memastikan jumlah kelahiran dan penyapihan sesuai rencana, serta cepat menemukan induk babi yang tidak bunting untuk ditangani</p><ul class="asp"><li>Menepati waktu pemeriksaan dan pemeriksaan ulang</li><li>Membaca gambar USG dengan benar</li><li>Menunda keputusan saat ragu dan menjadwalkan pemeriksaan ulang</li><li>Memeriksa birahi kembali setelah diagnosa</li><li>Pencatatan di tempat dan disinfeksi probe</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">08</span><span class="w-nm">Penyuntikan PMS (hormon induksi birahi)</span></p><p class="w-pp">Memicu birahi pada induk babi yang birahinya lemah atau tidak muncul, dan menyeragamkan waktunya</p><ul class="asp"><li>Waktu penyuntikan dan pemeriksaan korpus luteum</li><li>Tidak memutuskan sendiri dan memastikan induk babi sasaran</li><li>Memeriksa label obat dan pengelolaan suhu</li><li>Suntikan otot yang pasti dan pengelolaan keamanan jarum</li><li>Catatan penyuntikan dan pengelolaan jadwal pengamatan birahi</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">36</span><span class="w-nm">Penyuntikan PG (prostaglandin)</span></p><p class="w-pp">Menyeragamkan waktu melahirkan agar pengelolaan dan pendampingan kelahiran lebih mudah</p><ul class="asp"><li>Memeriksa umur kebuntingan dan menyuntik pada waktu yang tepat</li><li>Mencocokkan nomor individu dan pemeriksaan ganda</li><li>Menyuntik dengan pasti dan persiapan menyambut kelahiran</li><li>Keselamatan manusia dan pembuangan jarum serta sampah medis</li><li>Catatan penyuntikan dan pengelolaan jadwal pengawasan</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">42</span><span class="w-nm">Pencucian rahim (setelah melahirkan)</span></p><p class="w-pp">Mengurangi kotoran di dalam rahim, mencegah radang rahim dan demam, serta mempercepat pemulihan setelah melahirkan</p><ul class="asp"><li>Memilih sasaran dan mengikuti perintah dokter hewan</li><li>Meracik dan menghangatkan cairan pencuci</li><li>Alat steril, disinfeksi vulva, dan penanganan lembut</li><li>Keputusan berhenti saat tertahan atau babi meronta</li><li>Mencatat suhu tubuh dan cairan keluar, serta pengelolaan masa henti obat</li></ul></li>
+</ul></section>
+<section class="cat"><h3 class="cat-h"><span class="cat-nm">Kelahiran</span><span class="cat-ct">3 pekerjaan</span></h3><ul class="wl">
+<li class="w"><p class="w-hd"><span class="w-no">26</span><span class="w-nm">Memasukkan induk ke kandang beranak</span></p><p class="w-pp">Memasukkan hanya induk babi yang hampir melahirkan, agar melahirkan dalam keadaan tenang</p><ul class="asp"><li>Menyiapkan kandang sebelum babi masuk</li><li>Memasukkan serentak pada waktu yang tepat dan mengawasi setelahnya</li><li>Menggiring dengan tenang dan keselamatan orang</li><li>Mencocokkan dan mencatat nomor telinga</li><li>Memeriksa minum dan pemberian pakan pertama segera setelah masuk</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">35</span><span class="w-nm">Membantu proses kelahiran</span></p><p class="w-pp">Melindungi nyawa induk dan anak babi, mengurangi lahir mati dan kematian setelah lahir, serta memberi kolostrum (susu pertama)</p><ul class="asp"><li>Menilai waktu membantu dan melaporkan kesulitan melahirkan</li><li>Menjaga kebersihan dan pelumasan dengan ketat</li><li>Mengeringkan, menghangatkan, dan menghidupkan kembali anak babi baru lahir</li><li>Pemberian kolostrum sejak dini</li><li>Pemeriksaan, pencatatan, dan pembersihan setelah melahirkan</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">39</span><span class="w-nm">Titip anak ke induk lain</span></p><p class="w-pp">Menyeimbangkan jumlah puting dan jumlah anak babi, menambah jumlah anak sapih, dan menolong anak yang lemah</p><ul class="asp"><li>Menitipkan setelah minum kolostrum dan memilih sasaran</li><li>Menyisihkan anak babi sakit dan kebersihan tangan</li><li>Memindahkan dengan tenang dan memastikan induk menerima</li><li>Memastikan menyusu dan pengamatan lanjutan setelah titip anak</li><li>Lembar pencocokan dan pencatatan</li></ul></li>
+</ul></section>
+<section class="cat"><h3 class="cat-h"><span class="cat-nm">Fasilitas</span><span class="cat-ct">7 pekerjaan</span></h3><ul class="wl">
+<li class="w"><p class="w-hd"><span class="w-no">13</span><span class="w-nm">Menata ulang posisi induk babi</span></p><p class="w-pp">Mengelompokkan induk babi agar mudah dikelola, serta mengurangi perkelahian dan stres</p><ul class="asp"><li>Menata urut tanggal perkiraan melahirkan dan mencatat ke buku</li><li>Mengecualikan induk babi awal kebuntingan (dalam 35 hari) dari pemindahan</li><li>Memperhatikan beda ukuran badan dan sifat agresif</li><li>Menggiring dengan papan penggiring dan menjaga keselamatan diri</li><li>Memeriksa air, pakan, dan kartu induk setelah pemindahan</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">10</span><span class="w-nm">Instruksi pemindahan (memindahkan babi)</span></p><p class="w-pp">Menjaga alur pemindahan babi (pig flow) tetap lancar, dan memindahkan babi dengan aman tanpa membuat stres</p><ul class="asp"><li>Mengulang instruksi pemindahan dan mencocokkan jumlah ekor</li><li>Memeriksa jalur dan kebersihan tempat tujuan</li><li>Menghentikan pemindahan babi sakit dan babi yang tidak bisa berdiri</li><li>Menggiring dengan tenang sedikit demi sedikit</li><li>Mengamati perkelahian setelah mencampur kelompok dan pembenahan sesudahnya</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">25</span><span class="w-nm">Pemindahan dari kandang bunting → kandang kawin / kandang babi pengganti</span></p><p class="w-pp">Menyambungkan ke kandang berikutnya dengan menjaga alur pemindahan babi (pig flow)</p><ul class="asp"><li>Mencocokkan daftar pemindahan dan mengecualikan awal kebuntingan</li><li>Menggiring dengan tenang dari serong belakang</li><li>Kesiapan penerimaan di tempat tujuan dan pemeriksaan air dan pakan</li><li>Biosekuriti pemindahan antar kandang (matras disinfektan)</li><li>Pencocokan jumlah ekor, pencatatan, dan pembaruan papan informasi</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">19</span><span class="w-nm">Pemeriksaan kerja alat pengeruk kotoran</span></p><p class="w-pp">Menjaga fungsi pembersihan kotoran tetap normal, menemukan gangguan mesin sejak dini, dan mencegah kerusakan besar</p><ul class="asp"><li>Prosedur keselamatan seperti mematikan listrik</li><li>Pemeriksaan visual bilah dan jalur serta pembuangan benda asing</li><li>Uji jalan untuk memeriksa gerakan dan pengerukan kotoran</li><li>Pemeriksaan rantai dan kawat, berhenti dan melapor saat tidak normal</li><li>Mencatat hasil pemeriksaan dan melapor secara konkret</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">29</span><span class="w-nm">Membersihkan kipas</span></p><p class="w-pp">Menjaga kemampuan ventilasi, mencegah gangguan pernapasan dan stres panas, serta membuat peralatan awet</p><ul class="asp"><li>Mematikan listrik dan membersihkan dengan aman</li><li>Membersihkan debu kering lebih dulu dan mencuci sisi belakang baling-baling</li><li>Memeriksa ketegangan dan kerusakan sabuk (belt) kipas</li><li>Buka-tutup penutup (shutter) dan pemeriksaan uji jalan</li><li>Memberitahukan pekerjaan serta catatan dan laporan pembersihan</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">30</span><span class="w-nm">Membersihkan tangki air panel pendingin (pad tank) — musim panas</span></p><p class="w-pp">Menjaga kemampuan pendinginan, mencegah lumut, bakteri, dan bau busuk, serta membuat peralatan awet</p><ul class="asp"><li>Pembersihan berkala dan penemuan dini lumut dan lendir</li><li>Cara mencuci lembut tanpa menggores</li><li>Memeriksa filter, pompa, dan pipa</li><li>Mengisi ulang air dan memeriksa aliran air yang merata</li><li>Catatan, laporan, dan menjaga diri pada musim panas</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">20</span><span class="w-nm">Sakelar pakan (pengoperasian pemberian pakan otomatis)</span></p><p class="w-pp">Menstabilkan pemberian pakan, mengurangi pakan terbuang, dan mencegah gangguan mesin</p><ul class="asp"><li>Posisi sakelar dan mematikan saat tidak normal</li><li>Memeriksa lebih dulu jenis pakan dan sisa jumlahnya</li><li>Penanganan aman sumbatan bridging</li><li>Memeriksa keliling jumlah pakan di tempat pakan dan nafsu makan</li><li>Memeriksa kerja setelah mengubah timer dan mencatatnya</li></ul></li>
+</ul></section>
+<section class="cat"><h3 class="cat-h"><span class="cat-nm">Pencatatan</span><span class="cat-ct">4 pekerjaan</span></h3><ul class="wl">
+<li class="w"><p class="w-hd"><span class="w-no">05</span><span class="w-nm">Mengisi laporan harian</span></p><p class="w-pp">Mencatat keadaan babi untuk menemukan penyakit sejak dini, dan menyimpan hasil kerja dalam angka untuk perbaikan</p><ul class="asp"><li>Mencatat dengan tepat di tempat</li><li>Mengisi dengan aturan bersama dan memanfaatkannya</li><li>Menghitung ulang perubahan jumlah ekor</li><li>Uraian yang rinci tentang kematian dan kelainan</li><li>Membandingkan dengan hari sebelumnya dan melaporkan perubahan mendadak</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">07</span><span class="w-nm">Membuat kartu data (plate)</span></p><p class="w-pp">Membuat individu dan kelompok mudah dikenali dengan cepat, serta menandai babi yang divaksin, diobati, atau dalam masa henti obat</p><ul class="asp"><li>Memperbarui ke keadaan terkini dan membuang kartu lama</li><li>Penulisan yang dimengerti siapa pun dan menaati aturan pewarnaan</li><li>Menyalin sambil melihat catatan dan mencocokkannya kembali</li><li>Mengisi informasi masa henti obat pada kartu pengobatan</li><li>Posisi pemasangan dan pencegahan tertelannya benda</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">21</span><span class="w-nm">Pemasangan tanda telinga (tag nomor)</span></p><p class="w-pp">Mengenali setiap ekor dengan pasti, mengelola kesehatan, reproduksi, pengobatan, dan pengiriman secara terpadu, serta membuatnya dapat ditelusuri</p><ul class="asp"><li>Posisi yang benar dan disinfeksi sebelum pemasangan</li><li>Memasang ulang saat lepas atau rusak</li><li>Menyiapkan sesuai urutan nomor dan mencocokkan jumlah ekor</li><li>Memegangi dan memasang dengan pasti dalam sekali gerakan</li><li>Mencatat di tempat dan mengamati setelah pemasangan</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">32</span><span class="w-nm">Mencatat perkiraan tanggal melahirkan</span></p><p class="w-pp">Mengetahui waktu melahirkan untuk menyiapkan kandang dan tenaga kerja secara terencana, serta menemukan kegagalan bunting sejak dini</p><ul class="asp"><li>Menghitung umur kebuntingan dengan cara yang seragam</li><li>Menulis ulang saat kawin ulang dan mengamati induk babi</li><li>Memeriksa ulang tanggal pada kalender</li><li>Mengisi papan jadwal dan visualisasi per minggu</li><li>Mengisi tanggal pemeriksaan dan mencocokkan jumlah ekor</li></ul></li>
+</ul></section>
+<section class="cat"><h3 class="cat-h"><span class="cat-nm">Pengiriman</span><span class="cat-ct">2 pekerjaan</span></h3><ul class="wl">
+<li class="w"><p class="w-hd"><span class="w-no">22</span><span class="w-nm">Pengiriman babi afkir (mengeluarkan induk babi)</span></p><p class="w-pp">Memperbarui kelompok induk secara terencana, dan mengirim dengan aman tanpa memaksa induk babi</p><ul class="asp"><li>Pencocokan daftar dan penandaan</li><li>Memeriksa cara berjalan dan menaati peraturan</li><li>Pengecekan ganda masa henti obat</li><li>Memulai puasa dan menyiapkan lorong serta tempat pemuatan</li><li>Pemuatan, pencocokan jumlah ekor, dan disinfeksi setelah pengiriman</li></ul></li>
+<li class="w"><p class="w-hd"><span class="w-no">23</span><span class="w-nm">Memindahkan babi afkir ke kandang grower</span></p><p class="w-pp">Melancarkan pengelolaan sebelum pengiriman</p><ul class="asp"><li>Pencocokan dan pemeriksaan cara berjalan sebelum pemindahan</li><li>Menyiapkan rute pemindahan dan petak kandang penerima</li><li>Cara memakai papan penggiring dan menjaga keselamatan diri</li><li>Menghindari kontak dengan kelompok lain (isolasi)</li><li>Pemeriksaan, pencatatan, dan disinfeksi setelah babi masuk kandang</li></ul></li>
+</ul></section></section>
+<footer><p>Kriteria penilaian berdasarkan “Tujuan dan hal yang perlu diperhatikan tiap pekerjaan” peternakan Mutsuzawa dan manual lapangan.</p><p>Versi data 2026-08-27 · 40 pekerjaan, 200 poin</p></footer>
+</div>
+<script>
+(function(){
+  var LS='tebiki_lang';
+  var btns=[].slice.call(document.querySelectorAll('.lsw button'));
+  var pages=[].slice.call(document.querySelectorAll('.wrap[data-l]'));
+  function go(l){
+    if(!pages.some(function(p){return p.dataset.l===l}))return;
+    pages.forEach(function(p){p.hidden=p.dataset.l!==l});
+    btns.forEach(function(b){
+      var on=b.dataset.go===l;
+      b.classList.toggle('on',on);
+      if(on)b.setAttribute('aria-current','true');else b.removeAttribute('aria-current');
+    });
+    document.documentElement.lang=l;
+    try{localStorage.setItem(LS,l)}catch(e){}
+  }
+  btns.forEach(function(b){b.addEventListener('click',function(){go(b.dataset.go)})});
+  var saved=null;try{saved=localStorage.getItem(LS)}catch(e){}
+  if(saved&&saved!=='ja')go(saved);
+})();
+</script>
