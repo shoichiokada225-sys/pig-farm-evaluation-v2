@@ -29,7 +29,7 @@
   </div>
   <!-- 言語切替: 今の言語だけを出す1ボタン → 押すと4言語のメニュー（採点の途中では変えないので幅を取らせない） -->
   <div class="lsw">
-    <button type="button" id="lswBtn" class="lsw-btn" onclick="toggleLangMenu()" aria-haspopup="true" aria-expanded="false" aria-controls="lswMenu" aria-label="Language: 日本語"><span id="lswCur">JP</span><span class="lsw-car" aria-hidden="true">▾</span></button>
+    <button type="button" id="lswBtn" class="lsw-btn" onclick="toggleLangMenu()" aria-expanded="false" aria-controls="lswMenu" aria-label="Language: 日本語"><span id="lswCur">JP</span><span class="lsw-car" aria-hidden="true">▾</span></button>
     <div id="lswMenu" class="lsw-menu" role="group" aria-label="Language" hidden>
       <button type="button" class="on" onclick="setLang('ja')" aria-pressed="true" lang="ja" data-code="JP">JP<span class="lsw-nm">日本語</span></button>
       <button type="button" onclick="setLang('en')" aria-pressed="false" lang="en" data-code="EN">EN<span class="lsw-nm">English</span></button>
@@ -53,7 +53,7 @@
 
 <!-- 入力 -->
 <div id="pgIn" class="pg on">
-  <div class="prog" id="prog"><div class="prog-b" id="progB" role="progressbar" aria-valuemin="0" aria-valuemax="0" aria-valuenow="0"><div class="prog-f" id="progF"></div></div><span class="prog-t" id="progT"></span><button type="button" id="missNext" class="miss-next" onclick="missNext()" hidden></button></div>
+  <div class="prog" id="prog"><div class="prog-b" id="progB" role="progressbar" aria-valuemin="0" aria-valuemax="0" aria-valuenow="0"><div class="prog-f" id="progF"></div></div><span class="prog-who" id="progWho" hidden></span><span class="prog-t" id="progT"></span><button type="button" id="missNext" class="miss-next" onclick="missNext()" hidden></button></div>
 
   <div id="syncBar" class="syncbar" role="status" aria-live="polite"></div>
 
@@ -80,7 +80,7 @@
       <h3 data-t="labelEvaluatee">被評価者名</h3>
       <button class="b b3 b-slim" onclick="reloadRoster()" data-t="btnReload">名簿を更新</button>
     </div>
-    <div id="eeFarms" class="efarms" role="group" aria-label="Farm"></div>
+    <div class="efarms-wrap"><div id="eeFarms" class="efarms" role="group" aria-label="Farm"></div><span class="efarms-more" id="eeFarmsMore" aria-hidden="true" hidden>›</span></div>
     <div id="eeFindBox" class="ee-find" hidden>
       <input type="search" id="eeFind" data-ph="eeFindPh" placeholder="名前で探す" aria-label="Search" autocomplete="off" enterkeyhint="search">
     </div>

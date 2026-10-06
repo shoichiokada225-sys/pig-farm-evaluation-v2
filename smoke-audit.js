@@ -213,5 +213,82 @@ const scoreWork = (p, wid, s, n) => p.evaluate(([wid, s, n]) => { [...document.q
     await browser.close();
   }
 
+  console.log('[K] 細かい改善（第2弾）');
+  {
+    const { browser, page, st } = await open();
+    ok('人を選ぶ前は進捗帯（採点済み 0/0）を出さない', await page.locator('#prog').isHidden());
+    await pick(page, 'テスト 一郎'); await page.waitForTimeout(300);
+    ok('採点中は進捗帯に人の名前', await page.locator('#prog').isVisible() && (await page.locator('#progWho').textContent()) === 'テスト 一郎');
+    ok('コメント欄は畳まれ「＋ コメント」で開く', await page.locator('#cards textarea').first().isHidden() && await page.locator('.cm-add').first().isVisible());
+    ok('基準は点数ボタンの下に開く（開いても点数ボタンが動かない）', await page.evaluate(() => { const c = document.querySelector('#cards .ec'), y0 = c.querySelector('.sr').getBoundingClientRect().top; toggleCrit(c.id.slice(2)); const y1 = c.querySelector('.sr').getBoundingClientRect().top; toggleCrit(c.id.slice(2)); return Math.abs(y1 - y0) < 1; }));
+    ok('採点済みの行は読み上げで「未採点」と言わない', await page.evaluate(() => { const c = document.querySelector('#cards .ec'); c.querySelector('.sb[data-s="3"]').click(); return !c.querySelector('.sr').hasAttribute('aria-describedby'); }));
+    ok('コメント欄の名前は種目ごと（aria-labelledby）', await page.evaluate(() => { const ta = document.querySelector('#cards textarea'); return /clbl-.* enm-/.test(ta.getAttribute('aria-labelledby') || ''); }));
+    ok('「今回は実施しない」は作業名入りの名前', /給餌/.test(await page.locator('.wshd-skip').first().getAttribute('aria-label')));
+    // 最後の作業を外す → 人を外して名簿へ・元に戻すで人ごと戻る
+    await page.evaluate(() => { skipWork('feed-adjust'); }); await page.waitForTimeout(100);
+    st.accept = true; await page.evaluate(() => { skipWork('feeding-daily'); }); await page.waitForTimeout(200);
+    ok('最後の作業を外すと人も外れる（「作業を選べ」と出さない）', await page.evaluate(() => !curEe.name && selWorks.length === 0));
+    await page.locator('.toast-act').click(); await page.waitForTimeout(200);
+    ok('元に戻すで人ごと戻る', await page.evaluate(() => curEe.name === 'テスト 一郎' && selWorks.includes('feeding-daily')));
+    await page.waitForTimeout(6500);
+    ok('消えたトーストに押せるボタンを残さない', await page.locator('#toast .toast-act').count() === 0);
+    // 編集中に別の人を押す → 確認して切り替え
+    await page.evaluate(() => { document.querySelectorAll('#cards .ec').forEach(c => c.querySelector('.sb[data-s="4"]').click()); doSave(); }); await page.waitForTimeout(500);
+    const id1 = (await recs(page))[0].id;
+    await page.evaluate(id => startEdit(id), id1); await page.waitForTimeout(200);
+    ok('編集中は「編集中: 名前」の橙の帯', /編集中/.test(await page.locator('#eeCur').textContent()) && await page.locator('#eeCur.edit').count() === 1);
+    st.accept = true; await pick(page, 'テスト 二郎'); await page.waitForTimeout(300);
+    ok('編集中に別の人を押すと確認して切り替える', await page.evaluate(() => !editId && curEe.name === 'テスト 二郎'));
+    // 編集で評価日を変える → 確認
+    await page.evaluate(id => startEdit(id), id1); await page.waitForTimeout(200);
+    await page.evaluate(() => { document.getElementById('fDate').value = '2026-01-02'; });
+    st.accept = false; const d0 = st.dialogs.length;
+    await page.locator('#btnSave').tap(); await page.waitForTimeout(300);
+    ok('編集で評価日を変える時は確認（キャンセルで保存しない）', st.dialogs.length === d0 + 1 && (await recs(page)).find(r => r.id === id1).date !== '2026-01-02');
+    st.accept = true; await page.evaluate(() => cancelEdit());
+    // 評価日が空の保存
+    await pick(page, 'テスト 二郎'); await page.waitForTimeout(200);
+    await page.evaluate(() => { document.querySelectorAll('#cards .ec').forEach(c => c.querySelector('.sb[data-s="4"]').click()); document.getElementById('fDate').value = ''; });
+    await page.locator('#btnSave').tap(); await page.waitForTimeout(100);
+    ok('評価日が空の保存は今日・「日付が変わった」と言わない', !/日付が変わった/.test(await page.locator('#toast').textContent()) && (await recs(page)).some(r => r.evaluatee === 'テスト 二郎' && r.date === (new Date(Date.now() + 9 * 3600e3)).toISOString().slice(0, 10)));
+    await pick(page, 'テスト 一郎'); await page.waitForTimeout(200);
+    await page.evaluate(() => { document.querySelectorAll('#cards .ec').forEach(c => c.querySelector('.sb[data-s="4"]').click()); const f = document.getElementById('fDate'); f.value = '2099-01-01'; f.dispatchEvent(new Event('input')); f.dispatchEvent(new Event('change')); });   // 手入力（評価者が選んだ日付として覚える）
+    const n9 = (await recs(page)).length;
+    await page.locator('#btnSave').tap(); await page.waitForTimeout(200);
+    const dbg = { n: (await recs(page)).length, n9, toast: await page.locator('#toast').textContent(), dates: (await recs(page)).map(r => r.date), ed: await page.evaluate(() => editId) };
+    ok('未来の評価日（手入力）は保存しない ' + JSON.stringify(dbg), !dbg.dates.includes('2099-01-01') && /未来/.test(dbg.toast));
+    await page.evaluate(() => { document.getElementById('fDate').value = todayLocal(); clearForm(); });
+    ok('評価日に未来は選べない（max=今日）', await page.evaluate(() => document.getElementById('fDate').max === todayLocal()));
+    ok('JSエラーなし', !st.errors.length);
+    await browser.close();
+  }
+  {
+    const { browser, page } = await open();
+    await page.evaluate(() => setLang('vi'));
+    ok('vi: 月日は 日/月', await page.evaluate(() => mdOf('2026-10-01') === '1/10'));
+    ok('vi: 区切りは「, 」・かっこは半角', await page.evaluate(() => listSep() === ', ' && paren('x') === ' (x)'));
+    ok('vi: 略語を使わない（Người đánh giá）', await page.evaluate(() => t('labelEvaluator') === 'Người đánh giá'));
+    await page.evaluate(() => setLang('en'));
+    ok('en: 1作業は単数（1 task）', /1 task(?!s)/.test(await page.locator('.eetab').filter({ hasText: 'テスト 二郎' }).textContent()));
+    ok('短い名前は末尾のかっこだけ削る（CSF（豚熱）子ワクチン接種 は残す）', await page.evaluate(() => shortName('CSF（豚熱）子ワクチン接種') === 'CSF（豚熱）子ワクチン接種' && shortName('給餌（毎日）') === '給餌' && shortName('PG (Prostaglandin) Injection') === 'PG (Prostaglandin) Injection'));
+    ok('共通行は【農場共通】も共通行', await page.evaluate(() => isCommonRow('【農場共通】') && isCommonRow('（農場共通）') && !isCommonRow('農場共通の田中')));
+    ok('「第二テスト農場」と「テスト農場」は農場名のゆれにしない', await page.evaluate(() => farmVariants([{ farm: 'テスト農場' }, { farm: 'テスト農場' }, { farm: 'テスト農場' }, { farm: '第二テスト農場' }]).length === 0 && farmVariants([{ farm: '大田原' }, { farm: '大田原' }, { farm: '大田原' }, { farm: '大田原農場' }]).length === 1));
+    await browser.close();
+  }
+  {
+    const { browser, page, st } = await open({ init: () => { try { if (!sessionStorage.getItem('x')) { sessionStorage.setItem('x', 1); localStorage.setItem('jitsugi_v2_data', '{"evaluations":[{"id":"a"'); } } catch (e) {} } });
+    ok('壊れた記録データは控えに退避して知らせる（黙って上書きしない）', await page.evaluate(() => Object.keys(localStorage).some(k => k.startsWith('jitsugi_v2_data_broken_') && localStorage.getItem(k).startsWith('{"evaluations"'))) && /壊れて/.test(await page.locator('#toast').textContent()));
+    ok('壊れていても JS エラーなし', !st.errors.length);
+    await browser.close();
+  }
+  {
+    const { browser, page, st } = await open();
+    await page.evaluate(() => putAll([normRec({ id: 'dq1', date: todayLocal(), evaluator: 'テスト 評価者', evaluatee: 'テスト 二郎', farm: 'テスト農場', createdAt: 'x', sent: true, works: [{ workId: 'feeding-daily', scores: { a: 3 }, comments: {} }] })]));
+    await page.route(u => u.href.startsWith('https://script.google.com/'), r => r.abort('internetdisconnected'));   // 圏外
+    await page.evaluate(() => doDel('dq1')); await page.waitForTimeout(300);
+    ok('削除待ちに元の送信先を控える', await page.evaluate(() => getDels()[0].url === sheetUrl()));
+    await browser.close();
+  }
+
   console.log(`\n合計: OK ${pass} / NG ${fail}`); process.exit(fail ? 1 : 0);
 })().catch(e => { console.error(e); process.exit(1); });

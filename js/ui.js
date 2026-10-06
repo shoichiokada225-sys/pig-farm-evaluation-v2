@@ -32,15 +32,17 @@ function updSelCnt(){
 /* 選択中の作業のうち、同じ試験期間にすでに済んでいる作業（やり直し・作業選択で足した時）の「✓済（前回の点）」。済でなければ '' */
 function prevDoneTx(wid){
   const pv=typeof prevWork==='function'?prevWork(wid):null;if(!pv)return'';
-  return '✓ '+t('doneMark')+'（'+t('prevLbl')+' '+mdOf(pv.date)+(pv.avg!=null?' · '+(Math.round(pv.avg*10)/10).toFixed(1):'')+'）';
+  return '✓ '+t('doneMark')+paren(t('prevLbl')+' '+mdOf(pv.date)+(pv.avg!=null?' · '+(Math.round(pv.avg*10)/10).toFixed(1):''));
 }
+/* 目次用の短い名前: 説明のかっこ（「給餌（毎日の…）」「Cho ăn (…)」）を除く */
+function shortName(n){const s=String(n||'').replace(/\s*[（(][^（()）]*[）)]\s*$/,'').trim();return s||String(n||'')}   // 末尾のかっこだけ（「CSF（豚熱）子ワクチン接種」は削らない）
 function wnavHtml(){
   const all=typeof curDoneWorks==='function'?curDoneWorks():[];
   const dn=all.filter(id=>!selWorks.includes(id)&&workById(id));
   if(!(selWorks.length>1||dn.length))return'';
   return `<nav class="wnav" id="wnav" aria-label="${esc(t('wnavLbl'))}">`+
-    selWorks.filter(workById).map(wid=>{const w=workById(wid),pv=all.includes(wid)?prevDoneTx(wid):'';return `<button type="button" class="wnav-c${pv?' redo':''}" data-w="${esc(wid)}" title="${esc(loc(w,'name'))}" onclick="jumpWork(this.dataset.w)"><span class="wnav-nm">${esc(loc(w,'name'))}</span><span class="wnav-ct" data-wct="${esc(wid)}">0/${workItems(wid).length}</span>${pv?`<span class="wnav-prev">${esc(pv)}</span>`:''}</button>`}).join('')+
-    dn.map(wid=>`<button type="button" class="wnav-c done" data-w="${esc(wid)}" title="${esc(loc(workById(wid),'name'))}" onclick="openDoneWork(this.dataset.w)"><span class="wnav-nm">${esc(loc(workById(wid),'name'))}</span><span class="wnav-ct">✓ ${esc(t('doneMark'))}</span></button>`).join('')+
+    selWorks.filter(workById).map(wid=>{const w=workById(wid),pv=all.includes(wid)?prevDoneTx(wid):'';return `<button type="button" class="wnav-c${pv?' redo':''}" data-w="${esc(wid)}" title="${esc(loc(w,'name'))}" aria-label="${esc(loc(w,'name'))}" onclick="jumpWork(this.dataset.w)"><span class="wnav-nm">${esc(shortName(loc(w,'name')))}</span><span class="wnav-ct" data-wct="${esc(wid)}">0/${workItems(wid).length}</span>${pv?`<span class="wnav-prev">${esc(pv)}</span>`:''}</button>`}).join('')+
+    dn.map(wid=>`<button type="button" class="wnav-c done" data-w="${esc(wid)}" title="${esc(loc(workById(wid),'name'))}" onclick="openDoneWork(this.dataset.w)"><span class="wnav-nm">${esc(shortName(loc(workById(wid),'name')))}</span><span class="wnav-ct">✓ ${esc(t('doneMark'))}</span></button>`).join('')+
     `</nav>`;
 }
 /* 1作業ぶんの区切り（見出し＋5種目のカード）。ci=通し番号（最初の構築のフェードの遅れ）。作業が無ければ '' */
@@ -50,23 +52,26 @@ function wsecHtml(wid,ci){
   // 作業ごとに区切る（見出しは自分の作業のカードの間だけ貼り付き、次の作業に来たら入れ替わる）
   let h=`<section class="wsec" data-w="${esc(w.id)}"><div class="wshd" id="wh-${esc(w.id)}" data-w="${esc(w.id)}">
       <span class="wshd-no">${esc(w.no||'')}</span>
-      <span class="wshd-nm" title="${esc(loc(w,'name'))}">${esc(loc(w,'name'))}</span>
+      <span class="wshd-nm" title="${esc(loc(w,'name'))}">${esc(shortName(loc(w,'name')))}</span>
       <span class="wshd-ct" data-wct="${esc(w.id)}">0/${workItems(wid).length}</span>
     </div>
-    ${(()=>{const pv=typeof curDoneWorks==='function'&&curDoneWorks().includes(wid)?prevDoneTx(wid):'';const sk=editId?'':`<button type="button" class="wshd-skip" data-w="${esc(w.id)}" onclick="skipWork(this.dataset.w)">${esc(t('skipWork'))}</button>`;return pv||sk?`<div class="wsub">${pv?`<span class="wsub-prev">${esc(pv)}</span>`:''}${sk}</div>`:''})()}`;
+    ${(()=>{const pv=typeof curDoneWorks==='function'&&curDoneWorks().includes(wid)?prevDoneTx(wid):'';const sk=editId?'':`<button type="button" class="wshd-skip" data-w="${esc(w.id)}" aria-label="${esc(t('skipWork')+': '+loc(w,'name'))}" onclick="skipWork(this.dataset.w)">${esc(t('skipWork'))}</button>`;return pv||sk?`<div class="wsub">${pv?`<span class="wsub-prev">${esc(pv)}</span>`:''}${sk}</div>`:''})()}`;
   workItems(wid).forEach((it,ii)=>{
     h+=`<div class="cd ec" id="c-${it.id}" data-w="${esc(wid)}" style="animation-delay:${Math.min(ci.n++,8)*0.03}s">
         <div class="en">${ii+1}</div>
         <div class="enm" id="enm-${it.id}">${esc(it.name)}</div>
         <span class="miss-bd" id="miss-${it.id}">⚠ ${esc(t('missLbl'))}</span>
-        <button class="crit-tg" id="critb-${it.id}" onclick="toggleCrit('${it.id}')" aria-expanded="false" aria-controls="crit-${it.id}">▼ ${t('showCrit')}</button>
+        <div class="sr" role="group" tabindex="-1" aria-labelledby="enm-${it.id}">${[1,2,3,4,5].map(s=>`<button class="sb" data-id="${it.id}" data-s="${s}" onclick="pick('${it.id}',${s})" aria-pressed="false">${s}<span class="sl">${t('s'+s)}</span></button>`).join('')}</div>
+        <div class="ec-tools">
+          <button class="crit-tg" id="critb-${it.id}" onclick="toggleCrit('${it.id}')" aria-expanded="false" aria-controls="crit-${it.id}">▼ ${t('showCrit')}</button>
+          <button type="button" class="cm-add" onclick="openCm('${it.id}')" aria-label="${esc(t('addCmt')+': '+it.name)}">${esc(t('addCmt'))}</button>
+        </div>
         <div class="crit" id="crit-${it.id}">
           <div class="crit-k"><b>${t('kantenLbl')}</b>${esc(it.kanten)}</div>
           ${it.levels.map((lv,li)=>`<div class="crit-lv" data-id="${it.id}" data-s="${li+1}" role="button" tabindex="0" onclick="pick('${it.id}',${li+1})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();pick('${it.id}',${li+1})}"><span class="crit-n sb${li+1}">${li+1}</span><div class="crit-t"><b>${t('s'+(li+1))}</b>${esc(lv)}</div></div>`).join('')}
         </div>
-        <div class="sr" role="group" tabindex="-1" aria-labelledby="enm-${it.id}" aria-describedby="miss-${it.id}">${[1,2,3,4,5].map(s=>`<button class="sb" data-id="${it.id}" data-s="${s}" onclick="pick('${it.id}',${s})" aria-pressed="false">${s}<span class="sl">${t('s'+s)}</span></button>`).join('')}</div>
-        <div class="clbl">${t('cmtLbl')}</div>
-        <textarea data-cid="${it.id}" placeholder="${t('phCmt')}" oninput="onCh()"></textarea>
+        <div class="clbl" id="clbl-${it.id}">${t('cmtLbl')}</div>
+        <textarea data-cid="${it.id}" placeholder="${t('phCmt')}" aria-labelledby="clbl-${it.id} enm-${it.id}" oninput="onCh()"></textarea>
       </div>`;
   });
   return h+'</section>';
@@ -93,7 +98,7 @@ function buildCards(anim){
   clearTimeout(_animT);el.classList.toggle('anim',!!anim);
   el.innerHTML=h;
   if(anim)_animT=setTimeout(()=>el.classList.remove('anim'),900);   // フェードは最初の1回だけ（後で作り足すカードには付けない）
-  miss.forEach(id=>{const c=document.getElementById(id);if(c)c.classList.add('miss')});
+  miss.forEach(id=>{const c=document.getElementById(id);if(c)setMiss(c,true)});
   updProg();
 }
 /* 目次だけを今の selWorks に合わせて差し替える（作業の追加/外しで、ほかのカードに触らない） */
@@ -124,14 +129,36 @@ function addWorkSec(wid){
 function setScoreUI(id,s){
   document.querySelectorAll('.sb[data-id="'+id+'"]').forEach(b=>{const on=+b.dataset.s===s;b.classList.toggle('sel',on);b.setAttribute('aria-pressed',on)});
   document.querySelectorAll('.crit-lv[data-id="'+id+'"]').forEach(r=>r.classList.toggle('sel',+r.dataset.s===s));
-  const c=document.getElementById('c-'+id);if(c){c.classList.add('scored');c.classList.remove('miss')}   // 点を付けたら「未採点」の印を外す
+  const c=document.getElementById('c-'+id);if(c){c.classList.add('scored');setMiss(c,false)}   // 点を付けたら「未採点」の印を外す
 }
-function pick(id,s){setScoreUI(id,s);onCh();updProg();if(navigator.vibrate)try{navigator.vibrate(8)}catch(e){}}
+/* 未採点の印（太い赤枠・⚠）と、読み上げの説明（印がある時だけ「未採点」と読む） */
+function setMiss(c,on){
+  c.classList.toggle('miss',on);const sr=c.querySelector('.sr');if(!sr)return;
+  if(on)sr.setAttribute('aria-describedby','miss-'+c.id.slice(2));else sr.removeAttribute('aria-describedby');
+}
+function pick(id,s){
+  const c=document.getElementById('c-'+id),first=!!c&&!c.classList.contains('scored');
+  setScoreUI(id,s);onCh();updProg();if(navigator.vibrate)try{navigator.vibrate(8)}catch(e){}
+  // 初めて点を付けた時は、同じ作業の次の未採点の種目へ送る（片手で何度もスワイプしない）。付け直しでは動かさない
+  if(first&&c&&!c.querySelector('.crit.open')){
+    const nx=[...document.querySelectorAll('#cards .ec[data-w="'+c.dataset.w+'"]')].find(x=>x!==c&&!x.classList.contains('scored')&&x.compareDocumentPosition(c)&Node.DOCUMENT_POSITION_PRECEDING);
+    if(nx)setTimeout(()=>{if(!document.body.contains(nx)||!document.body.contains(c))return;   // 言語切替などで作り直された後は動かさない
+      const sr=nx.querySelector('.sr');if(sr&&typeof scrollBelowStk==='function'){const r=nx.getBoundingClientRect();if(r.top>innerHeight*0.55||r.top<(typeof stkH==='function'?stkH():0))scrollBelowStk(nx,8,true)}},180);
+  }
+}
+/* コメント欄は「＋ コメント」で開く（書いてあれば開いたまま） */
+function openCm(id){const c=document.getElementById('c-'+id);if(!c)return;c.classList.add('cm-open');const ta=c.querySelector('textarea');if(ta)ta.focus()}
 function updProg(){
   const f=document.getElementById('progF'),tx=document.getElementById('progT');
   if(!f||!tx)return;
   const total=getItems().length;
   const done=document.querySelectorAll('#cards .ec.scored').length;
+  // 採点する作業が無い間は出さない（「採点済み 0/0」と空のバーを出さない）
+  const pr=document.getElementById('prog');if(pr)pr.hidden=!total;
+  // 誰を採点しているか（採点中ずっと見える貼り付く帯に）。編集中は印も
+  const pw=document.getElementById('progWho');
+  if(pw){const nm=typeof curEe!=='undefined'?curEe.name:'';pw.textContent=nm?(typeof editId!=='undefined'&&editId?'✎ ':'')+nm:'';pw.hidden=!nm;pw.classList.toggle('edit',typeof editId!=='undefined'&&!!editId)}
+  document.querySelectorAll('#cards textarea').forEach(ta=>{if(ta.value.trim())ta.closest('.ec').classList.add('cm-open')});
   f.style.width=(total?Math.round(done/total*100):0)+'%';
   f.classList.toggle('done',total>0&&done===total);
   tx.textContent=t('progDone')+' '+done+'/'+total;
@@ -146,6 +173,8 @@ function updProg(){
     mb.hidden=!nm;mb.textContent=nm?t('missNext').replace('{n}',nm):'';
     const pr=mb.closest('.prog');if(pr)pr.classList.toggle('has-miss',!!nm);   // 未採点がある間は「採点済 x/y」の代わりにこのボタン（件数の表示は1つ）
     if(was!==!mb.hidden&&typeof fixProg==='function')fixProg()}
+  // 帯の高さが変わった（出した・隠した・名前が入った）時は、貼り付く見出しの位置（--stk）を測り直す
+  if(pr&&typeof fixProg==='function'&&pr.offsetHeight!==updProg._h){updProg._h=pr.offsetHeight;fixProg()}
   const bar=document.getElementById('progB');
   if(bar){bar.setAttribute('aria-valuemax',total);bar.setAttribute('aria-valuenow',done);bar.setAttribute('aria-label',t('progDone'))}
 }
@@ -181,7 +210,7 @@ function eePeople(all,ro){
   all.forEach(r=>{const k=keyOf(r);if(!m.has(k.key))m.set(k.key,{key:k.key,farm:k.farm,name:k.name})});
   const ps=[...m.values()];
   const cnt={};ps.forEach(p=>{cnt[p.name]=(cnt[p.name]||0)+1});
-  ps.forEach(p=>{p.label=cnt[p.name]>1?p.name+'（'+farmDisp(p.farm)+'）':p.name});
+  ps.forEach(p=>{p.label=cnt[p.name]>1?p.name+paren(farmDisp(p.farm)):p.name});
   return ps.sort((a,b)=>a.name<b.name?-1:a.name>b.name?1:a.farm<b.farm?-1:a.farm>b.farm?1:0);
 }
 /* 選択キーに一致する記録（キーは全記録から計算＝履歴・グラフで同じ人を指す） */
@@ -196,12 +225,13 @@ function drawHist(){
   const c=document.getElementById('hList');
   if(!all.length){c.innerHTML=`<div class="nd">${t('noData')}</div>`;return}
   const ro=getRoster().list,lbl={};eePeople(getAll(),ro).forEach(p=>{lbl[p.key]=p.label});const keyOf=personKeyer(getAll(),ro);
+  const redone=new Set();getAll().forEach(r=>String(r.redoOf||'').split(' ').filter(Boolean).forEach(id=>redone.add(id)));   // やり直しで置き換わった前回（集計に入らない）
   c.innerHTML=all.map(r=>{
     const a0=sessionAvg(r),a=a0==null?null:Math.round(a0*10)/10;   // 色は表示の値（小数1桁）で決める（「4.0」なのに3点台の色にしない）
     const ac=a==null?'':(a>=4?' av4':(a<2?' av1':(a<3?' av2':' av3')));
     const wnames=(r.works||[]).map(dispWorkName);
-    const wlbl=wnames.slice(0,2).join('・')+(wnames.length>2?` +${wnames.length-2}`:'');
-    return `<div class="hi" role="button" tabindex="0" onclick="showDet('${sanitizeId(r.id)}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();showDet('${sanitizeId(r.id)}')}"><div class="hii"><div class="hid">${esc(r.date)}　${t('evLbl')}: ${esc(r.evaluator)}${sheetUrl()?(r.sent?` <span class="snt ok">✓${esc(t('sentLbl'))}</span>`:` <span class="snt ng">${esc(t('unsent'))}</span>`):''}</div><div class="hin">${esc(lbl[keyOf(r).key]||r.evaluatee)}${r.manual?` <span class="snt off">${esc(t('offRoster'))}</span>`:''}　<span class="hiw">${esc(wlbl)}</span></div></div><div class="hia${ac}">${fm(a)}</div></div>`;
+    const wlbl=wnames.slice(0,2).join(dotSep())+(wnames.length>2?` +${wnames.length-2}`:'');
+    return `<div class="hi" role="button" tabindex="0" onclick="showDet('${sanitizeId(r.id)}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();showDet('${sanitizeId(r.id)}')}"><div class="hii"><div class="hid">${esc(r.date)}　${t('evLbl')}: ${esc(r.evaluator)}${sheetUrl()?(r.sent?` <span class="snt ok">✓${esc(t('sentLbl'))}</span>`:` <span class="snt ng">${esc(t('unsent'))}</span>`):''}</div><div class="hin">${esc(lbl[keyOf(r).key]||r.evaluatee)}${r.manual?` <span class="snt off">${esc(t('offRoster'))}</span>`:''}${redone.has(r.id)?` <span class="snt off">${esc(t('redoneLbl'))}</span>`:''}　<span class="hiw">${esc(wlbl)}</span></div></div><div class="hia${ac}">${fm(a)}</div></div>`;
   }).join('');
 }
 
@@ -230,11 +260,13 @@ function showDet(id){
   _moRet=document.activeElement;
   document.getElementById('moBody').innerHTML=h;
   document.getElementById('modal').classList.add('show');
-  document.body.classList.add('mo-open');
+  document.body.classList.add('mo-open');setBgInert(true);
   const mx=document.querySelector('#moBody .mx');if(mx)mx.focus();
 }
+/* モーダルの間は背景（ヘッダー・各ページ・タブ）を操作・読み上げの外にする */
+function setBgInert(on){document.querySelectorAll('.hdr,.pg,.tabs,.ebar,.updbar').forEach(el=>{if(on)el.setAttribute('inert','');else el.removeAttribute('inert')})}
 function closeMo(){
-  document.getElementById('modal').classList.remove('show');document.body.classList.remove('mo-open');
+  document.getElementById('modal').classList.remove('show');document.body.classList.remove('mo-open');setBgInert(false);
   if(_moRet&&document.body.contains(_moRet)){_moRet.focus()}_moRet=null;
 }
 /* 削除: シートに行があるかもしれない記録は「削除待ち」に入れ、シートの行も消す（圏外なら、つながった時に消す） */
@@ -322,7 +354,7 @@ function drawCharts(){
     const aspects=w?w.aspects:[];
     labels=aspects.map(a=>trunc(loc(a,'name')));
     const pickSc=r=>{const we=(r.works||[]).find(x=>x.workId===wid);return aspects.map(a=>we&&we.scores[a.id]||0)};
-    cur=pickSc(lat);prv=prev?pickSc(prev):null;curLbl=lat.date;prvLbl=prev?prev.date+'（'+t('prevLbl')+'）':'';
+    cur=pickSc(lat);prv=prev?pickSc(prev):null;curLbl=lat.date;prvLbl=prev?prev.date+paren(t('prevLbl')):'';
   }else{
     /* 総合: 記録単位でなく人単位でまとめる（分割保存・人ごとの作業割り当てでは記録ごとに作業が違うため）
        ・線グラフ = 作業ごとの系列（x軸は日付。同じ日に同じ作業が2回あれば後の記録）。別の作業どうしを1本の線でつながない
@@ -345,12 +377,13 @@ function drawCharts(){
     {label:curLbl,data:cur,borderColor:'#177863',backgroundColor:'rgba(23,120,99,.18)',pointBackgroundColor:'#177863'},
     ...(prv?[{label:prvLbl,data:prv,borderColor:'#9e9e9e',backgroundColor:'rgba(158,158,158,.08)',pointBackgroundColor:'#9e9e9e',borderDash:[5,4],borderWidth:1.5}]:[])
   ];
+  const rh=document.querySelector('[data-t="chRadar"]');if(rh)rh.textContent=t(labels.length<=2?'chBar':'chRadar');   // 棒グラフの時はレーダーと書かない
   if(labels.length<=2){
     // 軸が2本以下ではレーダーが面にならない → 棒グラフ
     ds.forEach(d=>{d.backgroundColor=d.borderColor;d.borderDash=undefined});
-    cR=new Chart(document.getElementById('cvR'),{type:'bar',data:{labels,datasets:ds},options:{responsive:true,maintainAspectRatio:false,scales:{y:{min:0,max:5,ticks:{stepSize:1,color:'#54635d'},grid:{color:'#e3eae7'}},x:{ticks:{color:'#14211c'},grid:{display:false}}},plugins:{legend:{display:true,position:'bottom'}}}});
+    cR=new Chart(document.getElementById('cvR'),{type:'bar',data:{labels,datasets:ds},options:{responsive:true,maintainAspectRatio:false,scales:{y:{min:0,max:5,ticks:{stepSize:1,color:'#54635d'},grid:{color:'#e3eae7'}},x:{ticks:{color:'#14211c'},grid:{display:false}}},plugins:{legend:{display:ds.length>1,position:'bottom'}}}});
   }else{
-    cR=new Chart(document.getElementById('cvR'),{type:'radar',data:{labels,datasets:ds},options:{responsive:true,maintainAspectRatio:false,spanGaps:false,scales:{r:{min:0,max:5,ticks:{stepSize:1,font:{size:10},color:'#54635d',backdropColor:'rgba(255,255,255,.75)'},grid:{color:'#e3eae7'},angleLines:{color:'#e3eae7'},pointLabels:{font:{size:innerWidth<400?10:11},color:'#14211c',padding:4}}},layout:{padding:{left:6,right:6}},plugins:{legend:{display:true,position:'bottom'}}}});
+    cR=new Chart(document.getElementById('cvR'),{type:'radar',data:{labels,datasets:ds},options:{responsive:true,maintainAspectRatio:false,spanGaps:false,scales:{r:{min:0,max:5,ticks:{stepSize:1,font:{size:10},color:'#54635d',backdropColor:'rgba(255,255,255,.75)'},grid:{color:'#e3eae7'},angleLines:{color:'#e3eae7'},pointLabels:{font:{size:innerWidth<400?10:11},color:'#14211c',padding:4}}},layout:{padding:{left:6,right:6}},plugins:{legend:{display:ds.length>1,position:'bottom'}}}});
   }
 }
 
@@ -360,7 +393,7 @@ let _fs=null,_fsUi=null;
 function saveSt(){
   _fs=collectForm();
   const ae=document.activeElement;
-  _fsUi={open:[...document.querySelectorAll('#cards .crit.open')].map(c=>c.id),
+  _fsUi={open:[...document.querySelectorAll('#cards .crit.open')].map(c=>c.id),cm:[...document.querySelectorAll('#cards .ec.cm-open')].map(c=>c.id),
     focus:ae&&ae.matches&&ae.matches('#cards textarea[data-cid]')?ae.dataset.cid:'',
     sel:ae&&ae.matches&&ae.matches('#cards textarea[data-cid]')?[ae.selectionStart,ae.selectionEnd]:null};
 }
@@ -372,6 +405,8 @@ function restoreSt(){if(!_fs)return;const d=_fs;getItems().forEach(it=>{
   const u=_fsUi;
   if(u){
     u.open.forEach(id=>{const c=document.getElementById(id);if(c&&!c.classList.contains('open'))toggleCrit(id.slice(5))});
+    (u.cm||[]).forEach(id=>{const c=document.getElementById(id);if(c)c.classList.add('cm-open')});
+    if(u.focus){const c=document.getElementById('c-'+u.focus);if(c)c.classList.add('cm-open')}
     const ta=u.focus&&document.querySelector('#cards textarea[data-cid="'+u.focus+'"]');
     if(ta&&document.activeElement!==ta){ta.focus({preventScroll:true});if(u.sel)try{ta.setSelectionRange(u.sel[0],u.sel[1])}catch(e){}}
   }

@@ -13,6 +13,8 @@ function setSheetUrl(u){
   u=String(u||'').trim();
   if(u&&!/^https:\/\/script\.google\.com\/macros\/s\/[\w-]+\/exec$/.test(u)){toast(t('eUrl'),1);return false}
   const before=sheetUrl();
+  // 未送信の記録は新しい送信先へ送られる（削除待ちは、消す行がある元の送信先へ送る）。変える前に確かめる
+  if(u!==before&&typeof pendCount==='function'&&getAll().some(r=>!r.sent)&&!confirm(t('cUrlPend').replace('{n}',getAll().filter(r=>!r.sent).length)))return false;
   localStorage.setItem(SHEET_KEY,u);
   // 送信先が変わったら、前のシートの名簿（と版の情報）は捨てる＝別のシートの人名・農場で採点させない。記録（jitsugi_v2_records）には触れない
   if(sheetUrl()!==before){try{localStorage.removeItem(ROSTER_KEY)}catch{}setSheetState('',null)}
@@ -55,7 +57,7 @@ function resolveWork(v){
   return w?w.id:null;
 }
 /* 農場名の照合 normFarm・名前の照合 nmKey は person.js（人の特定の規則と同じもの） */
-function isCommonRow(n){return /^[（(]?\s*農場共通\s*[）)]?$/.test(String(n||'').trim())}
+function isCommonRow(n){const s=String(n||'').normalize('NFKC').replace(/\s+/g,'');return /農場共通/.test(s)&&s.replace(/[\[\]（）()【】〔〕［］「」『』<>＜＞{}]/g,'')==='農場共通'}   // 【農場共通】など括弧の種類が違っても共通行
 /* 電波の弱い豚舎で応答の返らない fetch を待ち続けないよう、時間で打ち切る */
 const ROSTER_TIMEOUT_MS=8000,SEND_TIMEOUT_MS=20000;
 async function fetchT(url,opt,ms){
@@ -181,22 +183,22 @@ function farmVariants(ps){
   fs.forEach(a=>{
     if(cnt.get(a)>2)return;
     const ca=core(a);if(!ca)return;
-    const b=fs.find(b=>b!==a&&cnt.get(b)>cnt.get(a)&&(()=>{const cb=core(b);return cb&&(ca===cb||ca.includes(cb)||cb.includes(ca))})());
+    const b=fs.find(b=>b!==a&&cnt.get(b)>cnt.get(a)&&core(b)===ca);   // 「大田原」と「大田原農場」だけ（「第二テスト農場」と「テスト農場」は別の農場）
     if(b)out.push({farm:a,n:cnt.get(a),like:b});
   });
   return out;
 }
 /* 名簿の警告（誰の・何が）。max を渡すと各項目をその件数で打ち切り「…+残り」 */
-function rosterWarnText(r,max){
+function rosterWarnText(r,max,noFvar){
   const u=r&&r.unknown||[],d=r&&r.dup||[],cd=r&&r.cdup||[],co=r&&r.corphan||[],fv=r&&r.fvar||[];const parts=[];
-  const cut=a=>max&&a.length>max?a.slice(0,max).join('、')+' …+'+(a.length-max):a.join('、');
+  const cut=a=>max&&a.length>max?a.slice(0,max).join(listSep())+' …+'+(a.length-max):a.join(listSep());
   const fn=f=>f||t('farmNone');
-  if(u.length)parts.push(t('eUnknownWork')+' ('+u.length+'): '+cut(u.map(x=>x.name+(isCommonRow(x.name)&&x.farm?'（'+x.farm+'）':'')+': '+x.work)));
-  if(d.length)parts.push(t('eDupName')+' ('+d.length+'): '+cut(d.map(x=>x.name+(x.farm?'（'+x.farm+'）':''))));
+  if(u.length)parts.push(t('eUnknownWork')+' ('+u.length+'): '+cut(u.map(x=>x.name+(isCommonRow(x.name)&&x.farm?paren(x.farm):'')+': '+x.work)));
+  if(d.length)parts.push(t('eDupName')+' ('+d.length+'): '+cut(d.map(x=>x.name+(x.farm?paren(x.farm):''))));
   if(cd.length)parts.push(t('eCommonDup')+' ('+cd.length+'): '+cut(cd.map(fn)));
   if(co.length)parts.push(t('eCommonOrphan')+' ('+co.length+'): '+cut(co.map(fn)));
   if(r&&gasMissing(r.gas).length)parts.push(t('eGasOld').replace('{v}',r.gas.version||'?'));
-  if(fv.length)parts.push(t('eFarmVar')+' ('+fv.length+'): '+cut(fv.map(x=>'「'+x.farm+'」('+x.n+') ≈ 「'+x.like+'」')));
+  if(fv.length&&!noFvar)parts.push(t('eFarmVar')+' ('+fv.length+'): '+cut(fv.map(x=>'「'+x.farm+'」('+x.n+') ≈ 「'+x.like+'」')));
   return parts.join(' ／ ');
 }
 
@@ -207,8 +209,8 @@ function rosterWarnText(r,max){
 /* 直近の送信の失敗理由: 'net'=電波・打ち切り / 'auth'=合言葉 / 'sheet'=シート側（応答が JSON でない・HTTP エラー・GAS のエラー・0行） */
 let sendErr='';
 function noteSendErr(why){if(why==='auth'||why==='sheet'||!sendErr)sendErr=why}
-async function postJ(body){
-  const u=sheetUrl();if(!u)return null;
+async function postJ(body,url){
+  const u=url||sheetUrl();if(!u)return null;
   let res;
   try{res=await fetchT(u,{method:'POST',body:JSON.stringify({...body,...(getTok()?{k:getTok()}:{})})},SEND_TIMEOUT_MS)}catch(e){noteSendErr('net');return null}
   let j;try{j=JSON.parse(await res.text())}catch(e){noteSendErr('sheet');return null}   // ログイン画面・HTTP エラー等（電波ではない）
@@ -233,12 +235,13 @@ async function sendRec(r){
 const DEL_KEY='jitsugi_v2_deletes';
 function getDels(){try{const r=JSON.parse(localStorage.getItem(DEL_KEY));return Array.isArray(r)?r.filter(d=>d&&typeof d.id==='string'&&d.id):[]}catch{return[]}}
 function putDels(a){localStorage.setItem(DEL_KEY,JSON.stringify(a))}
-function queueDel(r){const a=getDels().filter(d=>d.id!==r.id);a.push({id:r.id,evaluator:r.evaluator||'',at:new Date().toISOString()});putDels(a)}
+function queueDel(r){const a=getDels().filter(d=>d.id!==r.id);a.push({id:r.id,evaluator:r.evaluator||'',at:new Date().toISOString(),url:sheetUrl()});putDels(a)}   // url=行がある送信先（後で送信先を変えても、元のシートの行を消す）
 /* シートに行があるかもしれない記録 = 送信済み、または一度でも送った可能性がある（編集後の未送信） */
 function mayBeOnSheet(r){return !!(r&&(r.sent||r.sentOnce||r.updatedAt))}
 let delOld=false;   // シート側（GAS）が削除に未対応の古い版
 async function sendDel(d){
-  const j=await postJ(deleteReq(d));
+  const du=/^https:\/\/script\.google\.com\/macros\/s\/[\w-]+\/exec$/.test(d.url||'')?d.url:'';
+  const j=await postJ(deleteReq(d),du);
   if(isUnsupportedOp(j))delOld=true;   // 削除を知らない古い GAS（契約は contract.js）
   const good=!!(j&&j.ok&&j.id===d.id);
   if(good&&rosterErrReason==='net')sheetReached=true;

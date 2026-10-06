@@ -194,3 +194,37 @@ details.wsel[open]>summary h3::before{content:'▾ '}
 /* 点数ボタン: 手袋でも隣を押しにくいすき間・読める段階名 */
 .sr{gap:clamp(5px,1.4vw,10px)}
 html[lang=ja] .sb .sl{font-size:clamp(.7rem,3vw,.8rem);font-weight:700}   /* 日本語の段階名は3字前後なので大きくできる（他の言語は語の途中で折れない大きさのまま） */
+
+/* 2026-10-06 細かい改善（第2弾） */
+/* コメントは「＋ コメント」で開く（書いてあれば開いたまま）・基準は点数の下に開く */
+.ec:not(.cm-open) .clbl,.ec:not(.cm-open) textarea{display:none}
+.ec.cm-open .cm-add{display:none}
+.ec-tools{display:flex;gap:8px;align-items:stretch;margin:2px 0 8px}
+.ec-tools .crit-tg{flex:1;margin:0}
+.cm-add{flex:none;min-height:44px;padding:6px 14px;border:1.5px dashed var(--bdr-strong,#b9c7c1);border-radius:10px;background:#fff;color:var(--sub,#54635d);font:inherit;font-size:.85rem;font-weight:700;cursor:pointer}
+.cm-add:focus-visible{outline:3px solid #f0a500;outline-offset:2px}
+/* 採点中の人（貼り付く進捗の帯に） */
+.prog-who{flex:0 1 auto;min-width:0;max-width:45%;font-size:.85rem;font-weight:800;color:#0f5a49;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prog-who.edit{color:#8a4b00}
+.prog[hidden]{display:none}
+.eecur.edit{background:#fff4e0;border-color:#e0a54a;color:#7a4a00}
+/* 見出しの番号・送信済みの文字のコントラスト（4.5:1 以上） */
+.wshd-no{background:rgba(0,0,0,.3);font-size:.78rem}
+.syncbar.ok{color:#0f5c4a}
+/* 12px 未満の文字をなくす */
+.tabs button{font-size:.75rem}
+.ec .en{font-size:.78rem}
+.fchip-ct,.wchk-no{font-size:.76rem}
+/* キーボードで進んだ先が、貼り付く帯・下のタブの裏に隠れない */
+html{scroll-padding-top:calc(var(--stk,96px) + 8px);scroll-padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+/* 農場チップが横に続くことを示す › */
+.efarms-wrap{position:relative}
+.efarms-more{position:absolute;right:0;top:8px;bottom:2px;display:flex;align-items:center;padding:0 2px 0 10px;font-size:1.4rem;font-weight:800;color:var(--brand,#177863);pointer-events:none;background:linear-gradient(90deg,transparent,var(--card,#fff) 45%)}
+.efarms-more[hidden]{display:none}
+/* 画面拡大（幅が極端に狭い）時は点数ボタンを2段に・作業名を折り返す */
+@media (max-width:300px){
+  .sr{flex-wrap:wrap}
+  .sb{flex:1 0 30%;min-width:44px}
+  .wshd-nm{white-space:normal}
+  .wnav{flex-wrap:wrap}
+}

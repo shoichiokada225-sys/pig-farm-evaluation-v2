@@ -6,11 +6,11 @@
    新しい版は CACHE の版上げ（＋ js/config.js の APP_VER も同じ値に）で取り込む。
    キャッシュに無いものだけネットワークへ（3秒で打ち切り）。ページ遷移（navigate）だけ index.html にフォールバックし、
    スクリプト・CSS 等はエラーを返す（欠けたファイル名がコンソールに出る。HTML を JS として読ませない＝W16-5） */
-const CACHE = 'jitsugi-v2-v24';
+const CACHE = 'jitsugi-v2-v25';
 const ASSETS = [
   './', './index.html', './styles.css', './v2.css', './works-v2.js',
   './js/config.js', './js/util.js', './js/i18n.js', './js/data.js', './js/store.js', './js/person.js', './js/contract.js', './js/ui.js', './js/sync.js', './js/app.js',
-  './chart.umd.min.js', './manifest.json', './icon-192.png', './icon-512.png',
+  './chart.umd.min.js', './manifest.json', './icon-192.png', './icon-512.png', './icon-512-maskable.png',
 ];
 const ASSET_PATHS = new Set(ASSETS.map(u => new URL(u, self.location.href).pathname));
 const NET_TIMEOUT_MS = 3000;

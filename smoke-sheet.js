@@ -115,6 +115,7 @@ async function run(devName) {
   console.log('[5] 採点 → 保存 → スプレッドシートへ送信');
   const ids = await page.locator('#cards .ec').evaluateAll(els => els.map(e => e.id.slice(2)));
   for (const cid of ids) await page.locator(`.sb[data-id="${cid}"][data-s="4"]`).tap();
+  await page.evaluate(id => openCm(id), ids[0]);   // コメントは「＋ コメント」で開く（2026-10-06）
   await page.locator(`textarea[data-cid="${ids[0]}"]`).fill('=HYPERLINK("x") 手順は良い');
   await page.locator('#btnSave').tap();
   await page.waitForTimeout(600);
@@ -1272,8 +1273,7 @@ async function runGuard(devName) {
   await page.locator('.wsec[data-w="feed-adjust"] .wshd-skip').tap(); await page.waitForTimeout(300);
   await ee('テスト 乙彦').tap(); await page.waitForTimeout(300);
   const undo = page.locator('#toast .toast-act');
-  ok('G4: 「元に戻す」はまだ押せる', await undo.isVisible());
-  await undo.tap(); await page.waitForTimeout(300);
+  ok('G4: 別の人へ移ったら効かない「元に戻す」は片付ける（2026-10-06）', await undo.count() === 0);
   ok('G4: 乙彦の作業は除フンだけのまま（丁子のエサ調整が入らない）', JSON.stringify(await page.evaluate(() => selWorks)) === '["dung-removal"]' && await page.inputValue('#fEe') === 'テスト 乙彦');
 
   // ---- R15: 編集モードと下書き復元 ----
@@ -1872,6 +1872,7 @@ async function runA11y(devName) {
   // 採点済みの作業を（確認を経て）外しても、「元に戻す」で点とコメントごと戻る
   const w0 = before[0], c0 = await page.locator(`#cards .ec[data-w="${w0}"]`).first().evaluate(e => e.id.slice(2));
   await page.locator(`.sb[data-id="${c0}"][data-s="2"]`).tap();
+  await page.evaluate(id => openCm(id), c0);
   await page.fill(`textarea[data-cid="${c0}"]`, 'テストのコメント');
   const nd = dialogs.length;
   await page.locator(`.wsec[data-w="${w0}"] .wshd-skip`).tap(); await page.waitForTimeout(300);
@@ -2034,6 +2035,7 @@ async function runPerf(devName) {
   const cid3 = c3.slice(2);
   await page.locator(`#critb-${cid3}`).tap();
   await page.locator(`.sb[data-id="${cid3}"][data-s="4"]`).tap();
+  await page.evaluate(id => openCm(id), cid3);
   await page.locator(`textarea[data-cid="${cid3}"]`).tap();
   await page.keyboard.type('テストのコメント');
   await page.evaluate(() => { document.querySelectorAll('#cards .wsec').forEach(s => { s._keep = 1; }); });

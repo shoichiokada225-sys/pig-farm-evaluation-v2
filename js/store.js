@@ -14,7 +14,16 @@ try{const r=JSON.parse(localStorage.getItem(SEL_KEY));if(Array.isArray(r))selWor
 function saveSel(){localStorage.setItem(SEL_KEY,JSON.stringify(selWorks))}
 function getItems(){return itemsForWorks(selWorks)}
 
-function getAll(){try{const r=localStorage.getItem(SKEY);return r?JSON.parse(r).evaluations||[]:[]}catch{return[]}}
+function getAll(){
+  let r=null;try{r=localStorage.getItem(SKEY)}catch{return[]}
+  if(!r)return[];
+  try{const o=JSON.parse(r);if(o&&Array.isArray(o.evaluations))return o.evaluations}catch{}
+  // 壊れていた: 黙って空として扱わない（次の保存で上書きして消える）。元の文字列を控えへ退避し、1回だけ知らせる
+  let kept=false;try{localStorage.setItem(SKEY+'_broken_'+Date.now(),r);kept=true}catch{}   // 壊れるたびに別のキーへ（前の控えを上書きしない）
+  if(kept)try{localStorage.removeItem(SKEY)}catch{}   // 控えに残せた時だけ消す（残せなければ元のまま＝消さない）
+  if(!getAll._warned){getAll._warned=1;setTimeout(()=>{if(typeof toast==='function')toast(t('eStoreBroken'),1,null,8000)},0)}
+  return[];
+}
 /* 書けたら true。容量いっぱい等で書けなければ false（呼び出し側が知らせる＝黙って保存したふりをしない） */
 function putAll(evs){try{localStorage.setItem(SKEY,JSON.stringify({evaluations:evs}));return true}catch(e){return false}}
 /* 記録ID: randomUUID の無い古い端末（iOS 15.3 以前・Chrome 91 以前）でも作れる */

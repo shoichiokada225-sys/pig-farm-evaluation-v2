@@ -13,7 +13,7 @@ tSaved:'保存しました',tUpdated:'更新しました',tReset:'リセット�
 eNm:'評価者名と被評価者名を入力してください',eDt:'評価日を入力してください',eSc:'未評価の種目があります',eCSV:'データがありません',eEditGone:'編集中の記録が見つかりません（他の端末・タブで削除された可能性があります）',eNoWork:'評価する作業を選んでください',
 cReset:'入力内容をすべてクリアしますか？',cDel:'この評価を削除しますか？',cCEdit:'編集中の内容を破棄しますか？',
 s5:'模範的',s4:'上回る',s3:'標準',s2:'要改善',s1:'要指導',
-barnLbl:'豚舎',showCrit:'基準を見る（レベル1〜5）',hideCrit:'基準を閉じる',kantenLbl:'評価の観点',progDone:'採点済み',prevLbl:'前回',
+barnLbl:'豚舎',showCrit:'基準を見る',hideCrit:'基準を閉じる',kantenLbl:'評価の観点',progDone:'採点済み',prevLbl:'前回',
 selWorksTitle:'評価する作業を選ぶ',selWorksHint:'複数の作業を選べます。選んだ作業の評価項目（各5種目）が下に表示されます。',btnClearSel:'選択を全て解除',selCnt:'選択中',
 workNameCol:'作業',catCol:'カテゴリ',worksCol:'作業数',
 catFeeding:'飼養管理',catHygiene:'衛生管理',catBreeding:'繁殖管理',catFarrowing:'分娩管理',catFacility:'施設管理',catRecord:'記録管理',catShipping:'出荷管理',
@@ -33,7 +33,7 @@ tSaved:'Saved',tUpdated:'Updated',tReset:'Reset',tDel:'Deleted',tCSV:'CSV downlo
 eNm:'Enter names',eDt:'Enter date',eSc:'Unscored aspects',eCSV:'No data',eEditGone:'The record being edited no longer exists',eNoWork:'Select at least one task',
 cReset:'Clear all?',cDel:'Delete?',cCEdit:'Discard?',
 s5:'Exemplary',s4:'Above',s3:'Standard',s2:'Improve',s1:'Needs help',
-barnLbl:'Barn',showCrit:'View criteria (Levels 1–5)',hideCrit:'Hide criteria',kantenLbl:'Assessment focus',progDone:'Scored',prevLbl:'Prev.',
+barnLbl:'Barn',showCrit:'View criteria',hideCrit:'Hide criteria',kantenLbl:'Assessment focus',progDone:'Scored',prevLbl:'Prev.',
 selWorksTitle:'Select tasks to evaluate',selWorksHint:'You can select multiple tasks. The 5 assessment aspects of each selected task appear below.',btnClearSel:'Clear selection',selCnt:'selected',
 workNameCol:'Task',catCol:'Category',worksCol:'Tasks',
 catFeeding:'Feeding',catHygiene:'Hygiene',catBreeding:'Breeding',catFarrowing:'Farrowing',catFacility:'Facility',catRecord:'Records',catShipping:'Shipping',
@@ -53,7 +53,7 @@ tSaved:'Đã lưu',tUpdated:'Cập nhật',tReset:'Đặt lại',tDel:'Đã xóa
 eNm:'Nhập tên',eDt:'Nhập ngày',eSc:'Chưa chấm hết',eCSV:'Không có',eEditGone:'Không tìm thấy bản ghi đang sửa',eNoWork:'Hãy chọn ít nhất một công việc',
 cReset:'Xóa tất cả?',cDel:'Xóa?',cCEdit:'Hủy?',
 s5:'Xuất sắc',s4:'Tốt',s3:'Đạt',s2:'Cải thiện',s1:'Cần dạy',
-barnLbl:'Chuồng',showCrit:'Xem tiêu chuẩn (Mức 1–5)',hideCrit:'Đóng tiêu chuẩn',kantenLbl:'Trọng tâm đánh giá',progDone:'Đã chấm',prevLbl:'Lần trước',
+barnLbl:'Chuồng',showCrit:'Xem tiêu chuẩn',hideCrit:'Đóng tiêu chuẩn',kantenLbl:'Trọng tâm đánh giá',progDone:'Đã chấm',prevLbl:'Lần trước',
 selWorksTitle:'Chọn công việc để đánh giá',selWorksHint:'Có thể chọn nhiều công việc. 5 tiêu chí đánh giá của mỗi công việc đã chọn sẽ hiện bên dưới.',btnClearSel:'Bỏ chọn tất cả',selCnt:'đang chọn',
 workNameCol:'Công việc',catCol:'Nhóm',worksCol:'Số công việc',
 catFeeding:'Nuôi dưỡng',catHygiene:'Vệ sinh',catBreeding:'Sinh sản',catFarrowing:'Đẻ',catFacility:'Thiết bị',catRecord:'Ghi chép',catShipping:'Xuất chuồng',
@@ -73,7 +73,7 @@ tSaved:'Tersimpan',tUpdated:'Diperbarui',tReset:'Direset',tDel:'Dihapus',tCSV:'D
 eNm:'Masukkan nama',eDt:'Masukkan tanggal',eSc:'Belum dinilai',eCSV:'Tidak ada',eEditGone:'Data yang sedang diedit tidak ditemukan',eNoWork:'Pilih minimal satu tugas',
 cReset:'Hapus semua?',cDel:'Hapus?',cCEdit:'Buang?',
 s5:'Teladan',s4:'Baik',s3:'Standar',s2:'Perbaikan',s1:'Dibimbing',
-barnLbl:'Kandang',showCrit:'Lihat kriteria (Level 1–5)',hideCrit:'Tutup kriteria',kantenLbl:'Fokus penilaian',progDone:'Dinilai',prevLbl:'Sebelumnya',
+barnLbl:'Kandang',showCrit:'Lihat kriteria',hideCrit:'Tutup kriteria',kantenLbl:'Fokus penilaian',progDone:'Dinilai',prevLbl:'Sebelumnya',
 selWorksTitle:'Pilih tugas untuk dinilai',selWorksHint:'Anda dapat memilih beberapa tugas. 5 aspek penilaian dari setiap tugas terpilih muncul di bawah.',btnClearSel:'Hapus semua pilihan',selCnt:'dipilih',
 workNameCol:'Tugas',catCol:'Kategori',worksCol:'Jumlah tugas',
 catFeeding:'Pemberian pakan',catHygiene:'Kebersihan',catBreeding:'Reproduksi',catFarrowing:'Kelahiran',catFacility:'Fasilitas',catRecord:'Pencatatan',catShipping:'Pengiriman',
@@ -153,3 +153,28 @@ Object.assign(TX.id,{
   aboutHint:'Sumber: panduan kerja peternakan Mutsuzawa dan Manual Lapangan',
   wselHint:'Tugas terisi otomatis dari daftar. Gunakan hanya untuk menambah/mengurangi tugas',
 });
+
+/* 2026-10-06 細かい改善（第2弾） */
+Object.assign(TX.ja,{leftWorks:'残り{n}作業',editingFor:'編集中',cLeaveEdit:'編集中の記録があります。編集をやめて、この人に切り替えますか？（修正は保存されません）',
+  eAmbig:'同じ名前の人が複数の農場にいます。名簿のタブから選んでください',cDateChg:'評価日を {a} から {b} に変えて保存しますか？',chBar:'作業別（直近）',redoneLbl:'やり直し前',
+  cUrlPend:'未送信・削除待ちが {n} 件あります。送信先を変えると、それは新しい送信先へ送られます。変えますか？',eStoreBroken:'端末の記録データが壊れていました。元のデータは控えに残しています。管理者に連絡してください',
+  addCmt:'＋ コメント',worksUnit1:'作業',skipFor:'今回は実施しない'});
+Object.assign(TX.en,{leftWorks:'{n} tasks left',editingFor:'Editing',cLeaveEdit:'A record is being edited. Stop editing and switch to this person? (changes will not be saved)',
+  eAmbig:'This name exists on more than one farm. Pick the person from the list',cDateChg:'Change the evaluation date from {a} to {b} and save?',chBar:'By task (latest)',redoneLbl:'Before redo',
+  cUrlPend:'{n} unsent or pending-delete items will go to the new destination. Change it?',eStoreBroken:'The records on this device were damaged. The original data was kept as a copy. Contact your administrator',
+  addCmt:'+ Comment',worksUnit1:' task',skipFor:'Skip this time'});
+Object.assign(TX.vi,{leftWorks:'còn {n} việc',editingFor:'Đang sửa',cLeaveEdit:'Đang sửa một bản ghi. Dừng sửa và chuyển sang người này? (thay đổi sẽ không được lưu)',
+  eAmbig:'Tên này có ở nhiều trại. Hãy chọn người trong danh sách',cDateChg:'Đổi ngày đánh giá từ {a} sang {b} rồi lưu?',chBar:'Theo công việc (mới nhất)',redoneLbl:'Trước khi chấm lại',
+  cUrlPend:'Có {n} mục chưa gửi/chờ xóa sẽ được gửi đến nơi mới. Đổi không?',eStoreBroken:'Dữ liệu trên máy bị hỏng. Dữ liệu gốc đã được giữ lại. Hãy báo cho quản lý',
+  addCmt:'+ Nhận xét',skipFor:'Lần này không làm',worksUnit1:' việc',
+  labelEvaluator:'Người đánh giá',evLbl:'Người đánh giá',chAvg:'Trung bình',chLine:'Xu hướng điểm trung bình'});
+Object.assign(TX.id,{leftWorks:'sisa {n} tugas',editingFor:'Mengubah',cLeaveEdit:'Ada catatan yang sedang diubah. Berhenti mengubah dan pindah ke orang ini? (perubahan tidak disimpan)',
+  eAmbig:'Nama ini ada di lebih dari satu peternakan. Pilih orangnya dari daftar',cDateChg:'Ubah tanggal penilaian dari {a} ke {b} lalu simpan?',chBar:'Per tugas (terbaru)',redoneLbl:'Sebelum dinilai ulang',
+  cUrlPend:'Ada {n} data belum terkirim/menunggu hapus yang akan dikirim ke tujuan baru. Ubah?',eStoreBroken:'Data di perangkat rusak. Data asli disimpan sebagai salinan. Hubungi admin',
+  addCmt:'+ Komentar',skipFor:'Tidak dilakukan kali ini',worksUnit1:' tugas'});
+/* 月日の並び（vi/id は 日/月 で読むので D/M） */
+function fmtMD(m,d){return typeof lang!=='undefined'&&(lang==='vi'||lang==='id')?(+d)+'/'+(+m):(+m)+'/'+(+d)}
+Object.assign(TX.ja,{eFuture:'評価日が未来になっています。日付を直してください'});
+Object.assign(TX.en,{eFuture:'The evaluation date is in the future. Please fix the date'});
+Object.assign(TX.vi,{eFuture:'Ngày đánh giá đang ở tương lai. Hãy sửa lại ngày'});
+Object.assign(TX.id,{eFuture:'Tanggal penilaian ada di masa depan. Perbaiki tanggalnya'});

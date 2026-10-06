@@ -28,6 +28,7 @@ function closeLangMenu(refocus){
   m.hidden=true;if(b){b.setAttribute('aria-expanded','false');if(refocus||had)b.focus()}
 }
 document.addEventListener('click',e=>{const w=document.querySelector('.lsw');if(w&&!w.contains(e.target))closeLangMenu()});
+document.addEventListener('focusin',e=>{const w=document.querySelector('.lsw');if(w&&!w.contains(e.target))closeLangMenu()});   // Tab でメニューの外へ出たら閉じる
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){const m=document.getElementById('lswMenu');if(m&&!m.hidden){e.preventDefault();closeLangMenu(true)}}});
 function applyT(){
   document.querySelectorAll('[data-t]').forEach(el=>{el.textContent=t(el.dataset.t)});
@@ -40,7 +41,8 @@ function applyT(){
    初期化
    ============================================================== */
 document.addEventListener('DOMContentLoaded',()=>{
-  document.getElementById('fDate').value=startDate();   // 今日（評価者が今日選んだ日付があればその日付＝送信後の再読み込みでも戻さない）
+  document.getElementById('fDate').value=startDate();
+  document.getElementById('fDate').max=todayLocal();   // 未来の評価日は選べない（日をまたいだ時は refreshDate で更新）   // 今日（評価者が今日選んだ日付があればその日付＝送信後の再読み込みでも戻さない）
   renderVer();
   setLang(lang);
   restoreDraft();
@@ -72,8 +74,10 @@ document.addEventListener('DOMContentLoaded',()=>{
   window.addEventListener('hashchange',applyDeepLink);
   // モーダル: Escで閉じる・Tabフォーカストラップ
   const mo=document.getElementById('modal');
+  // Esc は文書全体で受ける（本文の文字を押してフォーカスがモーダルの外に出ても閉じる）
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&mo.classList.contains('show')){e.preventDefault();closeMo()}});
   mo.addEventListener('keydown',e=>{
-    if(e.key==='Escape'){closeMo();return}
+    if(e.key==='Escape')return;
     if(e.key!=='Tab')return;
     const f=[...mo.querySelectorAll('button,[href],input,textarea,select,[tabindex]:not([tabindex="-1"])')].filter(el=>el.offsetParent!==null);
     if(!f.length)return;
@@ -111,7 +115,13 @@ function swCheck(force){
 }
 /* 採点途中（入力あり・編集中・送信中）でなければ、新しい版をすぐ読み込む。途中なら案内だけ出す */
 /* 評価日が読み込み後に戻らない値（選んだ日付を端末に覚えられなかった等）の時も、黙って読み込まない（今日に戻して記録が2つの日付に分かれないように） */
-function busyForReload(){return !!(dirty||editId||(typeof syncing!=='undefined'&&syncing)||document.getElementById('fDate').value!==startDate())}
+function busyForReload(){
+  const ae=document.activeElement,fEv=document.getElementById('fEv'),evOpen=document.getElementById('evEdit').style.display!=='none';
+  return !!(dirty||editId||(typeof syncing!=='undefined'&&syncing)||document.getElementById('fDate').value!==startDate()
+    ||(evOpen&&fEv.value.trim()&&fEv.value.trim()!==getEvaluator())   // 評価者名を打ちかけ
+    ||(ae&&/^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName))              // 入力中
+    ||document.getElementById('pgCfg').classList.contains('on'));     // 設定タブを開いている（送信先・合言葉の入力中）
+}
 function maybeReloadApp(){
   if(!updReady||swReloading)return;
   if(busyForReload()){document.getElementById('updBar').hidden=false;return}
@@ -119,8 +129,9 @@ function maybeReloadApp(){
 }
 function reloadApp(){
   if(swReloading)return;
-  if(dirty)saveDraft();   // 入力途中は下書きに残す（読み込み後に復元される）
+  if(dirty){saveDraft();dirty=false}   // 入力途中は下書きに残す（読み込み後に復元される）＝「変更が保存されない」確認を出さない
   swReloading=true;location.reload();
+  setTimeout(()=>{swReloading=false},4000);   // 読み込みが始まらなかった（取り消された）時は、次の機会にまた読み込めるように
 }
 function initSW(){
   renderA2hs();
@@ -171,7 +182,7 @@ function fixProg(){const p=document.querySelector('.prog'),h=hdrStk();if(p)p.sty
 function stkH(){return parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--stk'))||0}
 /* 貼り付く帯（ヘッダー＋進捗＋作業見出し）の下に要素の頭が来るようにスクロール */
 function scrollBelowStk(el,extra,smooth){
-  window.scrollTo({top:Math.max(0,el.getBoundingClientRect().top+window.scrollY-stkH()-(extra||8)),behavior:smooth?'smooth':'auto'});
+  window.scrollTo({top:Math.max(0,el.getBoundingClientRect().top+window.scrollY-stkH()-(extra||8)),behavior:smooth?smoothB():'auto'});
 }
 /* 未採点のカードへ（点数ボタンの群にフォーカス＝スクリーンリーダーはその種目名と「未採点」を読む） */
 let _missAt=null;   // 最後に案内した未採点カード（「次へ」を押すとフォーカスはボタンに移るので、ここから次を数える）
@@ -270,8 +281,8 @@ function restoreDraft(){
   let dt=d.date;
   if(dt&&!isEdit&&dt!==todayLocal()){
     const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(dt);
-    if(confirm(t('cDraftDate').replace(/\{d\}/g,m?(+m[2])+'/'+(+m[3]):dt)))dt=todayLocal();
-    else setUserDate(dt);   // 評価者がその日付のままを選んだ＝選んだ日付として保つ（すぐ今日へ戻さない）
+    if(confirm(t('cDraftDate').replace(/\{d\}/g,m?fmtMD(m[2],m[3]):dt)))dt=todayLocal();
+    else setUserDate(dt,true);   // 評価者がその日付のままを選んだ＝選んだ日付として保ち、保存の時にもう一度聞かない
   }
   if(dt)document.getElementById('fDate').value=dt;
   setCur(dc?{name:ee,farm:dc.farm,manual:dc.manual,redo:dc.redo,redoOf:dc.redoOf}:{name:ee,farm:(rosterEntry(ee,chipFarm,ro)||{}).farm||'',manual:false});
@@ -316,11 +327,13 @@ function noteUserDate(){if(!editId)setUserDate(document.getElementById('fDate').
 function refreshDate(quiet){
   if(editId)return'';
   const fd=document.getElementById('fDate'),td=todayLocal(),u=userDate();
+  if(!fd.value){fd.value=td;fd.max=td;return''}   // 空欄は黙って今日（「日付が変わった」とは言わない）
   if(u&&u.date===fd.value)return'';
   if(!u)try{localStorage.removeItem(DATE_KEY)}catch{}   // 前日に選んだ日付の覚えは捨てる
+  fd.max=td;
   if(fd.value===td)return'';
   fd.value=td;
-  const m=/^\d{4}-(\d{2})-(\d{2})$/.exec(td),msg=t('tDateToday').replace('{d}',m?(+m[1])+'/'+(+m[2]):td);
+  const m=/^\d{4}-(\d{2})-(\d{2})$/.exec(td),msg=t('tDateToday').replace('{d}',m?fmtMD(m[1],m[2]):td);
   if(dirty)saveDraft();
   renderRoster();if(!quiet)toast(msg,0,null,4000);
   return msg;
@@ -330,8 +343,8 @@ function confirmPastDate(v){
   if(editId||!v||v===todayLocal())return true;
   const u=userDate();if(u&&u.date===v&&u.ok)return true;
   const m=/^\d{4}-(\d{2})-(\d{2})$/.exec(v);
-  if(!confirm(t('cPastDate').replace(/\{d\}/g,m?(+m[1])+'/'+(+m[2]):v))){
-    const fd=document.getElementById('fDate');fd.scrollIntoView({behavior:'smooth',block:'center'});fd.focus({preventScroll:true});return false}
+  if(!confirm(t('cPastDate').replace(/\{d\}/g,m?fmtMD(m[1],m[2]):v))){
+    const fd=document.getElementById('fDate');fd.scrollIntoView({behavior:smoothB(),block:'center'});fd.focus({preventScroll:true});return false}
   setUserDate(v,true);return true;
 }
 
@@ -340,12 +353,14 @@ function confirmPastDate(v){
    ============================================================== */
 function doSave(){
   if(!selWorks.length){toast(t('eNoWork'),1);return}
+  if(!editId&&!document.getElementById('fDate').value)document.getElementById('fDate').value=todayLocal();   // 空欄は今日（「日付が変わった」とは言わない）
   const dateNote=refreshDate(true);   // 開いたまま日をまたいだ: 既定の日付は今日へ（評価者が選んだ日付はそのまま）
   adoptTypedEvaluator(false);   // 打っただけで「決定」を押していない評価者名も採用する（保存の時に消して最上部へ戻さない）
   const d=collectForm();
-  if(!d.evaluator.trim()){toast(t('eEv'),1);editEvaluator();document.getElementById('evBox').scrollIntoView({behavior:'smooth',block:'center'});return}
-  if(!d.evaluatee.trim()){toast(t('eEe'),1);document.querySelector('.eebox').scrollIntoView({behavior:'smooth',block:'center'});return}
+  if(!d.evaluator.trim()){toast(t('eEv'),1);editEvaluator();document.getElementById('evBox').scrollIntoView({behavior:smoothB(),block:'center'});return}
+  if(!d.evaluatee.trim()){toast(t('eEe'),1);document.querySelector('.eebox').scrollIntoView({behavior:smoothB(),block:'center'});return}
   if(!d.date){toast(t('eDt'),1);return}
+  if(d.date>todayLocal()){toast(t('eFuture'),1);document.getElementById('fDate').focus();return}   // 未来の評価日は保存しない（手入力・貼り付けで max を越えた時も）
   clearTimeout(autoT);   // 保存前の入力で予約された下書き保存を取り消す（保存後に古い日付だけの下書きが残らないように）
   if(!editId&&!confirmPastDate(d.date))return;
   let miss=getItems().filter(it=>{
@@ -358,22 +373,24 @@ function doSave(){
     const empty=st.filter(x=>x.done===0),half=st.filter(x=>x.done>0&&x.done<x.total),full=st.filter(x=>x.total&&x.done===x.total);
     if(half.length)miss=miss.filter(it=>half.some(x=>x.wid===it.workId));   // 途中の作業の未採点だけを示す
     else if(full.length&&empty.length){
-      const nm=empty.map(x=>{const w=workById(x.wid);return w?loc(w,'name'):x.wid}).join('、');
+      const nm=empty.map(x=>{const w=workById(x.wid);return w?loc(w,'name'):x.wid}).join(listSep());
       const lostCm=d.works.some(we=>empty.some(x=>x.wid===we.workId)&&Object.values(we.comments||{}).some(v=>(v||'').trim()));
       if(!confirm(t('cPartSave').replace('{n}',empty.length).replace('{w}',nm)+(lostCm?'\n'+t('cPartCm'):'')))return;
       d.works=d.works.filter(we=>full.some(x=>x.wid===we.workId));partLeft=empty.length;miss=[];
     }
   }
   // 未採点の印（⚠ 未採点・太い赤枠）は点を付けるまで残す。件数と「次へ」は進捗の横に残る。1枚目の点数ボタンへフォーカス
-  if(miss.length){document.querySelectorAll('#cards .ec.miss').forEach(c=>c.classList.remove('miss'));
-    miss.forEach(it=>{const c=document.getElementById('c-'+it.id);if(c){c.classList.remove('miss');void c.offsetWidth;c.classList.add('miss')}});
+  if(miss.length){document.querySelectorAll('#cards .ec.miss').forEach(c=>setMiss(c,false));
+    miss.forEach(it=>{const c=document.getElementById('c-'+it.id);if(c){setMiss(c,false);void c.offsetWidth;setMiss(c,true)}});
     updProg();
     toast(t('eSc')+'('+miss.length+')',1);focusMiss(document.getElementById('c-'+miss[0].id));return}
   const all=getAll();
   const who=eeSaveInfo(d.evaluatee.trim());
+  if(!editId&&!who.farm&&!who.manual&&rosterHits(d.evaluatee.trim(),'',getRoster().list).length>1){toast(t('eAmbig'),1);scrollToEe();return}   // どちらの人か決まらない記録を作らない
   if(editId){
     const idx=all.findIndex(e=>e.id===editId);
     if(idx===-1){toast(t('eEditGone'),1);exitEdit(true);return}   // 採点は残す＝人も編集していた人のまま
+    if(d.date!==all[idx].date&&!confirm(t('cDateChg').replace('{a}',mdOf(all[idx].date)).replace('{b}',mdOf(d.date))))return;   // 編集で評価日を動かす時は確認
     // 画面に出せなかった作業（今のカタログに無い作業）は元の記録のまま残す（黙って消さない）
     const nw=(all[idx].works||[]).map(we=>d.works.find(x=>x.workId===we.workId)||we);
     d.works.forEach(x=>{if(!nw.some(we=>we.workId===x.workId))nw.push(x)});
@@ -387,7 +404,7 @@ function doSave(){
   }else{
     all.push(normRec({id:newId(),date:d.date,evaluator:d.evaluator.trim(),evaluatee:d.evaluatee.trim(),farm:who.farm,...(who.manual?{manual:true}:{}),...(curEe.redoOf&&!who.manual&&nmKey(d.evaluatee)===nmKey(curEe.name)?{redoOf:curEe.redoOf}:{}),works:d.works,overall:d.overall,createdAt:new Date().toISOString(),sent:false}));
     if(!putAll(all)){toast(t('eStoreFull'),1);return}   // 書けなかった: 採点は画面に残す（消さない）
-    toast((partLeft?t('tSavedPart').replace('{n}',partLeft):t('tSaved'))+(dateNote?' ／ '+dateNote:''),0,null,dateNote?5000:0);   // 日付を直した知らせは送信済みの知らせで消さない
+    toast((partLeft?t('tSavedPart').replace('{n}',partLeft):t('tSaved'))+(dateNote?' ／ '+dateNote:''),0,null,dateNote?5000:partLeft?3000:0);   // 日付を直した・残りの作業がある知らせは送信済みの知らせで消さない
   }
   localStorage.removeItem(DRAFT_KEY);dirty=false;refreshSel();
   // 次の被評価者へ：作業選択も空に戻す（名簿のタブを押せば再セット）
@@ -413,13 +430,23 @@ function skipWork(wid){
   const sc=document.querySelector('#cards .ec.scored[data-w="'+wid+'"]');
   if(sc&&!confirm(t('cSkipScored').replace('{w}',nm)))return;
   const y=window.scrollY,idx=selWorks.indexOf(wid),snap=collectForm().works.find(we=>we.workId===wid),who=document.getElementById('fEe').value;
+  const cur0={...curEe};
   toggleWork(wid,false);
-  window.scrollTo({top:y});   // 位置を保つ（外した作業の場所に次の作業が来る）
   // 誤タップ対策: トーストの「元に戻す」で、外した作業を同じ位置に採点ごと戻す（同じ人を選んでいる間だけ）
-  toast(t('tSkipped').replace('{w}',nm),0,{label:t('undo'),fn:()=>unskipWork(wid,idx,snap,who)});
+  const undo={label:t('undo'),fn:()=>unskipWork(wid,idx,snap,who,cur0)};
+  if(!selWorks.length){   // 最後の作業を外した＝この人は今回ここまで。人を外して名簿へ（「作業を選べ」と案内しない）
+    clearForm();scrollToEe();toast(t('tSkipped').replace('{w}',nm),0,undo);return;
+  }
+  window.scrollTo({top:y});   // 位置を保つ（外した作業の場所に次の作業が来る）
+  toast(t('tSkipped').replace('{w}',nm),0,undo);
+  // 押したボタンが消えてフォーカスが body に落ちた時だけ、次の作業の「今回は実施しない」へ（入力中のコメント欄などからは奪わない）
+  const ae=document.activeElement;
+  if(!ae||ae===document.body||!document.body.contains(ae)){const nx=document.querySelector('.wshd-skip[data-w="'+CSS.escape(selWorks[Math.min(idx,selWorks.length-1)])+'"]');if(nx)nx.focus({preventScroll:true})}
 }
-function unskipWork(wid,idx,snap,who){
-  if(editId||selWorks.includes(wid)||document.getElementById('fEe').value!==who)return;
+function unskipWork(wid,idx,snap,who,cur0){
+  if(editId||selWorks.includes(wid))return;
+  if(!curEe.name&&!curEe.manual&&cur0&&cur0.name===who&&!selWorks.length)setCur(cur0);   // 最後の作業を外して人も外れていた → 人ごと戻す
+  if(document.getElementById('fEe').value!==who)return;
   selWorks.splice(Math.max(0,Math.min(idx,selWorks.length)),0,wid);
   saveSel();buildWorkSel();addWorkSec(wid);
   if(snap)workItems(wid).forEach(it=>{
@@ -455,11 +482,11 @@ function startEdit(id){
   editEv=rec.evaluator;
   setCur({name:rec.evaluatee,farm:rec.farm||'',manual:!!rec.manual});renderRoster();   // 農場チップの好み（FARM_KEY）は書き換えない
   document.getElementById('fOv').value=rec.overall||'';
-  document.querySelectorAll('#cards .ec.miss').forEach(c=>c.classList.remove('miss'));
+  document.querySelectorAll('#cards .ec.miss').forEach(c=>setMiss(c,false));
   fillForm(rec.works);
   document.getElementById('editBar').classList.add('show');
   document.getElementById('btnSave').textContent=t('btnUpdate');
-  window.scrollTo({top:0,behavior:'smooth'});dirty=false;updProg();
+  window.scrollTo({top:0,behavior:smoothB()});dirty=false;updProg();
   saveDraft();   // 編集前の採点（preEdit）を下書きに残す（編集中にアプリが落ちても、採点途中の人の点数を失わない）
 }
 function cancelEdit(){if(!editId)return;if(dirty&&!confirm(t('cCEdit')))return;exitEdit()}
@@ -493,7 +520,7 @@ function restorePreEdit(pe){
   pe=pe&&typeof pe==='object'?pe:{};
   clearTimeout(autoT);
   selWorks=(Array.isArray(pe.sel)?pe.sel:[]).filter(id=>workById(id));saveSel();buildWorkSel();buildCards();
-  document.querySelectorAll('#cards .ec.miss').forEach(c=>c.classList.remove('miss'));
+  document.querySelectorAll('#cards .ec.miss').forEach(c=>setMiss(c,false));
   document.getElementById('fDate').value=pe.date||todayLocal();
   setCur(pe.cur);
   if(!curEe.name&&!curEe.manual&&selWorks.length){selWorks=[];saveSel();buildWorkSel();buildCards()}   // 人のいないカードは出さない
@@ -514,7 +541,7 @@ function clearForm(keepDraft){
   const fd=document.getElementById('fDate');if(!fd.value)fd.value=todayLocal();
   setCur(null);document.getElementById('fOv').value='';
   document.querySelectorAll('.sb.sel,.crit-lv.sel').forEach(b=>b.classList.remove('sel'));
-  document.querySelectorAll('.ec.scored,.ec.miss').forEach(c=>c.classList.remove('scored','miss'));
+  document.querySelectorAll('.ec.scored,.ec.miss').forEach(c=>{c.classList.remove('scored','cm-open');setMiss(c,false)});
   document.querySelectorAll('.ec textarea').forEach(ta=>ta.value='');
   if(!keepDraft)localStorage.removeItem(DRAFT_KEY);
   dirty=false;updProg();renderRoster();
@@ -545,6 +572,7 @@ function commitEvaluator(){
   const v=document.getElementById('fEv').value.trim();
   if(!v){toast(t('eEv'),1);return}
   setEvaluator(v);renderEvaluator();document.getElementById('evBox').classList.remove('ev-need');document.getElementById('fEv').blur();toast(t('tEvSaved'));
+  const ec=document.getElementById('eeCur');if(ec&&!ec.hidden&&selWorks.length){scrollBelowStk(ec,8,true);ec.focus({preventScroll:true})}   // 人を選んでから名前を入れた＝採点の入口へ戻す
 }
 
 /* ==============================================================
@@ -569,7 +597,7 @@ async function reloadRoster(silent,bg){
   renderRoster();updSyncUI();
   // 名簿の管理ミス（空・タブが無い・作業名不明・同名）は電波と違って放っても直らないので、起動時も知らせる
   if(r.ok){
-    const w=rosterWarnText(r,5);
+    const w=rosterWarnText(r,5,true);   // 農場名のゆれは表記の注意＝赤いトーストにしない（画面の橙の警告に残る）
     if(r.keptEmpty)toast(t('eRosterEmptyKept'),1);
     else if(w)toast(w,1);
     else if(!silent)toast(t('tRoster')+' ('+r.list.length+')');
@@ -584,7 +612,7 @@ const ROSTER_OLD_MS=12*3600*1000;
 function fmtAt(at){
   const d=new Date(at||'');if(!at||isNaN(d))return'—';
   const p=n=>String(n).padStart(2,'0');
-  return (d.getMonth()+1)+'/'+d.getDate()+' '+p(d.getHours())+':'+p(d.getMinutes());
+  return fmtMD(d.getMonth()+1,d.getDate())+' '+p(d.getHours())+':'+p(d.getMinutes());
 }
 /* 電波では直らない名簿の失敗（受験者タブが無い・応答が不正）の知らせ。古い GAS が名乗った版があれば添える */
 function rosterErrMsg(){
@@ -666,6 +694,8 @@ function renderRoster(){
   renderRosterBody();
   if(a0){const a1=anc(),d=(a1===a0?a1.getBoundingClientRect().top-y0:0);if(Math.abs(d)>=0.5)window.scrollBy(0,d)}
 }
+/* 農場チップの右に、まだ続きがある時だけ › を出す */
+function updFarmsMore(){const f=document.getElementById('eeFarms'),m=document.getElementById('eeFarmsMore');if(!f||!m)return;m.hidden=!(f.scrollWidth-f.clientWidth-f.scrollLeft>4)}
 let _chipCentered=null;   // 最後に中央へ寄せた農場（同じ農場のままならユーザーが横にスクロールした位置を戻さない）
 function renderRosterBody(){
   const box=document.getElementById('eeTabs'),note=document.getElementById('eeNote'),fbox=document.getElementById('eeFarms');
@@ -689,6 +719,8 @@ function renderRosterBody(){
   // 中央へ寄せるのは、チップを初めて作った時と選択中の農場が変わった時だけ（名簿の取得完了・検索の入力のたびに戻さない）
   if(onChip&&(firstChips||_chipCentered!==farm))fbox.scrollLeft=Math.max(0,onChip.offsetLeft-(fbox.clientWidth-onChip.offsetWidth)/2);
   _chipCentered=onChip?farm:null;
+  updFarmsMore();
+  if(!fbox._moreBound){fbox._moreBound=1;fbox.addEventListener('scroll',updFarmsMore,{passive:true})}
   const ps=[];ro.forEach((p,i)=>{if(!showF||p.farm===farm)ps.push(i)});
   const findOn=ps.length>8;                      // 8名を超える農場は名前で絞り込めるように
   document.getElementById('eeFindBox').hidden=!findOn;
@@ -698,8 +730,8 @@ function renderRosterBody(){
   const tab=i=>{
     const p=ro[i],on=p===sel,g=pr.get(p),d=g.complete,part=!d&&g.done>0;
     return `<button type="button" class="eetab${on?' on':''}${d?' done':''}${part?' part':''}" aria-pressed="${on}" data-i="${i}" data-done="${g.done}" data-total="${g.total}" title="${esc(p.name)}" onclick="selectEe(${i})">`+
-      `<span class="eetab-nm${[...p.name].length>12?' long':''}">${esc(p.name)}</span><span class="eetab-ct">${d?esc(t('doneLbl'))+' · ':''}${part?`<span class="eetab-pt">${esc(t('partLbl'))} ${g.done}/${g.total}</span>`+esc(t('worksUnit')):p.works.length?p.works.length+esc(t('worksUnit')):esc(t('worksNone'))}${p.common?` <span class="eetab-cm">${esc(t('commonLbl'))}</span>`:''}</span>`+
-      `${p.unresolved&&p.unresolved.length?`<span class="eetab-unk">⚠ ${esc(t('unkWorkLbl'))}: ${esc(p.unresolved.join('、'))}</span>`:''}`+
+      `<span class="eetab-nm${[...p.name].length>12?' long':''}">${esc(p.name)}</span><span class="eetab-ct">${d?esc(t('doneLbl'))+' · ':''}${part?`<span class="eetab-pt">${esc(t('partLbl'))} ${g.done}/${g.total}</span> · `+esc(t('leftWorks').replace('{n}',g.total-g.done)):p.works.length?p.works.length+esc(t(p.works.length===1&&lang==='en'?'worksUnit1':'worksUnit')):esc(t('worksNone'))}${p.common?` <span class="eetab-cm">${esc(t('commonLbl'))}</span>`:''}</span>`+
+      `${p.unresolved&&p.unresolved.length?`<span class="eetab-unk">⚠ ${esc(t('unkWorkLbl'))}: ${esc(p.unresolved.join(listSep()))}</span>`:''}`+
       `${d?'<span class="eetab-ok" aria-hidden="true">✓</span>':''}</button>`;
   };
   box.innerHTML=todo.map(tab).join('')+(dn.length?`<div class="eegrp">✓ ${esc(t('doneGrp'))} (${dn.length})</div>`+dn.map(tab).join(''):'')
@@ -710,7 +742,9 @@ function renderRosterBody(){
   document.getElementById('eeAdd').hidden=!ro.length||manual;
   // 選んだ人の名前（全文）と農場を採点カードの上に1行で（タブの名前は長いと切れる・手入力欄は隠れるため）
   const ec=document.getElementById('eeCur');
-  if(ec){ec.hidden=!sel;ec.innerHTML=sel?`${esc(t('scoringFor'))}: <b>${esc(sel.name)}</b>（${esc(farmDisp(sel.farm))}）`+
+  if(ec){ec.hidden=!sel;ec.classList.toggle('edit',!!editId);
+    const er=editId?getAll().find(e=>e.id===editId):null;
+    ec.innerHTML=sel?`${esc(editId?t('editingFor'):t('scoringFor'))}: <b>${esc(sel.name)}</b>${esc(paren(farmDisp(sel.farm)+(er?' · '+mdOf(er.date):'')))}`+
     (curEe.redo?` <span class="eecur-redo">${esc(t('redoLbl').replace('{d}',mdOf(curEe.redo)))}</span>`:''):''}
   // 名簿の取得日時を常に出す。今回の取得に失敗・古い名簿の時は警告色（圏外の豚舎で古い名簿のまま試験しないように）
   // 失敗の理由で文言を分ける: 電波（net）だけを「電波の良い所で」。受験者タブが無い・応答が不正は管理者へ（#eeWarn に理由）
@@ -766,7 +800,7 @@ function curDoneWorks(){
   return [...doneWorksOf(p,examRecs(),ro)];
 }
 /* 'YYYY-MM-DD' → 'M/D'（形が違えばそのまま） */
-function mdOf(d){const m=/^\d{4}-(\d{2})-(\d{2})$/.exec(d||'');return m?(+m[1])+'/'+(+m[2]):String(d||'—')}
+function mdOf(d){const m=/^\d{4}-(\d{2})-(\d{2})$/.exec(d||'');return m?fmtMD(m[1],m[2]):String(d||'—')}   // vi/id は 日/月
 /* その人の試験期間の記録（人の特定は person.js の規則）。新しい順。ro は p を取り出した名簿の配列（getRoster() は呼ぶたびに別の配列） */
 function recsOf(p,ro){
   const recs=examRecs(),keyOf=personKeyer(recs,ro);
@@ -787,12 +821,17 @@ function scrollToEe(){
   const eb=document.querySelector('.eebox');if(!eb)return;
   const pr=document.querySelector('.prog');
   const off=hdrStk()+(pr?pr.offsetHeight:0)+8;
-  window.scrollTo({top:Math.max(0,eb.getBoundingClientRect().top+window.scrollY-off),behavior:'smooth'});
+  window.scrollTo({top:Math.max(0,eb.getBoundingClientRect().top+window.scrollY-off),behavior:smoothB()});
 }
 function selectEe(i,opt){
   opt=opt||{};
+  toastClearAct();
   const ro=getRoster().list,p=ro[i];if(!p)return;
-  if(editId){toast(t('editingBanner'),1);return}
+  if(editId){
+    if(p===selEntry(ro))return;
+    if(!confirm(t('cLeaveEdit')))return;   // 「編集中」とだけ出して止めない: 編集をやめてこの人へ
+    dirty=false;exitEdit();
+  }
   if(p===selEntry(ro)&&!opt.redo)return;
   const pg=eeProgress(p,examRecs(),ro),last=pg.complete?lastRecOf(p,ro):null,ro0=ro;
   // 全作業が済んでいる人を押す＝その記録を開いて修正（この端末の記録がある時。最新の記録を開く）。
@@ -827,7 +866,7 @@ function selectEe(i,opt){
   const unk=p.unresolved&&p.unresolved.length;
   document.getElementById('wselBox').open=!selWorks.length||!!unk;   // 作業名不明の人は作業選択を開いたまま（評価者が補う）
   renderRoster();onCh();
-  const unkMsg=unk?p.name+' — '+t('unkWorkLbl')+': '+p.unresolved.join('、'):'';
+  const unkMsg=unk?p.name+' — '+t('unkWorkLbl')+': '+p.unresolved.join(listSep()):'';
   // 「採点中: 名前（農場）」を貼り付く帯の下に出し、フォーカスも採点の入口へ（押したタブに残すと、読み上げは残りの人のタブを全部通ることになる）
   // 評価者名が未確定なら、人を選んだこの時点で知らせる（保存の時に最上部へ戻す往復をなくす）。打ちかけの名前はここで確定。
   // 作業名不明（⚠）の人でも同じ（作業名不明の案内は同じトーストに添える）
@@ -841,6 +880,7 @@ function selectEe(i,opt){
 }
 /* 名簿にいない人（当日来た新人・登録漏れ・表記違い）をその場で手入力して評価する */
 function openManualEe(){
+  toastClearAct();
   if(editId){toast(t('editingBanner'),1);return}
   if(dirty&&document.querySelector('#cards .ec.scored')&&!confirm(t('cSwitchEe')))return;
   const dt=document.getElementById('fDate').value;
