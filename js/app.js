@@ -53,6 +53,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')refreshDate()});
   document.getElementById('fEe').addEventListener('input',e=>{curEe.name=e.target.value.trim();renderRoster()});   // 手入力・編集中に名前を直した
   document.getElementById('cfgUrl').value=sheetUrl();
+  document.getElementById('cfgTok').value=getTok();
   document.getElementById('cfgExamStart').value=examStart();
   document.getElementById('eeFind').addEventListener('input',e=>{eeQuery=e.target.value;renderRoster()});
   // 名簿の取得と未送信の再送は並行（電波が弱くて名簿が返らなくても再送は止めない）
@@ -194,6 +195,7 @@ function missNext(){
    ============================================================== */
 function toggleWork(id,on){
   if(editId){toast(t('editingBanner'),1);buildWorkSel();return}
+  if(curEe.redo&&!on){toast(t('eRedoAll'),1);buildWorkSel();return}   // やり直しは作業を外せない（足すのは可）
   const had=selWorks.includes(id);
   if(on){if(!had)selWorks.push(id)}
   else selWorks=selWorks.filter(x=>x!==id);
@@ -204,7 +206,8 @@ function toggleWork(id,on){
 }
 function clearWorks(){
   if(!selWorks.length)return;
-  if(editId){cancelEdit();return}   // 編集中の「全て解除」は編集の取り消し（編集前に採点していた人と点数へ戻す）
+  if(editId){cancelEdit();return}
+  if(curEe.redo){toast(t('eRedoAll'),1);return}   // 編集中の「全て解除」は編集の取り消し（編集前に採点していた人と点数へ戻す）
   if(dirty&&!confirm(t('cCEdit')))return;
   selWorks=[];saveSel();buildWorkSel();buildCards();
   localStorage.removeItem(DRAFT_KEY);dirty=false;
@@ -215,7 +218,11 @@ function clearWorks(){
    ============================================================== */
 function onCh(){dirty=true;clearTimeout(autoT);autoT=setTimeout(saveDraft,300)}
 ['fDate','fEe','fOv'].forEach(id=>document.getElementById(id).addEventListener('input',onCh));
-function saveDraft(){const d=collectForm();d._editId=editId;d._sel=selWorks;d._cur={...curEe};if(editId&&preEdit)d._pre=preEdit;localStorage.setItem(DRAFT_KEY,JSON.stringify(d))}
+function saveDraft(){const d=collectForm();d._editId=editId;d._sel=selWorks;d._cur={...curEe};if(editId&&preEdit)d._pre=preEdit;
+  try{localStorage.setItem(DRAFT_KEY,JSON.stringify(d))}catch(e){if(!saveDraft._warned){saveDraft._warned=1;toast(t('eStoreFull'),1)}}}
+/* 裏に回す・閉じる時は、待たずに下書きへ書く（300ms 待つ間に OS が落とすと最後の点が消える） */
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'&&dirty){clearTimeout(autoT);saveDraft()}});
+window.addEventListener('pagehide',()=>{if(dirty){clearTimeout(autoT);saveDraft()}});
 /* 採点・コメント・所感が1つでもあるか（collectForm の形） */
 function formHasContent(d){
   return !!(d&&((d.overall||'').trim()||(d.works||[]).some(we=>Object.values(we.scores||{}).some(v=>v!=null)||Object.values(we.comments||{}).some(v=>(v||'').trim()))));
@@ -346,13 +353,14 @@ function doSave(){
   });
   // 作業単位の部分保存: 採点を1つも付けていない作業だけが残っている時は、終わった作業だけを保存できる（作業8つでも途中で保存・豚がいない作業は後日）
   let partLeft=0;
-  if(miss.length&&!editId){
+  if(miss.length&&!editId&&!curEe.redo){   // やり直しは全作業がそろってから（一部だけだと、前回の残りの作業が集計から消える）
     const st=workStats(d);
     const empty=st.filter(x=>x.done===0),half=st.filter(x=>x.done>0&&x.done<x.total),full=st.filter(x=>x.total&&x.done===x.total);
     if(half.length)miss=miss.filter(it=>half.some(x=>x.wid===it.workId));   // 途中の作業の未採点だけを示す
     else if(full.length&&empty.length){
       const nm=empty.map(x=>{const w=workById(x.wid);return w?loc(w,'name'):x.wid}).join('、');
-      if(!confirm(t('cPartSave').replace('{n}',empty.length).replace('{w}',nm)))return;
+      const lostCm=d.works.some(we=>empty.some(x=>x.wid===we.workId)&&Object.values(we.comments||{}).some(v=>(v||'').trim()));
+      if(!confirm(t('cPartSave').replace('{n}',empty.length).replace('{w}',nm)+(lostCm?'\n'+t('cPartCm'):'')))return;
       d.works=d.works.filter(we=>full.some(x=>x.wid===we.workId));partLeft=empty.length;miss=[];
     }
   }
@@ -366,14 +374,20 @@ function doSave(){
   if(editId){
     const idx=all.findIndex(e=>e.id===editId);
     if(idx===-1){toast(t('eEditGone'),1);exitEdit(true);return}   // 採点は残す＝人も編集していた人のまま
-    all[idx]=normRec({...all[idx],date:d.date,evaluator:d.evaluator.trim(),evaluatee:d.evaluatee.trim(),farm:all[idx].farm||who.farm,works:d.works,overall:d.overall,updatedAt:new Date().toISOString(),sent:false});
-    putAll(all);toast(t('tUpdated'));
+    // 画面に出せなかった作業（今のカタログに無い作業）は元の記録のまま残す（黙って消さない）
+    const nw=(all[idx].works||[]).map(we=>d.works.find(x=>x.workId===we.workId)||we);
+    d.works.forEach(x=>{if(!nw.some(we=>we.workId===x.workId))nw.push(x)});
+    const prev=all[idx];
+    all[idx]=normRec({...prev,date:d.date,evaluator:d.evaluator.trim(),evaluatee:d.evaluatee.trim(),farm:prev.farm||who.farm,works:nw,overall:d.overall,updatedAt:new Date().toISOString(),sent:false});
+    if(!putAll(all)){toast(t('eStoreFull'),1);return}
+    toast(t('tUpdated'));
     dirty=false;exitEdit();   // 編集前に採点していた人・作業・点数へ戻す（戻した内容は下書きにも残す）
     refreshSel();renderRoster();syncPending();
     return;
   }else{
-    all.push(normRec({id:crypto.randomUUID(),date:d.date,evaluator:d.evaluator.trim(),evaluatee:d.evaluatee.trim(),farm:who.farm,...(who.manual?{manual:true}:{}),...(curEe.redoOf&&!who.manual&&nmKey(d.evaluatee)===nmKey(curEe.name)?{redoOf:curEe.redoOf}:{}),works:d.works,overall:d.overall,createdAt:new Date().toISOString(),sent:false}));
-    putAll(all);toast((partLeft?t('tSavedPart').replace('{n}',partLeft):t('tSaved'))+(dateNote?' ／ '+dateNote:''),0,null,dateNote?5000:0);   // 日付を直した知らせは送信済みの知らせで消さない
+    all.push(normRec({id:newId(),date:d.date,evaluator:d.evaluator.trim(),evaluatee:d.evaluatee.trim(),farm:who.farm,...(who.manual?{manual:true}:{}),...(curEe.redoOf&&!who.manual&&nmKey(d.evaluatee)===nmKey(curEe.name)?{redoOf:curEe.redoOf}:{}),works:d.works,overall:d.overall,createdAt:new Date().toISOString(),sent:false}));
+    if(!putAll(all)){toast(t('eStoreFull'),1);return}   // 書けなかった: 採点は画面に残す（消さない）
+    toast((partLeft?t('tSavedPart').replace('{n}',partLeft):t('tSaved'))+(dateNote?' ／ '+dateNote:''),0,null,dateNote?5000:0);   // 日付を直した知らせは送信済みの知らせで消さない
   }
   localStorage.removeItem(DRAFT_KEY);dirty=false;refreshSel();
   // 次の被評価者へ：作業選択も空に戻す（名簿のタブを押せば再セット）
@@ -394,6 +408,7 @@ function workStats(d){
 /* 作業を今回は実施しない（豚がいない・時間切れ）: その作業だけ外す。採点済みなら確認。外した作業は後で「残りの作業」として出る */
 function skipWork(wid){
   if(editId){toast(t('editingBanner'),1);return}
+  if(curEe.redo){toast(t('eRedoAll'),1);return}   // やり直しは全作業を採点する
   const w=workById(wid);const nm=w?loc(w,'name'):wid;
   const sc=document.querySelector('#cards .ec.scored[data-w="'+wid+'"]');
   if(sc&&!confirm(t('cSkipScored').replace('{w}',nm)))return;
@@ -535,8 +550,16 @@ function commitEvaluator(){
 /* ==============================================================
    被評価者タブ（シート「受験者」の名簿→その人に用意した作業を表示）
    ============================================================== */
-async function reloadRoster(silent){
+async function reloadRoster(silent,bg){
   if(!sheetUrl()){renderRoster();return}
+  if(bg){   // 裏での取り直し（数分ごと・前面に戻った時）: 読み込み中の表示も知らせも出さない。電波の失敗は前の状態のまま
+    rosterLoading=true;const r=await fetchRoster();rosterLoading=false;
+    if(!r.ok&&r.reason==='net')return;
+    setSheetState(r.ok?'':r.reason,r.gas);rosterKeptEmpty=!!(r.ok&&r.keptEmpty);
+    renderRoster();updSyncUI();
+    if(r.ok&&curEe.name&&!curEe.manual&&!editId&&!selEntry(r.list))toast(t('eCurGone').replace('{n}',curEe.name),1);
+    return;
+  }
   const btn=document.querySelector('.eebox .wsel-hd button');if(btn){btn.disabled=true;btn.setAttribute('aria-busy','true')}
   rosterLoading=true;renderRoster();
   const r=await fetchRoster();
@@ -550,9 +573,11 @@ async function reloadRoster(silent){
     if(r.keptEmpty)toast(t('eRosterEmptyKept'),1);
     else if(w)toast(w,1);
     else if(!silent)toast(t('tRoster')+' ('+r.list.length+')');
-  }else if(r.reason==='nosheet'||r.reason==='bad')toast(rosterErrMsg()+(getRoster().list.length?t('showingPrev'):'')+(rosterErrGasOld()?' ／ '+rosterErrGasOld():''),1);   // 電波では直らない＝起動時も知らせる
+  }else if(r.reason==='nosheet'||r.reason==='bad'||r.reason==='auth')toast(rosterErrMsg()+(getRoster().list.length?t('showingPrev'):'')+(rosterErrGasOld()?' ／ '+rosterErrGasOld():''),1);   // 電波では直らない＝起動時も知らせる
   else if(!silent)toast(t('eRoster')+(getRoster().list.length?t('showingPrev'):''),1);
   else{const rs=getRoster();if(rs.list.length&&rosterIsOld(rs))toast(t('rosterStale').replace('{t}',fmtAt(rs.at)),1)}   // 起動時でも、古い名簿のまま試験しないよう知らせる
+  // 採点中の人が名簿で見つからなくなった（改名など）: ほかの知らせより優先して出す（保存は選んだ時の農場のまま）
+  if(r.ok&&curEe.name&&!curEe.manual&&!editId&&!selEntry(r.list))toast(t('eCurGone').replace('{n}',curEe.name),1);
 }
 /* 名簿の取得日時（端末の時刻で M/D HH:MM）と古さ */
 const ROSTER_OLD_MS=12*3600*1000;
@@ -565,6 +590,7 @@ function fmtAt(at){
 function rosterErrMsg(){
   if(rosterErrReason==='nosheet')return t('eRosterNoSheet');
   if(rosterErrReason==='bad')return t('eRosterBad');
+  if(rosterErrReason==='auth')return t('eAuth');
   return'';
 }
 function rosterErrGasOld(){return rosterErrGas&&gasMissing(rosterErrGas).length?t('eGasOld').replace('{v}',rosterErrGas.version||'?'):''}
@@ -606,8 +632,11 @@ function eeSaveInfo(name){
   const ro=getRoster().list;
   const p=nmKey(name)===nmKey(curEe.name)?selEntry(ro):null;
   if(p)return{farm:p.farm,manual:false};
-  const hs=rosterHits(name,curEe.farm||chipFarm,ro);
+  // 選んだ人の農場（curEe.farm）が分かっていれば、その農場で探す（名簿の同名の片方を改名した後に、別の農場の人へ付け替えない）
+  let hs=rosterHits(name,curEe.farm,ro);
+  if(hs.length>1&&!curEe.farm)hs=rosterHits(name,chipFarm,ro);
   if(hs.length===1)return{farm:hs[0].farm,manual:false};
+  if(curEe.farm&&nmKey(name)===nmKey(curEe.name))return{farm:curEe.farm,manual:false};   // 名簿から外れた・改名された人: 選んだ時の農場のまま
   return{farm:'',manual:ro.length>0&&!rosterHits(name,'',ro).length};
 }
 /* 検索用の正規化: 全角半角・大小・ひらがな→カタカナ・アクセント記号（ベトナム語）・区切り記号を揃える */
@@ -771,8 +800,11 @@ function selectEe(i,opt){
   // ほかの端末の記録しか無い人は、この端末では修正できないので、やり直しだけ確認して続ける
   if(pg.complete&&!opt.redo){
     const mine=recsOf(p,ro).filter(r=>getAll().some(e=>e.id===r.id));
-    if(mine.length){startEdit(mine[0].id);if(mine.length>1&&editId===mine[0].id)toast(t('tMoreRecs').replace('{n}',mine.length-1));return}
-    if(!confirm(t('cRedo').replace('{n}',p.name).replace('{d}',last?mdOf(last.date):'—')))return;
+    // 今日以外の記録（前回の試験・練習）は黙って開かない: OK=新しく採点（やり直し）／キャンセル=その記録を開いて修正
+    const md=mine.length?mine[0].date:'';
+    const old=mine.length&&md!==todayLocal()&&md!==document.getElementById('fDate').value&&confirm(t('cOldRec').replace(/\{d\}/g,mdOf(mine[0].date)).replace('{n}',p.name));
+    if(mine.length&&!old){startEdit(mine[0].id);if(mine.length>1&&editId===mine[0].id)toast(t('tMoreRecs').replace('{n}',mine.length-1));return}
+    if(!old&&!confirm(t('cRedo').replace('{n}',p.name).replace('{d}',last?mdOf(last.date):'—')))return;
   }
   // 人がまだ決まっていないのに採点がある（前の版の下書き等）: 捨てずにこの人の採点として引き継ぐ
   const orphan=!curEe.name&&!curEe.manual&&!!document.querySelector('#cards .ec.scored');
@@ -820,6 +852,7 @@ function openManualEe(){
 }
 async function saveSheetUrl(){
   if(!setSheetUrl(document.getElementById('cfgUrl').value))return;
+  setTok(document.getElementById('cfgTok').value);
   document.getElementById('cfgUrl').value=sheetUrl();
   updSyncUI();
   if(!sheetUrl()){renderRoster();return}
@@ -833,8 +866,8 @@ async function saveSheetUrl(){
 let cfgUnlocked=false;
 function swTab(btn){
   if(btn.dataset.pg==='pgCfg'&&!cfgUnlocked){
-    const pw=prompt(lang==='ja'?'設定画面のパスワードを入力してください':'Enter password for settings:');
-    if(!pw||pw.toUpperCase()!=='OOIRI'){toast(lang==='ja'?'パスワードが違います':'Wrong password',1);return}
+    const pw=prompt(t('pwPrompt'));
+    if(!pw||pw.toUpperCase()!=='OOIRI'){toast(t('pwWrong'),1);return}
     cfgUnlocked=true;
   }
   document.querySelectorAll('.tabs button').forEach(b=>{b.classList.remove('on');b.removeAttribute('aria-current')});

@@ -12,11 +12,14 @@
    - POST {action:'delete', id}      → その記録IDの行を全ての評価者タブから消す（アプリで削除した記録。無ければ deleted:0 で ok＝再送しても安全）
    - 誤り: 知らない action='unknown action'／submit に record が無い='no record'／id が無い='no id'（前の版は全部 'bad request' で区別できなかった）
    - setup() を一度エディタで実行 → 「受験者」「作業一覧」「農場一覧」「集計（自動）」タブと、作業・農場のプルダウンを作る
-     何度実行しても受験者タブの行・農場一覧（管理者が直した分）は消さない。作業一覧だけ作り直す */
+     何度実行しても受験者タブの行・農場一覧（管理者が直した分）は消さない。作業一覧だけ作り直す
+   - 合言葉（2026-10-06a〜）: git 管理外の Seed.js に APP_TOKEN（8文字以上）があれば、roster（GET の k）・submit/delete（POST の k）に必須。
+     違えば {ok:false, error:'auth'}。ping は合言葉なしで版だけ返す。APP_TOKEN が無い時は従来どおり誰でも（テスト・移行用）
+   - 削除ログ（2026-10-06a〜）: 削除・上書き（再送・編集）で消える行は、消す前に「削除ログ」タブへ写す（取り返せるように） */
 
-const CODE_VERSION = '2026-09-25a';
+const CODE_VERSION = '2026-10-06a';
 /* アプリはこれを見て「シート側が古い（旧名・削除が使えない）」を警告する（js/contract.js の GAS_REQUIRED_CAPS） */
-const API_CAPABILITIES = ['roster', 'roster.aliases', 'roster.done', 'submit', 'submit.redoOf', 'delete'];
+const API_CAPABILITIES = ['roster', 'roster.aliases', 'roster.done', 'submit', 'submit.redoOf', 'delete', 'auth', 'dellog'];
 const ROSTER_SHEET = '受験者';
 const WORKS_SHEET = '作業一覧';
 const FARMS_SHEET = '農場一覧';
@@ -37,6 +40,12 @@ const HEAD_BASE = ['記録ID', '評価日', '評価者', '被評価者', '農場
 const HEAD = HEAD_BASE.concat(['やり直し元']);
 const SUMMARY_SHEET = '集計（自動）';
 const SUMMARY_KEY = 'HSS_SUMMARY_TAB_ID';
+const DELLOG_SHEET = '削除ログ';
+/* 合言葉の確認（APP_TOKEN が無い・短い時は確認しない＝移行・テスト用） */
+function authOk_(k) {
+  if (typeof APP_TOKEN === 'undefined' || String(APP_TOKEN).length < 8) return true;
+  return String(k || '') === String(APP_TOKEN);
+}
 const WORKS = [["No.11","給餌","飼養管理"],["No.02","エサ調整","飼養管理"],["No.16","エサ回収","飼養管理"],["No.43","えつけ（哺乳期給餌）","飼養管理"],["No.27","育成受け","飼養管理"],["No.34","去勢","飼養管理"],["No.18","添加剤準備","飼養管理"],["No.12","除フン","衛生管理"],["No.31","5S清掃","衛生管理"],["No.04","治療","衛生管理"],["No.06","母豚ワクチン接種","衛生管理"],["No.41","CSF（豚熱）子ワクチン接種","衛生管理"],["No.40","洗浄（離乳後）","衛生管理"],["No.15","消毒","衛生管理"],["No.44","石灰散布","衛生管理"],["No.37","死獣回収","衛生管理"],["No.14","AI（人工授精）注入作業","繁殖管理"],["No.33","許容確認","繁殖管理"],["No.03","精液検査・反転","繁殖管理"],["No.17","精液攪拌","繁殖管理"],["No.09","妊娠鑑定","繁殖管理"],["No.08","PMS投与","繁殖管理"],["No.36","PG（プロスタグランジン）接種","繁殖管理"],["No.42","子宮内洗浄","繁殖管理"],["No.26","入室（分娩舎）","分娩管理"],["No.35","分娩介助","分娩管理"],["No.39","送り里子","分娩管理"],["No.13","母豚の並びの整理","施設管理"],["No.10","移動指示","施設管理"],["No.25","妊娠舎→交配舎・育成舎 移動","施設管理"],["No.19","スクレーパー動作確認","施設管理"],["No.29","ファン清掃","施設管理"],["No.30","パドタンク清掃（夏季）","施設管理"],["No.20","エサスイッチ","施設管理"],["No.05","日報記入","記録管理"],["No.07","プレート作成","記録管理"],["No.21","タグ付け","記録管理"],["No.32","分娩予定記入","記録管理"],["No.22","廃豚出荷（母豚出し）","出荷管理"],["No.23","育成舎へ廃豚移動","出荷管理"]];   // [No, 作業名, カテゴリ]
 
 function setup() {
@@ -103,6 +112,7 @@ function farmsSheet_(rs, cols) {
 function doGet(e) {
   const action = (e && e.parameter && e.parameter.action) || 'ping';
   if (action === 'roster') {
+    if (!authOk_(e.parameter.k)) return json_({ ok: false, version: CODE_VERSION, capabilities: API_CAPABILITIES, error: 'auth' });
     // 受験者タブが無い（名前の変更・取り違え）のと、タブはあるが空なのを区別する（アプリは前回の名簿を残す）
     const roster = readRoster_();
     if (!roster) return json_({ ok: false, version: CODE_VERSION, capabilities: API_CAPABILITIES, error: 'no roster sheet' });
@@ -160,6 +170,7 @@ function doPost(e) {
   try { body = JSON.parse(e.postData.contents); } catch (err) { return json_({ ok: false, error: 'bad json' }); }
   const action = body && body.action;
   if (action !== 'submit' && action !== 'delete') return json_({ ok: false, error: 'unknown action' });
+  if (!authOk_(body.k)) return json_({ ok: false, error: 'auth' });
   const isDelete = action === 'delete';
   if (!isDelete && !(body.record && typeof body.record === 'object')) return json_({ ok: false, error: 'no record' });
   if (isDelete && !cleanId_(body.id)) return json_({ ok: false, error: 'no id' });
@@ -168,7 +179,7 @@ function doPost(e) {
   try {
     if (isDelete) {
       const id = cleanId_(body.id);
-      return json_({ ok: true, id: String(body.id), deleted: deleteRecord_(id) });
+      return json_({ ok: true, id: String(body.id), deleted: deleteRecord_(id, '削除') });
     }
     const n = writeRecord_(body.record);
     return json_({ ok: true, id: String(body.record.id), rows: n });
@@ -250,7 +261,7 @@ function readDone_() {
 function sheetNameFor_(evaluator) {
   let s = String(evaluator || '').replace(/[\[\]\*\?\/\\:]/g, '_').replace(/^'+|'+$/g, '').trim().slice(0, 90);
   if (!s) s = '評価者不明';
-  if (s === ROSTER_SHEET || s === WORKS_SHEET || s === FARMS_SHEET) s = '評価者_' + s;
+  if (isReserved_(s) || s === SUMMARY_SHEET) s = '評価者_' + s;   // 受験者・作業一覧・農場一覧・削除ログ・集計の名前は使わない
   return s;
 }
 /* 数式インジェクション対策（=,+,-,@ で始まる文字列は先頭に ' ） */
@@ -270,7 +281,7 @@ function cleanId_(v) { return String(v || '').replace(/[^a-zA-Z0-9_\-]/g, '_'); 
    「評価者タブ」とみなして再送・削除のたびに行を消してしまう（G17-1）。複製タブは sheetId が変わるので台帳に載らない。
    台帳がまだ無い時（この版を入れた直後・文書を複製した時）だけ、見出し14列が HEAD と一致し式でないタブを登録する（移行） */
 const EVAL_TABS_KEY = 'HSS_EVAL_TAB_IDS';
-function isReserved_(nm) { return nm === ROSTER_SHEET || nm === WORKS_SHEET || nm === FARMS_SHEET; }
+function isReserved_(nm) { return nm === ROSTER_SHEET || nm === WORKS_SHEET || nm === FARMS_SHEET || nm === DELLOG_SHEET; }
 function isEvalHead_(sh) {
   if (sh.getLastColumn() < HEAD_BASE.length) return false;
   const rg = sh.getRange(1, 1, 1, HEAD_BASE.length);
@@ -305,8 +316,10 @@ function isEvalTab_(ss, sh) { return evalTabIds_(ss).indexOf(String(sh.getSheetI
 
 /* 記録IDの行を、評価者タブ（台帳に載ったタブ）すべてから消す。評価者名が変わった記録も取りこぼさない。
    複製・控え・集計のタブは台帳に無いので触らない */
-function deleteRecord_(id) {
+/* keep(row)=true の行はログに写さない（同じ内容の再送で削除ログを膨らませない） */
+function deleteRecord_(id, why, keep) {
   let n = 0;
+  const logRows = [];
   const ss = SpreadsheetApp.getActive();
   const ids = evalTabIds_(ss);
   ss.getSheets().forEach(sh => {
@@ -315,8 +328,15 @@ function deleteRecord_(id) {
     if (ids.indexOf(String(sh.getSheetId())) < 0) return;
     if (String(sh.getRange(1, 1).getValues()[0][0]) !== HEAD[0]) return;   // 見出しを消された台帳のタブも触らない
     const rows = sh.getRange(2, 1, sh.getLastRow() - 1, 1).getValues();
-    for (let i = rows.length - 1; i >= 0; i--) if (String(rows[i][0]) === id) { sh.deleteRow(i + 2); n++; }
+    const w = Math.min(sh.getLastColumn(), HEAD.length);
+    for (let i = rows.length - 1; i >= 0; i--) if (String(rows[i][0]) === id) {
+      const v = sh.getRange(i + 2, 1, 1, w).getValues()[0];
+      while (v.length < HEAD.length) v.push('');
+      if (!(keep && keep(v))) logRows.push([Utilities.formatDate(new Date(), 'Asia/Tokyo', 'yyyy-MM-dd HH:mm:ss'), why || '', nm].concat(v));
+      sh.deleteRow(i + 2); n++;
+    }
   });
+  if (logRows.length) { try { delLog_(ss, logRows.reverse()); } catch (err) { /* ログが書けなくても削除は続ける */ } }
   return n;
 }
 
@@ -326,7 +346,14 @@ function writeRecord_(rec) {
   const ss = SpreadsheetApp.getActive();
   // 同じ記録IDの既存行を、全ての評価者タブから消す（編集・再送で重複させない。
   // 評価者名の表記を直した端末から編集して送り直しても、前の評価者タブに古い行を残さない）
-  deleteRecord_(id);
+  // 同じ内容（作業・種目・点・コメント・所感・やり直し元が同じ）の行は再送なのでログに残さない
+  const sameKey_ = r => [r[3], r[4], r[6], r[7], r[8] === '' ? '' : Number(r[8]), r[9], r[12], r[14]].map(String).join('\u0001');
+  const newKeys = {};
+  (Array.isArray(rec.works) ? rec.works.slice(0, 50) : []).forEach(w => (Array.isArray(w.items) ? w.items.slice(0, 20) : []).forEach(it => {
+    const n = it.score == null || it.score === '' ? NaN : Number(it.score), sc = n >= 1 && n <= 5 ? n : '';
+    newKeys[sameKey_([id, '', '', safe_(rec.evaluatee), safe_(rec.farm), '', safe_(w.workName), safe_(it.aspect), sc, safe_(it.comment), '', '', safe_(rec.overall), '', cleanIds_(rec.redoOf)])] = 1;
+  }));
+  deleteRecord_(id, '上書き', v => !!newKeys[sameKey_(v)]);
   const base = sheetNameFor_(rec.evaluator);
   let name = base, sh = ss.getSheetByName(name);
   // 同じ名前のタブが評価者タブでない時（管理者が作った別のタブ）は書き込まない＝「〜_記録」「〜_記録2」…へ
@@ -347,16 +374,17 @@ function writeRecord_(rec) {
   }
   const works = Array.isArray(rec.works) ? rec.works.slice(0, 50) : [];
   const allScores = [];
-  works.forEach(w => (w.items || []).forEach(it => allScores.push(Number(it.score))));
+  const sc_ = v => { const n = v == null || v === '' ? NaN : Number(v); return n >= 1 && n <= 5 ? n : NaN; };   // 空欄（null）を0点にしない
+  works.forEach(w => (w.items || []).forEach(it => allScores.push(sc_(it.score))));
   const sessAvg = avg_(allScores);
   const redoOf = cleanIds_(rec.redoOf);
   const now = Utilities.formatDate(new Date(), 'Asia/Tokyo', 'yyyy-MM-dd HH:mm:ss');
   const rows = [];
   works.forEach(w => {
     const items = Array.isArray(w.items) ? w.items.slice(0, 20) : [];
-    const wAvg = avg_(items.map(it => Number(it.score)));
+    const wAvg = avg_(items.map(it => sc_(it.score)));
     items.forEach(it => {
-      const sc = Number(it.score);
+      const sc = sc_(it.score);
       rows.push([id, safe_(rec.date), safe_(rec.evaluator), safe_(rec.evaluatee), safe_(rec.farm), safe_(w.category), safe_(w.workName),
         safe_(it.aspect), (sc >= 1 && sc <= 5) ? sc : '', safe_(it.comment), wAvg, sessAvg, safe_(rec.overall), now, redoOf]);
     });
@@ -393,7 +421,8 @@ function summaryFormulas_(ss) {
     const alias = c.alias >= 0
       ? 'XLOOKUP(TRUE,ARRAYFORMULA(ISNUMBER(FIND("、"&n&"、","、"&REGEXREPLACE(' + R(c.alias) + '&"","\\s*[、,，/／;；\\n]\\s*","、")&"、"))),' + R(c.farm) + ',e)'
       : 'e';
-    farm = 'XLOOKUP(n,' + R(c.name) + ',' + R(c.farm) + ',' + alias + ')';
+    // 同じ名前が2農場にいる時に先の行の農場を返さないよう、まず 名前＋記録時の農場 で引く → 名前だけ → 旧名 → 記録時の農場
+    farm = 'XLOOKUP(1,(' + R(c.name) + '=n)*(' + R(c.farm) + '=e),' + R(c.farm) + ',XLOOKUP(n,' + R(c.name) + ',' + R(c.farm) + ',' + alias + '))';
   }
   out.farm = '=MAP(D3:D,E3:E,LAMBDA(n,e,IF(n="",,' + farm + ')))';
   out.use = '=MAP(A3:A,LAMBDA(id,IF(id="",,IF(COUNTIF(O3:O,"*"&id&"*"),"やり直し前","採用"))))';
@@ -422,6 +451,16 @@ function buildSummary_(create) {
   return 'summary OK: ' + f.tabs.length + ' tabs';
 }
 
+/* 削除・上書きで消える行の控え（日時・理由・元のタブ＋元の15列）。タブが無ければ作る */
+function delLog_(ss, rows) {
+  let sh = ss.getSheetByName(DELLOG_SHEET);
+  if (!sh) {
+    sh = ss.insertSheet(DELLOG_SHEET);
+    sh.getRange(1, 1, 1, HEAD.length + 3).setValues([['消した日時', '理由', '元のタブ'].concat(HEAD)]).setFontWeight('bold').setBackground('#fdecea');
+    sh.setFrozenRows(1);
+  }
+  sh.getRange(sh.getLastRow() + 1, 1, rows.length, HEAD.length + 3).setValues(rows);
+}
 function json_(o) {
   return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON);
 }

@@ -228,7 +228,7 @@ ok('Z20-3 通常の記録の やり直し元 は空', shC.d.filter(x => x[0] ===
   sheets['受験者'].getRange(1, 1, 3, 4).setValues([['農場', '被評価者', '作業1', '旧名'], ['テスト東', 'テスト Hoang Nam', '給餌', 'テスト Hoang Nam旧、テスト 旧名'], ['テスト西', 'テスト Nam', '給餌', '']]);
   post(APP.submitReq({ ...appRec, id: 'nw-1', evaluator: "テスト 新人's" }));   // 当日、新しい評価者が加わった
   ok('Z20-2 新しい評価者タブは自動で式に足す（タブ名の \' は二重に）', fData().includes("'テスト 新人''s'!A2:O") && fData().includes("'テスト評価者'!A2:O"));
-  ok('Z20-2 今の農場=受験者タブの見出しの列で引く・旧名は「、」区切りの完全一致（部分一致しない）', /^=MAP\(D3:D,E3:E,LAMBDA\(n,e,IF\(n="",,XLOOKUP\(n,'受験者'!\$B\$2:\$B,'受験者'!\$A\$2:\$A,XLOOKUP\(TRUE,ARRAYFORMULA\(ISNUMBER\(FIND\("、"&n&"、"/.test(fFarm()) && fFarm().includes("REGEXREPLACE('受験者'!$D$2:$D&\"\"") && !/"\*"&/.test(fFarm()));
+  ok('Z20-2 今の農場=名前＋記録時の農場→名前→旧名は「、」区切りの完全一致（部分一致しない）', /^=MAP\(D3:D,E3:E,LAMBDA\(n,e,IF\(n="",,XLOOKUP\(1,\('受験者'!\$B\$2:\$B=n\)\*\('受験者'!\$A\$2:\$A=e\),'受験者'!\$A\$2:\$A,XLOOKUP\(n,'受験者'!\$B\$2:\$B,'受験者'!\$A\$2:\$A,XLOOKUP\(TRUE,ARRAYFORMULA\(ISNUMBER\(FIND\("、"&n&"、"/.test(fFarm()) && fFarm().includes("REGEXREPLACE('受験者'!$D$2:$D&\"\"") && !/"\*"&/.test(fFarm()));
   ok('Z20-2 採否=やり直し元に書かれた記録IDの行は「やり直し前」', fUse().includes('COUNTIF(O3:O,"*"&id&"*")') && fUse().includes('やり直し前') && fUse().includes('採用'));
   const cols0 = sheets['受験者'].d[0].slice();
   sheets['受験者'].d[0] = ['メモ', ...cols0]; sheets['受験者'].d.slice(1).forEach(x => x.unshift(''));   // 列を1つずらす（並べ替えても読める）
@@ -266,5 +266,34 @@ ok('シード無し: 農場一覧=受験者タブの農場＋所属未確定（�
   const r2 = adm(TOK);
   ok('admin: 2回目は追記しない（既存の共通行を尊重）', r2.ok && r2.commonAdded.length === 0 && sheets['受験者'].d.length === n0 + 3);
   ok('admin: 人の行は変えない', sheets['受験者'].d.slice(1, n0).every(x => x[1] !== '（農場共通）'));
+}
+// 2026-10-06a: 合言葉（APP_TOKEN）・削除ログ・空欄を0点にしない
+{
+  const AT = 'app-token-xyz-12345';
+  Object.keys(sheets).forEach(k => delete sheets[k]);
+  Object.keys(docProps).forEach(k => delete docProps[k]);
+  const G6 = new Function('ROSTER_SEED', 'APP_TOKEN', code + ';return {setup,doGet,doPost};')(SEED, AT);
+  G6.setup();
+  const get6 = p => JSON.parse(G6.doGet({ parameter: p }).s), post6 = o => JSON.parse(G6.doPost({ postData: { contents: JSON.stringify(o) } }).s);
+  ok('auth: 合言葉なし・違いの roster は拒否（名簿を返さない）', get6({ action: 'roster' }).error === 'auth' && !get6({ action: 'roster', k: 'x' }).roster && get6({ action: 'roster', k: AT }).ok === true);
+  ok('auth: ping は合言葉なしで版だけ', get6({ action: 'ping' }).ok === true && !get6({ action: 'ping' }).roster && get6({ action: 'ping' }).capabilities.includes('auth'));
+  const r6 = { ...APP.submitReq(appRec), k: AT };
+  ok('auth: 合言葉なしの submit・delete は拒否し、シートを変えない', post6({ ...r6, k: '' }).error === 'auth' && !sheets['テスト評価者'] && post6({ action: 'delete', id: appRec.id }).error === 'auth');
+  ok('auth: 合言葉つきの submit は書き込む', post6(r6).ok === true && sheets['テスト評価者'].d.length > 1);
+  const n6 = sheets['テスト評価者'].d.length - 1;
+  post6(r6);   // 同じ内容の再送（電波が悪く何度も送る）
+  ok('dellog: 同じ内容の再送は削除ログに残さない（膨らませない）', !sheets['削除ログ']);
+  const r6b = JSON.parse(JSON.stringify(r6)); r6b.record.works[0].items[0].score = 5;
+  post6(r6b);   // 編集して送り直し（上書き）
+  ok('dellog: 上書きで変わった行（点を直した1行）だけ「削除ログ」へ（理由=上書き・元のタブ・記録ID・前の点）', sheets['削除ログ'] && sheets['削除ログ'].d.length === 2 && sheets['削除ログ'].d[1][1] === '上書き' && sheets['削除ログ'].d[1][2] === 'テスト評価者' && sheets['削除ログ'].d[1][3] === appRec.id && sheets['削除ログ'].d[1][11] === r6.record.works[0].items[0].score);
+  const nLog = sheets['削除ログ'].d.length;
+  ok('dellog: 評価者名が「削除ログ」でも予約名のタブに書かない', post6({ ...r6, record: { ...r6.record, id: 'dl-name', evaluator: '削除ログ' } }).ok && sheets['評価者_削除ログ'] && sheets['削除ログ'].d.length === nLog && sheets['削除ログ'].d.every((r, i) => i === 0 || r.length === 18));
+  ok('dellog: 削除でも控えてから消す', post6({ action: 'delete', id: appRec.id, k: AT }).deleted === n6 && sheets['削除ログ'].d.length === nLog + n6 && sheets['削除ログ'].d.slice(-1)[0][1] === '削除' && sheets['テスト評価者'].d.length === 1);
+  ok('dellog: 削除ログは評価者タブ・集計に入らない', !(G6.setup(), JSON.stringify(sheets['集計（自動）'] ? sheets['集計（自動）'].fx : {})).includes("'削除ログ'"));
+  const pl = APP.toPayload({ ...appRec, id: 'nul-1' }); pl.works[0].items[0].score = null; pl.works[0].items[1].score = '';
+  post6({ action: 'submit', record: pl, k: AT });
+  const rr = sheets['テスト評価者'].d.filter(r => r[0] === 'nul-1'), sc = pl.works[0].items.slice(2).map(i => i.score);
+  const ex = Math.round(sc.reduce((a, b) => a + b, 0) / sc.length * 100) / 100;
+  ok('avg: 空欄（null/空文字）を0点として平均に入れない', rr[0][8] === '' && rr[1][8] === '' && rr[0][10] === ex);
 }
 console.log(`\n合計: OK ${pass} / NG ${fail}`); process.exit(fail ? 1 : 0);

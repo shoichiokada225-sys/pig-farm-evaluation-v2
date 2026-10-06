@@ -590,7 +590,9 @@ async function runRel(devName) {
   await page.locator('.tabs button[data-pg="pgHi"]').tap();
   await page.locator('.hi', { hasText: 'テスト 甲太' }).first().tap();
   await page.locator('#moBody .bt-danger').tap(); await page.waitForTimeout(500);
-  ok('未送信の記録の削除は通常の確認・削除要求なし', !/スプレッドシート/.test(dialogs[0] || '') && posts.filter(p => p.action === 'delete').length === nd && (await recs()).length === 0);
+  await page.waitForTimeout(800);
+  // 2026-10-06: 送信先がある時は未送信に見える記録もシートの行を消しに行く（応答だけ届かず行が書かれていることがある。行が無ければ GAS は0行で ok）
+  ok('未送信の記録の削除もシートへ削除を送る（行が無くても安全）', /スプレッドシート/.test(dialogs[0] || '') && posts.filter(p => p.action === 'delete').length === nd + 1 && (await recs()).length === 0);
 
   // 旧形式の記録（sentOnce も削除待ちキーも無い・送信済み）も、削除すればシートの行を消す
   await page.evaluate(() => { const w = WORKDATA_V2.works[0]; localStorage.removeItem('jitsugi_v2_deletes');
@@ -1134,7 +1136,10 @@ async function runDate(devName) {
   ok('甲太は「途中 1/2」', /途中 1\/2/.test(await ee('テスト 甲太').textContent()));
 
   console.log('[D4] 翌日: 前日に後日へ回した作業は「途中」のまま・選ぶと残りの作業だけ');
-  await ee('テスト 丙助').tap(); await page.waitForTimeout(500);   // 済の人を押す＝記録（09-23）を開く
+  accept = false; const dq = dialogs.length;
+  await ee('テスト 丙助').tap(); await page.waitForTimeout(500);   // 済の人を押す＝今日以外の記録は確認（キャンセル＝その記録（09-23）を開いて修正）
+  accept = true;
+  ok('今日以外の自分の記録は黙って開かず確認する（前回の日付入り）', dialogs.length === dq + 1 && /9\/23/.test(dialogs[dq]) && /やり直し/.test(dialogs[dq]));
   ok('済の丙助を押すと記録を開いて修正できる（編集バー・09-23）', await page.locator('#editBar.show').count() === 1 && await fDate() === '2026-09-23');
   await page.evaluate(() => cancelEdit()); await page.waitForTimeout(300);   // 何も直さず閉じる（採点0）
   await at('2026-09-25T10:00:00+09:00');
@@ -1161,8 +1166,7 @@ async function runDate(devName) {
 
   console.log('[D6] 前日の入力途中（採点あり）は日付を確認してから復元');
   await at('2026-09-25T15:00:00+09:00');
-  await ee('テスト 丙助').tap(); await page.waitForTimeout(300);   // 済の人＝記録を開く → 「やり直し」で新しく採点
-  await page.locator('#editBar button[data-t="btnRedo"]').tap(); await page.waitForTimeout(300);
+  await ee('テスト 丙助').tap(); await page.waitForTimeout(300);   // 済の人（前日の記録）＝確認 OK で新しく採点（やり直し）
   ok('やり直し＝編集を抜けて丙助の全作業を新しく採点', await page.locator('#editBar.show').count() === 0 && await page.inputValue('#fEe') === 'テスト 丙助' && /やり直し/.test(await page.locator('#eeCur').textContent()));
   await scoreWork('dung-removal', 2, 2); await page.waitForTimeout(500);
   await at('2026-09-26T08:00:00+09:00');
@@ -1170,7 +1174,8 @@ async function runDate(devName) {
   await page.reload(); await page.waitForTimeout(600);
   ok('確認文に前日の日付（9/25）', dialogs.length === d1 + 1 && /9\/25/.test(dialogs[d1]) && !/\{d\}/.test(dialogs[d1]));
   ok('OK → 日付は今日（09-26）・採点と人は復元', await fDate() === '2026-09-26' && await page.inputValue('#fEe') === 'テスト 丙助' && await page.locator('#cards .ec.scored').count() === 2);
-  await page.evaluate(() => { const d = JSON.parse(localStorage.getItem('jitsugi_v2_draft')); d.date = '2026-09-25'; localStorage.setItem('jitsugi_v2_draft', JSON.stringify(d)); });
+  // 閉じる時（pagehide）は入力途中を下書きへ書く（2026-10-06）→ 手で書き換えた下書きが上書きされないよう、入力途中の印を外してから書き換える
+  await page.evaluate(() => { dirty = false; clearTimeout(autoT); const d = JSON.parse(localStorage.getItem('jitsugi_v2_draft')); d.date = '2026-09-25'; localStorage.setItem('jitsugi_v2_draft', JSON.stringify(d)); });
   accept = false; d1 = dialogs.length;
   await page.reload(); await page.waitForTimeout(600);
   ok('キャンセル → 下書きの日付（09-25）のまま', dialogs.length === d1 + 1 && await fDate() === '2026-09-25' && await page.locator('#cards .ec.scored').count() === 2);
@@ -2419,18 +2424,20 @@ async function runZ19(devName) {
   await page.reload(); await page.waitForTimeout(600);
   ok('翌日に開き直すと、前日に選んだ日付は持ち越さず今日（09-27）', await fDate() === '2026-09-27');
 
-  console.log('[Z19-4] 全作業が済んだ人を押す → 記録を開いて修正（確認なし）。編集バーの「やり直し」で新しく採点');
+  console.log('[Z19-4] 全作業が済んだ人を押す → 記録を開いて修正。今日・評価日以外の記録は確認（キャンセル＝開く）。編集バーの「やり直し」で新しく採点');
   const nr = (await recs()).length;
   dn = dialogs.length;
+  accept = false;
   await ee('テスト 一号').tap(); await page.waitForTimeout(300);
   const e1 = (await recs()).find(x => x.evaluatee === 'テスト 一号');
-  ok('確認なしで編集モード（編集バー・記録の日付 09-20・点は前回の 4）', dialogs.length === dn && await page.locator('#editBar.show').count() === 1 && await fDate() === e1.date && await page.locator('#cards .sb[data-s="4"].sel').count() > 0);
+  ok('前日（09-20）の記録は確認を1回 → キャンセルで編集モード（編集バー・記録の日付 09-20・点は前回の 4）', dialogs.length === dn + 1 && /9\/20/.test(dialogs[dn]) && await page.locator('#editBar.show').count() === 1 && await fDate() === e1.date && await page.locator('#cards .sb[data-s="4"].sel').count() > 0);
   ok('編集中は「済」の印・やり直しの印を出さない', !/やり直し/.test(await page.locator('#eeCur').textContent()) && await page.locator('#wnav .wnav-c.redo').count() === 0);
   await page.locator('#cards .sb[data-s="2"]').first().tap(); await page.waitForTimeout(200);
   await page.locator('#btnSave').tap(); await page.waitForTimeout(600);
   ok('「更新」で同じ記録が書き換わる（件数は増えない・点が 2 に）', (await recs()).length === nr && Object.values((await recs()).find(x => x.id === e1.id).works[0].scores).includes(2) && await page.locator('#editBar.show').count() === 0);
   await ee('テスト 一号').tap(); await page.waitForTimeout(300);
   ok('もう一度押すと再び開ける', await page.locator('#editBar.show').count() === 1);
+  accept = true; dn = dialogs.length;
   await page.locator('#editBar button[data-t="btnRedo"]').tap(); await page.waitForTimeout(300);
   ok('編集バーの「やり直し」→ 編集を抜けて #eeCur に「やり直し（前回 9/20）」', dialogs.length === dn && await page.locator('#editBar.show').count() === 0 && /やり直し（前回 9\/20）/.test(await page.locator('#eeCur').textContent()));
   ok('目次の作業に ✓済（前回 9/20 · 点）', await page.locator('#wnav .wnav-c.redo').count() === 2 && /✓ 済（前回 9\/20 · \d\.\d）/.test(await page.locator('#wnav').textContent()));
@@ -2452,7 +2459,9 @@ async function runZ19(devName) {
     ok('Z20-3 CSV の見出しの末尾に 記録ID・やり直し元', /"記録ID","やり直し元"\s*$/.test(lines[0]));
     ok('Z20-3 CSV のやり直しの行に前回の記録ID・前回の行は空', lines.filter(l => l.endsWith(`"${nw.id}","${nw.redoOf}"`)).length > 0 && prevIds.every(id => lines.some(l => l.endsWith(`"${id}",""`))) && lines.slice(1).filter(l => !l.endsWith(',""')).every(l => l.endsWith(`"${nw.id}","${nw.redoOf}"`)));
     ok('Z20-3 バックアップの取り込み（normRec）で redoOf を保つ・旧データ（無い）はそのまま', await page.evaluate(id => { const r = getAll().find(x => x.id === id); return normRec(r).redoOf === r.redoOf && !('redoOf' in normRec({ ...r, redoOf: undefined })) && normRec({ ...r, redoOf: ['a b', 'x=y', 'a'] }).redoOf === 'a_b x_y a'; }, nw.id)); }
+  accept = false;   // 前日の記録は確認が出る → キャンセル＝その記録を開く
   await ee('テスト 四号').tap(); await page.waitForTimeout(300);   // 済の人
+  accept = true;
   ok('ほかの済の人も押すと記録を開く（編集バー・四号）', await page.locator('#editBar.show').count() === 1 && await page.inputValue('#fEe') === 'テスト 四号');
   await page.evaluate(() => doReset()); await page.waitForTimeout(150);
   ok('編集中のリセット＝編集の取り消し', await page.locator('#editBar.show').count() === 0);

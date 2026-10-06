@@ -197,7 +197,7 @@ function drawHist(){
   if(!all.length){c.innerHTML=`<div class="nd">${t('noData')}</div>`;return}
   const ro=getRoster().list,lbl={};eePeople(getAll(),ro).forEach(p=>{lbl[p.key]=p.label});const keyOf=personKeyer(getAll(),ro);
   c.innerHTML=all.map(r=>{
-    const a=sessionAvg(r);
+    const a0=sessionAvg(r),a=a0==null?null:Math.round(a0*10)/10;   // 色は表示の値（小数1桁）で決める（「4.0」なのに3点台の色にしない）
     const ac=a==null?'':(a>=4?' av4':(a<2?' av1':(a<3?' av2':' av3')));
     const wnames=(r.works||[]).map(dispWorkName);
     const wlbl=wnames.slice(0,2).join('・')+(wnames.length>2?` +${wnames.length-2}`:'');
@@ -240,7 +240,8 @@ function closeMo(){
 /* 削除: シートに行があるかもしれない記録は「削除待ち」に入れ、シートの行も消す（圏外なら、つながった時に消す） */
 function doDel(id){
   const r=getAll().find(e=>e.id===id);if(!r)return;
-  const onSheet=mayBeOnSheet(r)||syncing;   // 送信中の記録は、この後シートに届くかもしれない
+  // 送信先がある時は、未送信に見える記録もシートの行を消しに行く（応答が届かなかっただけで行が書かれていることがある。行が無ければ GAS は0行で ok）
+  const onSheet=mayBeOnSheet(r)||syncing||!!sheetUrl();
   if(!confirm(onSheet?t('cDelSheet').replace('{id}',r.id):t('cDel')))return;
   if(onSheet)queueDel(r);
   if(typeof dropSheetDone==='function')dropSheetDone(id);
@@ -275,7 +276,7 @@ function doCSV(){
     });
   });
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));
-  a.download='jitsugi_v2_'+new Date().toISOString().slice(0,10).replace(/-/g,'')+'.csv';a.click();toast(t('tCSV'));
+  a.download='jitsugi_v2_'+todayLocal().replace(/-/g,'')+'.csv';a.click();toast(t('tCSV'));
 }
 
 /* ==============================================================
@@ -299,7 +300,15 @@ function drawCharts(){
   if(!all.length){area.style.display='none';none.style.display='block';none.textContent=t('chNone');return}
   area.style.display='block';none.style.display='none';
   all.sort((a,b)=>a.date.localeCompare(b.date)||(a.createdAt||'').localeCompare(b.createdAt||''));
-  const trunc=n=>{const mx=lang==='ja'?8:16;return n.length>mx?n.slice(0,mx)+'…':n};
+  // 軸ラベルは2行まで折り返す（360幅でも端で切れない・観点の区別がつく）。ja は7字×2行、ほかは語の区切りで約12字×2行
+  const trunc=n=>{
+    const ja=lang==='ja',W=ja?7:12;n=String(n||'');
+    if(n.length<=W)return n;
+    let l1,rest;
+    if(ja){l1=n.slice(0,W);rest=n.slice(W)}
+    else{const ws=n.split(' ');l1='';while(ws.length&&(l1+' '+ws[0]).trim().length<=W)l1=(l1+' '+ws.shift()).trim();if(!l1)l1=ws.shift();rest=ws.join(' ')}
+    return [l1,rest.length>W?rest.slice(0,W-1)+'…':rest];
+  };
   const lineOpt=legend=>({responsive:true,maintainAspectRatio:false,spanGaps:true,scales:{y:{min:1,max:5,ticks:{stepSize:1,color:'#54635d'},grid:{color:'#e3eae7'}},x:{ticks:{color:'#54635d'},grid:{color:'#eef2f0'}}},plugins:{legend:{display:legend,position:'bottom'}}});
   if(cL){cL.destroy();cL=null}
   if(cR){cR.destroy();cR=null}
@@ -341,7 +350,7 @@ function drawCharts(){
     ds.forEach(d=>{d.backgroundColor=d.borderColor;d.borderDash=undefined});
     cR=new Chart(document.getElementById('cvR'),{type:'bar',data:{labels,datasets:ds},options:{responsive:true,maintainAspectRatio:false,scales:{y:{min:0,max:5,ticks:{stepSize:1,color:'#54635d'},grid:{color:'#e3eae7'}},x:{ticks:{color:'#14211c'},grid:{display:false}}},plugins:{legend:{display:true,position:'bottom'}}}});
   }else{
-    cR=new Chart(document.getElementById('cvR'),{type:'radar',data:{labels,datasets:ds},options:{responsive:true,maintainAspectRatio:false,spanGaps:false,scales:{r:{min:0,max:5,ticks:{stepSize:1,font:{size:10},color:'#54635d',backdropColor:'rgba(255,255,255,.75)'},grid:{color:'#e3eae7'},angleLines:{color:'#e3eae7'},pointLabels:{font:{size:11},color:'#14211c'}}},plugins:{legend:{display:true,position:'bottom'}}}});
+    cR=new Chart(document.getElementById('cvR'),{type:'radar',data:{labels,datasets:ds},options:{responsive:true,maintainAspectRatio:false,spanGaps:false,scales:{r:{min:0,max:5,ticks:{stepSize:1,font:{size:10},color:'#54635d',backdropColor:'rgba(255,255,255,.75)'},grid:{color:'#e3eae7'},angleLines:{color:'#e3eae7'},pointLabels:{font:{size:innerWidth<400?10:11},color:'#14211c',padding:4}}},layout:{padding:{left:6,right:6}},plugins:{legend:{display:true,position:'bottom'}}}});
   }
 }
 

@@ -119,13 +119,14 @@
     <h3 id="fOvLbl" data-t="overall">全体所感</h3>
     <textarea id="fOv" class="oata" rows="4" data-ph="phOv" aria-labelledby="fOvLbl" placeholder="全体的な評価や今後の期待などを記入..."></textarea>
   </div>
-  <div class="bg">
+  <!-- 保存は全幅。リセット（全採点が消える）は離して小さく＝手袋での誤タップを防ぐ -->
+  <div class="bg bg-save">
     <button class="b b1" id="btnSave" onclick="doSave()" data-t="btnSave">保存</button>
-    <button class="b b2" onclick="doReset()" data-t="btnReset">リセット</button>
   </div>
+  <div class="bg-reset"><button class="b b2 b-slim" onclick="doReset()" data-t="btnReset">リセット</button></div>
   <!-- ホーム画面から起動していない時の案内（Safari はホーム画面に無いサイトの保存を7日で消す）。
        名簿の1人目が初期画面に入るよう、入力タブでは末尾に置く（設定タブにも同じ案内） -->
-  <p id="a2hsBar" class="a2hsbar mt12" data-t="a2hs" hidden>ホーム画面に追加してください（圏外の豚舎で使うため）。</p>
+  <details id="a2hsBar" class="a2hsbar mt12" hidden><summary data-t="a2hs">⚠ ホーム画面に追加してください（未送信の記録を守るため）</summary><span data-t="a2hsSteps"></span></details>
 </div>
 
 <!-- 履歴 -->
@@ -157,6 +158,8 @@
   <div class="cfg-blk">
     <label for="cfgUrl" data-t="sheetUrlLbl">記録用スプレッドシートの送信先URL（GAS …/exec）</label>
     <input type="url" id="cfgUrl" inputmode="url" autocomplete="off" placeholder="https://script.google.com/macros/s/…/exec">
+    <label for="cfgTok" class="mt12" data-t="tokLbl">合言葉</label>
+    <input type="text" id="cfgTok" autocomplete="off" autocapitalize="off" spellcheck="false">
     <div class="mt12"><button class="b b1 b-full" onclick="saveSheetUrl()" data-t="btnSaveUrl">送信先を保存して接続確認</button></div>
   </div>
   <div class="cfg-blk">
@@ -176,7 +179,6 @@
     <p class="cfg-hint" data-t="aboutHint">評価項目（各作業5種目・レベル1〜5基準）は睦沢農場「業務の目的と注意点」と現場マニュアルに基づいています。項目の変更はアプリ更新で行います。</p>
     <p class="cfg-hint" id="dataVer"></p>
     <p class="cfg-hint" id="storeSt"></p>
-    <p class="a2hsbar" data-t="a2hs" hidden>ホーム画面に追加してください（圏外の豚舎で使うため）。</p>
   </div>
 </div>
 

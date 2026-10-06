@@ -23,8 +23,17 @@ function nameIndex(ro){
 /* 名前（と農場）に当てはまる名簿の人。同名が2人以上いて農場が分かる時だけ農場で絞る */
 function rosterHits(name,farm,ro){
   const cs=nameIndex(ro).get(nmKey(name))||[];
-  if(cs.length<2||!farm)return cs;
-  const nf=normFarm(farm);return cs.filter(p=>normFarm(p.farm)===nf);
+  if(!farm||!cs.length)return cs;
+  const nf=normFarm(farm);
+  if(cs.length<2){
+    // 名簿に1人だけで農場が違う: ふつうは異動・農場名の表記直し＝その人のまま。
+    // ただし記録の農場に「その名前で始まる名前」の人が1人だけいれば、同名を見分けるための改名（Nam → Nam(A)・旧名なし）とみなしてその人
+    // （改名した人の記録を、別の農場の同名の人に付け替えない）
+    if(/未確定/.test(farm)||normFarm(cs[0].farm)===nf)return cs;
+    const k=nmKey(name),rn=ro.filter(p=>p!==cs[0]&&normFarm(p.farm)===nf&&nmKey(p.name).startsWith(k));
+    return rn.length===1?rn:cs;
+  }
+  return cs.filter(p=>normFarm(p.farm)===nf);
 }
 /* 1人に決まる時だけその人（決まらない＝null） */
 function rosterEntry(name,farm,ro){const h=rosterHits(name,farm,ro);return h.length===1?h[0]:null}

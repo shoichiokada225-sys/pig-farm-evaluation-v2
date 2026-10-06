@@ -143,8 +143,8 @@ details.wsel>summary{list-style:none;cursor:pointer;min-height:44px}
 details.wsel>summary::-webkit-details-marker{display:none}
 details.wsel>summary h3::before{content:'▸ ';color:var(--sub,#54635d)}
 details.wsel[open]>summary h3::before{content:'▾ '}
-.evbox label,.ee-manual label,#pgCfg label[for=cfgUrl]{display:block;font-size:.85rem;font-weight:700;color:var(--sub);margin-bottom:5px}
-.evbox input,.ee-manual input,#cfgUrl{width:100%;min-height:var(--tap,44px);padding:10px 12px;border:1.5px solid var(--bdr-strong,#b9c7c1);border-radius:var(--r-sm,8px);font-size:16px;font-family:inherit;outline:0;background:#fff;color:var(--txt,#1d2a25)}
+.evbox label,.ee-manual label,#pgCfg label[for=cfgUrl],#pgCfg label[for=cfgTok],#pgCfg label[for=cfgExamStart]{display:block;font-size:.85rem;font-weight:700;color:var(--sub);margin-bottom:5px}
+.evbox input,.ee-manual input,#cfgUrl,#cfgTok,#cfgExamStart{width:100%;min-height:var(--tap,44px);padding:10px 12px;border:1.5px solid var(--bdr-strong,#b9c7c1);border-radius:var(--r-sm,8px);font-size:16px;font-family:inherit;outline:0;background:#fff;color:var(--txt,#1d2a25)}
 .evbox input:focus,.ee-manual input:focus,#cfgUrl:focus{border-color:var(--pri,#177863);box-shadow:0 0 0 3px var(--pri-l,rgba(23,120,99,.15))}
 .ee-manual{margin-top:8px}
 /* トースト：長い文も切らずに折り返す（スマホ幅で全文が読めるように） */
@@ -181,3 +181,16 @@ details.wsel[open]>summary h3::before{content:'▾ '}
 /* R18: 最初の操作の案内（名簿の先頭）・評価者名が未確定の時の目印 */
 .ee-lead{margin:0 0 6px;padding:3px 8px;border-radius:var(--r-sm,8px);background:var(--pri-l,rgba(23,120,99,.12));color:var(--pri,#177863);font-weight:700;font-size:.8rem;line-height:1.4}
 .evbox.ev-need{outline:2px solid var(--pri,#177863);outline-offset:2px}
+
+/* 2026-10-06 監査対応 */
+#pgCfg label[for=cfgTok]{margin-top:12px}
+#cfgExamStart{display:block}
+.cfg-blk:first-child{margin-top:0;border-top:0;padding-top:0}   /* 設定タブの先頭に区切り線と空白だけが出ない */
+.bg-save .b{flex:1}
+.bg-reset{display:flex;justify-content:flex-end;margin:28px 0 8px}   /* 保存から離す（すき間 28px） */
+.a2hsbar>summary{cursor:pointer;font-weight:700;list-style:none}
+.a2hsbar>summary::-webkit-details-marker{display:none}
+.a2hsbar>span{display:block;margin-top:6px}
+/* 点数ボタン: 手袋でも隣を押しにくいすき間・読める段階名 */
+.sr{gap:clamp(5px,1.4vw,10px)}
+html[lang=ja] .sb .sl{font-size:clamp(.7rem,3vw,.8rem);font-weight:700}   /* 日本語の段階名は3字前後なので大きくできる（他の言語は語の途中で折れない大きさのまま） */

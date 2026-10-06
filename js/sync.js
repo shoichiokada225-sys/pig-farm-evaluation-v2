@@ -19,6 +19,21 @@ function setSheetUrl(u){
   return true;
 }
 
+/* 合言葉（シートの GAS が APP_TOKEN を持つ時に必須）。配布リンク …/#k=合言葉 を開くと端末に記憶し、アドレスからは消す。設定タブでも入れられる */
+const TOK_KEY='jitsugi_v2_k';
+function getTok(){try{return localStorage.getItem(TOK_KEY)||''}catch{return''}}
+function setTok(v){try{v=String(v||'').trim();v?localStorage.setItem(TOK_KEY,v):localStorage.removeItem(TOK_KEY)}catch{}}
+function takeTokHash(){
+  const m=/(?:^#|&)k=([^&]*)/.exec(location.hash||'');if(!m)return false;
+  let v=m[1];try{v=decodeURIComponent(v)}catch{}   // 壊れたエンコードでも、そのままの値を使い、アドレスからは必ず消す
+  if(v)setTok(v);
+  try{history.replaceState(null,'',location.pathname+location.search)}catch{}
+  return !!v;
+}
+takeTokHash();
+// 開いたままのアプリでリンクを開き直した時も（hashchange）。新しい合言葉ですぐ名簿を取り直し、未送信を送る
+window.addEventListener('hashchange',()=>{if(takeTokHash()&&typeof reloadRoster==='function'){const c=document.getElementById('cfgTok');if(c)c.value=getTok();reloadRoster();syncPending(true)}});
+
 /* 評価者名（一度入れたら端末に記憶） */
 function getEvaluator(){try{return localStorage.getItem(EV_KEY)||''}catch{return''}}
 function setEvaluator(n){localStorage.setItem(EV_KEY,String(n||'').trim())}
@@ -64,12 +79,13 @@ function getRoster(){
 async function fetchRoster(){
   const u=sheetUrl();if(!u)return{ok:false,reason:'nourl'};
   let res,j;
-  try{res=await fetchT(u+'?action=roster',{cache:'no-store'},ROSTER_TIMEOUT_MS)}catch(e){return{ok:false,reason:'net'}}
+  try{res=await fetchT(u+'?action=roster'+(getTok()?'&k='+encodeURIComponent(getTok()):''),{cache:'no-store'},ROSTER_TIMEOUT_MS)}catch(e){return{ok:false,reason:'net'}}
   // 届いたが JSON でない（doGet の無い版・誤った版のエラーページ）・HTTP エラー = シート側の問題（電波では直らない）
   let tx;try{tx=await res.text()}catch(e){return{ok:false,reason:'net'}}
   try{j=JSON.parse(tx)}catch(e){return{ok:false,reason:'bad'}}
   const jg=j&&typeof j==='object'&&(j.version||Array.isArray(j.capabilities))?gasInfo(j):null;
   if(j&&j.ok===false&&j.error==='no roster sheet')return{ok:false,reason:'nosheet',gas:jg};
+  if(j&&j.ok===false&&j.error==='auth')return{ok:false,reason:'auth',gas:jg};   // 合言葉が無い・違う（電波では直らない）
   if(!j||!j.ok||!Array.isArray(j.roster))return{ok:false,reason:'bad',gas:jg};
   try{
     const gas=gasInfo(j);   // シート側の版と機能（古い GAS は旧名・削除が使えない → 警告）
@@ -188,17 +204,27 @@ function rosterWarnText(r,max){
    送信（記録IDで上書きされるので、再送・編集後の送り直しで重複しない）
    ============================================================== */
 /* 送る形（toPayload・submitReq・deleteReq）は contract.js */
+/* 直近の送信の失敗理由: 'net'=電波・打ち切り / 'auth'=合言葉 / 'sheet'=シート側（応答が JSON でない・HTTP エラー・GAS のエラー・0行） */
+let sendErr='';
+function noteSendErr(why){if(why==='auth'||why==='sheet'||!sendErr)sendErr=why}
+async function postJ(body){
+  const u=sheetUrl();if(!u)return null;
+  let res;
+  try{res=await fetchT(u,{method:'POST',body:JSON.stringify({...body,...(getTok()?{k:getTok()}:{})})},SEND_TIMEOUT_MS)}catch(e){noteSendErr('net');return null}
+  let j;try{j=JSON.parse(await res.text())}catch(e){noteSendErr('sheet');return null}   // ログイン画面・HTTP エラー等（電波ではない）
+  if(j&&j.ok===false){noteSendErr(j.error==='auth'?'auth':j.error==='busy'?'net':'sheet')}
+  return j;
+}
 async function sendRec(r){
-  const u=sheetUrl();if(!u)return false;
-  try{
-    // text/plain の単純リクエスト（プリフライト無し）でGASへPOST
-    // 打ち切り後に届いていても、同じ記録IDで上書きされるので再送で重複しない
-    const res=await fetchT(u,{method:'POST',body:JSON.stringify(submitReq(r))},SEND_TIMEOUT_MS);
-    const j=await res.json();
-    const good=!!(j&&j.ok&&j.id===r.id);
-    if(good&&rosterErrReason==='net')sheetReached=true;   // 名簿は取れなかったが、その後シートに届いた
-    return good;
-  }catch(e){return false}
+  // text/plain の単純リクエスト（プリフライト無し）でGASへPOST
+  // 打ち切り後に届いていても、同じ記録IDで上書きされるので再送で重複しない
+  const req=submitReq(r),j=await postJ(req);
+  if(!j||!j.ok||j.id!==r.id)return false;
+  // 書いた行が0（応答の rows を返す GAS で、送った種目があるのに0行）は届いていない扱い
+  const want=req.record.works.reduce((n,w)=>n+w.items.length,0);
+  if(typeof j.rows==='number'&&want>0&&j.rows<1){noteSendErr('sheet');return false}
+  if(rosterErrReason==='net')sheetReached=true;   // 名簿は取れなかったが、その後シートに届いた
+  return true;
 }
 /* ==============================================================
    削除待ち（送信済みかもしれない記録を端末で消した時、シートの行も消す）
@@ -212,15 +238,11 @@ function queueDel(r){const a=getDels().filter(d=>d.id!==r.id);a.push({id:r.id,ev
 function mayBeOnSheet(r){return !!(r&&(r.sent||r.sentOnce||r.updatedAt))}
 let delOld=false;   // シート側（GAS）が削除に未対応の古い版
 async function sendDel(d){
-  const u=sheetUrl();if(!u)return false;
-  try{
-    const res=await fetchT(u,{method:'POST',body:JSON.stringify(deleteReq(d))},SEND_TIMEOUT_MS);
-    const j=await res.json();
-    if(isUnsupportedOp(j))delOld=true;   // 削除を知らない古い GAS（契約は contract.js）
-    const good=!!(j&&j.ok&&j.id===d.id);
-    if(good&&rosterErrReason==='net')sheetReached=true;
-    return good;
-  }catch(e){return false}
+  const j=await postJ(deleteReq(d));
+  if(isUnsupportedOp(j))delOld=true;   // 削除を知らない古い GAS（契約は contract.js）
+  const good=!!(j&&j.ok&&j.id===d.id);
+  if(good&&rosterErrReason==='net')sheetReached=true;
+  return good;
 }
 function pendCount(){return getAll().filter(r=>!r.sent).length+getDels().length}
 
@@ -234,7 +256,7 @@ async function syncPending(silent){
   if(!sheetUrl())return;
   if(!silent)syncLoud=true;
   if(syncing)return;             // 実行中のループが、増えた分を次の周で拾う
-  syncing=true;updSyncUI();
+  syncing=true;sendErr='';updSyncUI();
   const tried=new Set();         // 今回のループで試した版（記録ID＋更新時刻）
   const failed=new Set();
   let ok=0;
@@ -270,7 +292,7 @@ async function syncPending(silent){
   const nFail=[...failed].filter(k=>recLeft.has(k)||delLeft.has(k)).length;
   const loud=syncLoud;syncLoud=false;
   if(nFail&&(loud||ok)&&delOld&&[...failed].some(k=>k.startsWith('del:')&&delLeft.has(k)))toast(t('eDelOld'),1);
-  else if(nFail&&(loud||ok))toast(t('tSendFail')+' ('+nFail+')',1);
+  else if(nFail&&(loud||ok))toast((sendErr==='auth'?t('eAuth'):sendErr==='sheet'?t('tSendFailSheet'):t('tSendFail'))+' ('+nFail+')',1);
   else if(ok&&!nFail&&!(typeof toastHeld==='function'&&toastHeld()))toast(t('tSent'));   // 読ませたい知らせ（日付を今日に直した等）は消さない
   if(document.getElementById('pgHi').classList.contains('on'))drawHist();
   // 送信中に新しい版が入っていた（前面に戻った直後の再送と重なった）→ 送信が終わって入力途中でなければ読み込む（結果の表示を見せてから）
@@ -282,7 +304,7 @@ function updSyncUI(){
   if(!sheetUrl()){el.className='syncbar off';el.innerHTML=`<span>${esc(t('noSheet'))}</span>`;return}
   if(syncing){el.className='syncbar busy';el.innerHTML=`<span>${esc(t('sending'))}</span>`;return}
   // 送る記録が無くても、シートを確認できていない時は緑の「送信済み」にしない（シート側の問題を見落とさない）
-  if(!n&&!nd&&(rosterErrReason==='nosheet'||rosterErrReason==='bad')){el.className='syncbar warn';el.innerHTML=`<span>⚠ ${esc(t('sheetCheck'))}</span>`;return}
+  if(!n&&!nd&&(rosterErrReason==='nosheet'||rosterErrReason==='bad'||rosterErrReason==='auth')){el.className='syncbar warn';el.innerHTML=`<span>⚠ ${esc(t('sheetCheck'))}</span>`;return}
   if(!n&&!nd&&rosterErrReason==='net'&&!sheetReached){el.className='syncbar warn';el.innerHTML=`<span>${esc(t('sheetUnreach'))}</span>`;return}
   if(!n&&!nd){el.className='syncbar ok';el.innerHTML=`<span>✓ ${esc(t('allSent'))}</span>`;return}
   el.className='syncbar warn';
@@ -302,5 +324,13 @@ function schedRetry(){
   },SYNC_RETRY_MS);
 }
 window.addEventListener('online',()=>syncPending(true));
-document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&pendCount())syncPending(true)});
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){if(pendCount())syncPending(true);bgRoster()}});
+/* 名簿（ほかの端末の「済」を含む）を裏で取り直す: 2台で1農場を分けて採点しても、相手の済が数分で入る。知らせは出さない */
+const ROSTER_BG_MS=180000;let _bgRosterAt=0;
+function bgRoster(){
+  if(!sheetUrl()||rosterLoading||typeof reloadRoster!=='function'||Date.now()-_bgRosterAt<30000)return;
+  if(typeof document!=='undefined'&&document.visibilityState==='hidden')return;
+  _bgRosterAt=Date.now();reloadRoster(true,true);
+}
+setInterval(bgRoster,ROSTER_BG_MS);
 schedRetry();
