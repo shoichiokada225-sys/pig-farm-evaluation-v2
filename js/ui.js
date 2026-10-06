@@ -41,7 +41,7 @@ function wnavHtml(){
   const dn=all.filter(id=>!selWorks.includes(id)&&workById(id));
   if(!(selWorks.length>1||dn.length))return'';
   return `<nav class="wnav" id="wnav" aria-label="${esc(t('wnavLbl'))}">`+
-    selWorks.filter(workById).map(wid=>{const w=workById(wid),pv=all.includes(wid)?prevDoneTx(wid):'';return `<button type="button" class="wnav-c${pv?' redo':''}" data-w="${esc(wid)}" title="${esc(loc(w,'name'))}" aria-label="${esc(loc(w,'name'))}" onclick="jumpWork(this.dataset.w)"><span class="wnav-nm">${esc(shortName(loc(w,'name')))}</span><span class="wnav-ct" data-wct="${esc(wid)}">0/${workItems(wid).length}</span>${pv?`<span class="wnav-prev">${esc(pv)}</span>`:''}</button>`}).join('')+
+    selWorks.filter(workById).map(wid=>{const w=workById(wid),pv=all.includes(wid)?prevDoneTx(wid):'';return `<button type="button" class="wnav-c${pv?' redo':''}" data-w="${esc(wid)}" title="${esc(loc(w,'name'))}" aria-label="${esc(loc(w,'name'))}" onclick="jumpWork(this.dataset.w);const n=this.querySelector('.wnav-nm');if(n&&n.scrollWidth>n.clientWidth+1)toast(this.title)"><span class="wnav-nm">${esc(shortName(loc(w,'name')))}</span><span class="wnav-ct" data-wct="${esc(wid)}">0/${workItems(wid).length}</span>${pv?`<span class="wnav-prev">${esc(pv)}</span>`:''}</button>`}).join('')+
     dn.map(wid=>`<button type="button" class="wnav-c done" data-w="${esc(wid)}" title="${esc(loc(workById(wid),'name'))}" onclick="openDoneWork(this.dataset.w)"><span class="wnav-nm">${esc(shortName(loc(workById(wid),'name')))}</span><span class="wnav-ct">✓ ${esc(t('doneMark'))}</span></button>`).join('')+
     `</nav>`;
 }
@@ -50,10 +50,10 @@ function wsecHtml(wid,ci){
   const w=workById(wid);if(!w)return'';
   ci=ci||{n:0};
   // 作業ごとに区切る（見出しは自分の作業のカードの間だけ貼り付き、次の作業に来たら入れ替わる）
-  let h=`<section class="wsec" data-w="${esc(w.id)}"><div class="wshd" id="wh-${esc(w.id)}" data-w="${esc(w.id)}">
+  let h=`<section class="wsec" data-w="${esc(w.id)}"><div class="wshd" id="wh-${esc(w.id)}" data-w="${esc(w.id)}" data-full="${esc(loc(w,'name'))}" role="button" tabindex="0" aria-describedby="wct-${esc(w.id)}" onclick="toast(this.dataset.full)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toast(this.dataset.full)}">
       <span class="wshd-no">${esc(w.no||'')}</span>
       <span class="wshd-nm" title="${esc(loc(w,'name'))}">${esc(shortName(loc(w,'name')))}</span>
-      <span class="wshd-ct" data-wct="${esc(w.id)}">0/${workItems(wid).length}</span>
+      <span class="wshd-ct" id="wct-${esc(w.id)}" data-wct="${esc(w.id)}">0/${workItems(wid).length}</span>
     </div>
     ${(()=>{const pv=typeof curDoneWorks==='function'&&curDoneWorks().includes(wid)?prevDoneTx(wid):'';const sk=editId?'':`<button type="button" class="wshd-skip" data-w="${esc(w.id)}" aria-label="${esc(t('skipWork')+': '+loc(w,'name'))}" onclick="skipWork(this.dataset.w)">${esc(t('skipWork'))}</button>`;return pv||sk?`<div class="wsub">${pv?`<span class="wsub-prev">${esc(pv)}</span>`:''}${sk}</div>`:''})()}`;
   workItems(wid).forEach((it,ii)=>{
@@ -71,7 +71,7 @@ function wsecHtml(wid,ci){
           ${it.levels.map((lv,li)=>`<div class="crit-lv" data-id="${it.id}" data-s="${li+1}" role="button" tabindex="0" onclick="pick('${it.id}',${li+1})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();pick('${it.id}',${li+1})}"><span class="crit-n sb${li+1}">${li+1}</span><div class="crit-t"><b>${t('s'+(li+1))}</b>${esc(lv)}</div></div>`).join('')}
         </div>
         <div class="clbl" id="clbl-${it.id}">${t('cmtLbl')}</div>
-        <textarea data-cid="${it.id}" placeholder="${t('phCmt')}" aria-labelledby="clbl-${it.id} enm-${it.id}" oninput="onCh()"></textarea>
+        <textarea data-cid="${it.id}" maxlength="2000" placeholder="${t('phCmt')}" aria-labelledby="clbl-${it.id} enm-${it.id}" oninput="onCh()"></textarea>
       </div>`;
   });
   return h+'</section>';
@@ -99,6 +99,7 @@ function buildCards(anim){
   el.innerHTML=h;
   if(anim)_animT=setTimeout(()=>el.classList.remove('anim'),900);   // フェードは最初の1回だけ（後で作り足すカードには付けない）
   miss.forEach(id=>{const c=document.getElementById(id);if(c)setMiss(c,true)});
+  fitSl();
   updProg();
 }
 /* 目次だけを今の selWorks に合わせて差し替える（作業の追加/外しで、ほかのカードに触らない） */
@@ -125,6 +126,16 @@ function addWorkSec(wid){
   if(next)next.insertAdjacentHTML('beforebegin',h);
   else el.insertAdjacentHTML('beforeend',h);
   syncWnav();updProg();
+}
+/* 段階名が語の途中で折れる幅（320px など）だけ、文字を少しずつ小さくして収める（12px 以上で収まる画面では何もしない） */
+function fitSl(){
+  const cards=document.getElementById('cards'),c=cards&&cards.querySelector('.ec');if(!c)return;
+  cards.style.removeProperty('--slfs');
+  const sls=[...c.querySelectorAll('.sl')];if(!sls.length)return;
+  const broken=()=>sls.some(s=>{const r=document.createRange();r.selectNodeContents(s);const ln=new Set([...r.getClientRects()].map(x=>Math.round(x.top))).size;
+    return s.scrollWidth>s.clientWidth+1||ln>Math.min(2,s.textContent.trim().split(/\s+/).length)});
+  if(!broken())return;
+  for(let fs=parseFloat(getComputedStyle(sls[0]).fontSize)-.5;fs>=8.5;fs-=.5){cards.style.setProperty('--slfs',fs+'px');if(!broken())return}
 }
 function setScoreUI(id,s){
   document.querySelectorAll('.sb[data-id="'+id+'"]').forEach(b=>{const on=+b.dataset.s===s;b.classList.toggle('sel',on);b.setAttribute('aria-pressed',on)});
@@ -157,7 +168,7 @@ function updProg(){
   const pr=document.getElementById('prog');if(pr)pr.hidden=!total;
   // 誰を採点しているか（採点中ずっと見える貼り付く帯に）。編集中は印も
   const pw=document.getElementById('progWho');
-  if(pw){const nm=typeof curEe!=='undefined'?curEe.name:'';pw.textContent=nm?(typeof editId!=='undefined'&&editId?'✎ ':'')+nm:'';pw.hidden=!nm;pw.classList.toggle('edit',typeof editId!=='undefined'&&!!editId)}
+  if(pw){const nm=typeof curEe!=='undefined'?curEe.name:'';pw.title=nm;pw.textContent=nm?(typeof editId!=='undefined'&&editId?'✎ ':'')+nm:'';pw.hidden=!nm;pw.classList.toggle('edit',typeof editId!=='undefined'&&!!editId)}
   document.querySelectorAll('#cards textarea').forEach(ta=>{if(ta.value.trim())ta.closest('.ec').classList.add('cm-open')});
   f.style.width=(total?Math.round(done/total*100):0)+'%';
   f.classList.toggle('done',total>0&&done===total);
@@ -231,7 +242,7 @@ function drawHist(){
     const ac=a==null?'':(a>=4?' av4':(a<2?' av1':(a<3?' av2':' av3')));
     const wnames=(r.works||[]).map(dispWorkName);
     const wlbl=wnames.slice(0,2).join(dotSep())+(wnames.length>2?` +${wnames.length-2}`:'');
-    return `<div class="hi" role="button" tabindex="0" onclick="showDet('${sanitizeId(r.id)}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();showDet('${sanitizeId(r.id)}')}"><div class="hii"><div class="hid">${esc(r.date)}　${t('evLbl')}: ${esc(r.evaluator)}${sheetUrl()?(r.sent?` <span class="snt ok">✓${esc(t('sentLbl'))}</span>`:` <span class="snt ng">${esc(t('unsent'))}</span>`):''}</div><div class="hin">${esc(lbl[keyOf(r).key]||r.evaluatee)}${r.manual?` <span class="snt off">${esc(t('offRoster'))}</span>`:''}${redone.has(r.id)?` <span class="snt off">${esc(t('redoneLbl'))}</span>`:''}　<span class="hiw">${esc(wlbl)}</span></div></div><div class="hia${ac}">${fm(a)}</div></div>`;
+    return `<div class="hi" role="button" tabindex="0" onclick="showDet('${sanitizeId(r.id)}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();showDet('${sanitizeId(r.id)}')}"><div class="hii"><div class="hid">${esc(r.date)}　${t('evLbl')}: ${esc(r.evaluator)}${sheetUrl()?(r.sheetGone?` <span class="snt ng">${esc(t('goneLbl'))}</span>`:r.sent?` <span class="snt ok">✓${esc(t('sentLbl'))}</span>`:` <span class="snt ng">${esc(t('unsent'))}</span>`):''}</div><div class="hin">${esc(lbl[keyOf(r).key]||r.evaluatee)}${r.manual?` <span class="snt off">${esc(t('offRoster'))}</span>`:''}${redone.has(r.id)?` <span class="snt off">${esc(t('redoneLbl'))}</span>`:''}　<span class="hiw">${esc(wlbl)}</span></div></div><div class="hia${ac}">${fm(a)}</div></div>`;
   }).join('');
 }
 
@@ -274,10 +285,11 @@ function doDel(id){
   const r=getAll().find(e=>e.id===id);if(!r)return;
   // 送信先がある時は、未送信に見える記録もシートの行を消しに行く（応答が届かなかっただけで行が書かれていることがある。行が無ければ GAS は0行で ok）
   const onSheet=mayBeOnSheet(r)||syncing||!!sheetUrl();
-  if(!confirm(onSheet?t('cDelSheet').replace('{id}',r.id):t('cDel')))return;
-  if(onSheet)queueDel(r);
+  if(!confirm(onSheet?t('cDelSheet').replace('{n}',r.evaluatee||'').replace('{d}',mdOf(r.date)):t('cDel')))return;   // 記録ID（UUID）は見せない
+  if(onSheet){try{queueDel(r)}catch(e){toast(t('eStoreFull'),1);return}}   // 削除待ちを書けない（容量）＝消さない（シートの行だけ残る事故を防ぐ）
   if(typeof dropSheetDone==='function')dropSheetDone(id);
-  putAll(getAll().filter(e=>e.id!==id));closeMo();drawHist();refreshSel();updSyncUI();renderRoster();
+  if(!putAll(getAll().filter(e=>e.id!==id))){toast(t('eStoreFull'),1);return}
+  closeMo();drawHist();refreshSel();updSyncUI();renderRoster();
   toast(onSheet?t('tDelQueued'):t('tDel'));
   if(onSheet)syncPending();
 }

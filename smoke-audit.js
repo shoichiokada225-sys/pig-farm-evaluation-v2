@@ -23,7 +23,7 @@ async function open(opt) {
     if (req.method() === 'GET') {
       const k = new URL(req.url()).searchParams.get('k');
       if (st.needTok && k !== TOK) return route.fulfill({ status: 200, contentType: 'application/json', headers: H, body: JSON.stringify({ ok: false, version: '2026-10-06a', capabilities: [], error: 'auth' }) });
-      return route.fulfill({ status: 200, contentType: 'application/json', headers: H, body: JSON.stringify({ ok: true, version: '2026-10-06a', capabilities: ['roster', 'roster.aliases', 'roster.done', 'submit', 'submit.redoOf', 'delete', 'auth', 'dellog'], roster: st.roster, done: [] }) });
+      return route.fulfill({ status: 200, contentType: 'application/json', headers: H, body: JSON.stringify({ ok: true, version: '2026-10-06d', capabilities: ['roster', 'roster.aliases', 'roster.done', 'submit', 'submit.redoOf', 'delete', 'auth', 'dellog', 'submit.ver', 'submit.dups', 'submit.revive'], roster: st.roster, done: [] }) });
     }
     const b = JSON.parse(req.postData()); st.posts.push(b);
     if (st.needTok && b.k !== TOK) return route.fulfill({ status: 200, contentType: 'application/json', headers: H, body: JSON.stringify({ ok: false, error: 'auth' }) });
@@ -215,7 +215,7 @@ const scoreWork = (p, wid, s, n) => p.evaluate(([wid, s, n]) => { [...document.q
 
   console.log('[K] 細かい改善（第2弾）');
   {
-    const { browser, page, st } = await open();
+    const { browser, page, st } = await open({ roster: [{ name: 'テスト 一郎', farm: 'テスト農場', works: ['給餌', 'エサ調整'] }, { name: 'テスト 二郎', farm: 'テスト農場', works: ['給餌'] }, { name: 'テスト 三郎', farm: 'テスト農場', works: ['給餌'] }] });
     ok('人を選ぶ前は進捗帯（採点済み 0/0）を出さない', await page.locator('#prog').isHidden());
     await pick(page, 'テスト 一郎'); await page.waitForTimeout(300);
     ok('採点中は進捗帯に人の名前', await page.locator('#prog').isVisible() && (await page.locator('#progWho').textContent()) === 'テスト 一郎');
@@ -239,6 +239,19 @@ const scoreWork = (p, wid, s, n) => p.evaluate(([wid, s, n]) => { [...document.q
     ok('編集中は「編集中: 名前」の橙の帯', /編集中/.test(await page.locator('#eeCur').textContent()) && await page.locator('#eeCur.edit').count() === 1);
     st.accept = true; await pick(page, 'テスト 二郎'); await page.waitForTimeout(300);
     ok('編集中に別の人を押すと確認して切り替える', await page.evaluate(() => !editId && curEe.name === 'テスト 二郎'));
+    // 採点途中の人がいる時に編集 → 別の人へ: 確認は1回（途中の人の名前入り）
+    await pick(page, 'テスト 二郎'); await page.waitForTimeout(200);
+    await page.evaluate(() => document.querySelector('#cards .ec .sb[data-s="2"]').click());
+    await page.evaluate(id => startEdit(id), id1); await page.waitForTimeout(200);
+    st.accept = true; const dq = st.dialogs.length;
+    await page.evaluate(() => { const ro = getRoster().list; selectEe(ro.findIndex(p => p.name === 'テスト 二郎')); }); await page.waitForTimeout(300);
+    ok('編集中→採点途中だった本人: 確認1回・その人の採点は戻る（破棄しない）', st.dialogs.length === dq + 1 && !/破棄/.test(st.dialogs[dq]) && await page.evaluate(() => !editId && curEe.name === 'テスト 二郎' && document.querySelectorAll('#cards .ec.scored').length === 1));
+    await page.evaluate(id => startEdit(id), id1); await page.waitForTimeout(200);
+    const dq2 = st.dialogs.length;
+    await page.evaluate(() => { const ro = getRoster().list; selectEe(ro.findIndex(p => p.name === 'テスト 三郎')); }); await page.waitForTimeout(300);
+    ok('編集中→別の人: 確認は1回で、採点途中だった人の名前と破棄を伝える', st.dialogs.length === dq2 + 1 && /テスト 二郎/.test(st.dialogs[dq2]) && /破棄/.test(st.dialogs[dq2]) && await page.evaluate(() => !editId && curEe.name === 'テスト 三郎'));
+    await page.evaluate(() => { if (editId) cancelEdit(); clearForm(); });
+    await page.evaluate(() => clearForm());
     // 編集で評価日を変える → 確認
     await page.evaluate(id => startEdit(id), id1); await page.waitForTimeout(200);
     await page.evaluate(() => { document.getElementById('fDate').value = '2026-01-02'; });
@@ -287,6 +300,238 @@ const scoreWork = (p, wid, s, n) => p.evaluate(([wid, s, n]) => { [...document.q
     await page.route(u => u.href.startsWith('https://script.google.com/'), r => r.abort('internetdisconnected'));   // 圏外
     await page.evaluate(() => doDel('dq1')); await page.waitForTimeout(300);
     ok('削除待ちに元の送信先を控える', await page.evaluate(() => getDels()[0].url === sheetUrl()));
+    await browser.close();
+  }
+
+  console.log('[L] 第3回監査（データ）');
+  {
+    // 本文が止まる応答 → 期限で打ち切り、送信・名簿取得が「中」のまま固まらない
+    const { browser, page, st } = await open();
+    await page.evaluate(() => { window.__stall = true; const of = window.fetch; window.fetch = (u, o) => window.__stall ? Promise.resolve(new Response(new ReadableStream({ start() {} }), { status: 200 })) : of(u, o); SEND_TIMEOUT_MS_ORIG = 0; });
+    await page.evaluate(() => { reloadRoster(true, true); }); 
+    await pick(page, 'テスト 二郎'); await page.waitForTimeout(200);
+    await scoreWork(page, 'feeding-daily', 4);
+    await page.locator('#btnSave').tap();
+    await page.waitForTimeout(22000);
+    ok('本文が止まっても 20 秒で打ち切り、送信中のまま固まらない', await page.evaluate(() => !syncing && !rosterLoading));
+    await page.evaluate(() => { window.__stall = false; syncPending(); }); await page.waitForTimeout(1500);
+    ok('通信が戻れば送れる', (await recs(page))[0].sent === true);
+    await browser.close();
+  }
+  {
+    const { browser, page, st } = await open();
+    // GAS が stale / dups を返す
+    await page.route(u => u.href.startsWith('https://script.google.com/'), async route => {
+      const req = route.request(); const H = { 'access-control-allow-origin': '*' };
+      if (req.method() === 'GET') return route.fallback();
+      const b = JSON.parse(req.postData()); st.posts.push(b);
+      const rec = b.record;
+      return route.fulfill({ status: 200, contentType: 'application/json', headers: H, body: JSON.stringify(rec.evaluatee === 'テスト 二郎' ? { ok: true, id: rec.id, rows: 0, stale: true } : { ok: true, id: rec.id, rows: 5, dups: ['給餌'] }) });
+    });
+    await pick(page, 'テスト 二郎'); await page.waitForTimeout(200); await scoreWork(page, 'feeding-daily', 4);
+    await page.locator('#btnSave').tap(); await page.waitForTimeout(800);
+    ok('シートの方が新しい（stale）: 上書きせず送り済み扱い・知らせる', (await recs(page))[0].sent === true && /新しい内容/.test(await page.locator('#toast').textContent()));
+    ok('送る記録に版（ver）が付く', st.posts.some(p => p.record && p.record.ver));
+    await pick(page, 'テスト 一郎'); await page.waitForTimeout(200); await scoreWork(page, 'feeding-daily', 4); await scoreWork(page, 'feed-adjust', 4);
+    await page.locator('#btnSave').tap(); await page.waitForTimeout(800);
+    ok('二重採点（dups）: 送信は成功・赤い知らせで作業名を出す', /二重採点/.test(await page.locator('#toast').textContent()) && /給餌/.test(await page.locator('#toast').textContent()));
+    await browser.close();
+  }
+  {
+    const { browser, page, st } = await open({ init: () => { try { if (!sessionStorage.getItem('y')) { sessionStorage.setItem('y', 1); localStorage.setItem('jitsugi_v2_data', '{"evaluations":[null,{"id":"w1","date":"2026-10-01","evaluatee":"x","works":"x"}]}'); } } catch (e) {} } });
+    ok('null の記録・作業が配列でない記録でも起動する', !st.errors.length && await page.evaluate(() => getAll().length === 1 && Array.isArray(getAll()[0].works)));
+    await browser.close();
+  }
+  {
+    const { browser, page } = await open();
+    ok('全角空白の名前も名簿の同じ人（nmKey）', await page.evaluate(() => nmKey('テスト　一郎') === nmKey('テスト 一郎') && nmKey('テスト  一郎') === 'テスト 一郎'));
+    ok('カタログに無い作業も種目のキーで行を作る（0行で送らない）', await page.evaluate(() => toPayload({ id: 'z', works: [{ workId: 'old-x', workName: '旧作業', scores: { a: 4, b: 3 }, comments: { a: 'c' } }] }).works[0].items.length === 2));
+    await browser.close();
+  }
+
+  console.log('[M] 第3回監査（画面）');
+  {
+    const { browser, page, st } = await open();
+    await page.evaluate(() => putAll([normRec({ id: 'uuid-like-0123456789', date: todayLocal(), evaluator: 'テスト 評価者', evaluatee: 'テスト 二郎', farm: 'テスト農場', createdAt: 'x', sent: true, works: [{ workId: 'feeding-daily', scores: { a: 3 }, comments: {} }] })]));
+    st.accept = false; const d0 = st.dialogs.length;
+    await page.evaluate(() => doDel('uuid-like-0123456789')); await page.waitForTimeout(100);
+    ok('削除の確認に記録ID（UUID）を出さず、人と日付を出す', st.dialogs.length === d0 + 1 && !/uuid-like/.test(st.dialogs[d0]) && /テスト 二郎/.test(st.dialogs[d0]));
+    st.accept = true;
+    await page.evaluate(() => setLang('vi'));
+    ok('読み上げの名前（aria-label）も言語に追従', await page.evaluate(() => document.getElementById('eeFarms').getAttribute('aria-label') === 'Trại' && document.querySelector('nav.tabs').getAttribute('aria-label') === 'Menu'));
+    await page.evaluate(() => setLang('en'));
+    ok('en 単数: 1 task left', await page.evaluate(() => tN('leftWorks', 1) === '1 task left' && tN('leftWorks', 2) === '2 tasks left' && tN('tSavedPart', 1) === 'Saved (1 task left)'));
+    ok('名簿が空の案内のシート名に訳を添える', await page.evaluate(() => /Examinees/.test(t('eeNoRoster'))));
+    await page.evaluate(() => setLang('ja'));
+    await pick(page, 'テスト 一郎'); await page.waitForTimeout(200);
+    await page.locator('#btnSave').tap(); await page.waitForTimeout(150);
+    ok('未採点の知らせは「… (n)」と括弧の前に空白', / \(\d+\)$/.test(await page.locator('#toast').textContent()));
+    ok('農場チップは名前と残り人数を分けて持つ（長い名前でも残りが見える）', await page.locator('.fchip .fchip-nm').count() > 0);
+    await page.locator('.wshd-nm').first().click(); await page.waitForTimeout(100);
+    ok('作業見出しの名前を押すと全文を出す', (await page.locator('#toast').textContent()).length >= (await page.locator('.wshd-nm').first().textContent()).length);
+    await browser.close();
+  }
+
+  console.log('[N] 第4回監査（データ）');
+  {
+    const { browser, page, st } = await open({ roster: [{ name: 'テスト 一郎', farm: 'テスト農場', works: ['給餌'] }, { name: 'テスト 二郎', farm: 'テスト農場', works: ['給餌'] }] });
+    await pick(page, 'テスト 一郎'); await page.waitForTimeout(200);
+    await page.evaluate(() => { toggleWork('feed-adjust', true); }); await page.waitForTimeout(100);
+    await scoreWork(page, 'feeding-daily', 4); await scoreWork(page, 'feed-adjust', 4);
+    await page.locator('#btnSave').tap(); await page.waitForTimeout(500);
+    const r1 = (await recs(page))[0];
+    await page.evaluate(id => { startEdit(id); redoFromEdit(); }, r1.id); await page.waitForTimeout(300);
+    ok('やり直しは前回の記録にある作業（作業選択で足した作業）も対象', await page.evaluate(() => selWorks.includes('feeding-daily') && selWorks.includes('feed-adjust')));
+    await page.evaluate(() => clearForm());
+    // 時計が戻っても編集の版は前より新しい
+    const before = r1.updatedAt || r1.createdAt;
+    await page.evaluate(() => { const real = Date.now; Date.now = () => real() - 3600e3; });
+    await page.evaluate(id => startEdit(id), r1.id); await page.waitForTimeout(200);
+    await scoreWork(page, 'feeding-daily', 1);
+    await page.locator('#btnSave').tap(); await page.waitForTimeout(500);
+    const r2 = (await recs(page)).find(r => r.id === r1.id);
+    ok('端末の時計が戻っても、編集の版（更新時刻）は前の版より新しい', r2.updatedAt > before);
+    // 容量いっぱいの削除は消さずに知らせる
+    await page.evaluate(() => { const o = Storage.prototype.setItem; Storage.prototype.setItem = function (k, v) { if (k === 'jitsugi_v2_deletes') throw new DOMException('full', 'QuotaExceededError'); return o.call(this, k, v); }; });
+    await page.evaluate(id => doDel(id), r1.id); await page.waitForTimeout(200);
+    ok('容量いっぱいで削除待ちを書けない時は、消さずに知らせる', (await recs(page)).some(r => r.id === r1.id) && /容量/.test(await page.locator('#toast').textContent()));
+    await browser.close();
+  }
+  {
+    const { browser, page, st } = await open({ init: () => { try { if (!sessionStorage.getItem('z')) { sessionStorage.setItem('z', 1); localStorage.setItem('jitsugi_v2_data', '{"evaluations":[{"id":"x1","date":"2026-10-06","evaluatee":"テスト 一郎","farm":"テスト農場","works":[null,{"workId":"feeding-daily","scores":{"a":3}}]}]}'); } } catch (e) {} } });
+    await page.locator('.tabs button[data-pg="pgHi"]').tap(); await page.waitForTimeout(200);
+    ok('作業の中に null がある記録でも起動・履歴が出る', !st.errors.length && await page.locator('#hList .hi').count() === 1);
+    await browser.close();
+  }
+
+  console.log('[O] 第5回監査（データ）');
+  {
+    const { browser, page, st } = await open({ roster: [{ name: 'テスト\n一郎', farm: 'テスト農場', works: ['給餌'] }, { name: 'テスト 二郎', farm: 'テスト農場', works: ['給餌'] }] });
+    await pick(page, 'テスト 一郎'); await page.waitForTimeout(200);
+    await scoreWork(page, 'feeding-daily', 4);
+    await page.locator('#btnSave').tap(); await page.waitForTimeout(500);
+    const r = (await recs(page))[0];
+    ok('名簿の名前にセル内改行があっても名簿の人として保存（シートと同じ表記・農場あり・名簿外にしない・済に数える）', r.evaluatee === 'テスト\n一郎' && r.farm === 'テスト農場' && !r.manual && await page.evaluate(() => { const ro = getRoster().list; return eeProgress(ro[0], examRecs(), ro).complete; }));
+    // バックアップから戻した記録は revive を付けて送り、送れたら外す
+    await page.evaluate(() => { const blob = { _type: 'jitsugi_v2_backup', version: 1, data: { evaluations: [{ id: 'rv1', date: todayLocal(), evaluator: 'テスト 評価者', evaluatee: 'テスト 二郎', farm: 'テスト農場', createdAt: 'x', sent: true, works: [{ workId: 'feeding-daily', scores: { a: 3 }, comments: {} }] }] } };
+      const f = new File([JSON.stringify(blob)], 'b.json', { type: 'application/json' }); const dt = new DataTransfer(); dt.items.add(f); const i = document.getElementById('impAllFile'); i.files = dt.files; importAll(i); });
+    await page.waitForTimeout(1200);
+    ok('復元した記録は revive 付きで送り、送れたら印を外す', st.posts.some(p => p.record && p.record.id === 'rv1' && p.record.revive === true) && await page.evaluate(() => { const r = getAll().find(x => x.id === 'rv1'); return r.sent && !r.revive; }));
+    await browser.close();
+  }
+  {
+    const { browser, page, st } = await open({ init: () => { try { if (!sessionStorage.getItem('w')) { sessionStorage.setItem('w', 1); localStorage.setItem('jitsugi_v2_draft', '{"works":"x","_cur":"s","_sel":5,"evaluatee":5}'); } } catch (e) {} } });
+    ok('下書きが壊れていても起動を止めない（名簿が出る）', await page.locator('.eetab').count() === 2 && await page.evaluate(() => Object.keys(localStorage).some(k => k.startsWith('jitsugi_v2_draft_broken_'))));
+    await browser.close();
+  }
+
+  console.log('[P] 第5回監査（画面）');
+  {
+    const fs3 = ['ヒラノ畜産株式会社大田原第一ゾーン繁殖農場', 'ヒラノ畜産株式会社大田原第二ゾーン繁殖農場', 'ヒラノ畜産株式会社大田原第三ゾーン繁殖農場'];
+    const { browser, page } = await open({ roster: fs3.map((f, i) => ({ name: 'テスト ' + i, farm: f, works: ['給餌'] })) });
+    const tx = await page.locator('.fchip .fchip-nm').allTextContents();
+    ok('中省略で同じになる農場どうしは違う部分を見せる（第一/第二/第三）', new Set(tx).size === 3 && tx.some(x => /第一/.test(x)) && tx.some(x => /第三/.test(x)));
+    ok('農場チップの読み上げ名は全文＋残り人数', /大田原第二ゾーン繁殖農場/.test(await page.locator('.fchip').nth(1).getAttribute('aria-label')));
+    await pick(page, 'テスト 0'); await page.waitForTimeout(200);
+    const hb = await page.locator('.wshd').first().boundingBox();
+    ok('作業見出し（押せる）は高さ44px以上', hb.height >= 44);
+    await page.locator('.wshd').first().focus(); await page.keyboard.press(' '); await page.waitForTimeout(100);
+    ok('見出しは Space でも全文を出す（ページはスクロールしない）', /給餌/.test(await page.locator('#toast').textContent()));
+    ok('見出しの読み上げは件数（0/5）も結び付く', await page.evaluate(() => { const h = document.querySelector('.wshd'); return document.getElementById(h.getAttribute('aria-describedby')).textContent.includes('/5'); }));
+    await browser.close();
+  }
+
+  console.log('[Q] 第6回監査（データ）');
+  {
+    const { browser, page, st } = await open();
+    // シートで削除済み（gone）→ 履歴は「シートで削除済」・済に数えない
+    await page.route(u => u.href.startsWith('https://script.google.com/'), async route => {
+      const req = route.request(); const H = { 'access-control-allow-origin': '*' };
+      if (req.method() === 'GET') return route.fallback();
+      const b = JSON.parse(req.postData()); st.posts.push(b);
+      return route.fulfill({ status: 200, contentType: 'application/json', headers: H, body: JSON.stringify({ ok: true, id: b.record.id, rows: 0, stale: 'deleted' }) });
+    });
+    await page.evaluate(() => putAll([normRec({ id: 'g1', date: todayLocal(), evaluator: 'テスト 評価者', evaluatee: 'テスト 二郎', farm: 'テスト農場', createdAt: 'x', updatedAt: '2026-10-06T00:00:00Z', sent: false, revive: true, rv: 'z', works: [{ workId: 'feeding-daily', scores: { a: 3 }, comments: {} }] })]));
+    await page.evaluate(() => syncPending()); await page.waitForTimeout(800);
+    ok('シートで削除済みの記録: 印を付け・revive を外す・済に数えない', await page.evaluate(() => { const r = getAll()[0]; const ro = getRoster().list; return r.sheetGone && !r.revive && !eeProgress(ro.find(p => p.name === 'テスト 二郎'), examRecs(), ro).complete; }));
+    ok('削除の要求は戻した時刻（rv）を持つ', await page.evaluate(() => { queueDel(getAll()[0]); return getDels()[0].rv === 'z' && deleteReq(getDels()[0]).rv === 'z'; }));
+    await page.locator('.tabs button[data-pg="pgHi"]').tap(); await page.waitForTimeout(200);
+    ok('履歴は「送信済」でなく「シートで削除済」', /シートで削除済/.test(await page.locator('#hList').textContent()) && !/送信済/.test(await page.locator('#hList').textContent()));
+    await browser.close();
+  }
+
+  console.log('[R] 第6回監査（画面）');
+  for (const w of [360, 390]) {
+    const fs3 = ['ヒラノ畜産株式会社多古第一農場', 'ヒラノ畜産株式会社多古第二農場', 'ヒラノ畜産株式会社多古第三農場', '所属未確定', '所属未確定（大田原）'];
+    const { browser, page } = await open({ roster: fs3.map((f, i) => ({ name: 'テスト ' + i, farm: f, works: ['給餌'] })) });
+    await page.setViewportSize({ width: w, height: 800 }); await page.evaluate(() => renderRoster());
+    // 見えている部分（CSS の省略後）で区別できるか: 表示幅内に収まっていて、テキストがすべて違う
+    const vis = await page.evaluate(() => [...document.querySelectorAll('.fchip .fchip-nm')].map(e => ({ t: e.textContent, fit: e.scrollWidth <= e.clientWidth + 1 })));
+    ok(w + 'px: 似た農場名のチップは見えている文字で区別できる（省略で隠れない）', new Set(vis.map(v => v.t)).size === vis.length && vis.every(v => v.fit));
+    for (const l of ['en', 'vi', 'id']) { await page.evaluate(l => setLang(l), l); ok(w + 'px ' + l + ': 未確定の農場のチップは訳語を残す（補足だけにしない）', await page.evaluate(() => [...document.querySelectorAll('.fchip')].filter(c => /未確定/.test(c.dataset.f)).every(c => !c.querySelector('.fchip-nm').textContent.startsWith('…')))); }
+    await page.evaluate(() => setLang('ja'));
+    ok(w + 'px: 未確定の農場が2つあっても補足で見分けられる（読み上げ名も）', await page.evaluate(() => { const ls = [...document.querySelectorAll('.fchip')].map(c => c.getAttribute('aria-label')); return new Set(ls).size === ls.length && ls.some(l => /大田原/.test(l)); }));
+    await browser.close();
+  }
+
+  console.log('[S] 第7回監査（データ）');
+  {
+    const { browser, page, st } = await open();
+    await page.evaluate(() => putAll([normRec({ id: 'gx', date: todayLocal(), evaluator: 'テスト 評価者', evaluatee: 'テスト\n二郎', farm: 'テスト農場', createdAt: '2026-10-06T00:00:00Z', sent: true, sheetGone: true, works: [{ workId: 'feeding-daily', scores: {}, comments: {} }] })]));
+    await page.evaluate(() => { updSyncUI(); });
+    ok('シートで削除済みがある間、同期バーは緑の「すべて送信済み」にしない', /削除済み/.test(await page.locator('#syncBar').textContent()) && await page.locator('#syncBar.ok').count() === 0);
+    st.accept = false; const d0 = st.dialogs.length;
+    await page.evaluate(() => startEdit('gx')); await page.waitForTimeout(100);
+    ok('削除済みの記録を直す時は確認（キャンセルで開かない）', st.dialogs.length === d0 + 1 && await page.evaluate(() => !editId));
+    st.accept = true;
+    await page.evaluate(() => startEdit('gx')); await page.waitForTimeout(200);
+    await scoreWork(page, 'feeding-daily', 4);
+    await page.locator('#btnSave').tap(); await page.waitForTimeout(800);
+    const r = (await recs(page))[0];
+    ok('直して保存すると戻す（revive＋新しい合図で送る）・送れたら削除済みの印を外す', st.posts.some(p => p.record && p.record.id === 'gx' && p.record.revive === true && p.record.rv) && !r.sheetGone && !r.revive && r.sent);
+    ok('名前を変えずに直した記録は、シートと同じ表記（改行入り）のまま', r.evaluatee === 'テスト\n二郎');
+    await browser.close();
+  }
+  {
+    const { browser, page, st } = await open();
+    await page.evaluate(() => putAll([normRec({ id: 'gy', date: todayLocal(), evaluator: 'テスト 評価者', evaluatee: 'テスト 二郎', farm: 'テスト農場', createdAt: 'x', sent: true, sheetGone: true, works: [{ workId: 'feeding-daily', scores: { a: 3 }, comments: {} }] })]));
+    await page.evaluate(() => { const blob = { _type: 'jitsugi_v2_backup', version: 1, data: { evaluations: [{ id: 'gy', date: todayLocal(), evaluator: 'テスト 評価者', evaluatee: 'テスト 二郎', farm: 'テスト農場', createdAt: 'x', sent: true, works: [{ workId: 'feeding-daily', scores: { a: 3 }, comments: {} }] }] } };
+      const f = new File([JSON.stringify(blob)], 'b.json', { type: 'application/json' }); const dt = new DataTransfer(); dt.items.add(f); const i = document.getElementById('impAllFile'); i.files = dt.files; importAll(i); });
+    await page.waitForTimeout(1200);
+    ok('端末にシートで削除済みの同じ記録があっても、復元で戻す', st.posts.some(p => p.record && p.record.id === 'gy' && p.record.revive === true) && await page.evaluate(() => !getAll()[0].sheetGone));
+    await browser.close();
+  }
+
+  console.log('[T] 第8回監査');
+  {
+    const { browser, page } = await open({ roster: [{ name: '佐藤\u3000花子', farm: 'テスト農場', works: ['給餌'] }, { name: 'テスト 二郎', farm: 'テスト農場', works: ['給餌'] }] });
+    await page.evaluate(() => openManualEe());
+    await page.evaluate(() => { const f = document.getElementById('fEe'); f.value = '佐藤 花子'; f.dispatchEvent(new Event('input')); toggleWork('feeding-daily', true); });
+    await scoreWork(page, 'feeding-daily', 4);
+    await page.locator('#btnSave').tap(); await page.waitForTimeout(500);
+    const r = (await recs(page))[0];
+    ok('名簿の人を手入力で選んでも、シートの表記（全角空白）で保存・名簿外にしない', r.evaluatee === '佐藤\u3000花子' && r.farm === 'テスト農場' && !r.manual);
+    ok('同期バーの削除済みは1行の短い文', await page.evaluate(() => t('goneBar').length <= 14));
+    ok('コメントは上限つき（2000字）', await page.evaluate(() => { selWorks = ['feeding-daily']; buildCards(); return document.querySelector('#cards textarea').maxLength === 2000; }));
+    await browser.close();
+  }
+
+  console.log('[U] 第10回監査');
+  {
+    const { browser, page, st } = await open();
+    ok('試験開始日に未来は入れない（max=今日・拒否）', await page.evaluate(() => { setExamStart('2099-01-01'); return examStart() === '' && document.getElementById('cfgExamStart').max === todayLocal(); }));
+    await pick(page, 'テスト 二郎'); await page.waitForTimeout(200); await scoreWork(page, 'feeding-daily', 4);
+    // 別のタブで先に同じ人・同じ作業を保存した
+    await page.evaluate(() => { const a = getAll(); a.push(normRec({ id: 'other-tab', date: todayLocal(), evaluator: 'テスト 評価者', evaluatee: 'テスト 二郎', farm: 'テスト農場', createdAt: 'x', sent: false, works: [{ workId: 'feeding-daily', scores: { a: 4 }, comments: {} }] })); putAll(a); });
+    st.accept = false; const d0 = st.dialogs.length;
+    await page.locator('#btnSave').tap(); await page.waitForTimeout(300);
+    ok('保存の直前に、別の画面で先に保存された同じ作業を見つけて確認（キャンセルで保存しない）', st.dialogs.length === d0 + 1 && /もう記録/.test(st.dialogs[d0]) && (await recs(page)).length === 1);
+    st.accept = true;
+    await page.evaluate(() => { doSave._at = 0; }); await page.locator('#btnSave').tap(); await page.waitForTimeout(300);
+    ok('OK なら保存する', (await recs(page)).length === 2);
+    await page.evaluate(() => { doSave._at = performance.now(); const n = getAll().length; doSave(); window.__n = getAll().length - n; });
+    ok('連打（直前の保存の直後）は無視', await page.evaluate(() => window.__n === 0));
+    ok('消し終えた記録は、消す前の名簿の要約が届いても済に数えない', await page.evaluate(() => { noteDeleted('zz9'); const r = JSON.parse(localStorage.getItem('jitsugi_v2_roster')); r.done = [{ id: 'zz9', date: todayLocal(), evaluatee: 'テスト 一郎', farm: 'テスト農場', works: [{ workId: 'feeding-daily' }, { workId: 'feed-adjust' }], sheet: true }]; localStorage.setItem('jitsugi_v2_roster', JSON.stringify(r)); const ro = getRoster().list; return !eeProgress(ro.find(p => p.name === 'テスト 一郎'), examRecs(), ro).complete; }));
     await browser.close();
   }
 

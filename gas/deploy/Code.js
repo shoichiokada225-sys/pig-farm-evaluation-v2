@@ -17,9 +17,9 @@
      違えば {ok:false, error:'auth'}。ping は合言葉なしで版だけ返す。APP_TOKEN が無い時は従来どおり誰でも（テスト・移行用）
    - 削除ログ（2026-10-06a〜）: 削除・上書き（再送・編集）で消える行は、消す前に「削除ログ」タブへ写す（取り返せるように） */
 
-const CODE_VERSION = '2026-10-06a';
+const CODE_VERSION = '2026-10-06d';
 /* アプリはこれを見て「シート側が古い（旧名・削除が使えない）」を警告する（js/contract.js の GAS_REQUIRED_CAPS） */
-const API_CAPABILITIES = ['roster', 'roster.aliases', 'roster.done', 'submit', 'submit.redoOf', 'delete', 'auth', 'dellog'];
+const API_CAPABILITIES = ['roster', 'roster.aliases', 'roster.done', 'submit', 'submit.redoOf', 'delete', 'auth', 'dellog', 'submit.ver', 'submit.dups', 'submit.revive'];
 const ROSTER_SHEET = '受験者';
 const WORKS_SHEET = '作業一覧';
 const FARMS_SHEET = '農場一覧';
@@ -41,6 +41,9 @@ const HEAD = HEAD_BASE.concat(['やり直し元']);
 const SUMMARY_SHEET = '集計（自動）';
 const SUMMARY_KEY = 'HSS_SUMMARY_TAB_ID';
 const DELLOG_SHEET = '削除ログ';
+const VER_KEY = 'v:';
+const DEAD_KEY = 'd:';
+const REV_KEY = 'r:';    // 文書プロパティ: 記録IDごとの、最後に書き戻した（revive）合図。これと違う合図の削除は、戻す前に出された古い削除   // 文書プロパティ: 記録IDごとの、削除で殺した戻しの合図の一覧   // 文書プロパティ: 記録IDごとの版（端末の更新時刻）
 /* 合言葉の確認（APP_TOKEN が無い・短い時は確認しない＝移行・テスト用） */
 function authOk_(k) {
   if (typeof APP_TOKEN === 'undefined' || String(APP_TOKEN).length < 8) return true;
@@ -132,9 +135,10 @@ function admin_(e) {
   const lock = LockService.getScriptLock();
   if (!lock.tryLock(20000)) return json_({ ok: false, error: 'busy' });
   try {
+    if (e.parameter.op === 'check') return json_({ ok: true, version: CODE_VERSION, check: checkSummary_() });   // 読むだけ（集計タブの式の結果を検算）
     const r = setup();
     const added = typeof COMMON_SEED !== 'undefined' ? addCommonRows_(COMMON_SEED) : [];
-    return json_({ ok: true, version: CODE_VERSION, setup: r, commonAdded: added });
+    return json_({ ok: true, version: CODE_VERSION, setup: r, commonAdded: added, check: checkSummary_() });
   } finally {
     lock.releaseLock();
   }
@@ -179,10 +183,43 @@ function doPost(e) {
   try {
     if (isDelete) {
       const id = cleanId_(body.id);
-      return json_({ ok: true, id: String(body.id), deleted: deleteRecord_(id, '削除') });
+      // 戻した（revive）後に、戻すより前に出された削除が遅れて届いた: その削除は古い＝戻した行を消さない。
+      // 「前に出された」＝削除の合図が戻しの合図と違い、かつ削除を出した時刻（at）が戻した時刻（rvAt）より前。
+      // 戻した後に出された削除（別の端末・別の流れでも）は消す
+      const rr = String(PropertiesService.getDocumentProperties().getProperty(REV_KEY + id) || '').split('|'), lastRev = rr[0] || '', lastAt = rr[1] || '';
+      const dtok = String(body.rv || '').replace(/[^\w\-]/g, ''), dat = String(body.at || '');
+      if (lastRev && dtok !== lastRev && dat && lastAt && dat < lastAt) return json_({ ok: true, id: String(body.id), deleted: 0, staleDelete: true });
+      const del = deleteRecord_(id, '削除');
+      // 削除の印（墓標 '~del:'+合図の一覧）: 削除の後に遅れて届いた同じ記録の送信で、行を生き返らせない。
+      // 合図（rv）＝端末がその記録を「戻した」ときに付けるランダムな値。削除はその時点の合図を持ってくる＝その合図の送信はもう通さない。
+      // 時刻は使わない（端末どうしの時計のずれで判定を誤らない）。合図は増えるだけ（古い削除が後から届いても、殺した合図は消えない）
+      try {
+        const pp = PropertiesService.getDocumentProperties();
+        const dead = String(pp.getProperty(DEAD_KEY + id) || '').split(',').filter(Boolean);   // 殺した合図は別のキーに残し続ける（戻しが成功して墓標が外れても消えない）
+        const tok = String(body.rv || '').replace(/[^\w\-]/g, '');
+        if (tok && dead.indexOf(tok) < 0) { dead.push(tok); pp.setProperty(DEAD_KEY + id, dead.slice(-200).join(',')); }
+        pp.deleteProperty(REV_KEY + id);
+        pp.setProperty(VER_KEY + id, '~del');
+      } catch (err) { /* 印が書けなくても削除は成功 */ }
+      return json_({ ok: true, id: String(body.id), deleted: del });
     }
+    // 版（端末の更新時刻）: シートに新しい版が既にあれば、古い版（古いバックアップの復元・遅れて届いた再送）で上書きしない
+    const rid = cleanId_(body.record.id), ver = String(body.record.ver || ''), props = PropertiesService.getDocumentProperties();
+    const have = rid ? String(props.getProperty(VER_KEY + rid) || '') : '';
+    // 削除済みの記録は書かない（遅れて届いた再送で生き返らせない）。
+    // 書き戻すのは、端末が削除より後にバックアップから「戻した」記録（revive と、墓標の rv より新しい戻した時刻 rv）だけ
+    const tomb = /^~del/.test(have), tok = String(body.record.rv || '').replace(/[^\w\-]/g, '');
+    const dead = rid ? String(props.getProperty(DEAD_KEY + rid) || '').split(',').filter(Boolean) : [];
+    // 殺した合図の戻しは、墓標の有無に関係なく通さない（削除の後に遅れて届いた戻しの送信）
+    if (body.record.revive === true && tok && dead.indexOf(tok) >= 0) return json_({ ok: true, id: String(body.record.id), rows: 0, stale: 'deleted' });
+    if (tomb && !(body.record.revive === true && tok)) return json_({ ok: true, id: String(body.record.id), rows: 0, stale: 'deleted' });
+    if (ver && have && !tomb && have > ver) return json_({ ok: true, id: String(body.record.id), rows: 0, stale: true, sheetVer: have });
     const n = writeRecord_(body.record);
-    return json_({ ok: true, id: String(body.record.id), rows: n });
+    if (rid) { if (ver) props.setProperty(VER_KEY + rid, ver); else props.deleteProperty(VER_KEY + rid); }
+    if (rid && body.record.revive === true && tok) props.setProperty(REV_KEY + rid, tok + '|' + String(body.record.rvAt || ''));   // 戻した合図を控える（これより前に出された削除を見分ける）   // 版の無い送信でも墓標は外す（書いた行と印を食い違わせない）
+    let dups = [];
+    try { dups = findDups_(body.record); } catch (err) { /* 重複の確認に失敗しても書き込みは成功 */ }
+    return json_({ ok: true, id: String(body.record.id), rows: n, dups: dups });
   } catch (err) {
     return json_({ ok: false, error: String(err && err.message || err) });
   } finally {
@@ -423,7 +460,8 @@ function summaryFormulas_(ss) {
       ? 'XLOOKUP(TRUE,ARRAYFORMULA(ISNUMBER(FIND("、"&n&"、","、"&REGEXREPLACE(' + R(c.alias) + '&"","\\s*[、,，/／;；\\n]\\s*","、")&"、"))),' + R(c.farm) + ',e)'
       : 'e';
     // 同じ名前が2農場にいる時に先の行の農場を返さないよう、まず 名前＋記録時の農場 で引く → 名前だけ → 旧名 → 記録時の農場
-    farm = 'XLOOKUP(1,(' + R(c.name) + '=n)*(' + R(c.farm) + '=e),' + R(c.farm) + ',XLOOKUP(n,' + R(c.name) + ',' + R(c.farm) + ',' + alias + '))';
+    // LAMBDA の中では (範囲=n)*(範囲=e) が配列として評価されず全行 #N/A になる（10-06 実シートで確認）→ 配列に強い FILTER で引き、無ければ従来の引き方
+    farm = 'IFERROR(INDEX(FILTER(' + R(c.farm) + ',' + R(c.name) + '=n,' + R(c.farm) + '=e),1),XLOOKUP(n,' + R(c.name) + ',' + R(c.farm) + ',' + alias + '))';
   }
   out.farm = '=MAP(D3:D,E3:E,LAMBDA(n,e,IF(n="",,' + farm + ')))';
   out.use = '=MAP(A3:A,LAMBDA(id,IF(id="",,IF(COUNTIF(O3:O,"*"&id&"*"),"やり直し前","採用"))))';
@@ -452,6 +490,29 @@ function buildSummary_(create) {
   return 'summary OK: ' + f.tabs.length + ' tabs';
 }
 
+/* 同じ人（被評価者＋農場）・同じ作業を、別の記録（やり直しの関係にない）が採点していれば、その作業名を返す（別の端末の二重採点の検知） */
+function findDups_(rec) {
+  const id = cleanId_(rec.id), redo = cleanIds_(rec.redoOf).split(' ').filter(Boolean);
+  const ss = SpreadsheetApp.getActive(), ids = evalTabIds_(ss);
+  const works = {}; (Array.isArray(rec.works) ? rec.works : []).forEach(w => { works[String(w.workName || '')] = 1; });
+  // 名前・農場はアプリと同じそろえ方（全角空白・連続空白・全角半角）。日付は前後14日以内だけ（前回の試験・練習の記録で誤って警告しない）
+  const nk = v => String(v == null ? '' : v).normalize('NFC').replace(/[\s\u3000]+/g, ' ').trim(), nf = v => String(v || '').normalize('NFKC').replace(/\s+/g, '');
+  const dn = v => { const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(v instanceof Date ? Utilities.formatDate(v, 'Asia/Tokyo', 'yyyy-MM-dd') : String(v || '')); return m ? Date.UTC(+m[1], +m[2] - 1, +m[3]) / 864e5 : NaN; };
+  const ee = nk(rec.evaluatee), farm = nf(rec.farm), d0 = dn(rec.date), out = {}, redoneBy = {};
+  const rows = [];
+  ss.getSheets().forEach(sh => {
+    if (ids.indexOf(String(sh.getSheetId())) < 0 || sh.getLastRow() < 2) return;
+    sh.getRange(2, 1, sh.getLastRow() - 1, HEAD.length).getValues().forEach(r => rows.push(r));
+  });
+  rows.forEach(r => String(r[14] || '').split(/\s+/).filter(Boolean).forEach(x => { redoneBy[x] = 1; }));   // やり直しで置き換わった記録は数えない
+  rows.forEach(r => {
+    const rid = String(r[0]);
+    if (rid === id || redo.indexOf(rid) >= 0 || redoneBy[rid] || redoneBy[id]) return;
+    const dd = dn(r[1]);
+    if (nk(r[3]) === ee && nf(r[4]) === farm && works[String(r[6])] && !(Math.abs(dd - d0) > 14)) out[String(r[6])] = 1;
+  });
+  return Object.keys(out);
+}
 /* 削除・上書きで消える行の控え（日時・理由・元のタブ＋元の15列）。タブが無ければ作る */
 function delLog_(ss, rows) {
   let sh = ss.getSheetByName(DELLOG_SHEET);
@@ -461,6 +522,39 @@ function delLog_(ss, rows) {
     sh.setFrozenRows(1);
   }
   sh.getRange(sh.getLastRow() + 1, 1, rows.length, HEAD.length + 3).setValues(rows);
+}
+/* 集計タブの検算（読むだけ）: 式の結果（P=今の農場・Q=採否）を、同じ規則で GAS 側でも計算して突き合わせる。
+   返すのは件数と食い違いの行番号だけ（名前・点数は返さない） */
+function checkSummary_() {
+  const ss = SpreadsheetApp.getActive(), sh = ss.getSheetByName(SUMMARY_SHEET);
+  if (!sh) return { summary: 'none' };
+  const n = Math.max(0, sh.getLastRow() - 2), W = HEAD.length + 2;
+  const v = n ? sh.getRange(3, 1, n, W).getDisplayValues() : [];
+  const rs = ss.getSheetByName(ROSTER_SHEET), c = rs ? rosterCols_(rs) : null;
+  const ro = rs && rs.getLastRow() > 1 ? rs.getRange(2, 1, rs.getLastRow() - 1, rs.getLastColumn()).getDisplayValues() : [];
+  const redo = {};
+  v.forEach(r => String(r[14] || '').split(/\s+/).filter(Boolean).forEach(id => { redo[id] = 1; }));
+  const want = r => {
+    const n0 = r[3], e = r[4];
+    if (!c || c.farm < 0) return e;
+    let hit = ro.find(x => x[c.name] === n0 && x[c.farm] === e); if (hit) return hit[c.farm];
+    hit = ro.find(x => x[c.name] === n0); if (hit) return hit[c.farm];
+    if (c.alias >= 0) { hit = ro.find(x => ('、' + String(x[c.alias] || '').replace(/\s*[、,，\/／;；\n]\s*/g, '、') + '、').indexOf('、' + n0 + '、') >= 0); if (hit) return hit[c.farm]; }
+    return e;
+  };
+  const errs = [], farmBad = [], useBad = [];
+  let use = 0, before = 0;
+  v.forEach((r, i) => {
+    if (r.some(x => /^#(N\/A|REF|VALUE|NAME|ERROR|DIV)/.test(String(x)))) errs.push(i + 3);
+    if (!r[0]) return;
+    if (r[HEAD.length] !== want(r)) farmBad.push(i + 3);
+    const u = redo[r[0]] ? 'やり直し前' : '採用';
+    if (r[HEAD.length + 1] !== u) useBad.push(i + 3);
+    if (u === '採用') use++; else before++;
+  });
+  return { rows: v.filter(r => r[0]).length, adopted: use, beforeRedo: before, errorRows: errs.slice(0, 20), farmMismatch: farmBad.slice(0, 20), useMismatch: useBad.slice(0, 20),
+    errorSample: errs.length ? (() => { const r = v[errs[0] - 3]; const j = r.findIndex(x => /^#/.test(String(x))); return { col: j + 1, value: r[j], note: String(sh.getRange(errs[0], j + 1).getNote() || '') }; })() : null,
+    formulaFarm: n ? String(sh.getRange(3, HEAD.length + 1).getFormula()) : '' };
 }
 function json_(o) {
   return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON);

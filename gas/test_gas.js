@@ -32,7 +32,7 @@ global.SpreadsheetApp = { getActive: () => ss, newDataValidation: () => {
   return { requireValueInRange(rg) { v.range = rg; return this; }, setAllowInvalid(b) { v.allowInvalid = b; return this; }, build() { return v; } };
 } };
 const docProps = {};
-global.PropertiesService = { getDocumentProperties: () => ({ getProperty: k => (k in docProps ? docProps[k] : null), setProperty(k, v) { docProps[k] = String(v); return this; } }) };
+global.PropertiesService = { getDocumentProperties: () => ({ getProperty: k => (k in docProps ? docProps[k] : null), setProperty(k, v) { docProps[k] = String(v); return this; }, deleteProperty(k) { delete docProps[k]; return this; } }) };
 /* Sheets の「複製」＝中身も見出しも同じで sheetId だけ新しいタブ */
 const dupSheet = (from, to) => { const s2 = ss.insertSheet(to); sheets[from].d.forEach((row, i) => { s2.d[i] = row.slice(); }); return s2; };
 global.LockService = { getScriptLock: () => ({ tryLock: () => true, releaseLock() {} }) };
@@ -228,7 +228,7 @@ ok('Z20-3 通常の記録の やり直し元 は空', shC.d.filter(x => x[0] ===
   sheets['受験者'].getRange(1, 1, 3, 4).setValues([['農場', '被評価者', '作業1', '旧名'], ['テスト東', 'テスト Hoang Nam', '給餌', 'テスト Hoang Nam旧、テスト 旧名'], ['テスト西', 'テスト Nam', '給餌', '']]);
   post(APP.submitReq({ ...appRec, id: 'nw-1', evaluator: "テスト 新人's" }));   // 当日、新しい評価者が加わった
   ok('Z20-2 新しい評価者タブは自動で式に足す（タブ名の \' は二重に）', fData().includes("'テスト 新人''s'!A2:O") && fData().includes("'テスト評価者'!A2:O"));
-  ok('Z20-2 今の農場=名前＋記録時の農場→名前→旧名は「、」区切りの完全一致（部分一致しない）', /^=MAP\(D3:D,E3:E,LAMBDA\(n,e,IF\(n="",,XLOOKUP\(1,\('受験者'!\$B\$2:\$B=n\)\*\('受験者'!\$A\$2:\$A=e\),'受験者'!\$A\$2:\$A,XLOOKUP\(n,'受験者'!\$B\$2:\$B,'受験者'!\$A\$2:\$A,XLOOKUP\(TRUE,ARRAYFORMULA\(ISNUMBER\(FIND\("、"&n&"、"/.test(fFarm()) && fFarm().includes("REGEXREPLACE('受験者'!$D$2:$D&\"\"") && !/"\*"&/.test(fFarm()));
+  ok('Z20-2 今の農場=名前＋記録時の農場→名前→旧名は「、」区切りの完全一致（部分一致しない）', /^=MAP\(D3:D,E3:E,LAMBDA\(n,e,IF\(n="",,IFERROR\(INDEX\(FILTER\('受験者'!\$A\$2:\$A,'受験者'!\$B\$2:\$B=n,'受験者'!\$A\$2:\$A=e\),1\),XLOOKUP\(n,'受験者'!\$B\$2:\$B,'受験者'!\$A\$2:\$A,XLOOKUP\(TRUE,ARRAYFORMULA\(ISNUMBER\(FIND\("、"&n&"、"/.test(fFarm()) && fFarm().includes("REGEXREPLACE('受験者'!$D$2:$D&\"\"") && !/"\*"&/.test(fFarm()));
   ok('Z20-2 採否=やり直し元に書かれた記録IDの行は「やり直し前」', fUse().includes('COUNTIF(O3:O,"*"&id&"*")') && fUse().includes('やり直し前') && fUse().includes('採用'));
   const cols0 = sheets['受験者'].d[0].slice();
   sheets['受験者'].d[0] = ['メモ', ...cols0]; sheets['受験者'].d.slice(1).forEach(x => x.unshift(''));   // 列を1つずらす（並べ替えても読める）
@@ -265,6 +265,9 @@ ok('シード無し: 農場一覧=受験者タブの農場＋所属未確定（�
   ok('admin: 共通行の作業は作業列へ（列が足りない分は入れない）', rows[0][0] === 'テスト東' && rows[0][wc[0]] === '給餌' && (wc.length > 1 ? rows[0][wc[1]] === '消毒' : !rows[0].includes('消毒')));
   const r2 = adm(TOK);
   ok('admin: 2回目は追記しない（既存の共通行を尊重）', r2.ok && r2.commonAdded.length === 0 && sheets['受験者'].d.length === n0 + 3);
+  const n1 = sheets['受験者'].d.length, chk = JSON.parse(G4.doGet({ parameter: { action: 'admin', token: TOK, op: 'check' } }).s);
+  ok('admin op=check: 読むだけ（受験者タブを変えない）で検算の形を返す', chk.ok && chk.check && sheets['受験者'].d.length === n1 && (chk.check.summary === 'none' || typeof chk.check.rows === 'number'));
+  ok('admin op=check: 合言葉違いは拒否', JSON.parse(G4.doGet({ parameter: { action: 'admin', token: 'x', op: 'check' } }).s).error === 'forbidden');
   ok('admin: 人の行は変えない', sheets['受験者'].d.slice(1, n0).every(x => x[1] !== '（農場共通）'));
 }
 // 2026-10-06a: 合言葉（APP_TOKEN）・削除ログ・空欄を0点にしない
@@ -295,6 +298,46 @@ ok('シード無し: 農場一覧=受験者タブの農場＋所属未確定（�
   post6({ action: 'submit', record: pl, k: AT });
   const rr = sheets['テスト評価者'].d.filter(r => r[0] === 'nul-1'), sc = pl.works[0].items.slice(2).map(i => i.score);
   const ex = Math.round(sc.reduce((a, b) => a + b, 0) / sc.length * 100) / 100;
+  // 版: 新しい版がシートにあれば古い版で上書きしない
+  const v1 = { action: 'submit', k: AT, record: { ...APP.toPayload({ ...appRec, id: 'ver-1' }), ver: '2026-10-06T10:00:00Z' } };
+  const v2 = JSON.parse(JSON.stringify(v1)); v2.record.ver = '2026-10-06T11:00:00Z'; v2.record.works[0].items[0].score = 5;
+  post6(v2);
+  const rs = post6(v1);   // 古いバックアップの版が後から届く
+  ok('ver: 古い版は上書きせず stale を返す（シートは新しい版のまま）', rs.ok && rs.stale === true && sheets['テスト評価者'].d.find(r => r[0] === 'ver-1' && r[7] === v2.record.works[0].items[0].aspect)[8] === 5);
+  ok('ver: 版の無い（前の版のアプリの）送信は従来どおり書く', post6({ action: 'submit', k: AT, record: APP.toPayload({ ...appRec, id: 'ver-2' }) }).rows > 0);
+  post6({ action: 'delete', id: 'ver-1', k: AT });
+  ok('ver: 削除すると墓標が残り、遅れて届いた同じ記録の送信で行を生き返らせない', docProps['v:ver-1'] === '~del' && post6(v2).stale === 'deleted' && !sheets['テスト評価者'].d.some(r => r[0] === 'ver-1'));
+  // 二重採点の検知: 別の記録が同じ人・同じ作業
+  const d1 = post6({ action: 'submit', k: AT, record: { ...APP.toPayload({ ...appRec, id: 'dup-a' }), ver: 'a' } });
+  const d2 = post6({ action: 'submit', k: AT, record: { ...APP.toPayload({ ...appRec, id: 'dup-b' }), ver: 'b' } });
+  const d3 = post6({ action: 'submit', k: AT, record: { ...APP.toPayload({ ...appRec, id: 'dup-c', redoOf: 'dup-a dup-b ver-2 nul-1 dl-name' }), ver: 'c' } });
+  ok('dups: 別の記録が同じ人・同じ作業 → 作業名を返す（やり直しは数えない）', d1.dups.length === 1 && d2.dups.includes(appRec.works[0].workName) && d3.dups.length === 0);
+  const far = post6({ action: 'submit', k: AT, record: { ...APP.toPayload({ ...appRec, id: 'dup-far', date: '2026-07-01' }), ver: 'f' } });
+  ok('dups: 前後14日より離れた日の記録（前回の試験・練習）は二重採点にしない', far.dups.length === 0);
+  const sp = post6({ action: 'submit', k: AT, record: { ...APP.toPayload({ ...appRec, id: 'dup-sp', evaluatee: appRec.evaluatee.replace(' ', '\u3000'), farm: appRec.farm + ' ' }), ver: 'g' } });
+  ok('dups: 全角空白・末尾の空白のゆれでも同じ人として検知', sp.dups.length === 1);
+  const rv = JSON.parse(JSON.stringify(v2)); rv.record.revive = true; rv.record.rv = '2026-10-06T12:00:00Z';
+  const rvr = post6(rv);
+  ok('revive: 削除より後に戻した記録（revive＋rv）は書き戻し、墓標を外す', rvr.rows > 0 && !rvr.stale && !/^~del/.test(docProps['v:ver-1'] || '') && sheets['テスト評価者'].d.some(r => r[0] === 'ver-1'));
+  // 戻した直後に削除 → 戻しの送信が遅れて届いても生き返らない（削除が rv を持つ）
+  post6({ action: 'delete', id: 'ver-1', k: AT, rv: rv.record.rv });
+  ok('revive: 戻しの送信が削除の後に遅れて届いても生き返らない', post6(rv).stale === 'deleted' && !sheets['テスト評価者'].d.some(r => r[0] === 'ver-1'));
+  const rv2 = JSON.parse(JSON.stringify(rv)); rv2.record.rv = '2026-10-06T13:00:00Z';
+  ok('revive: その後にもう一度戻した（新しい rv）時は書き戻す', post6(rv2).rows > 0);
+  post6({ action: 'delete', id: 'ver-1', k: AT, rv: rv2.record.rv });
+  post6({ action: 'delete', id: 'ver-1', k: AT });   // 古い削除（合図なし）が後から届く
+  ok('revive: 合図は消えない（古い削除が後から届いても、殺した合図の戻しは通さない）', post6(rv2).stale === 'deleted' && post6(rv).stale === 'deleted' && docProps['d:ver-1'].split(',').length >= 2);
+  const rv3 = JSON.parse(JSON.stringify(rv)); rv3.record.rv = 'tok-new-1'; rv3.record.rvAt = '2026-10-06T14:00:00Z';
+  ok('revive: 時刻でなく合図で判定（新しい合図は、端末の時計に関係なく通る）', post6(rv3).rows > 0);
+  const sd = post6({ action: 'delete', id: 'ver-1', k: AT, at: '2026-10-06T13:59:00Z' });   // 戻すより前に出された削除（合図なし）が、戻した後に遅れて届く
+  ok('revive: 戻すより前に出された削除が遅れて届いても、戻した行を消さない', sd.staleDelete === true && sd.deleted === 0 && sheets['テスト評価者'].d.some(r => r[0] === 'ver-1'));
+  const od = post6({ action: 'delete', id: 'ver-1', k: AT, at: '2026-10-06T15:00:00Z' });   // 戻した後に、合図を知らない別の端末が削除
+  ok('revive: 戻した後に出された削除は、合図が無くても（別の端末でも）消す', od.deleted > 0 && !od.staleDelete && !sheets['テスト評価者'].d.some(r => r[0] === 'ver-1'));
+  const rv4 = JSON.parse(JSON.stringify(rv3)); rv4.record.rv = 'tok-new-2'; rv4.record.rvAt = '2026-10-06T16:00:00Z'; post6(rv4);
+  ok('revive: 戻した合図を持つ削除は消す', post6({ action: 'delete', id: 'ver-1', k: AT, rv: 'tok-new-2', at: '2026-10-06T16:30:00Z' }).deleted > 0 && !sheets['テスト評価者'].d.some(r => r[0] === 'ver-1'));
+  const nv = JSON.parse(JSON.stringify(rv2)); nv.record.ver = ''; nv.record.id = 'nover-1';
+  post6({ action: 'delete', id: 'nover-1', k: AT }); post6(nv);
+  ok('revive: 版の無い送信でも、書いたら墓標を外す（以後の編集が黙って捨てられない）', !('v:nover-1' in docProps));
   ok('avg: 空欄（null/空文字）を0点として平均に入れない', rr[0][8] === '' && rr[1][8] === '' && rr[0][10] === ex);
 }
 console.log(`\n合計: OK ${pass} / NG ${fail}`); process.exit(fail ? 1 : 0);

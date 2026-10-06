@@ -30,7 +30,7 @@
   <!-- 言語切替: 今の言語だけを出す1ボタン → 押すと4言語のメニュー（採点の途中では変えないので幅を取らせない） -->
   <div class="lsw">
     <button type="button" id="lswBtn" class="lsw-btn" onclick="toggleLangMenu()" aria-expanded="false" aria-controls="lswMenu" aria-label="Language: 日本語"><span id="lswCur">JP</span><span class="lsw-car" aria-hidden="true">▾</span></button>
-    <div id="lswMenu" class="lsw-menu" role="group" aria-label="Language" hidden>
+    <div id="lswMenu" class="lsw-menu" role="group" aria-label="Language" data-aria="ariaLang" hidden>
       <button type="button" class="on" onclick="setLang('ja')" aria-pressed="true" lang="ja" data-code="JP">JP<span class="lsw-nm">日本語</span></button>
       <button type="button" onclick="setLang('en')" aria-pressed="false" lang="en" data-code="EN">EN<span class="lsw-nm">English</span></button>
       <button type="button" onclick="setLang('vi')" aria-pressed="false" lang="vi" data-code="VI">VI<span class="lsw-nm">Tiếng Việt</span></button>
@@ -80,11 +80,11 @@
       <h3 data-t="labelEvaluatee">被評価者名</h3>
       <button class="b b3 b-slim" onclick="reloadRoster()" data-t="btnReload">名簿を更新</button>
     </div>
-    <div class="efarms-wrap"><div id="eeFarms" class="efarms" role="group" aria-label="Farm"></div><span class="efarms-more" id="eeFarmsMore" aria-hidden="true" hidden>›</span></div>
+    <div class="efarms-wrap"><div id="eeFarms" class="efarms" role="group" aria-label="Farm" data-aria="ariaFarm"></div><span class="efarms-more" id="eeFarmsMore" aria-hidden="true" hidden>›</span></div>
     <div id="eeFindBox" class="ee-find" hidden>
-      <input type="search" id="eeFind" data-ph="eeFindPh" placeholder="名前で探す" aria-label="Search" autocomplete="off" enterkeyhint="search">
+      <input type="search" id="eeFind" data-ph="eeFindPh" placeholder="名前で探す" aria-label="Search" data-aria="ariaSearch" autocomplete="off" enterkeyhint="search">
     </div>
-    <div id="eeTabs" class="eetabs" role="group" aria-label="Evaluatee"></div>
+    <div id="eeTabs" class="eetabs" role="group" aria-label="Evaluatee" data-aria="ariaEe"></div>
     <p id="eeNote" class="wsel-hint" aria-live="polite" hidden></p>
     <p id="eeWarn" class="eewarn" role="status" hidden></p>
     <button type="button" id="eeAdd" class="b b3 b-slim ee-add" onclick="openManualEe()" data-t="eeAddManual" hidden>＋ 名簿にない人を入力</button>
@@ -117,7 +117,7 @@
 
   <div class="cd oasec">
     <h3 id="fOvLbl" data-t="overall">全体所感</h3>
-    <textarea id="fOv" class="oata" rows="4" data-ph="phOv" aria-labelledby="fOvLbl" placeholder="全体的な評価や今後の期待などを記入..."></textarea>
+    <textarea id="fOv" class="oata" rows="4" maxlength="4000" data-ph="phOv" aria-labelledby="fOvLbl" placeholder="全体的な評価や今後の期待などを記入..."></textarea>
   </div>
   <!-- 保存は全幅。リセット（全採点が消える）は離して小さく＝手袋での誤タップを防ぐ -->
   <div class="bg bg-save">
@@ -189,7 +189,7 @@
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <!-- タブ -->
-<nav class="tabs" aria-label="Main">
+<nav class="tabs" aria-label="Main" data-aria="ariaMain">
   <button class="on" data-pg="pgIn" onclick="swTab(this)">
     <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zM14 3.5L18.5 8H14V3.5zM6 20V4h6v6h6v10H6z"/><path d="M8 13h8v1.5H8zM8 16h5v1.5H8z"/></svg>
     <span data-t="tabIn">入力</span>

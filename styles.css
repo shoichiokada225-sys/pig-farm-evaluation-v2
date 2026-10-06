@@ -94,7 +94,7 @@ button{touch-action:manipulation}
   transition:background .15s;
 }
 .lsw-btn:hover,.lsw-btn[aria-expanded="true"]{background:rgba(255,255,255,.16)}
-.lsw-car{font-size:.7rem;opacity:.85}
+.lsw-car{font-size:.75rem;opacity:.85}
 .lsw-menu{
   position:absolute;right:0;top:calc(100% + 6px);z-index:120;min-width:196px;
   display:flex;flex-direction:column;gap:2px;padding:4px;
@@ -173,7 +173,7 @@ button{touch-action:manipulation}
   border-bottom:2px solid var(--pri);
 }
 .stit::before{content:"";width:5px;height:1.05em;border-radius:3px;background:linear-gradient(180deg,var(--pri),var(--pri-d));align-self:center;flex-shrink:0}
-.stit .stit-sub{font-size:.72rem;color:var(--sub);font-weight:600;margin-left:4px}
+.stit .stit-sub{font-size:.75rem;color:var(--sub);font-weight:600;margin-left:4px}
 
 /* ---------- 6. メタ入力・所感 ---------- */
 .meta label{display:block;font-size:.85rem;font-weight:700;color:var(--sub);margin-bottom:5px}
@@ -200,7 +200,7 @@ button{touch-action:manipulation}
 /* ---------- 7. 評価カード・採点 ---------- */
 .ec{border-left:4px solid var(--bdr-strong);transition:border-color .3s,box-shadow .3s}
 .ec.scored{border-left-color:var(--pri)}
-.ec .en{font-size:.72rem;font-weight:700;color:var(--pri);letter-spacing:.1em;font-variant-numeric:tabular-nums}
+.ec .en{font-size:.75rem;font-weight:700;color:var(--pri);letter-spacing:.1em;font-variant-numeric:tabular-nums}
 .ec .enm{font-size:1.04rem;font-weight:700;margin:4px 0;line-height:1.45}
 .ec .ed{font-size:.82rem;color:var(--sub);margin-bottom:12px;line-height:1.55}
 
@@ -460,7 +460,7 @@ body.mo-open{overflow:hidden}
 }
 .tabs button{
   flex:1;min-height:58px;padding:9px 2px 7px;border:none;background:0;
-  font-size:.7rem;font-weight:600;font-family:inherit;color:var(--sub);cursor:pointer;
+  font-size:.75rem;font-weight:600;font-family:inherit;color:var(--sub);cursor:pointer;
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
   transition:color .15s;position:relative;
 }
@@ -484,7 +484,7 @@ body.mo-open{overflow:hidden}
 @media(min-width:640px){
   .pg{padding:24px}
   .sb{min-height:62px;font-size:1.25rem}
-  .sb .sl{font-size:.72rem}
+  .sb .sl{font-size:.75rem}
   .hdr h1{font-size:1.12rem}
   .hdr{padding:12px 24px}
 }

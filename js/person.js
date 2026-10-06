@@ -9,7 +9,7 @@
    ・名簿にいない名前（名簿外・名簿の無い端末）→ 農場＋名前（同名異人を合算しない）
    ・農場が空の記録は、名簿でその名前が0人か1人で、同じ名前の記録の農場が1つだけならその農場とみなす（農場列ができる前の記録）
      名簿に同名が2人以上なら推定しない（片方の農場の記録しか無くても、もう片方の人の旧記録かもしれない） */
-function nmKey(v){return String(v==null?'':v).normalize('NFC').trim()}
+function nmKey(v){return String(v==null?'':v).normalize('NFC').replace(/[\s\u3000]+/g,' ').trim()}   // 全角空白・連続空白も1つの半角空白に（「テスト　一郎」＝「テスト 一郎」）
 function normFarm(v){return String(v||'').normalize('NFKC').replace(/\s+/g,'')}
 
 /* 名簿の 名前/旧名 → その名前を持つ人の配列（名簿の配列ごとにキャッシュ） */

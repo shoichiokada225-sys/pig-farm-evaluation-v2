@@ -32,7 +32,7 @@ chLine:'Avg Trend',chRadar:'Radar by aspect (Latest)',chNone:'No data',chAvg:'Av
 tSaved:'Saved',tUpdated:'Updated',tReset:'Reset',tDel:'Deleted',tCSV:'CSV downloaded',
 eNm:'Enter names',eDt:'Enter date',eSc:'Unscored aspects',eCSV:'No data',eEditGone:'The record being edited no longer exists',eNoWork:'Select at least one task',
 cReset:'Clear all?',cDel:'Delete?',cCEdit:'Discard?',
-s5:'Exemplary',s4:'Above',s3:'Standard',s2:'Improve',s1:'Needs help',
+s5:'Model',s4:'Above',s3:'Standard',s2:'Improve',s1:'Needs help',
 barnLbl:'Barn',showCrit:'View criteria',hideCrit:'Hide criteria',kantenLbl:'Assessment focus',progDone:'Scored',prevLbl:'Prev.',
 selWorksTitle:'Select tasks to evaluate',selWorksHint:'You can select multiple tasks. The 5 assessment aspects of each selected task appear below.',btnClearSel:'Clear selection',selCnt:'selected',
 workNameCol:'Task',catCol:'Category',worksCol:'Tasks',
@@ -72,7 +72,7 @@ chLine:'Tren Rata-rata',chRadar:'Radar per aspek',chNone:'Tidak ada',chAvg:'Rata
 tSaved:'Tersimpan',tUpdated:'Diperbarui',tReset:'Direset',tDel:'Dihapus',tCSV:'Diunduh',
 eNm:'Masukkan nama',eDt:'Masukkan tanggal',eSc:'Belum dinilai',eCSV:'Tidak ada',eEditGone:'Data yang sedang diedit tidak ditemukan',eNoWork:'Pilih minimal satu tugas',
 cReset:'Hapus semua?',cDel:'Hapus?',cCEdit:'Buang?',
-s5:'Teladan',s4:'Baik',s3:'Standar',s2:'Perbaikan',s1:'Dibimbing',
+s5:'Teladan',s4:'Baik',s3:'Standar',s2:'Kurang',s1:'Dibina',
 barnLbl:'Kandang',showCrit:'Lihat kriteria',hideCrit:'Tutup kriteria',kantenLbl:'Fokus penilaian',progDone:'Dinilai',prevLbl:'Sebelumnya',
 selWorksTitle:'Pilih tugas untuk dinilai',selWorksHint:'Anda dapat memilih beberapa tugas. 5 aspek penilaian dari setiap tugas terpilih muncul di bawah.',btnClearSel:'Hapus semua pilihan',selCnt:'dipilih',
 workNameCol:'Tugas',catCol:'Kategori',worksCol:'Jumlah tugas',
@@ -178,3 +178,59 @@ Object.assign(TX.ja,{eFuture:'評価日が未来になっています。日付�
 Object.assign(TX.en,{eFuture:'The evaluation date is in the future. Please fix the date'});
 Object.assign(TX.vi,{eFuture:'Ngày đánh giá đang ở tương lai. Hãy sửa lại ngày'});
 Object.assign(TX.id,{eFuture:'Tanggal penilaian ada di masa depan. Perbaiki tanggalnya'});
+Object.assign(TX.ja,{cLeaveEdit2:'編集をやめて、この人に切り替えますか？\n（編集の修正と、編集前に採点途中だった {n} さんの採点は破棄されます）'});
+Object.assign(TX.en,{cLeaveEdit2:'Stop editing and switch to this person?\n(The edit and the unsaved scores for {n} will be discarded)'});
+Object.assign(TX.vi,{cLeaveEdit2:'Dừng sửa và chuyển sang người này?\n(Phần sửa và điểm chưa lưu của {n} sẽ bị bỏ)'});
+Object.assign(TX.id,{cLeaveEdit2:'Berhenti mengubah dan pindah ke orang ini?\n(Perubahan dan nilai {n} yang belum disimpan akan dibuang)'});
+Object.assign(TX.ja,{wDup:'⚠ 別の端末でも採点されています（二重採点）: {x}。集計で確認し、不要な方を削除してください',wStale:'シートにもっと新しい内容があるため、上書きしませんでした: {x}',wExamStart:'前日以前のシートの記録は数えていません。2日以上に分けた試験は、設定で試験開始日を入れてください'});
+Object.assign(TX.en,{wDup:'⚠ Also scored on another device (double scoring): {x}. Check the summary and delete the extra one',wStale:'The sheet has newer content, so it was not overwritten: {x}',wExamStart:'Sheet records from earlier days are not counted. For exams over several days, set the exam start date in Settings'});
+Object.assign(TX.vi,{wDup:'⚠ Đã được chấm ở máy khác (chấm trùng): {x}. Hãy kiểm tra bảng tổng hợp và xóa bản thừa',wStale:'Bảng tính có nội dung mới hơn nên không ghi đè: {x}',wExamStart:'Chưa tính các bản ghi của những ngày trước trên bảng tính. Nếu thi nhiều ngày, hãy đặt ngày bắt đầu thi trong Cài đặt'});
+Object.assign(TX.id,{wDup:'⚠ Juga dinilai di perangkat lain (penilaian ganda): {x}. Periksa rekap lalu hapus yang berlebih',wStale:'Spreadsheet berisi data yang lebih baru, jadi tidak ditimpa: {x}',wExamStart:'Data spreadsheet dari hari-hari sebelumnya tidak dihitung. Untuk ujian beberapa hari, atur tanggal mulai ujian di Pengaturan'});
+/* 2026-10-06 第3回監査（画面） */
+Object.assign(TX.ja,{tSkipped:'「{w}」を外しました（あとで残りとして出ます）',cDelSheet:'{n}さん（{d}）の評価を削除しますか？\nスプレッドシートの行も削除します（圏外なら、つながった時に）',
+  ariaFarm:'農場',ariaSearch:'名前で探す',ariaEe:'被評価者',ariaMain:'メニュー',ariaLang:'言語'});
+Object.assign(TX.en,{tSkipped:'Skipped "{w}" (it stays as a remaining task)',tSavedPart:'Saved ({n} tasks left)',tSavedPart1:'Saved (1 task left)',leftWorks1:'1 task left',
+  cDelSheet:'Delete the evaluation of {n} ({d})?\nThe rows in the spreadsheet will also be deleted (once connected, if there is no signal)',
+  eeNoRoster:'No names in the sheet tab "受験者" (Examinees)',ariaFarm:'Farm',ariaSearch:'Search by name',ariaEe:'Evaluatee',ariaMain:'Menu',ariaLang:'Language'});
+Object.assign(TX.vi,{tSkipped:'Đã bỏ "{w}" (vẫn còn là việc còn lại)',
+  cDelSheet:'Xóa đánh giá của {n} ({d})?\nCác dòng trong bảng tính cũng sẽ bị xóa (khi có kết nối nếu đang mất sóng)',
+  eeNoRoster:'Chưa có danh sách trong tab "受験者" (Người dự thi)',ariaFarm:'Trại',ariaSearch:'Tìm theo tên',ariaEe:'Người được đánh giá',ariaMain:'Menu',ariaLang:'Ngôn ngữ'});
+Object.assign(TX.id,{tSkipped:'"{w}" dilewati (tetap sebagai tugas tersisa)',
+  cDelSheet:'Hapus penilaian {n} ({d})?\nBaris di spreadsheet juga akan dihapus (saat tersambung jika tidak ada sinyal)',
+  eeNoRoster:'Belum ada daftar di tab "受験者" (Peserta ujian)',ariaFarm:'Peternakan',ariaSearch:'Cari nama',ariaEe:'Yang dinilai',ariaMain:'Menu',ariaLang:'Bahasa'});
+/* en だけ単数形（n===1）。キーに …1 があれば使う */
+function tN(k,n){return String(lang==='en'&&+n===1&&TX.en[k+'1']?TX.en[k+'1']:t(k)).replace('{n}',n)}
+Object.assign(TX.ja,{wGone:'シートで削除済みの記録のため、送りませんでした: {x}'});
+Object.assign(TX.en,{wGone:'Not sent because the record was deleted on the sheet: {x}'});
+Object.assign(TX.vi,{wGone:'Không gửi vì bản ghi đã bị xóa trên bảng tính: {x}'});
+Object.assign(TX.id,{wGone:'Tidak dikirim karena catatan sudah dihapus di spreadsheet: {x}'});
+/* 単数形キーは en 用。ほかの言語もキーをそろえる（内容は通常と同じ） */
+Object.assign(TX.ja,{tSavedPart1:TX.ja.tSavedPart,leftWorks1:TX.ja.leftWorks});
+Object.assign(TX.vi,{tSavedPart1:TX.vi.tSavedPart,leftWorks1:TX.vi.leftWorks});
+Object.assign(TX.id,{tSavedPart1:TX.id.tSavedPart,leftWorks1:TX.id.leftWorks});
+/* ホーム画面追加の案内は1行（理由と手順は開いた中へ） */
+Object.assign(TX.ja,{a2hs:'⚠ ホーム画面に追加してください',a2hsSteps:'未送信の記録を守るため。iPhone：共有ボタン →「ホーム画面に追加」／Android：メニュー（⋮）→「ホーム画面に追加」'});
+Object.assign(TX.en,{a2hs:'⚠ Add to your home screen',a2hsSteps:'Protects unsent records. iPhone: Share →"Add to Home Screen" / Android: menu (⋮) →"Add to Home screen"'});
+Object.assign(TX.vi,{a2hs:'⚠ Hãy thêm vào màn hình chính',a2hsSteps:'Để bảo vệ dữ liệu chưa gửi. iPhone: nút Chia sẻ →"Thêm vào MH chính" / Android: menu (⋮) →"Thêm vào màn hình chính"'});
+Object.assign(TX.id,{a2hs:'⚠ Tambahkan ke layar utama',a2hsSteps:'Melindungi data yang belum terkirim. iPhone: Bagikan →"Tambah ke Layar Utama" / Android: menu (⋮) →"Tambahkan ke layar utama"'});
+Object.assign(TX.ja,{cRedoGone:'前回の記録に、今の作業一覧に無い作業（{w}）があります。\nやり直すと、その作業の前回の点は集計から外れます。続けますか？'});
+Object.assign(TX.en,{cRedoGone:'The earlier record has tasks that are no longer in the task list ({w}).\nIf you redo, their earlier scores leave the summary. Continue?'});
+Object.assign(TX.vi,{cRedoGone:'Bản ghi trước có công việc không còn trong danh sách ({w}).\nNếu chấm lại, điểm cũ của các việc đó sẽ không được tính. Tiếp tục?'});
+Object.assign(TX.id,{cRedoGone:'Catatan sebelumnya berisi tugas yang tidak ada lagi di daftar ({w}).\nJika dinilai ulang, nilai lamanya tidak dihitung. Lanjutkan?'});
+Object.assign(TX.ja,{goneLbl:'シートで削除済'});Object.assign(TX.en,{goneLbl:'Deleted on sheet'});Object.assign(TX.vi,{goneLbl:'Đã xóa trên bảng tính'});Object.assign(TX.id,{goneLbl:'Dihapus di spreadsheet'});
+Object.assign(TX.ja,{goneBar:'シートで削除済みの記録が {n} 件あります（履歴で確認）',cEditGone:'{n} さんのこの記録は、シートで削除されています。\n修正して保存すると、シートに戻します。続けますか？'});
+Object.assign(TX.en,{goneBar:'{n} record(s) were deleted on the sheet (check History)',cEditGone:'This record of {n} was deleted on the sheet.\nIf you edit and save it, it goes back to the sheet. Continue?'});
+Object.assign(TX.vi,{goneBar:'Có {n} bản ghi đã bị xóa trên bảng tính (xem Lịch sử)',cEditGone:'Bản ghi này của {n} đã bị xóa trên bảng tính.\nNếu sửa và lưu, bản ghi sẽ được đưa lại vào bảng tính. Tiếp tục?'});
+Object.assign(TX.id,{goneBar:'Ada {n} catatan yang dihapus di spreadsheet (lihat Riwayat)',cEditGone:'Catatan {n} ini sudah dihapus di spreadsheet.\nJika diubah dan disimpan, catatan dikembalikan ke spreadsheet. Lanjutkan?'});
+/* 同期バーは1行に収める短い文 */
+Object.assign(TX.ja,{goneBar:'シートで削除済み {n}件'});Object.assign(TX.en,{goneBar:'{n} deleted on sheet'});
+Object.assign(TX.vi,{goneBar:'{n} bản ghi đã xóa trên bảng tính'});Object.assign(TX.id,{goneBar:'{n} dihapus di spreadsheet'});
+Object.assign(TX.ja,{eExamFuture:'試験開始日に未来の日付は入れられません',cAlready:'{n} さんの「{w}」は、もう記録があります（別の画面で保存済み）。\nそれでも保存しますか？'});
+Object.assign(TX.en,{eExamFuture:'The exam start date cannot be in the future',cAlready:'{n} already has a record for "{w}" (saved on another screen).\nSave anyway?'});
+Object.assign(TX.vi,{eExamFuture:'Không thể đặt ngày bắt đầu thi ở tương lai',cAlready:'{n} đã có bản ghi cho "{w}" (đã lưu ở màn hình khác).\nVẫn lưu?'});
+Object.assign(TX.id,{eExamFuture:'Tanggal mulai ujian tidak boleh di masa depan',cAlready:'{n} sudah punya catatan untuk "{w}" (disimpan di layar lain).\nTetap simpan?'});
+/* 古い GAS の警告: 足りない機能を決めつけない */
+Object.assign(TX.ja,{eGasOld:'シート側（GAS）が古い版です（{v}）。管理者に更新を頼んでください'});
+Object.assign(TX.en,{eGasOld:'The sheet script (GAS) is an old version ({v}). Ask the administrator to update it'});
+Object.assign(TX.vi,{eGasOld:'Bảng tính (GAS) đang là phiên bản cũ ({v}). Hãy nhờ quản lý cập nhật'});
+Object.assign(TX.id,{eGasOld:'Skrip spreadsheet (GAS) versi lama ({v}). Minta admin memperbaruinya'});

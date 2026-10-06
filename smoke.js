@@ -51,7 +51,7 @@ function ok(name, cond) {
   ok('カテゴリ7つ', await page.locator('.wcat').count() === 7);
   ok('進捗 0/0', (await page.locator('#progT').textContent()).includes('0/0'));
   const dv = await page.locator('#dataVer').textContent();
-  ok('データ版数表示', /works/.test(dv));
+  ok('データ版数表示（作業数は言語の単位）', /DATA .* \/ 40 ?作業/.test(dv));
   ok('W16-2 アプリ本体の版も表示（APP jitsugi-v2-…）', /^APP jitsugi-v2-v\d+ \/ DATA /.test(dv));
   ok('W16-4 ホーム画面から開いていない → 追加の案内が出る', await page.locator('#a2hsBar').isVisible());
   ok('W16-4 保存の保護の状態を表示', /^端末の保存: /.test(await page.locator('#storeSt').textContent()));

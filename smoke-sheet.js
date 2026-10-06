@@ -557,7 +557,7 @@ async function runRel(devName) {
   dialogs.length = 0;
   await page.locator('.hi', { hasText: 'テスト 甲太' }).first().tap();
   await page.locator('#moBody .bt-danger').tap(); await page.waitForTimeout(800);
-  ok('確認文にシートの行と記録IDを出す', dialogs.length === 1 && /スプレッドシート/.test(dialogs[0]) && dialogs[0].includes(kotaId));
+  ok('確認文にシートの行（人の名前入り・記録IDは出さない＝2026-10-06）', dialogs.length === 1 && /スプレッドシート/.test(dialogs[0]) && !dialogs[0].includes(kotaId) && /テスト/.test(dialogs[0]));
   ok('シートからも消える', !(kotaId in sheet) && posts.some(p => p.action === 'delete' && p.id === kotaId));
   ok('端末からも消え、削除待ちは残らない', !(await recs()).some(r => r.id === kotaId) && await page.evaluate(() => JSON.parse(localStorage.getItem('jitsugi_v2_deletes') || '[]').length === 0));
   online = false;
@@ -634,7 +634,7 @@ async function runRel(devName) {
   ok('今の GAS（本物と同じ capabilities）なら版の警告は出ない', !(await gw.isVisible()) || !/古い版/.test(await gw.textContent()));
   gasMeta = { version: '2026-09-24b' };   // capabilities を返さない前の版
   await page.locator('.eebox .wsel-hd button').tap(); await page.waitForTimeout(600);
-  ok('古い GAS → #eeWarn に「シート側のプログラム（GAS）が古い版（2026-09-24b）・旧名・削除」', await gw.isVisible() && /古い版です（2026-09-24b）/.test(await gw.textContent()) && /旧名/.test(await gw.textContent()) && /削除/.test(await gw.textContent()));
+  ok('古い GAS → #eeWarn に「シート側（GAS）が古い版（2026-09-24b）・管理者に更新」（足りない機能は決めつけない＝2026-10-06）', await gw.isVisible() && /古い版です（2026-09-24b）/.test(await gw.textContent()) && /管理者/.test(await gw.textContent()));
   ok('名簿の取り直しのトーストでも知らせる', /古い版です/.test(await toastTx()));
   await page.reload(); await page.waitForTimeout(900);
   ok('再起動しても（キャッシュの名簿で）警告は残る', await gw.isVisible() && /古い版です/.test(await gw.textContent()));
@@ -688,7 +688,7 @@ async function runRel(devName) {
   dialogs.length = 0;
   await page.evaluate(id => doDel(id), kbId);                              // 飛行中の記録を消す
   await page.evaluate(id => doDel(id), obId);                              // まだ送っていない記録を消す
-  ok('R4b: 送信中の削除は確認文がシートの行の削除版（記録ID入り）', dialogs.length === 2 && dialogs.every(d => /スプレッドシート/.test(d)) && dialogs[0].includes(kbId) && dialogs[1].includes(obId));
+  ok('R4b: 送信中の削除は確認文がシートの行の削除版（記録IDは出さない）', dialogs.length === 2 && dialogs.every(d => /スプレッドシート/.test(d)) && !dialogs[0].includes(kbId) && !dialogs[1].includes(obId));
   await page.waitForTimeout(9000   /* 送信1＋削除2 = 2.5秒×3 */);
   ok('R4b: 送信中だった記録もシートに行が残らない', !(kbId in sheet) && posts.slice(npD).some(p => p.action === 'delete' && p.id === kbId));
   ok('R4b: 削除待ちに入った記録は後から送らない（submit 0回）', !posts.slice(npD).some(p => p.action === 'submit' && p.record.id === obId) && !(obId in sheet));
@@ -1827,7 +1827,7 @@ async function runA11y(devName) {
   ok(`2秒後も未採点の印が4枚に残る (${missIds.length})`, missIds.length === 4);
   ok('印は文字でも出る（⚠ 未採点のバッジが見える）', await page.locator('#cards .ec.miss .miss-bd').first().isVisible() && /⚠ 未採点/.test(await page.locator('#cards .ec.miss .miss-bd').first().textContent()));
   ok('未採点でないカードにはバッジが出ない', !(await page.locator(`#c-${first} .miss-bd`).isVisible()));
-  ok('枠は太い赤（3px以上）', await page.locator('#cards .ec.miss').first().evaluate(e => parseFloat(getComputedStyle(e).borderTopWidth) >= 3));
+  ok('枠は太い赤（外側に3px以上の赤い輪＝中のボタン幅は変えない）', await page.locator('#cards .ec.miss').first().evaluate(e => /0px 0px 0px 3px/.test(getComputedStyle(e).boxShadow) && /rgb\(19[0-9]|rgb\(2[0-9][0-9]/.test(getComputedStyle(e).boxShadow)));
   ok('フォーカスは1枚目の未採点カードの点数ボタン群', await page.evaluate(id => { const a = document.activeElement; return !!a && a.classList.contains('sr') && a.closest('.ec').id === id; }, missIds[0]));
   ok('点数ボタン群は種目名と「未採点」で読み上げられる', await page.evaluate(id => { const sr = document.querySelector('#' + id + ' .sr'); return document.getElementById(sr.getAttribute('aria-labelledby')).textContent.length > 0 && /未採点/.test(document.getElementById(sr.getAttribute('aria-describedby')).textContent); }, missIds[0]));
   ok('進捗の横に「未採点 4 件・次へ」', await page.locator('#missNext').isVisible() && /未採点 4 件/.test(await page.locator('#missNext').textContent()));

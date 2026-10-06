@@ -11,13 +11,13 @@ const DRAFT_KEY='jitsugi_v2_draft';
 let selWorks=[];
 try{const r=JSON.parse(localStorage.getItem(SEL_KEY));if(Array.isArray(r))selWorks=r.filter(id=>workById(id))}catch{}
 
-function saveSel(){localStorage.setItem(SEL_KEY,JSON.stringify(selWorks))}
+function saveSel(){try{localStorage.setItem(SEL_KEY,JSON.stringify(selWorks))}catch(e){}}   // 選択は画面の状態（書けなくても採点は続けられる。下書きの失敗は saveDraft が知らせる）
 function getItems(){return itemsForWorks(selWorks)}
 
 function getAll(){
   let r=null;try{r=localStorage.getItem(SKEY)}catch{return[]}
   if(!r)return[];
-  try{const o=JSON.parse(r);if(o&&Array.isArray(o.evaluations))return o.evaluations}catch{}
+  try{const o=JSON.parse(r);if(o&&Array.isArray(o.evaluations))return o.evaluations.filter(e=>e&&typeof e==='object').map(e=>({...e,works:(Array.isArray(e.works)?e.works:[]).filter(w=>w&&typeof w==='object')}))}catch{}   // null の要素・作業が配列でない記録で起動できなくならない
   // 壊れていた: 黙って空として扱わない（次の保存で上書きして消える）。元の文字列を控えへ退避し、1回だけ知らせる
   let kept=false;try{localStorage.setItem(SKEY+'_broken_'+Date.now(),r);kept=true}catch{}   // 壊れるたびに別のキーへ（前の控えを上書きしない）
   if(kept)try{localStorage.removeItem(SKEY)}catch{}   // 控えに残せた時だけ消す（残せなければ元のまま＝消さない）
@@ -51,7 +51,7 @@ function normRec(e){
     evaluator:String(e.evaluator||''),evaluatee:String(e.evaluatee||''),farm:String(e.farm||''),
     overall:e.overall==null?'':String(e.overall),
     createdAt:String(e.createdAt||''),...(e.updatedAt?{updatedAt:String(e.updatedAt)}:{}),
-    ...(e.manual===true?{manual:true}:{}),...(normRedoOf(e.redoOf)?{redoOf:normRedoOf(e.redoOf)}:{}),works,
+    ...(e.manual===true?{manual:true}:{}),...(e.revive===true?{revive:true}:{}),...(e.rv?{rv:String(e.rv),...(e.rvAt?{rvAt:String(e.rvAt)}:{})}:{}),...(e.sheetGone===true?{sheetGone:true}:{}),...(normRedoOf(e.redoOf)?{redoOf:normRedoOf(e.redoOf)}:{}),works,
     sent:e.sent===true,...(e.sent===true||e.sentOnce===true?{sentOnce:true}:{})};
 }
 /* やり直し元（記録IDの並び）: 文字列・配列どちらも受け、ID ごとにサニタイズして半角空白でつなぐ（重複・空は落とす） */
@@ -87,11 +87,13 @@ function importAll(input){
     let added=0;
     data.data.evaluations.filter(validRec).forEach(e=>{
       const r=normRec(e);
+      const gi=cur.findIndex(x=>x.id===r.id&&x.sheetGone);
+      if(gi>-1){r.sent=false;r.revive=true;r.rv=newId();r.rvAt=new Date().toISOString();cur[gi]=r;added++;return}   // シートで削除済みの記録は、復元で戻す（明示の操作）
       if(r.id&&!ids.has(r.id)){
         // 削除待ちの記録を復元した → 削除をやめて送り直す（シートと端末を一致させる）
         if(typeof getDels==='function'&&getDels().some(d=>d.id===r.id))putDels(getDels().filter(d=>d.id!==r.id));
         // 復元した記録は送り直す（シートで消された・届いていない行を戻す。記録IDで上書きなので重複しない）
-        r.sent=false;
+        r.sent=false;r.revive=true;r.rv=newId();r.rvAt=new Date().toISOString();delete r.sheetGone;   // シートで削除済みでも書き戻す（戻すのは明示の操作）。rv=この戻しの合図（削除が同じ合図を持てば遅れて届いても通さない）。revive は送れたら外す
         ids.add(r.id);cur.push(r);added++}
     });
     // バックアップの削除待ち: 端末にその記録が無いものだけ引き継ぐ
