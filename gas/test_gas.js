@@ -349,8 +349,8 @@ ok('シード無し: 農場一覧=受験者タブの農場＋所属未確定（�
     return new Function('ROSTER_SEED', code + ';return {setup,doGet,doPost};')(SEED);   // Seed.js の APP_TOKEN は無し＝プロパティだけで動く
   };
   const callG = (G, props, cache) => ({ get: p => { mk(props, cache); return JSON.parse(G.doGet({ parameter: p }).s); }, post: o => { mk(props, cache); return JSON.parse(G.doPost({ postData: { contents: JSON.stringify(o) } }).s); } });
-  const propsA = { APP_TOKEN: 'farmA-token-12345', ADMIN_TOKEN: 'farmA-admin-token-123456' }, cacheA = {};
-  const propsB = { APP_TOKEN: 'farmB-token-67890', ADMIN_TOKEN: 'farmB-admin-token-654321' }, cacheB = {};
+  const propsA = { APP_TOKEN: 'farmA-token-1234567890', ADMIN_TOKEN: 'farmA-admin-token-1234567890abcd' }, cacheA = {};
+  const propsB = { APP_TOKEN: 'farmB-token-0987654321', ADMIN_TOKEN: 'farmB-admin-token-0987654321abcd' }, cacheB = {};
   Object.keys(sheets).forEach(k => delete sheets[k]); Object.keys(docProps).forEach(k => delete docProps[k]);
   const GA = mk(propsA, cacheA); GA.setup();
   const A = callG(GA, propsA, cacheA), B = callG(GA, propsB, cacheB);   // B = 別農場の GAS（コードは同じ・プロパティとキャッシュが別）
@@ -358,10 +358,14 @@ ok('シード無し: 農場一覧=受験者タブの農場＋所属未確定（�
   ok('tenant: 別農場の合言葉では読めない・書けない', A.get({ action: 'roster', k: propsB.APP_TOKEN }).error === 'auth' && A.post({ action: 'submit', k: propsB.APP_TOKEN, record: APP.toPayload({ ...appRec, id: 'x-b' }) }).error === 'auth' && !sheets['テスト評価者']);
   ok('tenant: 別農場の管理トークンでは admin に入れない', JSON.parse(GA.doGet({ parameter: { action: 'admin', token: propsB.ADMIN_TOKEN } }).s).error === 'forbidden');
   let last; for (let i = 0; i < 40; i++) last = A.get({ action: 'roster', k: 'guess' + i });
-  ok('tenant: 合言葉の間違いが続くと拒否（総当たり対策）', last.error === 'auth');
-  ok('tenant: 制限中は正しい合言葉でも拒否・管理入口も拒否', A.get({ action: 'roster', k: propsA.APP_TOKEN }).error === 'auth' && A.post({ action: 'submit', k: propsA.APP_TOKEN, record: APP.toPayload({ ...appRec, id: 'x-a' }) }).error === 'auth' && (mk(propsA, cacheA), JSON.parse(GA.doGet({ parameter: { action: 'admin', token: propsA.ADMIN_TOKEN } }).s).error === 'forbidden'));
-  ok('tenant: 制限は農場ごと（別の GAS・別キャッシュ）で他方に及ばない', B.get({ action: 'roster', k: propsB.APP_TOKEN }).ok === true);
-  ok('tenant: ping は制限中でも版だけ返す（合言葉不要の入口は変えない）', A.get({ action: 'ping' }).ok === true);
+  ok('tenant: 間違いが続いても間違いは拒否のまま', last.error === 'auth');
+  ok('tenant: 40回間違えた後でも正しい合言葉は通る（全体ロックなし＝締め出し不可）', A.get({ action: 'roster', k: propsA.APP_TOKEN }).ok === true && A.post({ action: 'submit', k: propsA.APP_TOKEN, record: APP.toPayload({ ...appRec, id: 'x-a' }) }).ok === true && (mk(propsA, cacheA), JSON.parse(GA.doGet({ parameter: { action: 'admin', token: propsA.ADMIN_TOKEN, op: 'check' } }).s).ok === true));
+  ok('tenant: 間違いの件数は管理入口 op=check の authFails で見える', (mk(propsA, cacheA), JSON.parse(GA.doGet({ parameter: { action: 'admin', token: propsA.ADMIN_TOKEN, op: 'check' } }).s).authFails >= 40));
+  const shortP = { APP_TOKEN: 'short-12345', ADMIN_TOKEN: 'short-admin-1234567890' }, S = callG(GA, shortP, {});
+  ok('tenant: プロパティ由来の短い APP_TOKEN（16字未満）は全拒否（合言葉なしで開かない）', S.get({ action: 'roster', k: 'short-12345' }).error === 'auth' && S.get({ action: 'roster' }).error === 'auth');
+  ok('tenant: プロパティ由来の短い ADMIN_TOKEN（24字未満）は管理入口を開かない', (mk(shortP, {}), JSON.parse(GA.doGet({ parameter: { action: 'admin', token: shortP.ADMIN_TOKEN } }).s).error === 'forbidden'));
+  ok('tenant: 別農場の GAS は無関係に通る', B.get({ action: 'roster', k: propsB.APP_TOKEN }).ok === true);
+  ok('tenant: ping は合言葉なしで版だけ返す（入口は変えない）', A.get({ action: 'ping' }).ok === true);
   global.PropertiesService = origPS; delete global.CacheService;
 }
 console.log(`\n合計: OK ${pass} / NG ${fail}`); process.exit(fail ? 1 : 0);

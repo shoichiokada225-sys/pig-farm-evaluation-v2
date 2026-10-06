@@ -45,30 +45,32 @@ const VER_KEY = 'v:';
 const DEAD_KEY = 'd:';
 const REV_KEY = 'r:';    // 文書プロパティ: 記録IDごとの、最後に書き戻した（revive）合図。これと違う合図の削除は、戻す前に出された古い削除   // 文書プロパティ: 記録IDごとの、削除で殺した戻しの合図の一覧   // 文書プロパティ: 記録IDごとの版（端末の更新時刻）
 /* 合言葉の値。スクリプトプロパティ（APP_TOKEN / ADMIN_TOKEN）があればそちらが優先、無ければ Seed.js のグローバル（従来どおり）。
-   農場ごとに GAS・シートを別に作り、それぞれ別の合言葉を持つ（docs/MULTI-TENANT.md） */
+   農場ごとに GAS・シートを別に作り、それぞれ別の合言葉を持つ（docs/MULTI-TENANT.md）。戻り値 {v:値, prop:プロパティ由来か} */
 function secret_(name) {
-  try { const v = PropertiesService.getScriptProperties().getProperty(name); if (v) return String(v); } catch (e) { /* プロパティが使えない環境（単体テスト等） */ }
+  try { const v = PropertiesService.getScriptProperties().getProperty(name); if (v) return { v: String(v), prop: true }; } catch (e) { /* プロパティが使えない環境（単体テスト等） */ }
   // Seed.js の const は globalThis に載らないので、名前を直接書いて typeof で見る
-  if (name === 'APP_TOKEN') return typeof APP_TOKEN === 'undefined' ? '' : String(APP_TOKEN);
-  if (name === 'ADMIN_TOKEN') return typeof ADMIN_TOKEN === 'undefined' ? '' : String(ADMIN_TOKEN);
-  return '';
+  if (name === 'APP_TOKEN') return { v: typeof APP_TOKEN === 'undefined' ? '' : String(APP_TOKEN), prop: false };
+  if (name === 'ADMIN_TOKEN') return { v: typeof ADMIN_TOKEN === 'undefined' ? '' : String(ADMIN_TOKEN), prop: false };
+  return { v: '', prop: false };
 }
-/* 合言葉の総当たり対策（2026-10-07）。GAS は接続元 IP を見られないため、スクリプト全体で「合言葉の間違いが10分に30回」を越えたら
-   10分間は正しい合言葉でも拒否する（auth / forbidden）。正規の利用で間違いが30回続くことはない。キャッシュが使えない時は制限なし（従来どおり） */
-const FAIL_MAX = 30, FAIL_WINDOW_SEC = 600;
+/* 最低長: Seed.js 由来はヒラノの従来どおり（APP 8 / ADMIN 16）。スクリプトプロパティ由来（他農場）は APP 16 / ADMIN 24 以上でなければ全拒否 */
+const MIN_APP = { seed: 8, prop: 16 }, MIN_ADMIN = { seed: 16, prop: 24 };
+/* 合言葉の間違いは数えるだけ（2026-10-07）。GAS は接続元 IP を見られないため「間違いが多いから全員拒否」にすると、誰でも評価者全員を締め出せる（DoS）。
+   守りは合言葉の強さ（他農場は生成ツールが APP 20字以上・ADMIN 32字以上の乱数を作る）に置く。件数は管理入口 op=check の authFails で見る */
+const FAIL_WINDOW_SEC = 600;
 function failKey_() { return 'authfail_' + Math.floor(Date.now() / (FAIL_WINDOW_SEC * 1000)); }
-function locked_() {
-  try { return Number(CacheService.getScriptCache().get(failKey_()) || 0) >= FAIL_MAX; } catch (e) { return false; }
-}
 function noteFail_() {
-  try { const c = CacheService.getScriptCache(), k = failKey_(); c.put(k, String(Number(c.get(k) || 0) + 1), FAIL_WINDOW_SEC * 2); } catch (e) { /* 数えられなくても拒否は維持 */ }
+  try { const c = CacheService.getScriptCache(), k = failKey_(); c.put(k, String(Number(c.get(k) || 0) + 1), FAIL_WINDOW_SEC * 2); } catch (e) { /* 数えられなくても判定は変わらない */ }
 }
-/* 合言葉の確認（APP_TOKEN が無い・短い時は確認しない＝移行・テスト用） */
+function failCount_() {
+  try { return Number(CacheService.getScriptCache().get(failKey_()) || 0); } catch (e) { return 0; }
+}
+/* 合言葉の確認（Seed.js 由来で APP_TOKEN が無い・短い時は確認しない＝移行・テスト用。プロパティ由来で短い時は全拒否） */
 function authOk_(k) {
-  const want = secret_('APP_TOKEN');
-  if (want.length < 8) return true;
-  if (locked_()) return false;
-  if (String(k || '') === want) return true;
+  const w = secret_('APP_TOKEN');
+  if (w.prop && w.v.length < MIN_APP.prop) return false;
+  if (!w.prop && w.v.length < MIN_APP.seed) return true;
+  if (String(k || '') === w.v) return true;
   noteFail_();
   return false;
 }
@@ -154,13 +156,13 @@ function doGet(e) {
    ADMIN_TOKEN と COMMON_SEED（[[農場, [作業名…]], …]）は git 管理外の Seed.js にだけ置く。無ければこの入口は常に拒否 */
 function admin_(e) {
   const tok = String((e && e.parameter && e.parameter.token) || '');
-  const adminTok = secret_('ADMIN_TOKEN');
-  if (adminTok.length < 16 || locked_()) return json_({ ok: false, error: 'forbidden' });
-  if (tok !== adminTok) { noteFail_(); return json_({ ok: false, error: 'forbidden' }); }
+  const adm = secret_('ADMIN_TOKEN');
+  if (adm.v.length < (adm.prop ? MIN_ADMIN.prop : MIN_ADMIN.seed)) return json_({ ok: false, error: 'forbidden' });
+  if (tok !== adm.v) { noteFail_(); return json_({ ok: false, error: 'forbidden' }); }
   const lock = LockService.getScriptLock();
   if (!lock.tryLock(20000)) return json_({ ok: false, error: 'busy' });
   try {
-    if (e.parameter.op === 'check') return json_({ ok: true, version: CODE_VERSION, check: checkSummary_() });   // 読むだけ（集計タブの式の結果を検算）
+    if (e.parameter.op === 'check') return json_({ ok: true, version: CODE_VERSION, check: checkSummary_(), authFails: failCount_() });   // 読むだけ（集計タブの式の結果を検算）
     const r = setup();
     const added = typeof COMMON_SEED !== 'undefined' ? addCommonRows_(COMMON_SEED) : [];
     return json_({ ok: true, version: CODE_VERSION, setup: r, commonAdded: added, check: checkSummary_() });

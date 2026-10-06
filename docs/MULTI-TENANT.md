@@ -17,7 +17,7 @@
 | 版名 | `jitsugi-v2-vNN` | `jitsugi-v2-vNN-<id>`（SW の CACHE と APP_VER を同じ値で農場別に） |
 
 ## 新しい農場を1つ追加する（コマンド1本）
-1. （1回だけ）その農場の Google アカウントで空のスプレッドシートを作り、拡張機能→Apps Script に `node gas/build_gas.js` で生成した `gas/Code.gs` を貼る。**スクリプトプロパティ**に `APP_TOKEN`（8文字以上）と `ADMIN_TOKEN`（16文字以上）を入れる（コードに書かない）。ウェブアプリ「全員」で公開 → `/exec` URL を控える → 関数 `setup` を1回実行（受験者・農場一覧・作業一覧・集計タブができる）。名簿は受験者タブに入れる（社員名は公開リポに置かない）。
+1. （1回だけ）その農場の Google アカウントで空のスプレッドシートを作り、拡張機能→Apps Script に `node gas/build_gas.js` で生成した `gas/Code.gs` を貼る。**スクリプトプロパティ**に `APP_TOKEN` と `ADMIN_TOKEN` を入れる（コードに書かない）。値は `node tools/gen-tokens.mjs` が乱数で作る（APP 24字・ADMIN 40字。画面に出るだけでファイルには残らない）。ウェブアプリ「全員」で公開 → `/exec` URL を控える → 関数 `setup` を1回実行（受験者・農場一覧・作業一覧・集計タブができる）。名簿は受験者タブに入れる（社員名は公開リポに置かない）。
 2. `cp tenants/demo-farm.json tenants/<id>.json` して `id`・`brand.title`・`sheetUrl` を書く。
 3. `TENANT_CFG_PASSWORD='<設定タブのパスワード>' node tools/build-tenant.mjs <id>`
    （または git に入れない `tenants/<id>.secret.json` に `{"cfgPassword":"…"}`）
@@ -28,7 +28,8 @@
 
 ## GAS 側の変更（リポ内の `gas/Code.src.gs` → `node gas/build_gas.js` で `Code.gs`・`deploy/Code.js` を再生成済み。本番 GAS は未反映）
 - 合言葉は**スクリプトプロパティ（`APP_TOKEN`・`ADMIN_TOKEN`）が優先**。無ければ従来どおり git 管理外の `Seed.js` の値（既存のヒラノの GAS はそのまま動く）。
-- **総当たり対策**: 合言葉（`APP_TOKEN`・管理入口の `ADMIN_TOKEN`）の間違いが10分に30回を超えると、10分間は正しい合言葉でも `auth`／`forbidden` を返す（GAS は接続元 IP を見られないためスクリプト全体で数える）。合言葉なし運用（`APP_TOKEN` が短い・無い）のときは何も変わらない。`ping` は合言葉なしのまま。
+- **総当たり対策は「合言葉の強さ」**: プロパティ由来の合言葉は `APP_TOKEN` 16字以上・`ADMIN_TOKEN` 24字以上でなければ**全拒否**（Seed.js 由来のヒラノの値は従来の 8/16 のまま＝ヒラノの動作は不変）。
+  「間違いが多いと全員拒否」の全体ロックは**入れていない**（GAS は接続元 IP を見られず、誰でも評価者全員を締め出せるため）。間違いは数えるだけで、管理入口 `?action=admin&token=…&op=check` の `authFails`（直近10分）で見られる。`ping` は合言葉なしのまま。
 - 反映手順（社長作業・任意・URL は変わらない）: `cd gas/deploy && clasp push --force && clasp update-deployment <既存のデプロイID>`（`gas/README.md`）。反映しなくてもアプリは今のまま動く（総当たり対策が効かないだけ）。**本セッションでは clasp push していない**。
 
 ## 契約書の合格条件との対応
@@ -37,7 +38,7 @@
 | 1 | 農場名・合言葉・秘密が埋め込まれていない | 他農場の配布物は満たす（設定ファイル＋環境変数・ハッシュのみ。ビルドが検査）。リポ内の既定はヒラノ版の現行値（条件6のため）。GAS の合言葉は元から git 外（Seed.js）かスクリプトプロパティ |
 | 2 | 農場追加がコマンド1本 | 上の手順 3（GAS とシートの用意は農場ごとの初回作業） |
 | 3 | A は B を読めない・書けない | 農場ごとに別 GAS・別シート・別合言葉。別農場の合言葉では名簿も記録も拒否（`gas/test_gas.js`）。配布物にも他農場の値が入らない（`tests/tenant-isolation.test.js`） |
-| 4 | 合言葉の入口に回数制限 | GAS に追加（上記）。設定タブのパスワードは端末内のゲート（サーバ側ではない） |
+| 4 | 合言葉の入口に総当たり対策 | 回数制限ではなく**合言葉の強さ**で守る（生成ツール＋GAS の最低長）。全体ロックは DoS になるため不採用（`gas/test_gas.js` で 40 回間違えた後も正しい合言葉が通ることを確認）。設定タブのパスワードは端末内のゲート（サーバ側ではない） |
 | 5 | 権利表記の出し分け | このアプリに権利表記の表示は元からない。`copyright.mode` は将来のための口だけ |
 | 6 | 既定でヒラノの動作が変わらない | 既定の送信先・設定パスワード OOIRI（大文字小文字不問）・題名が今のまま（実描画テスト）。版名のみ v26→v27 |
 | 7 | 既存テスト全緑＋分離テスト | `node smoke.js` / `smoke-audit.js` / `smoke-sheet.js` / `gas/test_gas.js` / `tests/tenant-isolation.test.js` |
