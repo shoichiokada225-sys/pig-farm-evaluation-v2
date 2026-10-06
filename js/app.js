@@ -658,7 +658,7 @@ function setCur(c){
 function farmDisp(f){
   if(!f)return t('farmNone');
   if(!/未確定/.test(f))return f;
-  const rest=f.replace(/所属未確定|未確定/,'').replace(/^[\s（(【\[]+|[\s）)】\]]+$/g,'').trim();   // 「所属未確定（大田原）」の補足は残す（未確定の農場が2つあっても見分けられる）
+  const rest=f.replace(/所属未確定|未確定/,'').replace(/^[\s（(【\[]+|[\s）)】\]]+$/g,'').trim();   // 「所属未確定（A農場）」の補足は残す（未確定の農場が2つあっても見分けられる）
   return t('farmUnassigned')+(rest?paren(rest):'');
 }
 function rosterFarms(ro){
@@ -717,7 +717,7 @@ function renderRoster(){
   if(a0){const a1=anc(),d=(a1===a0?a1.getBoundingClientRect().top-y0:0);if(Math.abs(d)>=0.5)window.scrollBy(0,d)}
 }
 /* 農場チップの右に、まだ続きがある時だけ › を出す */
-/* 長い農場名は先頭と末尾を残して中を省く（「ヒラノ畜産株式会社多古第一農場」→「ヒラノ畜産…多古第一農場」） */
+/* 長い農場名は先頭と末尾を残して中を省く（「A畜産株式会社第一農場」→「A畜産…第一農場」） */
 function midCut(s){
   // 幅で判断（漢字・かな=2、英数字・ラテン文字=1）。収まる名前は省かない（訳した「Peternakan belum ditentukan」なども全文）
   const a=[...String(s||'')],w=c=>/[\u2E80-\uFFEF]/.test(c)?2:1,tot=a.reduce((n,c)=>n+w(c),0);
@@ -726,7 +726,7 @@ function midCut(s){
   let tl=0,te=a.length;while(te>hs&&tl+w(a[te-1])<=14){tl+=w(a[te-1]);te--}
   return a.slice(0,hs).join('')+'…'+a.slice(te).join('');
 }
-/* 農場チップの表示名: 頭が同じ農場どうし（「ヒラノ畜産株式会社多古第一農場」「…第二農場」）は、違いが始まる少し手前から見せる（「…古第一農場」）。
+/* 農場チップの表示名: 頭が同じ農場どうし（「A畜産株式会社第一農場」「…第二農場」）は、違いが始まる少し手前から見せる（「…古第一農場」）。
    それ以外は幅で中省略。違いが CSS の省略で隠れないように、共通の頭（5字以上）を先に落とす */
 function chipNames(fs){
   const ds=fs.map(f=>[...farmDisp(f)]),m=new Map();
@@ -962,8 +962,11 @@ async function saveSheetUrl(){
 let cfgUnlocked=false;
 function swTab(btn){
   if(btn.dataset.pg==='pgCfg'&&!cfgUnlocked){
-    const pw=prompt(t('pwPrompt'));
-    if(!pw||pw.toUpperCase()!=='OOIRI'){toast(t('pwWrong'),1);return}
+    const want=(window.TENANT&&window.TENANT.cfgPwSha256)||'';   // パスワードは平文で持たない（tenant-config.js のハッシュと照合）
+    if(want){
+      const pw=prompt(t('pwPrompt'));
+      if(!pw||sha256hex(pw.toUpperCase())!==want){toast(t('pwWrong'),1);return}
+    }
     cfgUnlocked=true;
   }
   document.querySelectorAll('.tabs button').forEach(b=>{b.classList.remove('on');b.removeAttribute('aria-current')});

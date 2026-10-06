@@ -340,4 +340,28 @@ ok('シード無し: 農場一覧=受験者タブの農場＋所属未確定（�
   ok('revive: 版の無い送信でも、書いたら墓標を外す（以後の編集が黙って捨てられない）', !('v:nover-1' in docProps));
   ok('avg: 空欄（null/空文字）を0点として平均に入れない', rr[0][8] === '' && rr[1][8] === '' && rr[0][10] === ex);
 }
+// 2026-10-07 マルチテナント: 合言葉はスクリプトプロパティ（農場ごとの GAS）・総当たり対策・別農場の合言葉では読み書きできない
+{
+  const origPS = global.PropertiesService;
+  const mk = (props, cache) => {
+    global.PropertiesService = { getDocumentProperties: origPS.getDocumentProperties, getScriptProperties: () => ({ getProperty: k => props[k] || null }) };
+    global.CacheService = { getScriptCache: () => ({ get: k => cache[k] || null, put: (k, v) => { cache[k] = v; } }) };
+    return new Function('ROSTER_SEED', code + ';return {setup,doGet,doPost};')(SEED);   // Seed.js の APP_TOKEN は無し＝プロパティだけで動く
+  };
+  const callG = (G, props, cache) => ({ get: p => { mk(props, cache); return JSON.parse(G.doGet({ parameter: p }).s); }, post: o => { mk(props, cache); return JSON.parse(G.doPost({ postData: { contents: JSON.stringify(o) } }).s); } });
+  const propsA = { APP_TOKEN: 'farmA-token-12345', ADMIN_TOKEN: 'farmA-admin-token-123456' }, cacheA = {};
+  const propsB = { APP_TOKEN: 'farmB-token-67890', ADMIN_TOKEN: 'farmB-admin-token-654321' }, cacheB = {};
+  Object.keys(sheets).forEach(k => delete sheets[k]); Object.keys(docProps).forEach(k => delete docProps[k]);
+  const GA = mk(propsA, cacheA); GA.setup();
+  const A = callG(GA, propsA, cacheA), B = callG(GA, propsB, cacheB);   // B = 別農場の GAS（コードは同じ・プロパティとキャッシュが別）
+  ok('tenant: スクリプトプロパティの合言葉だけで roster が守られる（Seed.js 無し）', A.get({ action: 'roster' }).error === 'auth' && A.get({ action: 'roster', k: propsA.APP_TOKEN }).ok === true);
+  ok('tenant: 別農場の合言葉では読めない・書けない', A.get({ action: 'roster', k: propsB.APP_TOKEN }).error === 'auth' && A.post({ action: 'submit', k: propsB.APP_TOKEN, record: APP.toPayload({ ...appRec, id: 'x-b' }) }).error === 'auth' && !sheets['テスト評価者']);
+  ok('tenant: 別農場の管理トークンでは admin に入れない', JSON.parse(GA.doGet({ parameter: { action: 'admin', token: propsB.ADMIN_TOKEN } }).s).error === 'forbidden');
+  let last; for (let i = 0; i < 40; i++) last = A.get({ action: 'roster', k: 'guess' + i });
+  ok('tenant: 合言葉の間違いが続くと拒否（総当たり対策）', last.error === 'auth');
+  ok('tenant: 制限中は正しい合言葉でも拒否・管理入口も拒否', A.get({ action: 'roster', k: propsA.APP_TOKEN }).error === 'auth' && A.post({ action: 'submit', k: propsA.APP_TOKEN, record: APP.toPayload({ ...appRec, id: 'x-a' }) }).error === 'auth' && (mk(propsA, cacheA), JSON.parse(GA.doGet({ parameter: { action: 'admin', token: propsA.ADMIN_TOKEN } }).s).error === 'forbidden'));
+  ok('tenant: 制限は農場ごと（別の GAS・別キャッシュ）で他方に及ばない', B.get({ action: 'roster', k: propsB.APP_TOKEN }).ok === true);
+  ok('tenant: ping は制限中でも版だけ返す（合言葉不要の入口は変えない）', A.get({ action: 'ping' }).ok === true);
+  global.PropertiesService = origPS; delete global.CacheService;
+}
 console.log(`\n合計: OK ${pass} / NG ${fail}`); process.exit(fail ? 1 : 0);

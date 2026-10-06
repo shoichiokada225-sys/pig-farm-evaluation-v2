@@ -44,10 +44,33 @@ const DELLOG_SHEET = '削除ログ';
 const VER_KEY = 'v:';
 const DEAD_KEY = 'd:';
 const REV_KEY = 'r:';    // 文書プロパティ: 記録IDごとの、最後に書き戻した（revive）合図。これと違う合図の削除は、戻す前に出された古い削除   // 文書プロパティ: 記録IDごとの、削除で殺した戻しの合図の一覧   // 文書プロパティ: 記録IDごとの版（端末の更新時刻）
+/* 合言葉の値。スクリプトプロパティ（APP_TOKEN / ADMIN_TOKEN）があればそちらが優先、無ければ Seed.js のグローバル（従来どおり）。
+   農場ごとに GAS・シートを別に作り、それぞれ別の合言葉を持つ（docs/MULTI-TENANT.md） */
+function secret_(name) {
+  try { const v = PropertiesService.getScriptProperties().getProperty(name); if (v) return String(v); } catch (e) { /* プロパティが使えない環境（単体テスト等） */ }
+  // Seed.js の const は globalThis に載らないので、名前を直接書いて typeof で見る
+  if (name === 'APP_TOKEN') return typeof APP_TOKEN === 'undefined' ? '' : String(APP_TOKEN);
+  if (name === 'ADMIN_TOKEN') return typeof ADMIN_TOKEN === 'undefined' ? '' : String(ADMIN_TOKEN);
+  return '';
+}
+/* 合言葉の総当たり対策（2026-10-07）。GAS は接続元 IP を見られないため、スクリプト全体で「合言葉の間違いが10分に30回」を越えたら
+   10分間は正しい合言葉でも拒否する（auth / forbidden）。正規の利用で間違いが30回続くことはない。キャッシュが使えない時は制限なし（従来どおり） */
+const FAIL_MAX = 30, FAIL_WINDOW_SEC = 600;
+function failKey_() { return 'authfail_' + Math.floor(Date.now() / (FAIL_WINDOW_SEC * 1000)); }
+function locked_() {
+  try { return Number(CacheService.getScriptCache().get(failKey_()) || 0) >= FAIL_MAX; } catch (e) { return false; }
+}
+function noteFail_() {
+  try { const c = CacheService.getScriptCache(), k = failKey_(); c.put(k, String(Number(c.get(k) || 0) + 1), FAIL_WINDOW_SEC * 2); } catch (e) { /* 数えられなくても拒否は維持 */ }
+}
 /* 合言葉の確認（APP_TOKEN が無い・短い時は確認しない＝移行・テスト用） */
 function authOk_(k) {
-  if (typeof APP_TOKEN === 'undefined' || String(APP_TOKEN).length < 8) return true;
-  return String(k || '') === String(APP_TOKEN);
+  const want = secret_('APP_TOKEN');
+  if (want.length < 8) return true;
+  if (locked_()) return false;
+  if (String(k || '') === want) return true;
+  noteFail_();
+  return false;
 }
 const WORKS = [["No.11","給餌","飼養管理"],["No.02","エサ調整","飼養管理"],["No.16","エサ回収","飼養管理"],["No.43","えつけ（哺乳期給餌）","飼養管理"],["No.27","育成受け","飼養管理"],["No.34","去勢","飼養管理"],["No.18","添加剤準備","飼養管理"],["No.12","除フン","衛生管理"],["No.31","5S清掃","衛生管理"],["No.04","治療","衛生管理"],["No.06","母豚ワクチン接種","衛生管理"],["No.41","CSF（豚熱）子ワクチン接種","衛生管理"],["No.40","洗浄（離乳後）","衛生管理"],["No.15","消毒","衛生管理"],["No.44","石灰散布","衛生管理"],["No.37","死獣回収","衛生管理"],["No.14","AI（人工授精）注入作業","繁殖管理"],["No.33","許容確認","繁殖管理"],["No.03","精液検査・反転","繁殖管理"],["No.17","精液攪拌","繁殖管理"],["No.09","妊娠鑑定","繁殖管理"],["No.08","PMS投与","繁殖管理"],["No.36","PG（プロスタグランジン）接種","繁殖管理"],["No.42","子宮内洗浄","繁殖管理"],["No.26","入室（分娩舎）","分娩管理"],["No.35","分娩介助","分娩管理"],["No.39","送り里子","分娩管理"],["No.13","母豚の並びの整理","施設管理"],["No.10","移動指示","施設管理"],["No.25","妊娠舎→交配舎・育成舎 移動","施設管理"],["No.19","スクレーパー動作確認","施設管理"],["No.29","ファン清掃","施設管理"],["No.30","パドタンク清掃（夏季）","施設管理"],["No.20","エサスイッチ","施設管理"],["No.05","日報記入","記録管理"],["No.07","プレート作成","記録管理"],["No.21","タグ付け","記録管理"],["No.32","分娩予定記入","記録管理"],["No.22","廃豚出荷（母豚出し）","出荷管理"],["No.23","育成舎へ廃豚移動","出荷管理"]];   // [No, 作業名, カテゴリ]
 
@@ -131,7 +154,9 @@ function doGet(e) {
    ADMIN_TOKEN と COMMON_SEED（[[農場, [作業名…]], …]）は git 管理外の Seed.js にだけ置く。無ければこの入口は常に拒否 */
 function admin_(e) {
   const tok = String((e && e.parameter && e.parameter.token) || '');
-  if (typeof ADMIN_TOKEN === 'undefined' || String(ADMIN_TOKEN).length < 16 || tok !== String(ADMIN_TOKEN)) return json_({ ok: false, error: 'forbidden' });
+  const adminTok = secret_('ADMIN_TOKEN');
+  if (adminTok.length < 16 || locked_()) return json_({ ok: false, error: 'forbidden' });
+  if (tok !== adminTok) { noteFail_(); return json_({ ok: false, error: 'forbidden' }); }
   const lock = LockService.getScriptLock();
   if (!lock.tryLock(20000)) return json_({ ok: false, error: 'busy' });
   try {

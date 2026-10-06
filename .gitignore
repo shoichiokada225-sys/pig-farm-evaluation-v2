@@ -2,3 +2,5 @@ node_modules/
 *.log
 _shots/
 gas/deploy/Seed.js
+dist/
+tenants/*.secret.json

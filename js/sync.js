@@ -173,7 +173,7 @@ function dropSheetDone(id){
 }
 /* 農場名のゆれ: ps（人の行）の farm を書き換えてそろえ、[{farm:ゆれた表記, n:人数, like:そろえた先/似た農場}] を返す
    ① 全角半角・空白だけの違い（normFarm が同じ）→ 人数の多い表記（同数なら先の行）に統一
-   ② 1〜2人しかいない農場の名前が、ほかの農場の名前を含む/含まれる（「大田原農場」と「大田原」）→ 統一はせず警告だけ */
+   ② 1〜2人しかいない農場の名前が、ほかの農場の名前を含む/含まれる（「A農場」と「A」）→ 統一はせず警告だけ */
 function farmVariants(ps){
   const out=[],grp=new Map();
   ps.forEach(p=>{const k=normFarm(p.farm);if(!grp.has(k))grp.set(k,new Map());const g=grp.get(k);g.set(p.farm,(g.get(p.farm)||0)+1)});
@@ -190,7 +190,7 @@ function farmVariants(ps){
   fs.forEach(a=>{
     if(cnt.get(a)>2)return;
     const ca=core(a);if(!ca)return;
-    const b=fs.find(b=>b!==a&&cnt.get(b)>cnt.get(a)&&core(b)===ca);   // 「大田原」と「大田原農場」だけ（「第二テスト農場」と「テスト農場」は別の農場）
+    const b=fs.find(b=>b!==a&&cnt.get(b)>cnt.get(a)&&core(b)===ca);   // 「A」と「A農場」だけ（「第二テスト農場」と「テスト農場」は別の農場）
     if(b)out.push({farm:a,n:cnt.get(a),like:b});
   });
   return out;
