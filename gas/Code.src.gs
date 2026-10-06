@@ -332,6 +332,7 @@ function deleteRecord_(id, why, keep) {
     for (let i = rows.length - 1; i >= 0; i--) if (String(rows[i][0]) === id) {
       const v = sh.getRange(i + 2, 1, 1, w).getValues()[0];
       while (v.length < HEAD.length) v.push('');
+      for (let j = 0; j < v.length; j++) if (typeof v[j] === 'string') v[j] = safe_(v[j]);   // getValues は先頭の ' を落とす＝写す時にもう一度付ける（数式として動かさない）
       if (!(keep && keep(v))) logRows.push([Utilities.formatDate(new Date(), 'Asia/Tokyo', 'yyyy-MM-dd HH:mm:ss'), why || '', nm].concat(v));
       sh.deleteRow(i + 2); n++;
     }

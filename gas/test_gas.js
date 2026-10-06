@@ -288,6 +288,7 @@ ok('シード無し: 農場一覧=受験者タブの農場＋所属未確定（�
   ok('dellog: 上書きで変わった行（点を直した1行）だけ「削除ログ」へ（理由=上書き・元のタブ・記録ID・前の点）', sheets['削除ログ'] && sheets['削除ログ'].d.length === 2 && sheets['削除ログ'].d[1][1] === '上書き' && sheets['削除ログ'].d[1][2] === 'テスト評価者' && sheets['削除ログ'].d[1][3] === appRec.id && sheets['削除ログ'].d[1][11] === r6.record.works[0].items[0].score);
   const nLog = sheets['削除ログ'].d.length;
   ok('dellog: 評価者名が「削除ログ」でも予約名のタブに書かない', post6({ ...r6, record: { ...r6.record, id: 'dl-name', evaluator: '削除ログ' } }).ok && sheets['評価者_削除ログ'] && sheets['削除ログ'].d.length === nLog && sheets['削除ログ'].d.every((r, i) => i === 0 || r.length === 18));
+  ok('dellog: 数式に見える文字（コメント =cmd）は削除ログでも文字のまま（先頭に \'）', sheets['削除ログ'].d.slice(1).some(r => r[12] === "'=cmd") && sheets['削除ログ'].d.slice(1).every(r => r.every(c => typeof c !== 'string' || !/^[=+\-@]/.test(c))));
   ok('dellog: 削除でも控えてから消す', post6({ action: 'delete', id: appRec.id, k: AT }).deleted === n6 && sheets['削除ログ'].d.length === nLog + n6 && sheets['削除ログ'].d.slice(-1)[0][1] === '削除' && sheets['テスト評価者'].d.length === 1);
   ok('dellog: 削除ログは評価者タブ・集計に入らない', !(G6.setup(), JSON.stringify(sheets['集計（自動）'] ? sheets['集計（自動）'].fx : {})).includes("'削除ログ'"));
   const pl = APP.toPayload({ ...appRec, id: 'nul-1' }); pl.works[0].items[0].score = null; pl.works[0].items[1].score = '';
