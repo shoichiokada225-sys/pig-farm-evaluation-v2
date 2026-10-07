@@ -54,3 +54,5 @@
 - `TENANT_MODE = true` の間は、スクリプトプロパティの `APP_TOKEN`（16字以上）・`ADMIN_TOKEN`（24字以上）が**無い・短い・プロパティが読めない（例外）**なら、Seed.js に値があっても**全拒否**（入れ忘れで名簿・記録が公開される fail-open を塞ぐ）。`ping` は合言葉なしのまま。攻撃ケースは `gas/test_gas.js`（TENANT_MODE の10項目。判定行を外すと4件失敗することも確認）。
 - 出力は2フォルダ: 公開用 `dist/<id>/` と、非公開 `dist/<id>.setup/`（`Code.gs`＋README）。`Code.gs` を公開ディレクトリに置かない。
 - `--out <dir>`: 既存フォルダは「前回このツールが作った印ファイル `.tenant-build`（同じ id）」がある場合だけ消して作り直す。印が無い空でないフォルダ・ファイル・`/`・ホーム・リポ・リポの親・一時フォルダ・リポ内（`dist/` 以外）は**拒否して何も消さない**（`tests/tenant-isolation.test.js` に破壊テスト）。
+- 題名（`brand.title`）は HTML にエスケープして入れ、`String.replace` は関数置換（題名に `$'` `$&` `$1` `&` があっても index.html は壊れない・`tests/tenant-isolation.test.js` [2c]）。
+- 印のあるフォルダは丸ごと作り直す＝その中へ後から足したファイル（例: ホスティング CLI の `.vercel`）も消える。出力フォルダの中には何も足さない。

@@ -26,6 +26,7 @@ const SCRUB = [
   ['trại Mutsuzawa', 'trại'], ['peternakan Mutsuzawa', 'peternakan'], ['睦沢農場', '農場'],
 ];
 
+const escHtml = v => String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');   // 題名を HTML に入れる前のエスケープ
 function die(m) { console.error('NG: ' + m); process.exit(2); }
 
 // ---- 出力先の安全確認（既存フォルダを黙って消さない）----
@@ -96,7 +97,7 @@ export function build(id, outDir) {
       let s = buf.toString('utf8');
       if (f === 'tenant-config.js') s = '/* 農場別ビルドが生成（tools/build-tenant.mjs）。直接編集しない */\nwindow.TENANT = ' + JSON.stringify(cfg, null, 2) + ';\n';
       for (const [a, b] of SCRUB) s = s.split(a).join(b);
-      if (f === 'index.html') s = s.replace(/<title>[^<]*<\/title>/, '<title>' + t.brand.title + '</title>');
+      if (f === 'index.html') s = s.replace(/<title>[^<]*<\/title>/, () => '<title>' + escHtml(t.brand.title) + '</title>');   // 関数置換（題名の $' $& $1 を置換記法として解釈させない）
       if (f === 'manifest.json') { const m = JSON.parse(s); m.name = t.brand.title; m.short_name = t.brand.title.slice(0, 12); s = JSON.stringify(m, null, 2) + '\n'; }
       // 版名は sw.js の CACHE と js/config.js の APP_VER を同じ値で農場別にする（キャッシュの取り違え防止・smoke の照合規則と同じ）
       if (f === 'sw.js') s = s.replace(/const CACHE = '([^']+)'/, (_, v) => "const CACHE = '" + v + '-' + id + "'");

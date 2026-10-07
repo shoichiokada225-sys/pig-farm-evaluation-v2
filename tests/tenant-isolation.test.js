@@ -79,6 +79,21 @@ const sha = s => require('crypto').createHash('sha256').update(s.toUpperCase()).
     fs.rmSync(fake, { recursive: true, force: true });
   }
 
+  console.log('[2c] 題名の特殊文字で index.html が壊れない');
+  {
+    const tf = path.join(ROOT, 'tenants', 'zz-dollar.json');
+    const title = "価格$'円$&$1 & 'q'";
+    try {
+      fs.writeFileSync(tf, JSON.stringify({ id: 'zz-dollar', brand: { title }, copyright: { mode: 'hide' }, cfgLock: false }));
+      delete process.env.TENANT_CFG_PASSWORD;
+      const o = build('zz-dollar', path.join(tmp, 'dollar')).out;
+      const base = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8'), html = fs.readFileSync(path.join(o, 'index.html'), 'utf8');
+      ok('index.html のサイズがほぼ同じ（文書が複製されていない） ' + base.length + '→' + html.length, Math.abs(html.length - base.length) < 400);
+      ok('<title> は1つで、題名がそのまま（& は &amp; にエスケープ）', (html.match(/<title>/g) || []).length === 1 && html.includes("<title>価格$'円$&amp;$1 &amp; 'q'</title>"));
+      ok('manifest の name は生の題名', JSON.parse(fs.readFileSync(path.join(o, 'manifest.json'), 'utf8')).name === title);
+    } finally { fs.rmSync(tf, { force: true }); }
+  }
+
   console.log('[3] 実ブラウザ');
   const browser = await chromium.launch(process.env.PW_CHANNEL ? { channel: process.env.PW_CHANNEL } : {});
   // 1つの端末（新しい文脈）で、パスワードを1つ入れて設定タブが開くかを見る。開く/開かないは端末ごとに独立（開いたままの状態を持ち越さない）
