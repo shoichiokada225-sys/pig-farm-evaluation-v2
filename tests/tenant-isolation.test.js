@@ -52,6 +52,33 @@ const sha = s => require('crypto').createHash('sha256').update(s.toUpperCase()).
     ok('json に合言葉・パスワードのキーを書くと作らない', exitOf({ cfgPassword: 'x' }, 'pw-farm-ZZZ') === 2);
   } finally { fs.rmSync(tf, { force: true }); }
 
+  console.log('[2b] 出力先の安全（既存フォルダを消さない）／農場用 GAS');
+  {
+    const { spawnSync } = require('child_process');
+    const cli = (args, extraEnv, cwd) => spawnSync('node', [path.join(ROOT, 'tools', 'build-tenant.mjs'), 'demo-farm', ...args], { cwd: cwd || ROOT, env: Object.assign({}, process.env, { TENANT_CFG_PASSWORD: 'pw-cli-1234' }, extraEnv || {}), encoding: 'utf8' });
+    const fake = fs.mkdtempSync(path.join(os.tmpdir(), 'jit-safe-'));
+    const mk = (name, files) => { const d = path.join(fake, name); fs.mkdirSync(d, { recursive: true }); for (const [f, c] of Object.entries(files)) { fs.mkdirSync(path.dirname(path.join(d, f)), { recursive: true }); fs.writeFileSync(path.join(d, f), c); } return d; };
+    const victim = mk('victim', { 'important.txt': 'precious' });
+    ok('印の無い既存フォルダは拒否し、中身を消さない（exit 2）', cli(['--out', victim]).status === 2 && fs.readFileSync(path.join(victim, 'important.txt'), 'utf8') === 'precious');
+    const fakeHome = mk('home', { 'Desktop/keep.txt': 'x', '.hidden': 'y' });
+    ok('ホームそのものは拒否し、何も消さない', cli(['--out', fakeHome], { HOME: fakeHome }).status === 2 && fs.existsSync(path.join(fakeHome, 'Desktop', 'keep.txt')) && fs.existsSync(path.join(fakeHome, '.hidden')));
+    ok('ホーム直下の既存フォルダ（印なし）も拒否', cli(['--out', path.join(fakeHome, 'Desktop')], { HOME: fakeHome }).status === 2 && fs.existsSync(path.join(fakeHome, 'Desktop', 'keep.txt')));
+    const gitLike = mk('repo-like', { '.git/HEAD': 'ref', 'src/a.js': '1' });
+    ok('--out . （カレントがリポ風フォルダ）は拒否し .git ごと残る', cli(['--out', '.'], {}, gitLike).status === 2 && fs.existsSync(path.join(gitLike, '.git', 'HEAD')) && fs.existsSync(path.join(gitLike, 'src', 'a.js')));
+    ok('--out リポ自身は拒否', cli(['--out', ROOT]).status === 2 && fs.existsSync(path.join(ROOT, '.git')));
+    ok('--out リポ内（dist 以外）は拒否', cli(['--out', path.join(ROOT, 'tests')]).status === 2 && fs.existsSync(path.join(ROOT, 'tests', 'tenant-isolation.test.js')));
+    ok('--out リポの親フォルダは拒否', cli(['--out', path.dirname(ROOT)]).status === 2 && fs.existsSync(ROOT));
+    const ft = path.join(fake, 'afile'); fs.writeFileSync(ft, 'f');
+    ok('--out がファイルなら拒否', cli(['--out', ft]).status === 2 && fs.readFileSync(ft, 'utf8') === 'f');
+    ok('存在しない出力先には作れる（印ファイル・別フォルダ <out>.setup/Code.gs が付く）', cli(['--out', path.join(fake, 'newout')]).status === 0 && fs.existsSync(path.join(fake, 'newout', '.tenant-build')) && fs.existsSync(path.join(fake, 'newout.setup', 'Code.gs')) && !fs.existsSync(path.join(fake, 'newout', 'gas')));
+    fs.writeFileSync(path.join(fake, 'newout', 'stale.txt'), 's');
+    ok('印のある前回の出力は作り直せる（古いファイルは消える）', cli(['--out', path.join(fake, 'newout')]).status === 0 && !fs.existsSync(path.join(fake, 'newout', 'stale.txt')));
+    ok('空のフォルダには作れる', cli(['--out', mk('empty', {})]).status === 0);
+    const gt = fs.readFileSync(path.join(fake, 'newout.setup', 'Code.gs'), 'utf8');
+    ok('農場用 GAS は TENANT_MODE=true・ヒラノ名なし（公開フォルダには入らない）', /const TENANT_MODE = true;/.test(gt) && !/ヒラノ/.test(gt));
+    fs.rmSync(fake, { recursive: true, force: true });
+  }
+
   console.log('[3] 実ブラウザ');
   const browser = await chromium.launch(process.env.PW_CHANNEL ? { channel: process.env.PW_CHANNEL } : {});
   // 1つの端末（新しい文脈）で、パスワードを1つ入れて設定タブが開くかを見る。開く/開かないは端末ごとに独立（開いたままの状態を持ち越さない）

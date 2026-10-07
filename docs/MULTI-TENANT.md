@@ -17,7 +17,7 @@
 | 版名 | `jitsugi-v2-vNN` | `jitsugi-v2-vNN-<id>`（SW の CACHE と APP_VER を同じ値で農場別に） |
 
 ## 新しい農場を1つ追加する（コマンド1本）
-1. （1回だけ）その農場の Google アカウントで空のスプレッドシートを作り、拡張機能→Apps Script に `node gas/build_gas.js` で生成した `gas/Code.gs` を貼る。**スクリプトプロパティ**に `APP_TOKEN` と `ADMIN_TOKEN` を入れる（コードに書かない）。値は `node tools/gen-tokens.mjs` が乱数で作る（APP 24字・ADMIN 40字。画面に出るだけでファイルには残らない）。ウェブアプリ「全員」で公開 → `/exec` URL を控える → 関数 `setup` を1回実行（受験者・農場一覧・作業一覧・集計タブができる）。名簿は受験者タブに入れる（社員名は公開リポに置かない）。
+1. （1回だけ）その農場の Google アカウントで空のスプレッドシートを作り、拡張機能→Apps Script に、`node tools/build-tenant.mjs <id>` が作る **`dist/<id>.setup/Code.gs`**（公開しない別フォルダ・`TENANT_MODE = true`）を貼る（リポの `gas/Code.gs` は貼らない）。**スクリプトプロパティ**に `APP_TOKEN` と `ADMIN_TOKEN` を入れる（コードに書かない）。値は `node tools/gen-tokens.mjs` が乱数で作る（APP 24字・ADMIN 40字。画面に出るだけでファイルには残らない）。ウェブアプリ「全員」で公開 → `/exec` URL を控える → 関数 `setup` を1回実行（受験者・農場一覧・作業一覧・集計タブができる）。名簿は受験者タブに入れる（社員名は公開リポに置かない）。
 2. `cp tenants/demo-farm.json tenants/<id>.json` して `id`・`brand.title`・`sheetUrl` を書く。
 3. `TENANT_CFG_PASSWORD='<設定タブのパスワード>' node tools/build-tenant.mjs <id>`
    （または git に入れない `tenants/<id>.secret.json` に `{"cfgPassword":"…"}`）
@@ -48,3 +48,9 @@
 - 端末内データ（localStorage）はオリジン単位。農場ごとに別オリジンで配ること。
 - 作業カタログ（40作業×5種目）はヒラノの現場由来の内容。ビルドは出典表記の農場名だけ中立にする（内容の差し替えは別作業）。
 - `gas/deploy/.clasp.json` はヒラノのスクリプトID（秘密ではない）。他農場は自分の GAS を作って別の `.clasp.json` を使う。
+
+## テナント版 GAS の fail-closed と出力先の安全（V5 検証対応 2026-10-07）
+- `Code.src.gs` に `const TENANT_MODE = false;`（リポの既定＝ヒラノ版・従来どおり Seed.js の合言葉・8/16字）。`build-tenant.mjs` が `<out>.setup/Code.gs` を作るときだけ `true` にする。
+- `TENANT_MODE = true` の間は、スクリプトプロパティの `APP_TOKEN`（16字以上）・`ADMIN_TOKEN`（24字以上）が**無い・短い・プロパティが読めない（例外）**なら、Seed.js に値があっても**全拒否**（入れ忘れで名簿・記録が公開される fail-open を塞ぐ）。`ping` は合言葉なしのまま。攻撃ケースは `gas/test_gas.js`（TENANT_MODE の10項目。判定行を外すと4件失敗することも確認）。
+- 出力は2フォルダ: 公開用 `dist/<id>/` と、非公開 `dist/<id>.setup/`（`Code.gs`＋README）。`Code.gs` を公開ディレクトリに置かない。
+- `--out <dir>`: 既存フォルダは「前回このツールが作った印ファイル `.tenant-build`（同じ id）」がある場合だけ消して作り直す。印が無い空でないフォルダ・ファイル・`/`・ホーム・リポ・リポの親・一時フォルダ・リポ内（`dist/` 以外）は**拒否して何も消さない**（`tests/tenant-isolation.test.js` に破壊テスト）。

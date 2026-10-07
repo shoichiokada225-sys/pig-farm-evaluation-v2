@@ -44,6 +44,11 @@ const DELLOG_SHEET = '削除ログ';
 const VER_KEY = 'v:';
 const DEAD_KEY = 'd:';
 const REV_KEY = 'r:';    // 文書プロパティ: 記録IDごとの、最後に書き戻した（revive）合図。これと違う合図の削除は、戻す前に出された古い削除   // 文書プロパティ: 記録IDごとの、削除で殺した戻しの合図の一覧   // 文書プロパティ: 記録IDごとの版（端末の更新時刻）
+/* 他農場用（テナント版）か。リポの既定は false（ヒラノ版＝従来どおり Seed.js の合言葉・8/16字）。
+   tools/build-tenant.mjs が他農場用の Code.gs（<out>.setup/Code.gs）を作るときだけ true にする。
+   true の間は、スクリプトプロパティの APP_TOKEN（16字以上）・ADMIN_TOKEN（24字以上）が無い・短い・プロパティが読めない（例外）なら
+   Seed.js の値があっても全拒否する（入れ忘れで名簿・記録が公開される fail-open を防ぐ） */
+const TENANT_MODE = false;
 /* 合言葉の値。スクリプトプロパティ（APP_TOKEN / ADMIN_TOKEN）があればそちらが優先、無ければ Seed.js のグローバル（従来どおり）。
    農場ごとに GAS・シートを別に作り、それぞれ別の合言葉を持つ（docs/MULTI-TENANT.md）。戻り値 {v:値, prop:プロパティ由来か} */
 function secret_(name) {
@@ -68,6 +73,7 @@ function failCount_() {
 /* 合言葉の確認（Seed.js 由来で APP_TOKEN が無い・短い時は確認しない＝移行・テスト用。プロパティ由来で短い時は全拒否） */
 function authOk_(k) {
   const w = secret_('APP_TOKEN');
+  if (TENANT_MODE && (!w.prop || w.v.length < MIN_APP.prop)) return false;   // テナント版: プロパティ未設定・短い・例外は全拒否（fail-closed）
   if (w.prop && w.v.length < MIN_APP.prop) return false;
   if (!w.prop && w.v.length < MIN_APP.seed) return true;
   if (String(k || '') === w.v) return true;
@@ -157,6 +163,7 @@ function doGet(e) {
 function admin_(e) {
   const tok = String((e && e.parameter && e.parameter.token) || '');
   const adm = secret_('ADMIN_TOKEN');
+  if (TENANT_MODE && !adm.prop) return json_({ ok: false, error: 'forbidden' });   // テナント版: プロパティ未設定・例外は拒否
   if (adm.v.length < (adm.prop ? MIN_ADMIN.prop : MIN_ADMIN.seed)) return json_({ ok: false, error: 'forbidden' });
   if (tok !== adm.v) { noteFail_(); return json_({ ok: false, error: 'forbidden' }); }
   const lock = LockService.getScriptLock();

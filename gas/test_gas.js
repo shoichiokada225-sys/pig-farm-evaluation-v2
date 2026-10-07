@@ -368,4 +368,29 @@ ok('シード無し: 農場一覧=受験者タブの農場＋所属未確定（�
   ok('tenant: ping は合言葉なしで版だけ返す（入口は変えない）', A.get({ action: 'ping' }).ok === true);
   global.PropertiesService = origPS; delete global.CacheService;
 }
+// 2026-10-07 テナント版（TENANT_MODE=true）の fail-closed: プロパティの入れ忘れ・例外・短い値は、Seed.js の値があっても全拒否
+{
+  const origPS = global.PropertiesService, tcode = code.replace('const TENANT_MODE = false;', 'const TENANT_MODE = true;');
+  ok('tenantmode: ビルド元の Code.gs は既定 false（ヒラノ版）で、置換先の行が存在する', /const TENANT_MODE = false;/.test(code) && /const TENANT_MODE = true;/.test(tcode));
+  Object.keys(sheets).forEach(k => delete sheets[k]); Object.keys(docProps).forEach(k => delete docProps[k]);
+  const mkT = (props, seed) => {
+    global.PropertiesService = { getDocumentProperties: origPS.getDocumentProperties, getScriptProperties: () => { if (props === 'throw') throw new Error('props unavailable'); return { getProperty: k => (props || {})[k] || null }; } };
+    return new Function('ROSTER_SEED', 'APP_TOKEN', 'ADMIN_TOKEN', 'COMMON_SEED', tcode + ';return {setup,doGet,doPost};')(SEED, seed && seed.APP, seed && seed.ADMIN, undefined);
+  };
+  const g = (G, p) => JSON.parse(G.doGet({ parameter: p }).s), po = (G, o) => JSON.parse(G.doPost({ postData: { contents: JSON.stringify(o) } }).s);
+  const rec = APP.submitReq({ ...appRec, id: 'tm-1' });
+  { const G = mkT({}, null); ok('tenantmode: プロパティ未設定（Seed も無し）は roster も submit も全拒否', g(G, { action: 'roster' }).error === 'auth' && g(G, { action: 'roster', k: '' }).error === 'auth' && po(G, rec).error === 'auth' && !sheets['テスト評価者']); }
+  { const G = mkT({ ADMIN_TOKEN: 'farmT-admin-token-1234567890abcd' }, null); ok('tenantmode: ADMIN_TOKEN だけ入れて APP_TOKEN を入れ忘れても roster は全拒否', g(G, { action: 'roster' }).error === 'auth'); }
+  { const G = mkT('throw', null); ok('tenantmode: getScriptProperties が例外でも全拒否（開かない）', g(G, { action: 'roster' }).error === 'auth' && po(G, rec).error === 'auth'); }
+  { const G = mkT({}, { APP: 'seed-app-token-12345', ADMIN: 'seed-admin-token-1234567890' }); ok('tenantmode: プロパティが無ければ Seed.js の値があっても使わない（合言葉を知っていても拒否）', g(G, { action: 'roster', k: 'seed-app-token-12345' }).error === 'auth'); }
+  { const G = mkT({ APP_TOKEN: 'short-12345', ADMIN_TOKEN: 'short-admin' }, null); ok('tenantmode: 短いプロパティ（APP16未満）は全拒否・管理入口も拒否', g(G, { action: 'roster', k: 'short-12345' }).error === 'auth' && g(G, { action: 'admin', token: 'short-admin' }).error === 'forbidden'); }
+  { const G = mkT({}, { APP: 'seed-app-token-12345', ADMIN: 'seed-admin-token-1234567890' }); ok('tenantmode: プロパティ未設定では管理入口も拒否（Seed の ADMIN_TOKEN でも）', g(G, { action: 'admin', token: 'seed-admin-token-1234567890' }).error === 'forbidden'); }
+  { const P = { APP_TOKEN: 'farmT-app-token-1234567890', ADMIN_TOKEN: 'farmT-admin-token-1234567890abcd' }; const G = mkT(P, null);
+    ok('tenantmode: 正しいプロパティ（16/24字以上）なら通る', (G.setup(), g(G, { action: 'roster', k: P.APP_TOKEN }).ok === true) && po(G, { ...rec, k: P.APP_TOKEN }).ok === true);
+    ok('tenantmode: ping は合言葉なしのまま', g(G, { action: 'ping' }).ok === true); }
+  // ヒラノ版（TENANT_MODE=false・Seed の値あり・プロパティ無し）は従来どおり
+  { global.PropertiesService = origPS; const G = new Function('ROSTER_SEED', 'APP_TOKEN', code + ';return {setup,doGet};')(SEED, 'seed-app-token-12345'); G.setup();
+    ok('tenantmode: ヒラノ版（既定 false）は Seed の合言葉で従来どおり通り、無ければ拒否', g(G, { action: 'roster', k: 'seed-app-token-12345' }).ok === true && g(G, { action: 'roster' }).error === 'auth'); }
+  global.PropertiesService = origPS;
+}
 console.log(`\n合計: OK ${pass} / NG ${fail}`); process.exit(fail ? 1 : 0);
