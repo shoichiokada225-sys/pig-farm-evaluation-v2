@@ -623,5 +623,15 @@ const scoreWork = (p, wid, s, n) => p.evaluate(([wid, s, n]) => { [...document.q
     await browser.close();
   }
 
+  console.log('[P] 体測の出荷判定に休薬確認（2026-10-12 社長指示「絶対入れる」）');
+  {
+    const { browser, page } = await open();
+    const r = await page.evaluate(() => { const a = workById('body-measure').aspects.find(x => x.id === 'ship-judge');
+      const kw = { '': /休薬/, _en: /withdrawal/i, _vi: /ngừng thuốc/, _id: /henti obat/ };
+      return Object.entries(kw).every(([L, re]) => re.test(a['name' + L]) && re.test(a['kanten' + L]) && a['levels' + L].length === 5 && a['levels' + L].every(t => re.test(t))); });
+    ok('出荷判定の名前・観点・5段階すべてに休薬確認（4言語）', r);
+    await browser.close();
+  }
+
   console.log(`\n合計: OK ${pass} / NG ${fail}`); process.exit(fail ? 1 : 0);
 })().catch(e => { console.error(e); process.exit(1); });

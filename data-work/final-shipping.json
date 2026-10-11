@@ -548,41 +548,41 @@
       },
       {
         "id": "ship-judge",
-        "name": "出荷適期の判定と選別",
-        "kanten": "測った体重を出荷適体重110〜120kgなどの基準に当てはめ、出荷候補・軽量豚・重量豚に分けて上長に報告できるか。",
+        "name": "出荷適期の判定（休薬確認と選別）",
+        "kanten": "出荷候補の豚について投薬記録で休薬期間が完了しているかを確かめ、測った体重を出荷適体重110〜120kgなどの基準に当てはめて、出荷候補・軽量豚・重量豚に分けて上長に報告できるか。",
         "levels": [
-          "体重を基準に当てはめず、足りない豚も重すぎる豚も区別せず、判断を自分だけで決めて出荷に回す。",
-          "指示があれば基準と比べるが、軽量豚や重量豚の見落としが多く、報告も他者まかせ。",
-          "指示があれば110〜120kgを出荷候補、90kg未満（同日齢比較）を軽量豚、120kg超を重量豚に分け、結果を報告できる。",
-          "指示がなくても契約や出荷先の基準を確認して選別し、軽量豚は別管理と原因確認、重量豚は優先出荷を上長へ提案し、足りない豚の出荷は相談する。",
-          "軽すぎても重すぎても減額や脂肪過多になることを理解し、選別の考え方を新人に指導できる。"
+          "投薬記録も体重の基準も確かめず、休薬期間中の豚や足りない豚も区別せず、自分だけで決めて出荷に回す。",
+          "指示があれば投薬記録を見て基準と比べるが、休薬期間の確認や軽量豚・重量豚の見落としが多く、報告も他者まかせ。",
+          "指示があれば投薬記録で休薬期間の完了を確かめて、完了していない豚を出荷候補から外し、110〜120kgを出荷候補、90kg未満（同日齢比較）を軽量豚、120kg超を重量豚に分け、結果を報告できる。",
+          "指示がなくても出荷候補の休薬期間を投薬記録でダブルチェックし、休薬期間が確認できない豚は出荷しない。契約や出荷先の基準も確認して選別し、軽量豚は別管理と原因確認、重量豚は優先出荷を上長へ提案し、足りない豚の出荷は相談する。",
+          "休薬期間中の豚を出荷すると法律違反になり農場全体の出荷停止につながること、軽すぎても重すぎても減額や脂肪過多になることを理解し、休薬確認と選別の考え方を新人に指導できる。"
         ],
-        "name_en": "Judging shipping readiness and sorting",
-        "name_vi": "Xác định thời điểm xuất chuồng phù hợp và phân loại",
-        "name_id": "Penentuan waktu kirim yang tepat dan penyortiran",
-        "kanten_en": "Can they apply the measured weight to criteria such as the shipping weight of 110-120 kg, sort pigs into shipping candidates, light pigs, and heavy pigs, and report to the supervisor?",
-        "kanten_vi": "Có áp cân nặng đã đo vào tiêu chuẩn như cân nặng xuất chuồng 110-120kg, phân thành lợn dự kiến xuất, lợn nhẹ cân, lợn nặng cân và báo cáo cấp trên không.",
-        "kanten_id": "Apakah mencocokkan berat badan hasil timbang dengan standar seperti berat kirim 110-120kg, memilah menjadi calon kirim, babi ringan, dan babi berat, lalu melapor ke atasan.",
+        "name_en": "Judging shipping readiness (withdrawal check and sorting)",
+        "name_vi": "Đánh giá thời điểm xuất chuồng (kiểm tra thời gian ngừng thuốc và phân loại)",
+        "name_id": "Penilaian waktu kirim (pemeriksaan masa henti obat dan pemilahan)",
+        "kanten_en": "Can they check the medication records to confirm that the withdrawal period has ended for pigs that are shipping candidates, apply the measured weight to criteria such as the shipping weight of 110-120 kg, sort pigs into shipping candidates, light pigs, and heavy pigs, and report to the supervisor?",
+        "kanten_vi": "Có kiểm tra ghi chép dùng thuốc để xác nhận thời gian ngừng thuốc đã kết thúc đối với lợn dự kiến xuất chuồng, áp cân nặng đã cân vào tiêu chuẩn như cân nặng xuất chuồng 110-120 kg, phân thành lợn dự kiến xuất, lợn nhẹ cân, lợn nặng cân và báo cáo cấp trên không.",
+        "kanten_id": "Apakah bisa memeriksa catatan pemberian obat untuk memastikan masa henti obat sudah selesai pada babi calon kirim, menerapkan berat yang diukur pada standar seperti berat kirim 110-120 kg, memilah menjadi calon kirim, babi ringan, dan babi berat, lalu melapor ke atasan.",
         "levels_en": [
-          "Does not apply weights to the criteria, does not distinguish under-weight or over-weight pigs, and decides alone to send pigs to shipping.",
-          "With guidance, compares with the criteria, but often misses light or heavy pigs, and leaves reporting to others.",
-          "With guidance, sorts 110-120 kg as shipping candidates, under 90 kg (compared at the same age) as light pigs, and over 120 kg as heavy pigs, and can report the result.",
-          "Independently confirms the contract or buyer's standard before sorting, proposes separate management and cause checks for light pigs and priority shipping for heavy pigs to the supervisor, and consults about shipping pigs that fall short.",
-          "Understands that pigs too light or too heavy lead to price penalties or excess fat, and can teach new staff how to think about sorting."
+          "Checks neither the medication records nor the weight criteria, does not distinguish pigs in their withdrawal period or under-weight pigs, and decides alone to send pigs to shipping.",
+          "With guidance, looks at the medication records and compares with the criteria, but often misses the withdrawal check and light or heavy pigs, and leaves reporting to others.",
+          "With guidance, confirms in the medication records that the withdrawal period has ended, removes pigs whose withdrawal period has not ended from the shipping candidates, sorts 110-120 kg as shipping candidates, under 90 kg (compared at the same age) as light pigs, and over 120 kg as heavy pigs, and can report the result.",
+          "Independently double-checks the withdrawal period of shipping candidates in the medication records, and does not ship any pig whose withdrawal period cannot be confirmed. Also confirms the contract or buyer's standard before sorting, proposes separate management and cause checks for light pigs and priority shipping for heavy pigs to the supervisor, and consults about shipping pigs that fall short.",
+          "Understands that shipping a pig in its withdrawal period is against the law and can lead to a shipping ban for the whole farm, and that pigs too light or too heavy lead to price penalties or excess fat, and can teach new staff how to think about the withdrawal check and sorting."
         ],
         "levels_vi": [
-          "Không áp cân nặng vào tiêu chuẩn, không phân biệt lợn thiếu cân hay quá nặng, tự quyết định một mình rồi cho đi xuất.",
-          "Nếu có chỉ dẫn thì so với tiêu chuẩn, nhưng hay bỏ sót lợn nhẹ cân và nặng cân, việc báo cáo phó mặc cho người khác.",
-          "Nếu có chỉ dẫn thì phân loại 110-120kg là dự kiến xuất, dưới 90kg (so cùng ngày tuổi) là lợn nhẹ cân, trên 120kg là lợn nặng cân và báo cáo kết quả được.",
-          "Không cần chỉ dẫn cũng xác nhận tiêu chuẩn theo hợp đồng hoặc nơi nhận rồi phân loại, đề xuất với cấp trên quản lý riêng và kiểm tra nguyên nhân lợn nhẹ cân, ưu tiên xuất lợn nặng cân, và trao đổi khi lợn thiếu cân mà muốn xuất.",
-          "Hiểu lợn quá nhẹ hay quá nặng đều bị trừ tiền hoặc quá nhiều mỡ, và có thể hướng dẫn người mới cách nghĩ khi phân loại."
+          "Không kiểm tra ghi chép dùng thuốc lẫn tiêu chuẩn cân nặng, không phân biệt lợn đang trong thời gian ngừng thuốc hay lợn thiếu cân, tự mình quyết định đưa đi xuất chuồng.",
+          "Nếu có chỉ dẫn thì xem ghi chép dùng thuốc và so với tiêu chuẩn, nhưng hay bỏ sót việc kiểm tra thời gian ngừng thuốc và lợn nhẹ cân, lợn nặng cân, việc báo cáo thì để người khác làm.",
+          "Nếu có chỉ dẫn thì xác nhận trong ghi chép dùng thuốc rằng thời gian ngừng thuốc đã kết thúc, loại lợn chưa hết thời gian ngừng thuốc ra khỏi danh sách dự kiến xuất, phân 110-120 kg là lợn dự kiến xuất, dưới 90 kg (so cùng ngày tuổi) là lợn nhẹ cân, trên 120 kg là lợn nặng cân, và báo cáo được kết quả.",
+          "Không cần chỉ dẫn cũng kiểm tra hai lần thời gian ngừng thuốc của lợn dự kiến xuất trong ghi chép dùng thuốc, lợn nào chưa xác nhận được thời gian ngừng thuốc thì không xuất. Cũng xác nhận tiêu chuẩn theo hợp đồng hoặc nơi nhận rồi mới phân loại, đề xuất với cấp trên quản lý riêng và tìm nguyên nhân với lợn nhẹ cân, ưu tiên xuất với lợn nặng cân, và trao đổi khi lợn thiếu cân mà muốn xuất.",
+          "Hiểu rằng xuất lợn đang trong thời gian ngừng thuốc là vi phạm pháp luật và có thể khiến cả trại bị đình chỉ xuất chuồng, lợn quá nhẹ hay quá nặng đều bị giảm giá hoặc nhiều mỡ, và có thể hướng dẫn người mới cách nghĩ về kiểm tra thời gian ngừng thuốc và phân loại."
         ],
         "levels_id": [
-          "Tidak mencocokkan berat dengan standar, tidak membedakan babi yang kurang atau terlalu berat, dan memutuskan sendiri lalu mengirimkannya.",
-          "Jika ada instruksi bisa membandingkan dengan standar, tetapi sering terlewat babi ringan atau berat, dan pelaporan diserahkan ke orang lain.",
-          "Jika ada instruksi, bisa memilah 110-120kg sebagai calon kirim, di bawah 90kg (dibandingkan pada umur yang sama) sebagai babi ringan, dan di atas 120kg sebagai babi berat, lalu melaporkan hasilnya.",
-          "Tanpa instruksi pun, memastikan standar kontrak atau pembeli sebelum memilah, mengusulkan ke atasan pengelolaan terpisah dan pemeriksaan penyebab untuk babi ringan serta pengiriman prioritas untuk babi berat, dan berkonsultasi tentang pengiriman babi yang kurang berat.",
-          "Memahami bahwa babi yang terlalu ringan atau terlalu berat menyebabkan potongan harga atau lemak berlebih, dan bisa mengajari karyawan baru cara berpikir dalam penyortiran."
+          "Tidak memeriksa catatan pemberian obat maupun standar berat, tidak membedakan babi yang masih dalam masa henti obat atau babi yang kurang berat, dan memutuskan sendiri untuk mengirim.",
+          "Jika ada instruksi, melihat catatan pemberian obat dan membandingkan dengan standar, tetapi sering terlewat memeriksa masa henti obat serta babi ringan atau berat, dan menyerahkan laporan ke orang lain.",
+          "Jika ada instruksi, memastikan di catatan pemberian obat bahwa masa henti obat sudah selesai, mengeluarkan babi yang masa henti obatnya belum selesai dari calon kirim, memilah 110-120 kg sebagai calon kirim, di bawah 90 kg (dibandingkan pada umur yang sama) sebagai babi ringan, dan di atas 120 kg sebagai babi berat, lalu bisa melaporkan hasilnya.",
+          "Tanpa instruksi pun memeriksa dua kali masa henti obat calon kirim di catatan pemberian obat, dan babi yang masa henti obatnya tidak bisa dipastikan tidak dikirim. Juga memastikan standar kontrak atau pembeli sebelum memilah, mengusulkan ke atasan pengelolaan terpisah dan pemeriksaan penyebab untuk babi ringan dan pengiriman prioritas untuk babi berat, dan berkonsultasi tentang pengiriman babi yang kurang berat.",
+          "Memahami bahwa mengirim babi dalam masa henti obat melanggar hukum dan bisa menyebabkan penghentian pengiriman seluruh peternakan, serta babi terlalu ringan atau terlalu berat menyebabkan potongan harga atau lemak berlebih, dan bisa mengajari karyawan baru cara berpikir tentang pemeriksaan masa henti obat dan pemilahan."
         ]
       },
       {
