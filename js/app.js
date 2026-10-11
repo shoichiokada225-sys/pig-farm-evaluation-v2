@@ -230,6 +230,7 @@ function applyPreset(pid){
   const drop=curEe.redo?[]:selWorks.filter(w=>!want.includes(w));
   const f=collectForm(),scored=f.works.filter(we=>drop.includes(we.workId)&&formHasContent({works:[we]}));
   if(scored.length&&!confirm(t('cPresetDrop').replace('{w}',scored.map(we=>loc(workById(we.workId),'name')).join(listSep()))))return;
+  const pe0=curEe.redo?null:selEntry(getRoster().list);if(pe0)setAssign(pe0,p.works,false);   // 作業が名簿に無い人は、区分の作業一式を端末が人別に覚える（一部だけ保存しても残りが出る）
   if(!formHasContent(f)){selWorks=curEe.redo?selWorks.concat(want.filter(w=>!selWorks.includes(w))):want.slice();saveSel();buildWorkSel();buildCards()}
   else{
     drop.forEach(w=>{selWorks=selWorks.filter(x=>x!==w);removeWorkSec(w)});
@@ -400,6 +401,7 @@ function doSave(){
       const nm=empty.map(x=>{const w=workById(x.wid);return w?loc(w,'name'):x.wid}).join(listSep());
       const lostCm=d.works.some(we=>empty.some(x=>x.wid===we.workId)&&Object.values(we.comments||{}).some(v=>(v||'').trim()));
       if(!confirm(t('cPartSave').replace('{n}',empty.length).replace('{w}',nm)+(lostCm?'\n'+t('cPartCm'):'')))return;
+      rememberAssign(selWorks);   // 作業が名簿に無い人: 採点しなかった作業を、あとで選ぶと残りの作業として出すため覚える
       d.works=d.works.filter(we=>full.some(x=>x.wid===we.workId));partLeft=empty.length;miss=[];
     }
   }
@@ -456,6 +458,11 @@ function workStats(d){
   });
 }
 /* 作業を今回は実施しない（豚がいない・時間切れ）: その作業だけ外す。採点済みなら確認。外した作業は後で「残りの作業」として出る */
+/* 選んでいる人が「作業が名簿に無い人」なら、今の作業を端末に覚える（sync.js setAssign）。編集・やり直し中は何もしない */
+function rememberAssign(ids){
+  if(editId||curEe.redo)return;
+  const pe=selEntry(getRoster().list);if(pe)setAssign(pe,ids,true);
+}
 function skipWork(wid){
   if(editId){toast(t('editingBanner'),1);return}
   if(curEe.redo){toast(t('eRedoAll'),1);return}   // やり直しは全作業を採点する
@@ -464,6 +471,7 @@ function skipWork(wid){
   if(sc&&!confirm(t('cSkipScored').replace('{w}',nm)))return;
   const y=window.scrollY,idx=selWorks.indexOf(wid),snap=collectForm().works.find(we=>we.workId===wid),who=document.getElementById('fEe').value;
   const cur0={...curEe};
+  rememberAssign(selWorks);   // 作業が名簿に無い人: 外した作業も「残りの作業」に出るよう、今の作業を覚える
   toggleWork(wid,false);
   // 誤タップ対策: トーストの「元に戻す」で、外した作業を同じ位置に採点ごと戻す（同じ人を選んでいる間だけ）
   const undo={label:t('undo'),fn:()=>unskipWork(wid,idx,snap,who,cur0)};

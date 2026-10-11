@@ -6,5 +6,5 @@
   {"id": "nursery-house", "name": "子豚舎", "name_en": "Nursery barn", "name_vi": "Chuồng cai sữa", "name_id": "Kandang sapihan",
    "works": ["fan-clean", "five-s", "treatment", "carcass", "washing", "lime"]},
   {"id": "finishing-house", "name": "肥育舎", "name_en": "Finishing barn", "name_vi": "Chuồng vỗ béo", "name_id": "Kandang penggemukan",
-   "works": ["feeding-daily", "feed-adjust", "additive", "disinfect", "daily-report", "dung-removal", "lime", "body-measure"]}
+   "works": ["feeding-daily", "feed-adjust-fin", "additive", "disinfect", "daily-report", "dung-removal", "lime", "body-measure"]}
 ]

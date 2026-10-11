@@ -88,7 +88,7 @@
       {
         "id": "headcount-balance",
         "name": "頭数変動の検算",
-        "kanten": "前日頭数±移動＋分娩子豚−死亡−出荷の式で検算し、合わないとき当日中に原因を調べられるか。",
+        "kanten": "前日頭数＋入舎−転出−死亡−出荷（淘汰を含む）＝当日頭数の式で検算し、合わないとき当日中に原因を調べられるか。",
         "levels": [
           "頭数変動を書かず、計算が合わなくても気にせず放置する。",
           "指示があれば頭数を書くが、検算をせず、不一致も他者に指摘されるまで気づかない。",
@@ -97,7 +97,7 @@
           "先延ばしが原因特定を難しくすると理解し、検算と当日中の原因調査を新人に指導できる。"
         ],
         "name_en": "Verifying Head-Count Changes",
-        "kanten_en": "Can they verify using the formula previous-day count ± transfers + farrowed piglets − deaths − shipments, and investigate the cause the same day when it does not balance?",
+        "kanten_en": "Can they verify using the formula previous-day count + pigs moved in − pigs moved out − deaths − shipments (including culls) = today's count, and investigate the cause the same day when it does not balance?",
         "levels_en": [
           "Does not record head-count changes and leaves mismatched calculations without concern.",
           "With guidance records head counts, but skips verification and misses mismatches until others point them out.",
@@ -106,7 +106,7 @@
           "Understands that postponing makes cause identification difficult, and can teach new staff verification and same-day cause investigation."
         ],
         "name_vi": "Kiểm lại biến động số đầu con",
-        "kanten_vi": "Có kiểm lại bằng công thức: số đầu con hôm trước ± chuyển đàn + lợn con mới đẻ − chết − xuất chuồng, và khi không khớp có tìm nguyên nhân ngay trong ngày không.",
+        "kanten_vi": "Có kiểm lại bằng công thức: số đầu con hôm trước + lợn nhập chuồng − lợn chuyển đi − chết − xuất chuồng (kể cả loại thải) = số đầu con hôm nay, và khi không khớp có tìm nguyên nhân ngay trong ngày không.",
         "levels_vi": [
           "Không ghi biến động số đầu con, tính không khớp cũng không quan tâm và bỏ mặc.",
           "Nếu được chỉ thị thì ghi số đầu con, nhưng không kiểm lại, sai lệch cũng không nhận ra cho đến khi người khác chỉ ra.",
@@ -115,7 +115,7 @@
           "Hiểu việc trì hoãn làm khó xác định nguyên nhân, và có thể hướng dẫn người mới việc kiểm lại và tìm nguyên nhân trong ngày."
         ],
         "name_id": "Menghitung ulang perubahan jumlah ekor",
-        "kanten_id": "Apakah dapat menghitung ulang dengan rumus: jumlah ekor hari sebelumnya ± perpindahan + anak babi lahir − mati − pengiriman, dan mencari penyebabnya pada hari itu juga jika tidak cocok?",
+        "kanten_id": "Apakah dapat menghitung ulang dengan rumus: jumlah ekor hari sebelumnya + babi masuk − babi pindah keluar − mati − pengiriman (termasuk afkir) = jumlah ekor hari ini, dan mencari penyebabnya pada hari itu juga jika tidak cocok?",
         "levels_id": [
           "Tidak mencatat perubahan jumlah ekor, dan tidak peduli walau perhitungannya tidak cocok.",
           "Mencatat jumlah ekor jika diperintah, tetapi tidak menghitung ulang, dan tidak menyadari ketidakcocokan sampai ditunjukkan orang lain.",

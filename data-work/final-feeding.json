@@ -4,46 +4,46 @@
   "category": "feeding",
   "no": "No.11",
   "name": "給餌",
-  "purposeShort": "成長・繁殖を安定させ、全頭がムラなく食べ、ムダな飼料を出さない",
+  "purposeShort": "豚の発育と体調を安定させ、全頭がムラなく食べ、ムダな飼料を出さない",
   "gyomu": "11",
   "aspects": [
    {
     "id": "amount",
     "name": "給与量の管理と個体・季節調整",
-    "kanten": "決められた給与量を守りつつ、豚の状態や季節に応じて過不足なく調整できるか。",
+    "kanten": "決められた給与量（不断給餌ではエサ箱の出量）を守りつつ、豚の状態や季節に応じて過不足なく調整できるか。",
     "levels": [
      "決められた量を守らず目分量で与え、豚の状態や季節の違いを考えずに一律に給餌する。",
      "指示があれば決められた量を与えられるが、季節や個体差に応じた調整は他者まかせで、過不足が出やすい。",
      "指示があれば決められた量を守り、暑い時期や豚の状態に応じてある程度の増減ができる。",
      "指示がなくても食い込みや季節を見て量を細かく加減し、食下量の低下があれば原因を探って対応する。",
-     "給与量が成長・繁殖に与える影響を理解し、体況・季節・ステージに合わせて最適化し、調整の考え方を新人に指導できる。"
+     "給与量が発育・体調に与える影響を理解し、食い込み・季節・ステージに合わせて最適化し、調整の考え方を新人に指導できる。"
     ],
     "name_en": "Feed amount control with individual and seasonal adjustment",
     "name_vi": "Quản lý lượng thức ăn và điều chỉnh theo từng con, theo mùa",
     "name_id": "Pengelolaan jumlah pakan dan penyesuaian per individu dan musim",
-    "kanten_en": "Can they follow the prescribed feed amounts while adjusting appropriately for pig condition and season, without excess or shortage?",
-    "kanten_vi": "Có giữ đúng lượng thức ăn quy định, đồng thời điều chỉnh vừa đủ theo tình trạng lợn và theo mùa không.",
-    "kanten_id": "Apakah bisa mengikuti jumlah pakan yang ditentukan, dan menyesuaikannya dengan tepat sesuai kondisi babi dan musim.",
+    "kanten_en": "Can they follow the prescribed feed amounts (or, with ad-lib feeding, the feeder output) while adjusting appropriately for pig condition and season, without excess or shortage?",
+    "kanten_vi": "Có giữ đúng lượng thức ăn quy định (với cho ăn tự do thì là lượng thức ăn ra ở máng), đồng thời điều chỉnh vừa đủ theo tình trạng lợn và theo mùa không.",
+    "kanten_id": "Apakah bisa mengikuti jumlah pakan yang ditentukan (pada pemberian ad libitum, jumlah pakan yang keluar di palung), dan menyesuaikannya dengan tepat sesuai kondisi babi dan musim.",
     "levels_en": [
      "Ignores the prescribed amounts and feeds by eye, giving the same amount to all pigs regardless of condition or season.",
      "With guidance, can give the prescribed amount, but leaves seasonal and individual adjustments to others, often causing excess or shortage.",
      "With guidance, follows the prescribed amounts and can make some increases or decreases according to hot weather or pig condition.",
      "Independently fine-tunes amounts based on feed intake and season, and investigates the cause when feed intake drops.",
-     "Understands how feed amounts affect growth and reproduction, optimizes them by body condition, season, and stage, and can teach new staff the principles of adjustment."
+     "Understands how feed amounts affect growth and condition, optimizes them by intake, season, and stage, and can teach new staff the principles of adjustment."
     ],
     "levels_vi": [
      "Không giữ lượng quy định, cho ăn theo ước lượng bằng mắt, cho ăn giống nhau mà không nghĩ đến tình trạng lợn hay mùa.",
      "Nếu có chỉ dẫn thì cho ăn đúng lượng quy định, nhưng việc điều chỉnh theo mùa hay từng con thì phó mặc cho người khác, dễ bị thừa hoặc thiếu.",
      "Nếu có chỉ dẫn thì giữ đúng lượng quy định, và có thể tăng giảm phần nào theo mùa nóng hoặc tình trạng lợn.",
      "Không cần chỉ dẫn cũng nhìn mức ăn và mùa để điều chỉnh lượng một cách tỉ mỉ; nếu lợn ăn ít đi thì tìm nguyên nhân và xử lý.",
-     "Hiểu lượng thức ăn ảnh hưởng đến tăng trưởng và sinh sản, tối ưu theo thể trạng, mùa và giai đoạn, và có thể hướng dẫn người mới cách điều chỉnh."
+     "Hiểu lượng thức ăn ảnh hưởng đến sự phát triển và thể lực của lợn, tối ưu theo mức ăn, mùa và giai đoạn, và có thể hướng dẫn người mới cách điều chỉnh."
     ],
     "levels_id": [
      "Tidak mengikuti jumlah yang ditentukan, memberi pakan dengan kira-kira saja, dan memberi jumlah yang sama tanpa melihat kondisi babi atau musim.",
      "Jika ada instruksi bisa memberi jumlah yang ditentukan, tetapi penyesuaian menurut musim atau perbedaan individu diserahkan ke orang lain, sehingga sering kelebihan atau kekurangan.",
      "Jika ada instruksi, bisa mengikuti jumlah yang ditentukan dan bisa menambah atau mengurangi sedikit sesuai musim panas atau kondisi babi.",
      "Tanpa instruksi pun, bisa mengatur jumlah pakan dengan teliti sambil melihat nafsu makan dan musim, dan jika konsumsi pakan turun, mencari penyebabnya lalu menanganinya.",
-     "Memahami pengaruh jumlah pakan terhadap pertumbuhan dan reproduksi, mengoptimalkannya sesuai kondisi tubuh, musim, dan tahap produksi, serta bisa mengajari karyawan baru cara berpikir penyesuaiannya."
+     "Memahami pengaruh jumlah pakan terhadap pertumbuhan dan kondisi babi, mengoptimalkannya sesuai nafsu makan, musim, dan tahap produksi, serta bisa mengajari karyawan baru cara berpikir penyesuaiannya."
     ]
    },
    {
@@ -127,39 +127,39 @@
    {
     "id": "intake-watch",
     "name": "給餌後の食い込み観察",
-    "kanten": "配り終えた後5〜10分は食い込みを観察し、食べに来ない豚を耳標番号で特定して報告できるか。",
+    "kanten": "配り終えた後5〜10分は食い込みを観察し、食べに来ない豚を耳標番号または豚房番号・マーキングで特定して報告できるか。",
     "levels": [
      "配り終えるとすぐ立ち去り、食べに来ない豚や動きのおかしい豚がいても気づかない。",
      "指示されれば観察するが、時間が短く、個体の特定やメモをしないことが多い。",
      "指示があれば給餌後5〜10分観察し、食べに来ない豚・元気のない豚に気づける。",
-     "指示がなくても毎回観察し、異常な個体を耳標番号で特定してメモし、上司に報告する。",
+     "指示がなくても毎回観察し、異常な個体を耳標番号または豚房番号・マーキングで特定してメモし、上司に報告する。",
      "給餌が豚の体調を見る一番良い機会であることを理解し、観察の着眼点を新人に指導できる。"
     ],
     "name_en": "Observing feed intake after feeding",
     "name_vi": "Quan sát lợn ăn sau khi cho ăn",
     "name_id": "Mengamati babi makan setelah pemberian pakan",
-    "kanten_en": "Can they observe feed intake for 5-10 minutes after distributing, identify pigs that do not come to eat by ear tag number, and report?",
-    "kanten_vi": "Sau khi chia xong có quan sát lợn ăn trong 5〜10 phút, xác định lợn không đến ăn bằng số thẻ tai và báo cáo không.",
-    "kanten_id": "Apakah setelah selesai membagikan pakan mengamati babi makan selama 5〜10 menit, mengenali babi yang tidak datang makan dengan nomor eartag, dan melaporkannya.",
+    "kanten_en": "Can they observe feed intake for 5-10 minutes after distributing, identify pigs that do not come to eat by ear tag number, or by pen number and marking, and report?",
+    "kanten_vi": "Sau khi chia xong có quan sát lợn ăn trong 5–10 phút, xác định lợn không đến ăn bằng số thẻ tai, hoặc số ô chuồng và dấu đánh dấu và báo cáo không.",
+    "kanten_id": "Apakah setelah selesai membagikan pakan mengamati babi makan selama 5–10 menit, mengenali babi yang tidak datang makan dengan nomor eartag, atau nomor petak kandang dan tanda semprot, dan melaporkannya.",
     "levels_en": [
      "Leaves right after distributing, and does not notice pigs that do not come to eat or that move strangely.",
      "Observes when instructed, but for too short a time, and often fails to identify individuals or take notes.",
      "With guidance, observes for 5-10 minutes after feeding and can notice pigs that do not come to eat or lack energy.",
-     "Independently observes every time, identifies abnormal individuals by ear tag number, notes them, and reports to the supervisor.",
+     "Independently observes every time, identifies abnormal individuals by ear tag number, or by pen number and marking, notes them, and reports to the supervisor.",
      "Understands that feeding time is the best opportunity to check pig condition, and can teach new staff the key observation points."
     ],
     "levels_vi": [
      "Chia xong là bỏ đi ngay, không nhận ra cả lợn không đến ăn hay lợn cử động bất thường.",
      "Nếu được chỉ dẫn thì quan sát, nhưng thời gian quá ngắn, thường không xác định từng con và không ghi chú.",
-     "Nếu có chỉ dẫn thì quan sát 5〜10 phút sau khi cho ăn, và nhận ra được lợn không đến ăn hay lợn không khỏe.",
-     "Không cần chỉ dẫn cũng quan sát mỗi lần, xác định con bất thường bằng số thẻ tai, ghi chú lại và báo cáo cấp trên.",
+     "Nếu có chỉ dẫn thì quan sát 5–10 phút sau khi cho ăn, và nhận ra được lợn không đến ăn hay lợn không khỏe.",
+     "Không cần chỉ dẫn cũng quan sát mỗi lần, xác định con bất thường bằng số thẻ tai, hoặc số ô chuồng và dấu đánh dấu, ghi chú lại và báo cáo cấp trên.",
      "Hiểu lúc cho ăn là cơ hội tốt nhất để xem sức khỏe của lợn, và có thể hướng dẫn người mới các điểm cần chú ý khi quan sát."
     ],
     "levels_id": [
      "Langsung pergi setelah selesai membagikan, dan tidak sadar walau ada babi yang tidak datang makan atau bergerak aneh.",
      "Jika disuruh mengamati, tetapi waktunya terlalu singkat, dan sering tidak mengenali individu atau tidak mencatat.",
-     "Jika ada instruksi, mengamati 5〜10 menit setelah memberi pakan, dan bisa menyadari babi yang tidak datang makan atau tampak lesu.",
-     "Tanpa instruksi pun, mengamati setiap kali, mengenali individu yang tidak normal dengan nomor eartag, mencatatnya, dan melaporkan ke atasan.",
+     "Jika ada instruksi, mengamati 5–10 menit setelah memberi pakan, dan bisa menyadari babi yang tidak datang makan atau tampak lesu.",
+     "Tanpa instruksi pun, mengamati setiap kali, mengenali individu yang tidak normal dengan nomor eartag, atau nomor petak kandang dan tanda semprot, mencatatnya, dan melaporkan ke atasan.",
      "Memahami bahwa waktu pemberian pakan adalah kesempatan terbaik untuk melihat kondisi babi, dan bisa mengajari karyawan baru titik-titik pengamatannya."
     ]
    },
@@ -206,9 +206,9 @@
   "name_en": "Feeding",
   "name_vi": "Cho ăn",
   "name_id": "Pemberian pakan",
-  "purposeShort_en": "Stabilize growth and reproduction, ensure all pigs eat evenly, and avoid feed waste",
-  "purposeShort_vi": "Giúp lợn lớn và sinh sản ổn định, cả đàn ăn đều nhau, không lãng phí thức ăn",
-  "purposeShort_id": "Menstabilkan pertumbuhan dan reproduksi, semua babi makan merata, tidak ada pakan terbuang"
+  "purposeShort_en": "Stabilize pigs' growth and condition, ensure all pigs eat evenly, and avoid feed waste",
+  "purposeShort_vi": "Giúp lợn phát triển và giữ thể lực ổn định, cả đàn ăn đều nhau, không lãng phí thức ăn",
+  "purposeShort_id": "Menstabilkan pertumbuhan dan kondisi babi, semua babi makan merata, tidak ada pakan terbuang"
  },
  {
   "id": "feed-adjust",
@@ -1279,9 +1279,9 @@
     "kanten": "ラベルの対象・添加量を守り、正確に計量してムラなく混合できるか。",
     "levels": [
      "計量器を確かめず目分量で入れ、混合手順を省いてムラを出す。",
-     "指示があれば計量するが、計量器の校正やプレミックス手順に漏れがある。",
+     "指示があれば計量するが、秤のゼロ調整（風袋引き）や量った数値の声出し確認に漏れがある。",
      "指示があればラベルの添加量に従って計量し、ひと通り混合できる。",
-     "指示がなくても計量器を確かめて正確に計り、プレミックスでムラなく混合する。",
+     "指示がなくても計量器を確かめて正確に計り、指示された方法でムラなく混合し、計量後すぐ容器にラベルを貼る。",
      "計量誤差・混合ムラが成績に与える影響を理解し、正確な準備手順を新人に指導できる。"
     ],
     "name_en": "Accurate measurement and mixing",
@@ -1292,62 +1292,62 @@
     "kanten_id": "Apakah mematuhi sasaran dan dosis pada label, menakar dengan akurat, dan mencampur secara merata.",
     "levels_en": [
      "Adds by eye without checking the scale and skips mixing steps, causing uneven distribution.",
-     "With guidance, measures, but is inconsistent about scale calibration and premix procedures.",
+     "With guidance, measures, but often misses zeroing the scale (tare) or calling out the measured value.",
      "With guidance, measures according to the label's inclusion rate and can mix adequately.",
-     "Independently verifies the scale, measures accurately, and mixes evenly using a premix.",
+     "Independently verifies the scale, measures accurately, mixes evenly by the instructed method, and labels the container right after weighing.",
      "Understands how measurement errors and uneven mixing affect performance, and can teach new staff accurate preparation procedures."
     ],
     "levels_vi": [
      "Không kiểm tra dụng cụ cân, đổ theo ước lượng bằng mắt, bỏ bước trộn làm trộn không đều.",
-     "Nếu có chỉ dẫn thì cân đo, nhưng có bỏ sót việc hiệu chỉnh dụng cụ cân và bước trộn trước (premix).",
+     "Nếu có chỉ dẫn thì cân đo, nhưng hay bỏ sót việc chỉnh cân về 0 (trừ bì) và đọc to số đã cân để xác nhận.",
      "Nếu có chỉ dẫn thì cân đo theo lượng bổ sung trên nhãn, trộn được các bước cơ bản.",
-     "Không cần chỉ dẫn cũng kiểm tra dụng cụ cân, cân chính xác, trộn trước (premix) để trộn đều không bị chỗ đậm chỗ nhạt.",
+     "Không cần chỉ dẫn cũng kiểm tra dụng cụ cân, cân chính xác, trộn đều theo cách được chỉ định và dán nhãn lên hộp ngay sau khi cân.",
      "Hiểu sai số cân đo và trộn không đều ảnh hưởng đến thành tích, và có thể hướng dẫn người mới quy trình chuẩn bị chính xác."
     ],
     "levels_id": [
      "Memasukkan dengan kira-kira tanpa memeriksa alat takar, dan melewatkan langkah pencampuran sehingga tidak merata.",
-     "Jika ada instruksi bisa menakar, tetapi sering lalai mengecek kalibrasi alat takar dan langkah premix (campuran awal).",
+     "Jika ada instruksi bisa menakar, tetapi sering lalai menolkan timbangan (tara) dan menyebutkan angka takaran dengan suara keras.",
      "Jika ada instruksi, bisa menakar sesuai dosis pada label dan mencampur secara garis besar.",
-     "Tanpa instruksi pun, memeriksa alat takar dan menakar dengan akurat, serta mencampur merata dengan cara premix.",
+     "Tanpa instruksi pun, memeriksa alat takar dan menakar dengan akurat, mencampur merata sesuai cara yang diinstruksikan, dan menempel label pada wadah segera setelah menakar.",
      "Memahami pengaruh kesalahan takaran dan campuran tidak merata terhadap performa, dan bisa mengajari karyawan baru urutan persiapan yang akurat."
     ]
    },
    {
     "id": "antibacterial",
-    "name": "抗菌性添加物の重複・休薬管理",
-    "kanten": "抗菌性添加物の重なりに注意し、給与期間の終了・休薬を記録で管理できるか。",
+    "name": "抗菌性添加物の休薬管理",
+    "kanten": "休薬期間のある添加剤について、投与開始日・終了日を記録し、出荷予定日と照らして休薬を管理できるか。",
     "levels": [
-     "抗菌性添加物の重なりや給与期間の終了を確認せず、残留リスクを招く。",
-     "指示があれば注意するが、複数添加剤の残存や期間管理に漏れが多い。",
-     "指示があれば抗菌性添加物の重なりに注意し、休薬のあるものを記録できる。",
-     "指示がなくても給与期間の終了を管理し、容器内残存による混在を避ける。",
+     "休薬期間のある添加剤の投与開始日・終了日を記録せず、出荷予定日とも照らさず、残留リスクを招く。",
+     "指示があれば注意するが、投与開始日・終了日の記録や出荷予定日との照合に漏れが多い。",
+     "指示があれば休薬期間のある添加剤の投与開始日・終了日を記録できる。",
+     "指示がなくても投与開始日・終了日を記録し、出荷予定日と照らして休薬を管理する。",
      "残留リスクと休薬の意味を理解し、抗菌性添加物の管理ルールを新人に指導できる。"
     ],
-    "name_en": "Managing overlap and withdrawal of antibacterial additives",
-    "name_vi": "Quản lý trùng lặp và ngừng thuốc của chất bổ sung kháng khuẩn",
-    "name_id": "Pengelolaan tumpang tindih imbuhan antibakteri dan masa henti obat",
-    "kanten_en": "Can they watch for overlapping antibacterial additives and manage the end of feeding periods and withdrawal through records?",
-    "kanten_vi": "Có chú ý sự trùng lặp của các chất bổ sung kháng khuẩn, quản lý bằng ghi chép việc kết thúc thời gian cho ăn và thời gian ngừng thuốc không.",
-    "kanten_id": "Apakah memperhatikan tumpang tindih imbuhan antibakteri, dan mengelola akhir masa pemberian serta masa henti obat dengan catatan.",
+    "name_en": "Managing withdrawal of antibacterial additives",
+    "name_vi": "Quản lý thời gian ngừng thuốc của chất bổ sung kháng khuẩn",
+    "name_id": "Pengelolaan masa henti obat imbuhan antibakteri",
+    "kanten_en": "For additives with a withdrawal period, can they record the start and end dates and manage withdrawal against the planned shipping date?",
+    "kanten_vi": "Với chất bổ sung có thời gian ngừng thuốc, có ghi ngày bắt đầu, ngày kết thúc và đối chiếu với ngày dự kiến xuất chuồng để quản lý ngừng thuốc không.",
+    "kanten_id": "Untuk imbuhan bermasa henti obat, apakah mencatat tanggal mulai dan selesai serta mengelola masa henti obat dengan mencocokkan rencana tanggal kirim.",
     "levels_en": [
-     "Does not check for overlapping antibacterial additives or the end of feeding periods, creating residue risk.",
-     "With guidance, pays attention, but often misses residues of multiple additives and period management.",
-     "With guidance, watches for overlapping antibacterial additives and can record those with withdrawal periods.",
-     "Independently manages the end of feeding periods and prevents mixing caused by leftovers remaining in containers.",
+     "Does not record the start and end dates of additives with a withdrawal period or check them against the planned shipping date, creating residue risk.",
+     "With guidance, pays attention, but often misses recording start and end dates or checking against the planned shipping date.",
+     "With guidance, can record the start and end dates of additives with a withdrawal period.",
+     "Independently records start and end dates and manages withdrawal against the planned shipping date.",
      "Understands residue risk and the meaning of withdrawal periods, and can teach new staff the rules for managing antibacterial additives."
     ],
     "levels_vi": [
-     "Không kiểm tra sự trùng lặp của chất bổ sung kháng khuẩn và việc kết thúc thời gian cho ăn, gây nguy cơ tồn dư thuốc.",
-     "Nếu có chỉ dẫn thì chú ý, nhưng hay bỏ sót việc quản lý chất còn sót lại khi dùng nhiều loại và quản lý thời gian.",
-     "Nếu có chỉ dẫn thì chú ý sự trùng lặp của chất bổ sung kháng khuẩn, ghi chép được những loại có thời gian ngừng thuốc.",
-     "Không cần chỉ dẫn cũng quản lý việc kết thúc thời gian cho ăn, tránh lẫn lộn do chất còn sót lại trong thùng chứa.",
+     "Không ghi ngày bắt đầu và ngày kết thúc của chất bổ sung có thời gian ngừng thuốc, không đối chiếu với ngày dự kiến xuất chuồng, gây nguy cơ tồn dư thuốc.",
+     "Nếu có chỉ dẫn thì chú ý, nhưng hay bỏ sót việc ghi ngày bắt đầu, ngày kết thúc và đối chiếu với ngày dự kiến xuất chuồng.",
+     "Nếu có chỉ dẫn thì ghi được ngày bắt đầu và ngày kết thúc của chất bổ sung có thời gian ngừng thuốc.",
+     "Không cần chỉ dẫn cũng ghi ngày bắt đầu, ngày kết thúc và đối chiếu với ngày dự kiến xuất chuồng để quản lý ngừng thuốc.",
      "Hiểu nguy cơ tồn dư và ý nghĩa của việc ngừng thuốc, và có thể hướng dẫn người mới quy tắc quản lý chất bổ sung kháng khuẩn."
     ],
     "levels_id": [
-     "Tidak memeriksa tumpang tindih imbuhan antibakteri atau akhir masa pemberian, sehingga menimbulkan risiko residu obat.",
-     "Jika ada instruksi bisa berhati-hati, tetapi sering lalai soal sisa beberapa imbuhan dan pengelolaan masa pemberian.",
-     "Jika ada instruksi, bisa memperhatikan tumpang tindih imbuhan antibakteri dan mencatat yang punya masa henti obat.",
-     "Tanpa instruksi pun, mengelola akhir masa pemberian dan menghindari tercampurnya sisa imbuhan di dalam wadah.",
+     "Tidak mencatat tanggal mulai dan selesai imbuhan bermasa henti obat dan tidak mencocokkannya dengan rencana tanggal kirim, sehingga menimbulkan risiko residu obat.",
+     "Jika ada instruksi bisa berhati-hati, tetapi sering lalai mencatat tanggal mulai dan selesai serta mencocokkan dengan rencana tanggal kirim.",
+     "Jika ada instruksi, bisa mencatat tanggal mulai dan selesai imbuhan bermasa henti obat.",
+     "Tanpa instruksi pun, mencatat tanggal mulai dan selesai serta mengelola masa henti obat dengan mencocokkan rencana tanggal kirim.",
      "Memahami risiko residu dan arti masa henti obat, dan bisa mengajari karyawan baru aturan pengelolaan imbuhan antibakteri."
     ]
    },
@@ -1432,10 +1432,10 @@
    {
     "id": "mixup-storage",
     "name": "取り違え防止と保管・器具清掃",
-    "kanten": "計量した容器に豚群名・剤名・量のメモをはり、開封日を書いて保管し、器具に粉を残さないか。",
+    "kanten": "計量した容器に豚群名・剤名・量のメモをはり、計量後すぐラベルを貼って保管し、器具に粉を残さないか。",
     "levels": [
      "表示のない粉を平気で使い、袋を開けっぱなしにし、器具に粉が残ったまま次に使う。",
-     "指示があればメモをはるが、開封日の記入や保管場所への戻しに漏れが多い。",
+     "指示があればメモをはるが、ラベル貼りや保管場所への戻しに漏れが多い。",
      "指示があればメモをはって管理し、袋の口を閉じて決められた場所に戻し、器具を掃除できる。",
      "指示がなくても書いていない粉は使わず、直射日光と湿気を避けて保管し、器具の粉残りをゼロにする。",
      "白い粉の取り違えと前の添加剤の混入リスクを理解し、表示・保管・清掃のルールを新人に指導できる。"
@@ -1443,26 +1443,26 @@
     "name_en": "Preventing mix-ups, storage, and tool cleaning",
     "name_vi": "Chống nhầm lẫn, bảo quản và vệ sinh dụng cụ",
     "name_id": "Mencegah tertukar, penyimpanan, dan pembersihan alat",
-    "kanten_en": "Do they stick a memo with the pig group, product name, and amount on the measured container, write the opening date for storage, and leave no powder on the tools?",
-    "kanten_vi": "Có dán ghi chú tên nhóm lợn, tên thuốc, lượng lên hộp đã cân, ghi ngày mở bao để bảo quản, và không để bột sót lại trên dụng cụ không.",
-    "kanten_id": "Apakah menempelkan memo nama kelompok babi, nama produk, dan jumlah pada wadah yang sudah ditakar, menulis tanggal buka untuk penyimpanan, dan tidak meninggalkan serbuk di alat.",
+    "kanten_en": "Do they stick a memo with the pig group, product name, and amount on the measured container, label it right after weighing for storage, and leave no powder on the tools?",
+    "kanten_vi": "Có dán ghi chú tên nhóm lợn, tên thuốc, lượng lên hộp đã cân, dán nhãn ngay sau khi cân để bảo quản, và không để bột sót lại trên dụng cụ không.",
+    "kanten_id": "Apakah menempelkan memo nama kelompok babi, nama produk, dan jumlah pada wadah yang sudah ditakar, menempel label segera setelah menakar untuk penyimpanan, dan tidak meninggalkan serbuk di alat.",
     "levels_en": [
      "Casually uses unlabeled powder, leaves bags open, and uses tools next time with powder still on them.",
-     "Sticks memos when instructed, but often fails to write the opening date or return items to the storage place.",
+     "Sticks memos when instructed, but often fails to label right after weighing or return items to the storage place.",
      "With guidance, can manage with memos, close the bag opening, return items to the designated place, and clean the tools.",
      "Independently never uses unlabeled powder, stores away from direct sunlight and humidity, and leaves zero powder residue on the tools.",
      "Understands the risks of mixing up white powders and contamination from previous additives, and can teach new staff the labeling, storage, and cleaning rules."
     ],
     "levels_vi": [
      "Bột không ghi gì vẫn thản nhiên dùng, mở bao để nguyên, dụng cụ còn dính bột vẫn dùng cho lần sau.",
-     "Nếu có chỉ dẫn thì dán ghi chú, nhưng hay bỏ sót việc ghi ngày mở bao và cất về chỗ bảo quản.",
+     "Nếu có chỉ dẫn thì dán ghi chú, nhưng hay bỏ sót việc dán nhãn ngay sau khi cân và cất về chỗ bảo quản.",
      "Nếu có chỉ dẫn thì dán ghi chú để quản lý, đóng miệng bao, cất về chỗ quy định và vệ sinh dụng cụ được.",
      "Không cần chỉ dẫn cũng không dùng bột không ghi gì, bảo quản tránh nắng trực tiếp và ẩm, dụng cụ không còn sót chút bột nào.",
      "Hiểu rủi ro nhầm các loại bột trắng và lẫn chất bổ sung lần trước, và có thể hướng dẫn người mới quy tắc ghi nhãn, bảo quản, vệ sinh."
     ],
     "levels_id": [
      "Dengan santai memakai serbuk tanpa label, membiarkan karung terbuka, dan memakai alat yang masih ada serbuknya untuk pekerjaan berikutnya.",
-     "Jika ada instruksi menempel memo, tetapi sering lalai menulis tanggal buka dan mengembalikan ke tempat penyimpanan.",
+     "Jika ada instruksi menempel memo, tetapi sering lalai menempel label segera setelah menakar dan mengembalikan ke tempat penyimpanan.",
      "Jika ada instruksi, bisa mengelola dengan memo, menutup mulut karung, mengembalikan ke tempat yang ditentukan, dan membersihkan alat.",
      "Tanpa instruksi pun, tidak memakai serbuk tanpa tulisan, menyimpan terhindar dari sinar matahari langsung dan lembap, dan memastikan tidak ada serbuk tersisa di alat.",
      "Memahami risiko tertukarnya serbuk putih dan tercampurnya imbuhan sebelumnya, dan bisa mengajari karyawan baru aturan pelabelan, penyimpanan, dan pembersihan."
@@ -1475,5 +1475,216 @@
   "purposeShort_en": "Deliver the effects of additives evenly and stabilize pig health and performance",
   "purposeShort_vi": "Giúp chất bổ sung phát huy hiệu quả đều, giữ sức khỏe và thành tích của lợn ổn định",
   "purposeShort_id": "Mengeluarkan efek imbuhan pakan secara merata, menstabilkan kesehatan dan performa babi"
+ },
+ {
+  "id": "feed-adjust-fin",
+  "category": "feeding",
+  "no": "",
+  "name": "エサ調整（肥育）",
+  "purposeShort": "肥育豚の飼料の出量と切り替えを調整し、こぼれやムダを防いで増体と飼料効率を保つ",
+  "gyomu": "",
+  "aspects": [
+   {
+    "id": "feeder-spill",
+    "name": "エサ箱の出量調整とこぼれの確認",
+    "kanten": "エサ箱の飼料の出量を見て、床へのこぼれや詰まりがないように、多すぎず少なすぎない量へ調整できるか。",
+    "levels": [
+     "エサ箱を見ず、飼料が床にこぼれていても、詰まっていても放置する。",
+     "指示があればエサ箱を見るが、こぼれや詰まりに気づくのが遅く、調整は他者まかせ。",
+     "指示があればエサ箱の出量を調整し、床へのこぼれや詰まりがないか確認できる。",
+     "指示がなくても毎回の給餌でこぼれ・詰まり・出量不足（空腹）を見つけ、その場で出量を調整する。",
+     "こぼれが飼料のムダと飼料効率の悪化につながることを理解し、エサ箱の調整の要点を新人に指導できる。"
+    ],
+    "name_en": "Adjusting the feeder output and checking for spillage",
+    "name_vi": "Điều chỉnh lượng thức ăn ra ở máng và kiểm tra thức ăn rơi vãi",
+    "name_id": "Penyesuaian keluaran pakan di tempat pakan dan pemeriksaan pakan tercecer",
+    "kanten_en": "Can they look at how much feed comes out of the feeder and adjust it to neither too much nor too little, so that feed does not spill on the floor or clog?",
+    "kanten_vi": "Có xem lượng thức ăn ra ở máng và điều chỉnh sao cho không nhiều quá, không ít quá, để thức ăn không rơi vãi xuống sàn hay bị tắc không.",
+    "kanten_id": "Apakah bisa melihat jumlah pakan yang keluar dari tempat pakan dan menyesuaikannya agar tidak terlalu banyak atau terlalu sedikit, sehingga pakan tidak tercecer ke lantai atau tersumbat.",
+    "levels_en": [
+     "Does not look at the feeders and leaves feed spilled on the floor or clogged.",
+     "Looks at the feeders when instructed, but is slow to notice spillage or clogging and leaves the adjustment to others.",
+     "With guidance, can adjust the feeder output and check for spillage on the floor and clogging.",
+     "Independently finds spillage, clogging, or too little output (hungry pigs) at every feeding and adjusts the output on the spot.",
+     "Understands that spillage means wasted feed and worse feed efficiency, and can teach new staff the key points of feeder adjustment."
+    ],
+    "levels_vi": [
+     "Không xem máng ăn, thức ăn rơi vãi xuống sàn hay bị tắc cũng bỏ mặc.",
+     "Nếu có chỉ dẫn thì xem máng ăn, nhưng chậm nhận ra thức ăn rơi vãi hay bị tắc, việc điều chỉnh phó mặc cho người khác.",
+     "Nếu có chỉ dẫn thì điều chỉnh được lượng thức ăn ra ở máng và kiểm tra thức ăn rơi xuống sàn và tình trạng tắc.",
+     "Không cần chỉ dẫn, mỗi lần cho ăn cũng tìm ra thức ăn rơi vãi, bị tắc hoặc ra quá ít (lợn đói) và điều chỉnh lượng ra ngay tại chỗ.",
+     "Hiểu rằng thức ăn rơi vãi là lãng phí và làm xấu hiệu quả sử dụng thức ăn, và có thể hướng dẫn người mới các điểm chính khi điều chỉnh máng ăn."
+    ],
+    "levels_id": [
+     "Tidak melihat tempat pakan, pakan tercecer di lantai atau tersumbat pun dibiarkan.",
+     "Jika ada instruksi melihat tempat pakan, tetapi lambat menyadari pakan tercecer atau tersumbat dan penyesuaian diserahkan ke orang lain.",
+     "Jika ada instruksi, bisa menyesuaikan keluaran pakan di tempat pakan dan memeriksa pakan tercecer di lantai serta sumbatan.",
+     "Tanpa instruksi pun, di setiap pemberian pakan menemukan pakan tercecer, sumbatan, atau keluaran terlalu sedikit (babi lapar) dan langsung menyesuaikan keluarannya.",
+     "Memahami bahwa pakan tercecer berarti pakan terbuang dan efisiensi pakan memburuk, dan bisa mengajari karyawan baru poin penting penyesuaian tempat pakan."
+    ]
+   },
+   {
+    "id": "feed-switch",
+    "name": "飼料の切り替えと段階的な混合",
+    "kanten": "体重帯に合った飼料を間違えずに使い、切り替えを5〜7日かけて旧飼料と新飼料を混ぜて進め、その間の糞を確かめられるか。",
+    "levels": [
+     "飼料の種類や体重帯を確かめず、急に切り替えて、糞の状態も見ない。",
+     "指示があれば飼料を切り替えるが、混ぜる割合や日数を守れず、糞の確認も漏れる。",
+     "指示があれば飼料を間違えずに使い、5〜7日かけて旧飼料の割合を減らしながら切り替えられる。",
+     "指示がなくても体重帯に合った飼料かを確かめ、段階的に混ぜて切り替え、下痢が出たら切り替えを遅くして報告する。",
+     "急な切り替えが消化不良と下痢につながることを理解し、体重帯ごとの飼料と混合の手順を新人に指導できる。"
+    ],
+    "name_en": "Switching feed and mixing it in steps",
+    "name_vi": "Chuyển đổi thức ăn và trộn dần từng bước",
+    "name_id": "Penggantian pakan dan pencampuran bertahap",
+    "kanten_en": "Can they use the right feed for the weight range without mistakes, switch over in 5 to 7 days by mixing old and new feed, and check the dung during the switch?",
+    "kanten_vi": "Có dùng đúng loại thức ăn theo khoảng cân nặng không nhầm, chuyển đổi trong 5 đến 7 ngày bằng cách trộn thức ăn cũ và mới, và kiểm tra phân trong thời gian đó không.",
+    "kanten_id": "Apakah bisa memakai pakan yang sesuai dengan kisaran berat badan tanpa keliru, mengganti pakan selama 5 sampai 7 hari dengan mencampur pakan lama dan baru, dan memeriksa kotoran selama itu.",
+    "levels_en": [
+     "Does not check the feed type or weight range, switches suddenly, and does not look at the dung.",
+     "Switches feed when instructed, but does not keep to the mixing ratio or the number of days and misses checking the dung.",
+     "With guidance, uses the right feed without mistakes and switches over in 5 to 7 days while reducing the share of the old feed.",
+     "Independently checks that the feed suits the weight range, switches by mixing in steps, and slows the switch and reports if diarrhea appears.",
+     "Understands that a sudden switch leads to poor digestion and diarrhea, and can teach new staff the feed for each weight range and the mixing steps."
+    ],
+    "levels_vi": [
+     "Không kiểm tra loại thức ăn hay khoảng cân nặng, chuyển đột ngột và cũng không xem phân.",
+     "Nếu có chỉ dẫn thì chuyển đổi thức ăn, nhưng không giữ đúng tỷ lệ trộn và số ngày, bỏ sót việc kiểm tra phân.",
+     "Nếu có chỉ dẫn thì dùng đúng thức ăn không nhầm, và chuyển đổi trong 5 đến 7 ngày trong khi giảm dần tỷ lệ thức ăn cũ.",
+     "Không cần chỉ dẫn cũng kiểm tra thức ăn có hợp khoảng cân nặng không, trộn dần để chuyển đổi, nếu bị tiêu chảy thì chuyển chậm lại và báo cáo.",
+     "Hiểu rằng chuyển đột ngột dẫn đến khó tiêu và tiêu chảy, và có thể hướng dẫn người mới thức ăn theo từng khoảng cân nặng và các bước trộn."
+    ],
+    "levels_id": [
+     "Tidak memeriksa jenis pakan atau kisaran berat badan, mengganti mendadak, dan tidak melihat kotoran.",
+     "Jika ada instruksi bisa mengganti pakan, tetapi tidak menaati rasio campuran dan jumlah hari, serta terlewat memeriksa kotoran.",
+     "Jika ada instruksi, bisa memakai pakan yang benar tanpa keliru dan mengganti selama 5 sampai 7 hari sambil mengurangi porsi pakan lama.",
+     "Tanpa instruksi pun, memeriksa apakah pakan sesuai kisaran berat badan, mengganti dengan pencampuran bertahap, dan jika muncul diare, memperlambat penggantian dan melapor.",
+     "Memahami bahwa penggantian mendadak menyebabkan gangguan pencernaan dan diare, dan bisa mengajari karyawan baru pakan tiap kisaran berat badan dan langkah pencampurannya."
+    ]
+   },
+   {
+    "id": "feeder-line",
+    "name": "自動給餌器・配管・飼料タンクの点検",
+    "kanten": "自動給餌器の出量とセンサー、配管の詰まり、飼料タンクの残量とブリッジ、飼料の変色・カビ・異臭を確かめられるか。",
+    "levels": [
+     "自動給餌器・配管・タンクを見ず、詰まりや飼料切れ、カビが出ても気づかない。",
+     "指示があれば点検するが、タンクの残量確認やブリッジの見落としが多く、異常は他者に見つけてもらう。",
+     "指示があれば自動給餌器の出量とセンサー、配管の詰まり、タンクの残量を確認できる。",
+     "指示がなくても毎日、出量・センサー・配管・タンク残量を確かめ、飼料が出ない時はブリッジを疑い、変色・カビ・異臭を見つけて報告する。",
+     "飼料切れが成長停止や尾かじりにつながることを理解し、残量が農場で決めた発注点になったら発注するなど、点検の要点を新人に指導できる。"
+    ],
+    "name_en": "Checking the automatic feeder, piping, and feed tank",
+    "name_vi": "Kiểm tra máy cho ăn tự động, đường ống và silo thức ăn",
+    "name_id": "Pemeriksaan pemberi pakan otomatis, pipa, dan tangki pakan",
+    "kanten_en": "Can they check the automatic feeder output and sensors, clogging in the piping, the feed tank level and bridging, and discoloration, mold, or odor in the feed?",
+    "kanten_vi": "Có kiểm tra lượng ra và cảm biến của máy cho ăn tự động, đường ống có bị tắc không, lượng còn lại và hiện tượng vón cục (bridge) trong silo, cùng thức ăn có đổi màu, mốc, có mùi lạ không.",
+    "kanten_id": "Apakah bisa memeriksa keluaran dan sensor pemberi pakan otomatis, sumbatan pipa, sisa dan pakan menggumpal (bridge) di tangki pakan, serta perubahan warna, jamur, atau bau pada pakan.",
+    "levels_en": [
+     "Does not look at the automatic feeder, piping, or tank, and does not notice clogging, running out of feed, or mold.",
+     "Checks when instructed, but often misses the tank level and bridging, and relies on others to find problems.",
+     "With guidance, can check the automatic feeder output and sensors, clogging in the piping, and the tank level.",
+     "Independently checks output, sensors, piping, and tank level every day, suspects bridging when feed does not come out, and finds and reports discoloration, mold, or odor.",
+     "Understands that running out of feed leads to stopped growth and tail biting, and can teach new staff the key points of checking, such as ordering when the stock reaches the reorder point set by the farm."
+    ],
+    "levels_vi": [
+     "Không xem máy cho ăn tự động, đường ống hay silo, bị tắc, hết thức ăn hay bị mốc cũng không nhận ra.",
+     "Nếu có chỉ dẫn thì kiểm tra, nhưng hay bỏ sót việc xem lượng còn lại trong silo và hiện tượng vón cục, phải nhờ người khác phát hiện bất thường.",
+     "Nếu có chỉ dẫn thì kiểm tra được lượng ra và cảm biến của máy cho ăn tự động, đường ống có tắc không và lượng còn lại trong silo.",
+     "Không cần chỉ dẫn, mỗi ngày cũng kiểm tra lượng ra, cảm biến, đường ống, lượng còn lại trong silo, khi thức ăn không ra thì nghi vón cục, và phát hiện thức ăn đổi màu, mốc, có mùi lạ rồi báo cáo.",
+     "Hiểu rằng hết thức ăn dẫn đến ngừng tăng trưởng và cắn đuôi, và có thể hướng dẫn người mới các điểm chính khi kiểm tra, như đặt hàng khi lượng còn lại chạm mức đặt hàng mà trại đã quy định."
+    ],
+    "levels_id": [
+     "Tidak melihat pemberi pakan otomatis, pipa, atau tangki, dan tidak menyadari sumbatan, pakan habis, atau jamur.",
+     "Jika ada instruksi memeriksa, tetapi sering terlewat memeriksa sisa tangki dan pakan menggumpal, dan masalah ditemukan oleh orang lain.",
+     "Jika ada instruksi, bisa memeriksa keluaran dan sensor pemberi pakan otomatis, sumbatan pipa, dan sisa pakan di tangki.",
+     "Tanpa instruksi pun, setiap hari memeriksa keluaran, sensor, pipa, dan sisa tangki, mencurigai pakan menggumpal saat pakan tidak keluar, serta menemukan dan melaporkan perubahan warna, jamur, atau bau.",
+     "Memahami bahwa pakan habis menyebabkan pertumbuhan berhenti dan menggigit ekor, dan bisa mengajari karyawan baru poin penting pemeriksaan, misalnya memesan saat sisa pakan mencapai batas pemesanan yang ditetapkan peternakan."
+    ]
+   },
+   {
+    "id": "eating-observe",
+    "name": "食い込みの観察と環境要因の確認",
+    "kanten": "給餌のたびに豚の集まりとエサ箱の食べ残しを見て、特定の豚房だけ食い込みが悪い時に温度・飲水・密度を確かめられるか。",
+    "levels": [
+     "給餌しても豚の集まりや食べ残しを見ず、食い込みが悪い豚房があっても気づかない。",
+     "指示があれば食べ残しを見るが、豚房ごとの違いに気づくのが遅く、原因の確認は他者まかせ。",
+     "指示があれば豚がエサ箱に集まるか、底が見えるまで食べているかを確認できる。",
+     "指示がなくても豚房ごとの食い込みを見分け、悪い豚房では温度・飲水・密度を確かめて、気づいたことを報告する。",
+     "暑さや水不足、過密が食欲を落とすことを理解し、食い込みから群の異常を早く見つける見方を新人に指導できる。"
+    ],
+    "name_en": "Observing how well the pigs eat and checking environmental factors",
+    "name_vi": "Quan sát việc ăn và kiểm tra các yếu tố môi trường",
+    "name_id": "Pengamatan nafsu makan dan pemeriksaan faktor lingkungan",
+    "kanten_en": "Can they watch the pigs gathering and the leftover feed in the feeders at every feeding, and check temperature, drinking water, and density when only certain pens eat poorly?",
+    "kanten_vi": "Mỗi lần cho ăn có xem lợn tụ tập và thức ăn thừa trong máng, và khi chỉ một số ô ăn kém thì kiểm tra nhiệt độ, nước uống, mật độ không.",
+    "kanten_id": "Apakah setiap pemberian pakan melihat babi yang berkumpul dan sisa pakan di tempat pakan, dan jika hanya kandang tertentu yang makan buruk, memeriksa suhu, air minum, dan kepadatan.",
+    "levels_en": [
+     "Does not watch the pigs gathering or the leftover feed at feeding, and does not notice pens that eat poorly.",
+     "Looks at the leftover feed when instructed, but is slow to notice differences between pens and leaves checking the cause to others.",
+     "With guidance, can check whether the pigs gather at the feeder and eat until the bottom of the feeder is visible.",
+     "Independently tells how well each pen eats, checks temperature, drinking water, and density in pens that eat poorly, and reports what they noticed.",
+     "Understands that heat, lack of water, and overcrowding reduce appetite, and can teach new staff how to spot problems in the group early from how well they eat."
+    ],
+    "levels_vi": [
+     "Cho ăn mà không xem lợn tụ tập hay thức ăn thừa, ô ăn kém cũng không nhận ra.",
+     "Nếu có chỉ dẫn thì xem thức ăn thừa, nhưng chậm nhận ra sự khác nhau giữa các ô, việc kiểm tra nguyên nhân phó mặc cho người khác.",
+     "Nếu có chỉ dẫn thì kiểm tra được lợn có tụ tập ở máng không, và có ăn đến khi thấy đáy máng không.",
+     "Không cần chỉ dẫn cũng phân biệt được việc ăn của từng ô, ô ăn kém thì kiểm tra nhiệt độ, nước uống, mật độ, và báo cáo điều nhận thấy.",
+     "Hiểu rằng nóng, thiếu nước và nuôi quá chật làm giảm ngon miệng, và có thể hướng dẫn người mới cách sớm phát hiện bất thường của đàn từ việc ăn."
+    ],
+    "levels_id": [
+     "Tidak melihat babi berkumpul atau sisa pakan saat memberi pakan, dan tidak menyadari kandang yang makannya buruk.",
+     "Jika ada instruksi melihat sisa pakan, tetapi lambat menyadari perbedaan antar kandang dan pemeriksaan penyebab diserahkan ke orang lain.",
+     "Jika ada instruksi, bisa memeriksa apakah babi berkumpul di tempat pakan dan makan sampai dasar tempat pakan terlihat.",
+     "Tanpa instruksi pun, membedakan cara makan tiap kandang, memeriksa suhu, air minum, dan kepadatan di kandang yang makannya buruk, serta melaporkan yang disadari.",
+     "Memahami bahwa panas, kekurangan air, dan kepadatan berlebih menurunkan nafsu makan, dan bisa mengajari karyawan baru cara menemukan kelainan kelompok lebih awal dari cara makan."
+    ]
+   },
+   {
+    "id": "adjust-record",
+    "name": "調整の記録と休薬期間の確認・報告",
+    "kanten": "飼料の切り替えや出量の調整を記録し、休薬期間のある飼料は分からない時に確認して、異常を上長に報告できるか。",
+    "levels": [
+     "調整や切り替えを記録せず、休薬期間が分からなくても確認しないまま与える。",
+     "指示があれば記録するが、記録が抜けやすく、休薬期間の確認や異常の報告は他者まかせ。",
+     "指示があれば切り替えと出量の調整を記録し、休薬期間は飼料のラベルや添付文書で確認できる。",
+     "指示がなくても切り替え日・飼料の種類・タンク在庫を記録し、休薬期間が不明な時は必ず確認してから与え、異常はすぐ報告する。",
+     "休薬期間を守ることが法的義務であり、出荷停止につながることを理解し、記録と確認の手順を新人に指導できる。"
+    ],
+    "name_en": "Recording adjustments, checking the withdrawal period, and reporting",
+    "name_vi": "Ghi chép điều chỉnh, kiểm tra thời gian ngừng thuốc và báo cáo",
+    "name_id": "Pencatatan penyesuaian, pemeriksaan masa henti obat, dan pelaporan",
+    "kanten_en": "Can they record feed switches and output adjustments, check the withdrawal period of feed that has one when they are unsure, and report problems to the supervisor?",
+    "kanten_vi": "Có ghi chép việc chuyển đổi thức ăn và điều chỉnh lượng ra, kiểm tra thời gian ngừng thuốc của thức ăn có thuốc khi chưa rõ, và báo cáo bất thường cho cấp trên không.",
+    "kanten_id": "Apakah bisa mencatat penggantian pakan dan penyesuaian keluaran, memeriksa masa henti obat pada pakan yang memilikinya saat tidak yakin, dan melaporkan kelainan kepada atasan.",
+    "levels_en": [
+     "Does not record adjustments or switches, and feeds without checking even when the withdrawal period is unknown.",
+     "Records when instructed, but records are often missing, and leaves checking the withdrawal period and reporting problems to others.",
+     "With guidance, records the switches and output adjustments and can check the withdrawal period on the feed label or package insert.",
+     "Independently records the switch date, feed type, and tank stock, always checks before feeding when the withdrawal period is unknown, and reports problems promptly.",
+     "Understands that keeping the withdrawal period is a legal duty and that violations can lead to a shipping ban, and can teach new staff the steps for recording and checking."
+    ],
+    "levels_vi": [
+     "Không ghi chép việc điều chỉnh hay chuyển đổi, và dù không biết thời gian ngừng thuốc cũng cho ăn mà không kiểm tra.",
+     "Nếu có chỉ dẫn thì ghi chép, nhưng hay thiếu, việc kiểm tra thời gian ngừng thuốc và báo cáo bất thường phó mặc cho người khác.",
+     "Nếu có chỉ dẫn thì ghi chép việc chuyển đổi và điều chỉnh lượng ra, và kiểm tra được thời gian ngừng thuốc trên nhãn thức ăn hoặc tờ hướng dẫn kèm theo.",
+     "Không cần chỉ dẫn cũng ghi ngày chuyển đổi, loại thức ăn và tồn kho silo, khi chưa rõ thời gian ngừng thuốc thì nhất định kiểm tra rồi mới cho ăn, và báo cáo bất thường ngay.",
+     "Hiểu rằng giữ đúng thời gian ngừng thuốc là nghĩa vụ pháp lý và vi phạm có thể dẫn đến bị cấm xuất chuồng, và có thể hướng dẫn người mới các bước ghi chép và kiểm tra."
+    ],
+    "levels_id": [
+     "Tidak mencatat penyesuaian atau penggantian, dan memberi pakan tanpa memeriksa walau masa henti obat tidak diketahui.",
+     "Jika ada instruksi mencatat, tetapi catatan sering terlewat, dan pemeriksaan masa henti obat serta pelaporan kelainan diserahkan ke orang lain.",
+     "Jika ada instruksi, mencatat penggantian dan penyesuaian keluaran, dan bisa memeriksa masa henti obat pada label pakan atau lembar petunjuk.",
+     "Tanpa instruksi pun, mencatat tanggal penggantian, jenis pakan, dan stok tangki, selalu memeriksa sebelum memberi pakan saat masa henti obat tidak jelas, dan segera melaporkan kelainan.",
+     "Memahami bahwa menaati masa henti obat adalah kewajiban hukum dan pelanggaran bisa berujung larangan pengiriman, dan bisa mengajari karyawan baru langkah pencatatan dan pemeriksaan."
+    ]
+   }
+  ],
+  "name_en": "Feed Adjustment (Finishing)",
+  "purposeShort_en": "Adjust the feed output and feed switches for finishing pigs, preventing spillage and waste to keep growth and feed efficiency",
+  "name_vi": "Điều chỉnh thức ăn (lợn thịt)",
+  "purposeShort_vi": "Điều chỉnh lượng thức ăn ra và việc chuyển đổi thức ăn cho lợn thịt, tránh rơi vãi và lãng phí để giữ tăng trọng và hiệu quả sử dụng thức ăn",
+  "name_id": "Penyesuaian pakan (penggemukan)",
+  "purposeShort_id": "Menyesuaikan keluaran dan penggantian pakan babi penggemukan, mencegah pakan tercecer dan terbuang untuk menjaga pertambahan berat dan efisiensi pakan"
  }
 ]

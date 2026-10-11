@@ -17,7 +17,7 @@
      違えば {ok:false, error:'auth'}。ping は合言葉なしで版だけ返す。APP_TOKEN が無い時は従来どおり誰でも（テスト・移行用）
    - 削除ログ（2026-10-06a〜）: 削除・上書き（再送・編集）で消える行は、消す前に「削除ログ」タブへ写す（取り返せるように） */
 
-const CODE_VERSION = '2026-10-11a';
+const CODE_VERSION = '2026-10-11b';
 /* アプリはこれを見て「シート側が古い（旧名・削除が使えない）」を警告する（js/contract.js の GAS_REQUIRED_CAPS） */
 const API_CAPABILITIES = ['roster', 'roster.aliases', 'roster.done', 'submit', 'submit.redoOf', 'delete', 'auth', 'dellog', 'submit.ver', 'submit.dups', 'submit.revive'];
 const ROSTER_SHEET = '受験者';

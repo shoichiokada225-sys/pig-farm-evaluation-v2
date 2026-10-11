@@ -2,6 +2,19 @@
 /* 送信先URL = 設定タブで保存した値 > config.js の SHEET_URL */
 const SHEET_KEY='jitsugi_v2_sheet_url';
 const ROSTER_KEY='jitsugi_v2_roster';
+/* 作業が名簿に無い人（繁殖4農場・所属未確定）に評価者が区分ボタンや作業選択で決めた作業は、この端末が人別に覚える
+   ＝一部だけ採点して保存しても、残りの作業が「残りの作業」として出る。名簿の作業（シート）が入ったら、そちらを使う */
+const ASSIGN_KEY='jitsugi_v2_assign';
+function assignKey(name,farm){return nmKey(name)+'\u0001'+normFarm(farm)}
+function getAssign(){try{const o=JSON.parse(localStorage.getItem(ASSIGN_KEY));return o&&typeof o==='object'&&!Array.isArray(o)?o:{}}catch{return{}}}
+/* p=getRoster() の人。ids=作業ID。merge=今ある割り当てに足す（false=入れ替え）。覚えた時 true */
+function setAssign(p,ids,merge){
+  if(!p||p.common||(p.unresolved&&p.unresolved.length)||(p.works.length&&!p.localWorks))return false;
+  const k=assignKey(p.name,p.farm),o=getAssign(),ws=[];
+  (merge&&p.localWorks?p.works:[]).concat(ids||[]).forEach(w=>{if(workById(w)&&!ws.includes(w))ws.push(w)});
+  if(ws.length)o[k]=ws;else delete o[k];
+  try{localStorage.setItem(ASSIGN_KEY,JSON.stringify(o));return true}catch{return false}
+}
 const EV_KEY='jitsugi_v2_evaluator';
 
 function sheetUrl(){
@@ -53,7 +66,7 @@ function resolveWork(v){
   const n=normWorkName(s);
   const w=WORKDATA_V2.works.find(w=>w.name===s)
     ||WORKDATA_V2.works.find(w=>normWorkName(w.name)===n)
-    ||WORKDATA_V2.works.find(w=>normWorkName(w.no).replace(/^no\.?0*/,'')===n.replace(/^no\.?0*/,''));
+    ||(()=>{const k=n.replace(/^no\.?0*/,'');return k?WORKDATA_V2.works.find(w=>w.no&&normWorkName(w.no).replace(/^no\.?0*/,'')===k):null})();   // No.の無い作業（育成豚の受け入れ等）に「No.」「0」だけのセルを当てない
   return w?w.id:null;
 }
 /* 農場名の照合 normFarm・名前の照合 nmKey は person.js（人の特定の規則と同じもの） */
@@ -81,6 +94,9 @@ function getRoster(){
   try{const r=JSON.parse(localStorage.getItem(ROSTER_KEY));if(!r||!Array.isArray(r.list))return none;if(r.url&&r.url!==sheetUrl())return none;
     // 壊れた要素（null・作業が配列でない）で起動できなくならないよう、形をそろえる
     r.list=r.list.filter(p=>p&&typeof p==='object'&&p.name).map(p=>({...p,name:String(p.name),farm:String(p.farm||''),works:Array.isArray(p.works)?p.works:[],...(Array.isArray(p.aliases)?{}:{aliases:undefined})}));
+    const asg=getAssign();   // 作業が無い人には、この端末で決めた作業を当てる（localWorks=端末の割り当て）
+    r.list.forEach(p=>{if(!p.works.length&&!p.common&&!(p.unresolved&&p.unresolved.length)){const a=asg[assignKey(p.name,p.farm)];
+      if(Array.isArray(a)){const ws=a.filter(workById);if(ws.length){p.works=ws;p.localWorks=true}}}});
     if(r.done!=null&&!Array.isArray(r.done))r.done=null;
     return r}catch{return none}
 }
