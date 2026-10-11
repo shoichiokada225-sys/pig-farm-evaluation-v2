@@ -17,7 +17,7 @@
      違えば {ok:false, error:'auth'}。ping は合言葉なしで版だけ返す。APP_TOKEN が無い時は従来どおり誰でも（テスト・移行用）
    - 削除ログ（2026-10-06a〜）: 削除・上書き（再送・編集）で消える行は、消す前に「削除ログ」タブへ写す（取り返せるように） */
 
-const CODE_VERSION = '2026-10-06d';
+const CODE_VERSION = '2026-10-11a';
 /* アプリはこれを見て「シート側が古い（旧名・削除が使えない）」を警告する（js/contract.js の GAS_REQUIRED_CAPS） */
 const API_CAPABILITIES = ['roster', 'roster.aliases', 'roster.done', 'submit', 'submit.redoOf', 'delete', 'auth', 'dellog', 'submit.ver', 'submit.dups', 'submit.revive'];
 const ROSTER_SHEET = '受験者';
@@ -171,11 +171,47 @@ function admin_(e) {
   try {
     if (e.parameter.op === 'check') return json_({ ok: true, version: CODE_VERSION, check: checkSummary_(), authFails: failCount_() });   // 読むだけ（集計タブの式の結果を検算）
     const r = setup();
+    // op=common: 既存の（農場共通）行の作業も COMMON_SEED に置き換える（試験区分の変更用）。置き換え前の作業を応答で返す（共通行に人の名前は無い）
+    if (e.parameter.op === 'common') {
+      const rep = typeof COMMON_SEED !== 'undefined' ? setCommonRows_(COMMON_SEED) : [];
+      return json_({ ok: true, version: CODE_VERSION, setup: r, commonReplaced: rep, commonAdded: typeof COMMON_SEED !== 'undefined' ? addCommonRows_(COMMON_SEED) : [] });
+    }
     const added = typeof COMMON_SEED !== 'undefined' ? addCommonRows_(COMMON_SEED) : [];
     return json_({ ok: true, version: CODE_VERSION, setup: r, commonAdded: added, check: checkSummary_() });
   } finally {
     lock.releaseLock();
   }
+}
+/* （農場共通）行の名前か。アプリの isCommonRow（js/sync.js）と同じ: 全角半角・空白をそろえ、括弧の種類（【】［］など）は問わない */
+function isCommonName_(v) {
+  const s = String(v || '').normalize('NFKC').replace(/\s+/g, '');
+  return s.replace(/[\[\]（）()【】〔〕［］「」『』<>＜＞{}]/g, '') === '農場共通';
+}
+/* 既存の（農場共通）行のうち、seed にある農場の行の作業列を seed の作業に置き換える（人の行・seed に無い農場の行は触らない）。
+   戻り値 [{farm, before:[作業…], after:[作業…]}] */
+function setCommonRows_(seed) {
+  const rs = SpreadsheetApp.getActive().getSheetByName(ROSTER_SHEET);
+  if (!rs || rs.getLastRow() < 2) return [];
+  const c = rosterCols_(rs);
+  if (c.farm < 0 || !c.works.length) return [];
+  const nf = v => String(v || '').normalize('NFKC').replace(/\s+/g, '');
+  const want = {};
+  (seed || []).forEach(([farm, works]) => {
+    if (!farm) return;
+    const a = (works || []).slice(0, c.works.length);
+    if ((works || []).length > a.length) a.cut = works.slice(a.length);   // 作業列が足りず入らない作業（応答で知らせる）
+    want[nf(farm)] = a;
+  });
+  const w = rs.getLastColumn(), vals = rs.getRange(2, 1, rs.getLastRow() - 1, w).getDisplayValues(), out = [];
+  vals.forEach((r, i) => {
+    if (!isCommonName_(r[c.name])) return;
+    const nw = want[nf(r[c.farm])];
+    if (!nw) return;
+    const before = c.works.map(k => String(r[k] || '').trim()).filter(Boolean);
+    c.works.forEach((k, j) => rs.getRange(i + 2, k + 1, 1, 1).setValues([[nw[j] || '']]));
+    out.push({ farm: r[c.farm], before: before, after: nw, ...(want[nf(r[c.farm])].cut ? { cut: want[nf(r[c.farm])].cut } : {}) });
+  });
+  return out;
 }
 /* （農場共通）行が無い農場にだけ追記する（既存の行・人の行は触らない）。追記した農場名を返す */
 function addCommonRows_(seed) {
@@ -188,7 +224,7 @@ function addCommonRows_(seed) {
   if (rs.getLastRow() > 1) {
     const w = rs.getLastColumn();
     rs.getRange(2, 1, rs.getLastRow() - 1, w).getDisplayValues().forEach(r => {
-      if (/^[（(]?\s*農場共通\s*[）)]?$/.test(String(r[c.name] || '').trim())) has.add(nf(r[c.farm]));
+      if (isCommonName_(r[c.name])) has.add(nf(r[c.farm]));
     });
   }
   const w = rs.getLastColumn(), out = [];

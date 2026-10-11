@@ -1,7 +1,7 @@
 # build_data.py — data-work/final-*.json を検証して works-v2.js を生成する
 # 使い方: python build_data.py
 # 検証: 各作業ちょうど5 aspects / 必須キー / levels 5要素 / 翻訳キー欠落ゼロ / id一意
-import json, io, sys, glob, datetime
+import json, io, sys, glob, datetime, unicodedata
 
 CATS = [
     ("feeding", "飼養管理"), ("hygiene", "衛生管理"), ("breeding", "繁殖管理"),
@@ -57,10 +57,32 @@ def main():
     if len(set(ids)) != len(ids):
         fail("作業id重複: " + str([i for i in ids if ids.count(i) > 1]))
 
+    # 試験区分（2026-10-11 キムさん選定）: 区分を選ぶと作業一式が入る。名簿の作業欄に区分名を書いても同じ
+    presets = json.load(io.open("data-work/presets.json", encoding="utf-8"))
+    names = {w["name"] for w in works}
+    for p in presets:
+        for k in ("id", "name", "works"):
+            if not p.get(k):
+                fail(f"presets {p.get('id','?')} に {k} がない")
+        for lg in LANGS:
+            if not p.get(f"name_{lg}"):
+                fail(f"presets {p['id']} name_{lg} 欠落")
+        nk = lambda v: unicodedata.normalize("NFKC", str(v)).replace(" ", "").replace("\u3000", "").lower()
+        if nk(p["name"]) in {nk(x) for x in names} | {nk(w["no"]).replace("no.", "").lstrip("0") for w in works} | set(ids):
+            fail(f"presets {p['id']} の名前が作業名・No.・IDと同じ: {p['name']}")
+        miss = [x for x in p["works"] if x not in ids]
+        if miss:
+            fail(f"presets {p['id']} に無い作業id: {miss}")
+        if len(set(p["works"])) != len(p["works"]) or len(p["works"]) > 8:
+            fail(f"presets {p['id']} の作業が重複または8件超")
+    if len({p["id"] for p in presets}) != len(presets) or len({p["name"] for p in presets}) != len(presets):
+        fail("presets の id/name 重複")
+
     payload = {
         "version": datetime.date.today().isoformat(),
         "categories": [{"id": c, "name": n} for c, n in CATS],
         "works": works,
+        "presets": presets,
     }
     js = ("/* works-v2.js — 自動生成: build_data.py（正本= data-work/final-*.json）。直接編集禁止 */\n"
           "const WORKDATA_V2=" + json.dumps(payload, ensure_ascii=False, separators=(",", ":")) + ";\n")

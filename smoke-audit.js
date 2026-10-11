@@ -535,5 +535,39 @@ const scoreWork = (p, wid, s, n) => p.evaluate(([wid, s, n]) => { [...document.q
     await browser.close();
   }
 
+  console.log('[P] 試験区分（2026-10-11）: 区分ボタンで作業一式・名簿の作業欄の区分名を展開');
+  {
+    const { browser, page, st } = await open({ roster: [
+      { name: 'テスト 肥育', farm: 'テスト肥育', works: ['肥育舎'] },
+      { name: 'テスト 分娩', farm: 'テスト繁殖', works: ['【分娩舎】'] },
+      { name: 'テスト 子豚', farm: 'テスト子豚', works: [] }, { name: '（農場共通）', farm: 'テスト子豚', works: ['子豚舎'] },
+      { name: 'テスト 未定', farm: 'テスト繁殖', works: [] }] });
+    const P = id => page.evaluate(id => presetById(id).works, id);
+    const ro = await page.evaluate(() => getRoster().list.map(p => ({ n: p.name, w: p.works, u: p.unresolved || [] })));
+    const of = n => ro.find(x => x.n === n);
+    ok('名簿の作業欄「肥育舎」＝肥育舎の作業一式（体測を含む8作業）', JSON.stringify(of('テスト 肥育').w) === JSON.stringify(await P('finishing-house')) && of('テスト 肥育').w.length === 8 && of('テスト 肥育').w.includes('body-measure') && !of('テスト 肥育').u.length);
+    ok('括弧つき「【分娩舎】」も区分として読む', JSON.stringify(of('テスト 分娩').w) === JSON.stringify(await P('farrowing-house')));
+    ok('（農場共通）行の区分名も展開', JSON.stringify(of('テスト 子豚').w) === JSON.stringify(await P('nursery-house')));
+    ok('ストール舎に育成豚の受け入れ（候補豚）が入る', (await P('stall-house')).includes('gilt-intake'));
+    await page.evaluate(() => selectFarm('テスト繁殖')); await page.waitForTimeout(150);
+    await pick(page, 'テスト 未定'); await page.waitForTimeout(200);
+    ok('作業の無い人＝作業選択が開き、区分ボタンが4つ', await page.evaluate(() => document.getElementById('wselBox').open && document.querySelectorAll('#wselCats .wpre-b').length === 4));
+    await page.locator('#wselCats .wpre-b[data-p="stall-house"]').tap(); await page.waitForTimeout(200);
+    ok('ストール舎を押す＝6作業・押したボタンが選択中', JSON.stringify(await page.evaluate(() => selWorks)) === JSON.stringify(await P('stall-house')) && await page.evaluate(() => document.querySelector('.wpre-b[data-p="stall-house"]').getAttribute('aria-pressed') === 'true' && document.querySelectorAll('#cards .wsec').length === 6));
+    await scoreWork(page, 'feeding-daily', 4); await page.waitForTimeout(100);
+    const d0 = st.dialogs.length;
+    await page.locator('#wselCats .wpre-b[data-p="finishing-house"]').tap(); await page.waitForTimeout(200);
+    ok('採点した作業が残る区分へ切替＝確認なし・点数はそのまま', st.dialogs.length === d0 && JSON.stringify(await page.evaluate(() => selWorks.slice().sort())) === JSON.stringify((await P('finishing-house')).slice().sort()) && await page.evaluate(() => document.querySelectorAll('#cards .ec.scored[data-w="feeding-daily"]').length === 5));
+    st.accept = false;
+    await page.locator('#wselCats .wpre-b[data-p="nursery-house"]').tap(); await page.waitForTimeout(200);
+    ok('採点した作業が外れる切替は確認・キャンセルで変えない', st.dialogs.length === d0 + 1 && /給餌/.test(st.dialogs[d0]) && (await page.evaluate(() => selWorks.length)) === 8);
+    st.accept = true;
+    await page.evaluate(() => setLang('vi')); await page.waitForTimeout(150);
+    ok('区分名は表示言語で出る（vi）', await page.evaluate(() => [...document.querySelectorAll('#wselCats .wpre-b')].some(b => /Chuồng đẻ/.test(b.textContent))));
+    await page.evaluate(() => setLang('ja'));
+    ok('JSエラーなし（試験区分）', !st.errors.length);
+    await browser.close();
+  }
+
   console.log(`\n合計: OK ${pass} / NG ${fail}`); process.exit(fail ? 1 : 0);
 })().catch(e => { console.error(e); process.exit(1); });

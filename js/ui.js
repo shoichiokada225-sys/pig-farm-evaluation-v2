@@ -5,7 +5,11 @@
 function buildWorkSel(){
   const box=document.getElementById('wselCats');
   const dn=typeof curDoneWorks==='function'?curDoneWorks():[];   // 選択中の人が今日すでに済ませた作業に「済」
-  box.innerHTML=WORKDATA_V2.categories.map(c=>{
+  const sk=selWorks.slice().sort().join('|');
+  const pr=WORKDATA_V2.presets.length?`<div class="wpre" role="group" aria-label="${esc(t('presetLbl'))}"><span class="wpre-lb">${esc(t('presetLbl'))}</span>${WORKDATA_V2.presets.map(p=>{
+    const ws=p.works.filter(workById),add=ws.filter(w=>!dn.includes(w)),n=(add.length?add:ws).length,on=!!sk&&ws.filter(w=>!dn.includes(w)||selWorks.includes(w)).sort().join('|')===sk;
+    return `<button type="button" class="wpre-b${on?' on':''}" aria-pressed="${on}" data-p="${esc(p.id)}" onclick="applyPreset(this.dataset.p)">${esc(loc(p,'name'))}<span class="wpre-n">${n}</span></button>`}).join('')}</div>`:'';
+  box.innerHTML=pr+WORKDATA_V2.categories.map(c=>{
     const ws=worksInCat(c.id);if(!ws.length)return'';
     const selCnt=ws.filter(w=>selWorks.includes(w.id)).length;
     return `<details class="wcat" ${selCnt?'open':''}>

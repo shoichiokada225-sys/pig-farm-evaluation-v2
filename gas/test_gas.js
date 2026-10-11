@@ -43,7 +43,7 @@ const SEED = [['那須農場', 'テスト 一郎', '給餌'], ['大田原農場'
 const G = new Function('ROSTER_SEED', code + ';return {setup,doGet,doPost};')(SEED);
 let pass = 0, fail = 0; const ok = (n, c) => { c ? pass++ : fail++; console.log((c ? '  OK ' : '  NG ') + n); };
 
-ok('setup', G.setup() === 'setup OK' && sheets['受験者'] && sheets['作業一覧'].d.length === 41);
+ok('setup', G.setup() === 'setup OK' && sheets['受験者'] && sheets['作業一覧'].d.length === 47)   // 見出し＋42作業＋試験区分4;
 ok('見出し=農場・被評価者・作業1〜8・旧名', sheets['受験者'].d[0].join() === '農場,被評価者,作業1,作業2,作業3,作業4,作業5,作業6,作業7,作業8,旧名');
 ok('空の受験者タブにシードが入る', sheets['受験者'].d.length === 3 && sheets['受験者'].d[1][1] === 'テスト 一郎' && sheets['受験者'].d[2].length === 11);
 // S8-4: 農場のプルダウン（正本=農場一覧タブ）
@@ -269,6 +269,20 @@ ok('シード無し: 農場一覧=受験者タブの農場＋所属未確定（�
   ok('admin op=check: 読むだけ（受験者タブを変えない）で検算の形を返す', chk.ok && chk.check && sheets['受験者'].d.length === n1 && (chk.check.summary === 'none' || typeof chk.check.rows === 'number'));
   ok('admin op=check: 合言葉違いは拒否', JSON.parse(G4.doGet({ parameter: { action: 'admin', token: 'x', op: 'check' } }).s).error === 'forbidden');
   ok('admin: 人の行は変えない', sheets['受験者'].d.slice(1, n0).every(x => x[1] !== '（農場共通）'));
+  // 2026-10-11 op=common: 既存の共通行を新しい作業（区分名）に置き換える。seed に無い農場の共通行・人の行は触らない
+  const G6 = new Function('ROSTER_SEED', 'ADMIN_TOKEN', 'COMMON_SEED', code + ';return {doGet};')(undefined, TOK,
+    [['テスト東', ['肥育舎']], ['所属未確定', []]]);
+  const before = JSON.stringify(sheets['受験者'].d.filter(x => x[1] !== '（農場共通）'));
+  const r6 = JSON.parse(G6.doGet({ parameter: { action: 'admin', token: TOK, op: 'common' } }).s);
+  const crow = f => sheets['受験者'].d.find(x => x[1] === '（農場共通）' && x[0] === f);
+  ok('admin op=common: 共通行の作業を置き換え（前の作業を返す）', r6.ok && r6.commonReplaced.length === 2 && r6.commonReplaced[0].before.join() === (wc.length > 1 ? '給餌,消毒' : '給餌') && crow('テスト東')[wc[0]] === '肥育舎' && wc.slice(1).every(i => crow('テスト東')[i] === ''));
+  ok('admin op=common: 空の作業＝作業列を空に', wc.every(i => crow('所属未確定')[i] === ''));
+  ok('admin op=common: seed に無い農場の共通行・人の行は触らない', crow('テスト北')[wc[0]] === '除フン' && JSON.stringify(sheets['受験者'].d.filter(x => x[1] !== '（農場共通）')) === before && sheets['受験者'].d.length === n1);
+  sheets['受験者'].d.find(x => x[1] === '（農場共通）' && x[0] === 'テスト北')[1] = '【農場共通】';
+  const G7 = new Function('ROSTER_SEED', 'ADMIN_TOKEN', 'COMMON_SEED', code + ';return {doGet};')(undefined, TOK, [['テスト北', ['子豚舎'].concat(new Array(9).fill('給餌'))]]);
+  const n7 = sheets['受験者'].d.length, r7 = JSON.parse(G7.doGet({ parameter: { action: 'admin', token: TOK, op: 'common' } }).s);
+  ok('admin op=common: 括弧の違う【農場共通】行も置き換え（2行目を足さない）・入らない作業は cut で返す', r7.ok && r7.commonReplaced.length === 1 && r7.commonAdded.length === 0 && sheets['受験者'].d.length === n7 && sheets['受験者'].d.find(x => x[1] === '【農場共通】')[wc[0]] === '子豚舎' && r7.commonReplaced[0].cut.length === 10 - wc.length);
+  ok('admin op=common: 合言葉違いは拒否', JSON.parse(G6.doGet({ parameter: { action: 'admin', token: 'x', op: 'common' } }).s).error === 'forbidden');
 }
 // 2026-10-06a: 合言葉（APP_TOKEN）・削除ログ・空欄を0点にしない
 {

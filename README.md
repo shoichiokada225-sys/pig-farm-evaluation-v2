@@ -29,6 +29,8 @@ works-v2.js（const WORKDATA_V2。直接編集禁止）
 ```
 基準を修正するときは `data-work/final-*.json` を直して `python build_data.py`。
 
+**試験区分**（2026-10-11 キムさん選定）: 正本=`data-work/presets.json`（分娩舎・ストール舎・子豚舎・肥育舎 → 作業IDの一覧）。`build_data.py` が作業の実在・作業名/No./IDとの非衝突・8件以内を検証して `WORKDATA_V2.presets` に入れる。アプリでは「作業の追加・変更」の上段のボタン（押す＝その区分の作業一式に入れ替え。試験期間に済んだ作業は入れない・採点済みの作業が外れる時だけ確認・やり直し中は足すだけ）。シートの作業列に区分名を書くとその作業一式に展開される（作業一覧タブ＝プルダウンにも区分名の行がある）。追加2作業＝`gilt-intake`（育成豚の受け入れ＝候補豚）・`body-measure`（体測）は genba-manual に手順書が無いため swine-manual 初心者ガイド（04交配舎・02バイオセキュリティ・08肥育舎・16数値早見表・25出荷）に根拠づけ（No.・深リンクなし）。
+
 ## 構成
 - `index.html` + `styles.css`（V1流用） + `v2.css`（V2追加分） + `sw.js`（オフライン・版の入れ替え）
 - JS の読み込み順（=依存順。index.html の `<script>` と同じ）: `works-v2.js` → `js/config.js` → `util` → `i18n` → `data` → `store` → `person` → `contract` → `ui` → `sync` → `app`

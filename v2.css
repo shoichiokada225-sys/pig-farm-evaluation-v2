@@ -253,3 +253,10 @@ html[lang=ja] .sb .sl{font-size:var(--slfs,max(.7rem,min(3.4vw,.82rem)))}
 .wnav-c.redo{flex-wrap:wrap;row-gap:2px}   /* やり直し中: 「✓済（前回…）」は2行目へ＝作業名を潰さない */
 .wnav-c.redo .wnav-prev{flex-basis:100%;white-space:normal}
 .wnav-nm{min-width:2.5em}
+/* 試験区分（分娩舎など）: 押すと作業一式が入る */
+.wpre{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-bottom:10px}
+.wpre-lb{width:100%;font-size:.8rem;font-weight:700;color:var(--sub,#54635d)}
+.wpre-b{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:8px 14px;border:1.5px solid var(--brand,#177863);border-radius:999px;background:var(--bg2,#fff);color:var(--brand,#177863);font-weight:700;font-size:.95rem;cursor:pointer}
+.wpre-b.on{background:var(--brand,#177863);color:#fff}
+.wpre-n{font-size:.75rem;font-weight:700;border-radius:999px;padding:1px 7px;background:var(--bg3,#eef2f0);color:var(--sub,#54635d)}
+.wpre-b.on .wpre-n{background:rgba(255,255,255,.25);color:#fff}

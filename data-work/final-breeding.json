@@ -1686,5 +1686,216 @@
   "purposeShort_vi": "Giảm chất bẩn trong tử cung, phòng viêm tử cung, sốt và giúp hồi phục sau đẻ",
   "name_id": "Pencucian rahim (setelah melahirkan)",
   "purposeShort_id": "Mengurangi kotoran di dalam rahim, mencegah radang rahim dan demam, serta mempercepat pemulihan setelah melahirkan"
+ },
+ {
+  "id": "gilt-intake",
+  "category": "breeding",
+  "no": "",
+  "name": "育成豚の受け入れ",
+  "purposeShort": "届いた候補豚（将来の母豚）を病気を持ち込まず安全に受け入れ、環境に慣らして健康な状態で群へ合流させる",
+  "gyomu": "",
+  "aspects": [
+   {
+    "id": "arrival-check",
+    "name": "到着時の個体確認と状態チェック",
+    "kanten": "到着した候補豚の頭数と個体番号を確かめ、肢蹄・乳頭数（14個以上）・背線・体重を見て受け入れの可否を確認できるか。",
+    "levels": [
+     "頭数や個体番号を確かめずに降ろし、肢蹄や乳頭を見ないまま、跛行や基準外の豚も他の豚と同じ豚房に入れる。",
+     "指示があれば頭数と個体番号を確認するが、肢蹄や乳頭数の見落としが多く、体重確認は他者まかせ。",
+     "指示があれば頭数と個体番号を確かめ、肢蹄・乳頭数（14個以上）・背線を確認し、体重を測って記録できる。",
+     "指示がなくても到着時に頭数と個体番号を確かめ、肢蹄・乳頭・背線の基準外の豚に気づけばその場で上長に伝える。",
+     "到着時の見落としが数か月後の母豚の成績や淘汰に響くことを理解し、確認の見方を新人に指導できる。"
+    ],
+    "name_en": "Checking each pig and its condition on arrival",
+    "name_vi": "Kiểm tra từng con và tình trạng khi lợn về đến nơi",
+    "name_id": "Pemeriksaan tiap ekor dan kondisinya saat tiba",
+    "kanten_en": "Can they check the head count and individual numbers of arriving gilts, and look at legs and feet, teat count (14 or more), back line, and weight to confirm whether to accept them?",
+    "kanten_vi": "Có kiểm tra số lượng và số hiệu cá thể của lợn hậu bị vừa về, xem chân móng, số vú (từ 14 vú trở lên), đường lưng và cân nặng để xác nhận có nhận hay không không.",
+    "kanten_id": "Apakah memeriksa jumlah dan nomor individu babi calon induk yang tiba, serta melihat kaki dan kuku, jumlah puting (14 ke atas), garis punggung, dan berat badan untuk memastikan layak diterima.",
+    "levels_en": [
+     "Unloads without checking head count or individual numbers, does not look at legs or teats, and puts lame or off-standard pigs into the same pen as the others.",
+     "With guidance, checks head count and individual numbers, but often misses leg problems and teat counts, and leaves weight checks to others.",
+     "With guidance, checks the head count and individual ID numbers, checks legs and feet, teat count (14 or more), and back line, and can weigh and record.",
+     "Independently checks head count and individual numbers on arrival, and tells the supervisor on the spot when a pig falls outside the standard for legs and feet, teats, or back line.",
+     "Understands that what is missed at arrival affects the sow's performance and culling months later, and can teach new staff how to check."
+    ],
+    "levels_vi": [
+     "Dỡ xuống mà không kiểm tra số lượng và số hiệu cá thể, không nhìn chân và vú, lợn đi khập khiễng hay không đạt tiêu chuẩn cũng cho vào chung ô với lợn khác.",
+     "Nếu có chỉ dẫn thì kiểm tra số lượng và số hiệu cá thể, nhưng hay bỏ sót vấn đề ở chân và số vú, việc kiểm tra cân nặng phó mặc cho người khác.",
+     "Nếu có chỉ dẫn thì kiểm tra số lượng và số hiệu cá thể, kiểm tra chân móng, số vú (từ 14 vú trở lên), đường lưng, và cân ghi lại được.",
+     "Không cần chỉ dẫn cũng kiểm tra số lượng và số hiệu cá thể ngay khi về, nếu thấy lợn không đạt tiêu chuẩn về chân móng, vú, đường lưng thì báo ngay cấp trên.",
+     "Hiểu việc bỏ sót khi lợn về đến nơi sẽ ảnh hưởng đến thành tích và việc loại thải lợn nái sau vài tháng, và có thể hướng dẫn người mới cách kiểm tra."
+    ],
+    "levels_id": [
+     "Menurunkan tanpa memeriksa jumlah dan nomor individu, tidak melihat kaki dan puting, dan babi yang pincang atau tidak memenuhi standar pun dimasukkan ke kandang yang sama dengan yang lain.",
+     "Jika ada instruksi memeriksa jumlah dan nomor individu, tetapi sering terlewat masalah kaki dan jumlah puting, dan pemeriksaan berat badan diserahkan ke orang lain.",
+     "Jika ada instruksi, bisa memeriksa jumlah babi dan nomor individu, memeriksa kaki dan kuku, jumlah puting (14 ke atas), serta garis punggung, lalu menimbang dan mencatat.",
+     "Tanpa instruksi pun, memeriksa jumlah dan nomor individu saat tiba, dan jika melihat babi yang tidak memenuhi standar kaki dan kuku, puting, atau garis punggung langsung memberi tahu atasan di tempat.",
+     "Memahami bahwa yang terlewat saat tiba memengaruhi kinerja dan pengafkiran induk beberapa bulan kemudian, dan bisa mengajari karyawan baru cara memeriksa."
+    ]
+   },
+   {
+    "id": "isolation-bio",
+    "name": "持ち込み防止と着替え・消毒",
+    "kanten": "外から来た豚と車・人から病原体を持ち込まないよう、農場の決まりに従って着替え・消毒をし、長靴・道具を他の群と分けて使えるか。",
+    "levels": [
+     "作業着や長靴を替えず、届いた豚を他の群の豚房に入れ、道具も共用して病原体を広げる。",
+     "指示があれば着替えや消毒をするが、長靴の履き替えや道具の分け方に抜けが多い。",
+     "指示があれば農場の決まりに従って着替え・消毒をし、長靴・道具を他の群と分けて使える。",
+     "指示がなくても受け入れ前後に着替え・消毒を行い、移動の順序を守って他の群に病原体を持ち込まない。",
+     "病気を入れない・広げない・持ち出さないの3原則を理解し、受け入れ時の分け方と消毒の理由を新人に指導できる。"
+    ],
+    "name_en": "Preventing carry-in, changing clothes, and disinfecting",
+    "name_vi": "Ngăn mang mầm bệnh vào, thay đồ và khử trùng",
+    "name_id": "Pencegahan masuknya penyakit, ganti pakaian, dan disinfeksi",
+    "kanten_en": "Can they follow farm rules to keep pathogens out from incoming pigs, vehicles, and people, by changing clothes and disinfecting, and use boots and tools separately from other groups?",
+    "kanten_vi": "Có theo quy định của trại để không mang mầm bệnh vào từ lợn, xe và người bên ngoài, thay đồ, khử trùng và dùng ủng, dụng cụ riêng với các đàn khác không.",
+    "kanten_id": "Apakah mengikuti aturan peternakan agar tidak membawa patogen dari babi, kendaraan, dan orang dari luar, dengan berganti pakaian dan mendisinfeksi, serta memakai sepatu bot dan peralatan terpisah dari kelompok lain.",
+    "levels_en": [
+     "Does not change work clothes or boots, puts the arrived pigs into pens of other groups, and shares tools, spreading pathogens.",
+     "With guidance, changes clothes and disinfects, but often misses changing boots and keeping tools separate.",
+     "With guidance, changes clothes and disinfects according to farm rules, and can use boots and tools separately from other groups.",
+     "Independently changes clothes and disinfects before and after receiving, keeps to the movement order, and does not carry pathogens to other groups.",
+     "Understands the three principles of keeping disease out, not spreading it, and not carrying it away, and can teach new staff why pigs are separated and disinfection is done at intake."
+    ],
+    "levels_vi": [
+     "Không thay quần áo, ủng, cho lợn vừa về vào ô của đàn khác, dùng chung dụng cụ làm lây mầm bệnh.",
+     "Nếu có chỉ dẫn thì thay đồ và khử trùng, nhưng hay bỏ sót việc thay ủng và việc tách dụng cụ.",
+     "Nếu có chỉ dẫn thì thay đồ, khử trùng theo quy định của trại, và dùng ủng, dụng cụ riêng với các đàn khác được.",
+     "Không cần chỉ dẫn cũng thay đồ, khử trùng trước và sau khi tiếp nhận, giữ đúng thứ tự di chuyển để không mang mầm bệnh sang đàn khác.",
+     "Hiểu 3 nguyên tắc không mang vào, không lây lan, không mang ra, và có thể hướng dẫn người mới lý do tách riêng và khử trùng khi tiếp nhận."
+    ],
+    "levels_id": [
+     "Tidak mengganti pakaian kerja dan sepatu bot, memasukkan babi yang baru tiba ke kandang kelompok lain, dan memakai alat bersama sehingga menyebarkan patogen.",
+     "Jika ada instruksi bisa berganti pakaian dan mendisinfeksi, tetapi sering lalai mengganti sepatu bot dan memisahkan alat.",
+     "Jika ada instruksi, bisa berganti pakaian dan mendisinfeksi sesuai aturan peternakan, serta memakai sepatu bot dan alat terpisah dari kelompok lain.",
+     "Tanpa instruksi pun, berganti pakaian dan mendisinfeksi sebelum dan sesudah penerimaan, menaati urutan pergerakan, dan tidak membawa patogen ke kelompok lain.",
+     "Memahami tiga prinsip tidak memasukkan, tidak menyebarkan, dan tidak membawa keluar penyakit, dan bisa mengajari karyawan baru alasan pemisahan dan disinfeksi saat penerimaan."
+    ]
+   },
+   {
+    "id": "acclimation",
+    "name": "馴致（環境と雄豚に慣らす）",
+    "kanten": "候補豚を急に驚かせずゆっくり近づけ、24〜26週齢から柵越しの雄豚当てを毎日10〜15分行って、環境と雄豚に慣らせるか。",
+    "levels": [
+     "急に近づいて追い回し、雄豚当ての時間も決めず、環境が急に変わってもそのままにする。",
+     "指示があれば雄豚当てをするが、時間や回数にムラがあり、豚を驚かせる近づき方が残る。",
+     "指示があれば柵越しで毎日10〜15分雄豚に触れさせ、ゆっくり近づいて落ち着かせられる。",
+     "指示がなくても決めた週齢から毎日雄豚当てを行い、環境の急な変化を避けて豚の様子を見ながら進める。",
+     "フェロモン刺激で性成熟が進むことと、若い豚はストレスに弱いことを理解し、馴致の進め方を新人に指導できる。"
+    ],
+    "name_en": "Acclimation (getting pigs used to the environment and boars)",
+    "name_vi": "Làm quen (cho lợn quen môi trường và lợn đực)",
+    "name_id": "Adaptasi (membiasakan dengan lingkungan dan pejantan)",
+    "kanten_en": "Can they approach gilts slowly without startling them, and do daily 10-15 minute fence-line boar contact from 24-26 weeks of age so the pigs get used to the environment and the boar?",
+    "kanten_vi": "Có tiếp cận lợn hậu bị nhẹ nhàng không làm giật mình, và từ 24-26 tuần tuổi cho tiếp xúc lợn đực qua hàng rào mỗi ngày 10-15 phút để lợn quen môi trường và lợn đực không.",
+    "kanten_id": "Apakah mendekati babi calon induk dengan pelan tanpa mengagetkan, dan sejak umur 24-26 minggu melakukan kontak dengan pejantan lewat pagar setiap hari 10-15 menit agar terbiasa dengan lingkungan dan pejantan.",
+    "levels_en": [
+     "Approaches suddenly and chases the pigs, sets no time for boar contact, and leaves the pigs as they are even when the environment changes abruptly.",
+     "With guidance, does boar contact, but time and frequency are uneven, and the approach still startles the pigs.",
+     "With guidance, lets the pigs touch the boar across the fence for 10-15 minutes every day, and can approach slowly and calm them.",
+     "Independently does daily boar contact from the set age, avoids abrupt changes in the environment, and proceeds while watching the pigs.",
+     "Understands that pheromone stimulation advances sexual maturity and that young pigs are weak against stress, and can teach new staff how to carry out acclimation."
+    ],
+    "levels_vi": [
+     "Đột ngột lại gần, đuổi lợn, không định giờ cho tiếp xúc lợn đực, môi trường thay đổi đột ngột cũng mặc kệ.",
+     "Nếu có chỉ dẫn thì cho tiếp xúc lợn đực, nhưng thời gian và số lần không đều, vẫn còn cách tiếp cận làm lợn giật mình.",
+     "Nếu có chỉ dẫn thì cho tiếp xúc lợn đực qua hàng rào mỗi ngày 10-15 phút, tiến lại gần từ từ và làm lợn bình tĩnh được.",
+     "Không cần chỉ dẫn cũng cho tiếp xúc lợn đực mỗi ngày từ độ tuổi đã định, tránh thay đổi môi trường đột ngột và vừa làm vừa quan sát lợn.",
+     "Hiểu kích thích pheromone thúc đẩy thành thục sinh dục và lợn non dễ bị căng thẳng, và có thể hướng dẫn người mới cách tiến hành làm quen."
+    ],
+    "levels_id": [
+     "Tiba-tiba mendekat dan mengejar babi, tidak menentukan waktu kontak pejantan, dan membiarkan saja walau lingkungan berubah mendadak.",
+     "Jika ada instruksi melakukan kontak pejantan, tetapi waktu dan frekuensinya tidak tetap, dan cara mendekatnya masih mengagetkan babi.",
+     "Jika ada instruksi, bisa membuat babi menyentuh pejantan lewat pagar setiap hari 10-15 menit, serta mendekat pelan dan menenangkannya.",
+     "Tanpa instruksi pun, melakukan kontak pejantan setiap hari sejak umur yang ditetapkan, menghindari perubahan lingkungan mendadak, dan berjalan sambil mengamati babi.",
+     "Memahami bahwa rangsangan feromon mempercepat kematangan seksual dan babi muda lemah terhadap stres, dan bisa mengajari karyawan baru cara menjalankan adaptasi."
+    ]
+   },
+   {
+    "id": "health-observe",
+    "name": "健康・脚・群内の様子の観察",
+    "kanten": "届いた候補豚の食欲・歩様・体型の変化と、群内でいじめられていないか、エサを食べられているかを毎日見て異常に気づけるか。",
+    "levels": [
+     "観察せず、食べていない豚やいじめられている豚、脚を引きずる豚がいても気づかない。",
+     "指示があれば見回るが、食欲や歩様の変化の見落としが多く、気づいても伝えない。",
+     "指示があれば食欲・歩様・体型を見て、群内でいじめられて食べられない豚を見つけて報告できる。",
+     "指示がなくても毎日の見回りで食欲・脚・太りすぎ痩せすぎを確認し、導入時に問題がなくても後から出る関節の異常に気づいて報告する。",
+     "若い豚は環境の変化に弱いことや脚の問題が長期の使用に響くことを理解し、観察の見どころを新人に指導できる。"
+    ],
+    "name_en": "Observing health, legs, and behavior in the group",
+    "name_vi": "Quan sát sức khỏe, chân và tình hình trong đàn",
+    "name_id": "Pengamatan kesehatan, kaki, dan keadaan dalam kelompok",
+    "kanten_en": "Can they look every day at the arrived gilts' appetite, gait, and body shape, and whether they are being bullied or getting to the feed, and notice abnormalities?",
+    "kanten_vi": "Có hằng ngày quan sát sự thèm ăn, dáng đi, dáng người của lợn hậu bị vừa về, xem có bị ăn hiếp và có ăn được thức ăn không để nhận ra bất thường không.",
+    "kanten_id": "Apakah setiap hari mengamati nafsu makan, cara jalan, dan bentuk tubuh babi calon induk yang tiba, serta apakah ada yang diganggu atau bisa makan, dan menyadari kelainan.",
+    "levels_en": [
+     "Does not observe, and does not notice pigs that are not eating, being bullied, or dragging a leg.",
+     "With guidance, does rounds, but often misses changes in appetite and gait, and does not report even when noticed.",
+     "With guidance, looks at appetite, gait, and body shape, and can find and report pigs that are bullied in the group and cannot eat.",
+     "Independently checks appetite, legs, and over- or under-condition on daily rounds, and notices and reports joint problems that appear later even if there was no problem at arrival.",
+     "Understands that young pigs are weak against environmental change and that leg problems affect long-term use, and can teach new staff what to watch for."
+    ],
+    "levels_vi": [
+     "Không quan sát, lợn không ăn, lợn bị ăn hiếp hay lợn đi khập khiễng cũng không nhận ra.",
+     "Nếu có chỉ dẫn thì đi tuần, nhưng hay bỏ sót thay đổi về thèm ăn và dáng đi, nhận ra cũng không báo.",
+     "Nếu có chỉ dẫn thì xem thèm ăn, dáng đi, dáng người, tìm ra và báo cáo lợn bị ăn hiếp trong đàn nên không ăn được.",
+     "Không cần chỉ dẫn cũng khi đi tuần hằng ngày kiểm tra thèm ăn, chân, quá béo hay quá gầy, và nhận ra, báo cáo vấn đề khớp xuất hiện về sau dù lúc nhập không có vấn đề.",
+     "Hiểu lợn non dễ bị ảnh hưởng khi môi trường thay đổi và vấn đề ở chân ảnh hưởng đến việc dùng lâu dài, và có thể hướng dẫn người mới điểm cần quan sát."
+    ],
+    "levels_id": [
+     "Tidak mengamati, dan tidak sadar walau ada babi yang tidak makan, diganggu, atau menyeret kakinya.",
+     "Jika ada instruksi berkeliling, tetapi sering terlewat perubahan nafsu makan dan cara jalan, dan tidak melapor walau sadar.",
+     "Jika ada instruksi, bisa melihat nafsu makan, cara jalan, dan bentuk tubuh, serta menemukan dan melaporkan babi yang diganggu dalam kelompok sehingga tidak bisa makan.",
+     "Tanpa instruksi pun, memeriksa nafsu makan, kaki, dan terlalu gemuk atau kurus saat berkeliling setiap hari, dan menyadari serta melaporkan kelainan sendi yang muncul belakangan walau saat masuk tidak ada masalah.",
+     "Memahami bahwa babi muda lemah terhadap perubahan lingkungan dan masalah kaki memengaruhi pemakaian jangka panjang, dan bisa mengajari karyawan baru hal yang perlu diamati."
+    ]
+   },
+   {
+    "id": "record-merge",
+    "name": "記録と群への合流前の最終確認",
+    "kanten": "個体番号・体重・乳頭数・発情日を記録用紙に残し、合流前に体重・BCS・肢蹄・健康を確認して、基準外の豚は上長に伝えられるか。",
+    "levels": [
+     "記録を残さず、確認もせずに群へ入れ、基準に満たない豚も黙って混ぜる。",
+     "指示があれば記録するが、個体番号や体重の記入漏れが多く、合流前の確認も抜けがち。",
+     "指示があれば個体番号・体重・乳頭数・発情日を記入し、体重・BCS・肢蹄・健康をひと通り確認して合流できる。",
+     "指示がなくても初回発情と2回目以降の発情を区別して記録し、合流前に最終確認して、基準外の豚は早めに上長へ伝えて判断をあおぐ。",
+     "記録と最終確認が将来の初産成績を左右することを理解し、記入と合流前確認の型を新人に指導できる。"
+    ],
+    "name_en": "Records and final check before joining the herd",
+    "name_vi": "Ghi chép và kiểm tra lần cuối trước khi nhập đàn",
+    "name_id": "Pencatatan dan pemeriksaan akhir sebelum bergabung ke kelompok",
+    "kanten_en": "Can they keep each pig's ID number, weight, teat count, and heat dates on the record sheet, check weight, BCS, legs, and health before joining, and tell the supervisor about pigs that fall outside the standard?",
+    "kanten_vi": "Có ghi số hiệu, cân nặng, số vú, ngày động dục của từng con vào giấy ghi chép, kiểm tra cân nặng, BCS, chân móng, sức khỏe trước khi nhập đàn, và báo cấp trên về lợn không đạt tiêu chuẩn không.",
+    "kanten_id": "Apakah mencatat nomor identitas, berat badan, jumlah puting, dan tanggal birahi di lembar catatan, memeriksa berat badan, BCS, kaki, dan kesehatan sebelum bergabung, dan melapor ke atasan jika ada babi yang tidak memenuhi standar.",
+    "levels_en": [
+     "Keeps no records, puts pigs into the group without checking, and quietly mixes in pigs that do not meet the standard.",
+     "With guidance, records, but often leaves out ID numbers and weights, and the check before joining is often missed.",
+     "With guidance, writes ID number, weight, teat count, and heat dates, and can check weight, BCS, legs, and health adequately before joining.",
+     "Independently records first heat and second-or-later heat separately, does a final check before joining, and tells the supervisor early about pigs outside the standard to get a decision.",
+     "Understands that records and the final check affect first-litter performance later, and can teach new staff the routine of recording and pre-joining checks."
+    ],
+    "levels_vi": [
+     "Không ghi chép, không kiểm tra mà cho vào đàn, lợn chưa đạt tiêu chuẩn cũng lặng lẽ trộn vào.",
+     "Nếu có chỉ dẫn thì ghi chép, nhưng hay sót số hiệu và cân nặng, việc kiểm tra trước khi nhập đàn cũng hay bị bỏ sót.",
+     "Nếu có chỉ dẫn thì ghi số hiệu, cân nặng, số vú, ngày động dục, kiểm tra cơ bản cân nặng, BCS, chân móng, sức khỏe rồi cho nhập đàn được.",
+     "Không cần chỉ dẫn cũng ghi phân biệt lần động dục đầu và từ lần thứ hai, kiểm tra lần cuối trước khi nhập đàn, lợn không đạt tiêu chuẩn thì báo sớm cho cấp trên để xin quyết định.",
+     "Hiểu ghi chép và kiểm tra lần cuối quyết định thành tích lứa đẻ đầu sau này, và có thể hướng dẫn người mới nề nếp ghi chép và kiểm tra trước khi nhập đàn."
+    ],
+    "levels_id": [
+     "Tidak mencatat, memasukkan ke kelompok tanpa memeriksa, dan diam-diam mencampurkan babi yang tidak memenuhi standar.",
+     "Jika ada instruksi bisa mencatat, tetapi sering lupa nomor identitas dan berat badan, dan pemeriksaan sebelum bergabung juga sering terlewat.",
+     "Jika ada instruksi, bisa menulis nomor identitas, berat badan, jumlah puting, dan tanggal birahi, serta memeriksa berat badan, BCS, kaki, dan kesehatan secara garis besar sebelum bergabung.",
+     "Tanpa instruksi pun, mencatat birahi pertama dan birahi kedua dan seterusnya secara terpisah, melakukan pemeriksaan akhir sebelum bergabung, dan segera melapor ke atasan untuk meminta keputusan jika ada babi di luar standar.",
+     "Memahami bahwa pencatatan dan pemeriksaan akhir menentukan kinerja beranak pertama nanti, dan bisa mengajari karyawan baru pola pencatatan dan pemeriksaan sebelum bergabung."
+    ]
+   }
+  ],
+  "name_en": "Receiving Replacement Gilts",
+  "purposeShort_en": "Receive arriving gilts (future sows) safely without bringing in disease, get them used to the environment, and bring them into the herd in good health",
+  "name_vi": "Tiếp nhận lợn hậu bị",
+  "purposeShort_vi": "Tiếp nhận an toàn lợn hậu bị (nái tương lai) vừa về mà không mang mầm bệnh vào, cho quen môi trường rồi nhập đàn trong tình trạng khỏe mạnh",
+  "name_id": "Penerimaan babi calon induk",
+  "purposeShort_id": "Menerima babi calon induk (induk masa depan) yang tiba dengan aman tanpa membawa penyakit, membiasakannya dengan lingkungan, dan menggabungkannya ke kelompok dalam keadaan sehat"
  }
 ]

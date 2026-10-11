@@ -420,5 +420,216 @@
     "purposeShort_en": "Keep pre-shipping management running smoothly",
     "purposeShort_vi": "Giúp việc quản lý trước xuất chuồng thuận lợi",
     "purposeShort_id": "Melancarkan pengelolaan sebelum pengiriman"
+  },
+  {
+    "id": "body-measure",
+    "category": "shipping",
+    "no": "",
+    "name": "体測",
+    "purposeShort": "肥育豚の体重を正しく測り、出荷の適期と群の発育のばらつきを把握する",
+    "gyomu": "",
+    "aspects": [
+      {
+        "id": "scale-prep",
+        "name": "体重計の設置とゼロ点・道具の準備",
+        "kanten": "体重計（台秤）を平らな場所に置いてゼロ点を確かめ、追い板・記録用紙・マーキングスプレーをそろえてから測り始められるか。",
+        "levels": [
+          "体重計を傾いた場所に置き、ゼロ点も見ず道具も不足したまま測り始める。",
+          "指示があれば設置するが、ゼロ点の確認や道具のそろえ忘れが多く、校正は他者まかせ。",
+          "指示があれば平らな場所に設置してゼロ点を確認し、追い板・記録用紙・スプレーをそろえて測り始められる。",
+          "指示がなくても測る前に設置場所とゼロ点を確かめ、道具を整え、校正が必要そうなら上長に伝える。",
+          "体重計がずれると出荷判断や増体の計算まで狂うことを理解し、設置とゼロ点確認の手順を新人に指導できる。"
+        ],
+        "name_en": "Setting up the scale, zeroing, and preparing tools",
+        "name_vi": "Đặt cân, chỉnh về 0 và chuẩn bị dụng cụ",
+        "name_id": "Pemasangan timbangan, titik nol, dan persiapan alat",
+        "kanten_en": "Can they place the scale (platform scale) on a flat spot, check the zero point, and gather the pig board, record sheet, and marking spray before starting to weigh?",
+        "kanten_vi": "Có đặt cân (cân bàn) ở chỗ bằng phẳng, kiểm tra điểm 0, chuẩn bị đủ tấm chắn, giấy ghi chép, bình xịt đánh dấu rồi mới bắt đầu cân không.",
+        "kanten_id": "Apakah menaruh timbangan (timbangan lantai) di tempat datar, memeriksa titik nol, dan menyiapkan papan penggiring, lembar catatan, serta semprotan penanda sebelum mulai menimbang.",
+        "levels_en": [
+          "Places the scale on a sloping spot and starts weighing without checking zero and with tools missing.",
+          "With guidance, sets it up, but often forgets the zero check and tools, and leaves calibration to others.",
+          "With guidance, sets the scale on a flat place, checks zero, and can start weighing with the pig board, record sheet, and spray ready.",
+          "Independently checks the location and zero before weighing, gets the tools ready, and tells the supervisor if calibration seems necessary.",
+          "Understands that a shifted scale throws off shipping decisions and gain calculations, and can teach new staff the setup and zero-check procedure."
+        ],
+        "levels_vi": [
+          "Đặt cân ở chỗ nghiêng, không xem điểm 0, dụng cụ còn thiếu vẫn bắt đầu cân.",
+          "Nếu có chỉ dẫn thì đặt cân, nhưng hay quên kiểm tra điểm 0 và chuẩn bị dụng cụ, việc hiệu chuẩn phó mặc cho người khác.",
+          "Nếu có chỉ dẫn thì đặt cân ở chỗ bằng phẳng, kiểm tra điểm 0, chuẩn bị đủ tấm chắn, giấy ghi chép, bình xịt rồi bắt đầu cân được.",
+          "Không cần chỉ dẫn cũng kiểm tra chỗ đặt và điểm 0 trước khi cân, chuẩn bị dụng cụ, nếu thấy có vẻ cần hiệu chuẩn thì báo cấp trên.",
+          "Hiểu cân bị lệch sẽ làm sai cả quyết định xuất chuồng và tính tăng trọng, và có thể hướng dẫn người mới trình tự đặt cân và kiểm tra điểm 0."
+        ],
+        "levels_id": [
+          "Menaruh timbangan di tempat miring, tidak melihat titik nol, dan mulai menimbang dengan alat yang kurang.",
+          "Jika ada instruksi bisa memasang, tetapi sering lupa memeriksa titik nol dan melengkapi alat, dan kalibrasi diserahkan ke orang lain.",
+          "Jika ada instruksi, bisa memasang di tempat datar, memeriksa titik nol, dan mulai menimbang dengan papan penggiring, lembar catatan, dan semprotan sudah siap.",
+          "Tanpa instruksi pun, memeriksa tempat dan titik nol sebelum menimbang, menyiapkan alat, dan memberi tahu atasan jika tampaknya perlu dikalibrasi.",
+          "Memahami bahwa timbangan yang bergeser mengacaukan keputusan pengiriman dan perhitungan pertambahan berat, dan bisa mengajari karyawan baru urutan pemasangan dan pemeriksaan titik nol."
+        ]
+      },
+      {
+        "id": "calm-handling",
+        "name": "豚の誘導と扱い（ストレス・けが防止）",
+        "kanten": "追い板で静かに誘導し、追い回さず無理に押し込まずに体重計へ乗せ、豚にも自分にもけがをさせず測れるか。",
+        "levels": [
+          "大声で追い回し、無理に押し込んで豚を興奮させ、豚や自分にけがをさせかねない扱いをする。",
+          "指示があれば静かに誘導するが、焦ると追い回したり押し込んだりして、通路や追い板の使い方にムラがある。",
+          "指示があれば追い板で誘導し、体重計に静かに乗せて、落ち着いてから測り、静かに出せる。",
+          "指示がなくても豚が興奮したら一度待ち、通路の障害物を除いて、豚にも自分にもけがが出ない位置で誘導する。",
+          "体重測定が豚にとってストレスであることを理解し、静かに扱うコツと安全な立ち位置を新人に指導できる。"
+        ],
+        "name_en": "Guiding and handling the pigs (preventing stress and injury)",
+        "name_vi": "Lùa và xử lý lợn (phòng căng thẳng và chấn thương)",
+        "name_id": "Penggiringan dan penanganan babi (mencegah stres dan cedera)",
+        "kanten_en": "Can they guide pigs quietly with the pig board, put them on the scale without chasing or forcing, and weigh without injuring the pigs or themselves?",
+        "kanten_vi": "Có lùa lợn nhẹ nhàng bằng tấm chắn, đưa lên cân mà không đuổi hay ép mạnh, cân mà không làm lợn và bản thân bị thương không.",
+        "kanten_id": "Apakah menggiring babi dengan tenang memakai papan penggiring, menaikkannya ke timbangan tanpa mengejar atau memaksa, dan menimbang tanpa melukai babi maupun diri sendiri.",
+        "levels_en": [
+          "Chases with shouting, forces pigs in and excites them, and handles them in ways that could injure the pigs or themselves.",
+          "With guidance, guides quietly, but when rushed chases or pushes them in, and use of passages and the pig board is uneven.",
+          "With guidance, guides with the pig board, puts the pig quietly on the scale, weighs once it settles, and lets it out quietly.",
+          "Independently waits when a pig gets excited, clears obstacles from the passage, and guides from a position where neither the pig nor they get hurt.",
+          "Understands that weighing is stressful for pigs, and can teach new staff how to handle them quietly and safe positioning."
+        ],
+        "levels_vi": [
+          "La to đuổi lợn, ép mạnh làm lợn bị kích động, xử lý theo cách có thể làm lợn và bản thân bị thương.",
+          "Nếu có chỉ dẫn thì lùa nhẹ nhàng, nhưng khi vội thì đuổi hay ép lợn vào, cách dùng lối đi và tấm chắn không đều.",
+          "Nếu có chỉ dẫn thì lùa bằng tấm chắn, đưa lợn lên cân nhẹ nhàng, chờ lợn yên rồi mới cân và cho ra nhẹ nhàng được.",
+          "Không cần chỉ dẫn cũng chờ một lúc khi lợn bị kích động, dọn vật cản ở lối đi, và lùa ở vị trí để cả lợn và mình không bị thương.",
+          "Hiểu việc cân là căng thẳng với lợn, và có thể hướng dẫn người mới mẹo xử lý nhẹ nhàng và vị trí đứng an toàn."
+        ],
+        "levels_id": [
+          "Mengejar sambil berteriak, memaksa babi masuk sehingga gelisah, dan menangani dengan cara yang bisa melukai babi atau diri sendiri.",
+          "Jika ada instruksi bisa menggiring dengan tenang, tetapi saat terburu-buru mengejar atau mendorong paksa, dan cara memakai lorong dan papan penggiring tidak merata.",
+          "Jika ada instruksi, bisa menggiring dengan papan penggiring, menaikkan babi ke timbangan dengan tenang, menimbang setelah tenang, dan mengeluarkannya dengan tenang.",
+          "Tanpa instruksi pun, menunggu dulu saat babi gelisah, menyingkirkan penghalang di lorong, dan menggiring dari posisi yang tidak melukai babi maupun diri sendiri.",
+          "Memahami bahwa penimbangan membuat babi stres, dan bisa mengajari karyawan baru trik menangani dengan tenang dan posisi berdiri yang aman."
+        ]
+      },
+      {
+        "id": "weigh-estimate",
+        "name": "計測と推定メジャー・目視推定の使い分け",
+        "kanten": "動かなくなってから体重計の数値を読み、体重計がない時は胸囲と体長のメジャーによる推定を目安として使い分けられるか。",
+        "levels": [
+          "豚が動いている最中に数値を読み、体重計があっても目視だけで決めて、推定値を正確な体重のように扱う。",
+          "指示があれば測るが、読むタイミングがばらつき、推定メジャーの当て方も不確か。",
+          "指示があれば豚が動かなくなったところで数値を読み、体重計がなければ胸囲と体長を測って目安の体重を出せる。",
+          "指示がなくても測る前に目視で体重を予想して実測と比べ、メジャー推定はあくまで目安として出荷の最終判断には体重計の値を使う。",
+          "目視・メジャー推定・実測の精度の違いを理解し、使い分けと目視推定の上達のコツを新人に指導できる。"
+        ],
+        "name_en": "Weighing, and choosing between the tape estimate and visual estimate",
+        "name_vi": "Cân và phân biệt dùng thước đo ước lượng và ước lượng bằng mắt",
+        "name_id": "Penimbangan, serta memilih antara taksiran pita ukur dan taksiran visual",
+        "kanten_en": "Can they read the scale once the pig stops moving, and when there is no scale use a girth-and-length tape estimate as a rough guide, choosing between methods appropriately?",
+        "kanten_vi": "Có đọc số trên cân khi lợn đã đứng yên, và khi không có cân thì dùng thước đo vòng ngực và chiều dài thân để ước lượng làm mức tham khảo, biết dùng phù hợp từng cách không.",
+        "kanten_id": "Apakah membaca angka timbangan setelah babi diam, dan bila tidak ada timbangan memakai taksiran pita ukur lingkar dada dan panjang badan sebagai acuan, serta menggunakannya dengan tepat.",
+        "levels_en": [
+          "Reads the number while the pig is still moving, decides by eye alone even when a scale is available, and treats an estimate as an exact weight.",
+          "With guidance, weighs, but the timing of reading varies and how to place the estimating tape is uncertain.",
+          "With guidance, reads the number when the pig stops moving, and without a scale can measure girth and length to get a rough weight.",
+          "Independently guesses the weight by eye before weighing and compares with the measured value, treats the tape estimate only as a guide, and uses the scale value for final shipping decisions.",
+          "Understands the differences in accuracy of visual estimate, tape estimate, and actual weighing, and can teach new staff how to choose among them and tips for improving visual estimation."
+        ],
+        "levels_vi": [
+          "Đọc số khi lợn còn đang cử động, có cân mà vẫn chỉ quyết định bằng mắt, coi số ước lượng như cân nặng chính xác.",
+          "Nếu có chỉ dẫn thì cân, nhưng lúc đọc số không đều, cách đặt thước đo ước lượng cũng không chắc.",
+          "Nếu có chỉ dẫn thì đọc số khi lợn đứng yên, không có cân thì đo vòng ngực và chiều dài thân để ra cân nặng tham khảo được.",
+          "Không cần chỉ dẫn cũng đoán cân nặng bằng mắt trước khi cân rồi so với số thực, coi ước lượng bằng thước chỉ là mức tham khảo, quyết định cuối cùng về xuất chuồng thì dùng số trên cân.",
+          "Hiểu độ chính xác khác nhau giữa ước lượng bằng mắt, bằng thước đo và cân thực tế, và có thể hướng dẫn người mới cách dùng phù hợp và mẹo ước lượng bằng mắt."
+        ],
+        "levels_id": [
+          "Membaca angka saat babi masih bergerak, memutuskan hanya dengan mata walau ada timbangan, dan memperlakukan taksiran seperti berat badan yang pasti.",
+          "Jika ada instruksi bisa menimbang, tetapi waktu membaca angka tidak tetap dan cara menempatkan pita ukur taksiran tidak pasti.",
+          "Jika ada instruksi, bisa membaca angka saat babi diam, dan bila tidak ada timbangan mengukur lingkar dada dan panjang badan untuk mendapat berat acuan.",
+          "Tanpa instruksi pun, menebak berat dengan mata sebelum menimbang lalu membandingkan dengan hasil timbang, menganggap taksiran pita ukur hanya acuan, dan memakai angka timbangan untuk keputusan akhir pengiriman.",
+          "Memahami perbedaan ketelitian taksiran visual, taksiran pita ukur, dan penimbangan nyata, dan bisa mengajari karyawan baru cara memilihnya serta trik meningkatkan taksiran visual."
+        ]
+      },
+      {
+        "id": "ship-judge",
+        "name": "出荷適期の判定と選別",
+        "kanten": "測った体重を出荷適体重110〜120kgなどの基準に当てはめ、出荷候補・軽量豚・重量豚に分けて上長に報告できるか。",
+        "levels": [
+          "体重を基準に当てはめず、足りない豚も重すぎる豚も区別せず、判断を自分だけで決めて出荷に回す。",
+          "指示があれば基準と比べるが、軽量豚や重量豚の見落としが多く、報告も他者まかせ。",
+          "指示があれば110〜120kgを出荷候補、90kg未満（同日齢比較）を軽量豚、120kg超を重量豚に分け、結果を報告できる。",
+          "指示がなくても契約や出荷先の基準を確認して選別し、軽量豚は別管理と原因確認、重量豚は優先出荷を上長へ提案し、足りない豚の出荷は相談する。",
+          "軽すぎても重すぎても減額や脂肪過多になることを理解し、選別の考え方を新人に指導できる。"
+        ],
+        "name_en": "Judging shipping readiness and sorting",
+        "name_vi": "Xác định thời điểm xuất chuồng phù hợp và phân loại",
+        "name_id": "Penentuan waktu kirim yang tepat dan penyortiran",
+        "kanten_en": "Can they apply the measured weight to criteria such as the shipping weight of 110-120 kg, sort pigs into shipping candidates, light pigs, and heavy pigs, and report to the supervisor?",
+        "kanten_vi": "Có áp cân nặng đã đo vào tiêu chuẩn như cân nặng xuất chuồng 110-120kg, phân thành lợn dự kiến xuất, lợn nhẹ cân, lợn nặng cân và báo cáo cấp trên không.",
+        "kanten_id": "Apakah mencocokkan berat badan hasil timbang dengan standar seperti berat kirim 110-120kg, memilah menjadi calon kirim, babi ringan, dan babi berat, lalu melapor ke atasan.",
+        "levels_en": [
+          "Does not apply weights to the criteria, does not distinguish under-weight or over-weight pigs, and decides alone to send pigs to shipping.",
+          "With guidance, compares with the criteria, but often misses light or heavy pigs, and leaves reporting to others.",
+          "With guidance, sorts 110-120 kg as shipping candidates, under 90 kg (compared at the same age) as light pigs, and over 120 kg as heavy pigs, and can report the result.",
+          "Independently confirms the contract or buyer's standard before sorting, proposes separate management and cause checks for light pigs and priority shipping for heavy pigs to the supervisor, and consults about shipping pigs that fall short.",
+          "Understands that pigs too light or too heavy lead to price penalties or excess fat, and can teach new staff how to think about sorting."
+        ],
+        "levels_vi": [
+          "Không áp cân nặng vào tiêu chuẩn, không phân biệt lợn thiếu cân hay quá nặng, tự quyết định một mình rồi cho đi xuất.",
+          "Nếu có chỉ dẫn thì so với tiêu chuẩn, nhưng hay bỏ sót lợn nhẹ cân và nặng cân, việc báo cáo phó mặc cho người khác.",
+          "Nếu có chỉ dẫn thì phân loại 110-120kg là dự kiến xuất, dưới 90kg (so cùng ngày tuổi) là lợn nhẹ cân, trên 120kg là lợn nặng cân và báo cáo kết quả được.",
+          "Không cần chỉ dẫn cũng xác nhận tiêu chuẩn theo hợp đồng hoặc nơi nhận rồi phân loại, đề xuất với cấp trên quản lý riêng và kiểm tra nguyên nhân lợn nhẹ cân, ưu tiên xuất lợn nặng cân, và trao đổi khi lợn thiếu cân mà muốn xuất.",
+          "Hiểu lợn quá nhẹ hay quá nặng đều bị trừ tiền hoặc quá nhiều mỡ, và có thể hướng dẫn người mới cách nghĩ khi phân loại."
+        ],
+        "levels_id": [
+          "Tidak mencocokkan berat dengan standar, tidak membedakan babi yang kurang atau terlalu berat, dan memutuskan sendiri lalu mengirimkannya.",
+          "Jika ada instruksi bisa membandingkan dengan standar, tetapi sering terlewat babi ringan atau berat, dan pelaporan diserahkan ke orang lain.",
+          "Jika ada instruksi, bisa memilah 110-120kg sebagai calon kirim, di bawah 90kg (dibandingkan pada umur yang sama) sebagai babi ringan, dan di atas 120kg sebagai babi berat, lalu melaporkan hasilnya.",
+          "Tanpa instruksi pun, memastikan standar kontrak atau pembeli sebelum memilah, mengusulkan ke atasan pengelolaan terpisah dan pemeriksaan penyebab untuk babi ringan serta pengiriman prioritas untuk babi berat, dan berkonsultasi tentang pengiriman babi yang kurang berat.",
+          "Memahami bahwa babi yang terlalu ringan atau terlalu berat menyebabkan potongan harga atau lemak berlebih, dan bisa mengajari karyawan baru cara berpikir dalam penyortiran."
+        ]
+      },
+      {
+        "id": "record-variance",
+        "name": "記録と群のばらつき・遅れ豚の確認",
+        "kanten": "体重を記録し、群内のばらつきを見て、小さい豚の原因（病気・寄生虫・いじめ・採食）を確かめられるか。",
+        "levels": [
+          "記録を残さず、群に小さい豚がいても気にせず、体重のばらつきも見ない。",
+          "指示があれば記録するが、記入漏れが多く、小さい豚がいても原因まで見ない。",
+          "指示があれば体重を記録し、群内のばらつきを確認して、極端に小さい豚を報告できる。",
+          "指示がなくても測定後すぐ記録し、小さい豚は病気・寄生虫・いじめ・エサに届いていないかを確かめ、跛行などの異常があれば報告する。",
+          "記録が増体の計算と出荷計画の土台であることを理解し、記入とばらつき確認の見方を新人に指導できる。"
+        ],
+        "name_en": "Records, and checking group variation and slow-growing pigs",
+        "name_vi": "Ghi chép, kiểm tra độ chênh lệch trong đàn và lợn chậm lớn",
+        "name_id": "Pencatatan, serta pemeriksaan variasi kelompok dan babi yang lambat tumbuh",
+        "kanten_en": "Can they record weights, look at variation within the group, and check the cause of small pigs (disease, parasites, bullying, feed access)?",
+        "kanten_vi": "Có ghi cân nặng, xem độ chênh lệch trong đàn, và tìm nguyên nhân lợn nhỏ (bệnh, ký sinh trùng, bị ăn hiếp, ăn uống) không.",
+        "kanten_id": "Apakah mencatat berat badan, melihat variasi dalam kelompok, dan memeriksa penyebab babi yang kecil (penyakit, parasit, diganggu, akses pakan).",
+        "levels_en": [
+          "Keeps no records, ignores small pigs in the group, and does not look at weight variation.",
+          "With guidance, records, but often leaves entries incomplete, and does not look into the cause even when there are small pigs.",
+          "With guidance, records weights, checks variation within the group, and can report extremely small pigs.",
+          "Independently records right after weighing, checks whether small pigs are affected by disease, parasites, bullying, or not reaching feed, and reports abnormalities such as lameness.",
+          "Understands that records underpin gain calculations and shipping plans, and can teach new staff how to record and check variation."
+        ],
+        "levels_vi": [
+          "Không ghi chép, trong đàn có lợn nhỏ cũng mặc kệ, không xem độ chênh lệch cân nặng.",
+          "Nếu có chỉ dẫn thì ghi chép, nhưng hay sót, có lợn nhỏ cũng không tìm đến nguyên nhân.",
+          "Nếu có chỉ dẫn thì ghi cân nặng, kiểm tra độ chênh lệch trong đàn, và báo cáo lợn nhỏ bất thường được.",
+          "Không cần chỉ dẫn cũng ghi chép ngay sau khi cân, kiểm tra lợn nhỏ có bị bệnh, ký sinh trùng, ăn hiếp hay không tới được thức ăn, nếu thấy bất thường như đi khập khiễng thì báo cáo.",
+          "Hiểu ghi chép là nền tảng của việc tính tăng trọng và kế hoạch xuất chuồng, và có thể hướng dẫn người mới cách ghi và xem độ chênh lệch."
+        ],
+        "levels_id": [
+          "Tidak mencatat, tidak peduli walau ada babi kecil dalam kelompok, dan tidak melihat variasi berat badan.",
+          "Jika ada instruksi bisa mencatat, tetapi sering ada yang kurang, dan walau ada babi kecil tidak menelusuri penyebabnya.",
+          "Jika ada instruksi, bisa mencatat berat badan, memeriksa variasi dalam kelompok, dan melaporkan babi yang sangat kecil.",
+          "Tanpa instruksi pun, langsung mencatat setelah menimbang, memeriksa apakah babi kecil terkena penyakit, parasit, diganggu, atau tidak sampai ke pakan, dan melaporkan kelainan seperti pincang.",
+          "Memahami bahwa pencatatan adalah dasar perhitungan pertambahan berat dan rencana pengiriman, dan bisa mengajari karyawan baru cara mencatat dan memeriksa variasi."
+        ]
+      }
+    ],
+    "name_en": "Body Weight Measurement",
+    "purposeShort_en": "Weigh finishing pigs correctly to grasp the right time to ship and the variation in growth within the group",
+    "name_vi": "Cân đo thể trọng",
+    "purposeShort_vi": "Cân đúng cân nặng lợn thịt để nắm thời điểm xuất chuồng phù hợp và độ chênh lệch phát triển trong đàn",
+    "name_id": "Pengukuran berat badan",
+    "purposeShort_id": "Menimbang berat babi penggemukan dengan benar untuk mengetahui waktu kirim yang tepat dan variasi pertumbuhan dalam kelompok"
   }
 ]

@@ -5,6 +5,8 @@ const src = fs.readFileSync(path.join(root, 'works-v2.js'), 'utf8');
 const W = new Function(src + ';return WORKDATA_V2;')();
 const cat = Object.fromEntries(W.categories.map(c => [c.id, c.name]));
 const rows = W.works.map(w => [w.no, w.name, cat[w.category] || w.category]);
+// 試験区分（分娩舎など）も作業一覧に載せる＝受験者タブの作業列のプルダウンで選べる（アプリが作業一式に展開する）
+(W.presets || []).forEach(p => rows.push(['区分', p.name, '試験区分（' + p.works.length + '作業）']));
 const gs = fs.readFileSync(path.join(__dirname, 'Code.src.gs'), 'utf8')
   .replace('/*__WORKS__*/[]', JSON.stringify(rows))
   .replace('※ Code.gs は build_gas.js が', '※ このファイルは build_gas.js が');

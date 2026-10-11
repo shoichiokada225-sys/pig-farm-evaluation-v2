@@ -219,6 +219,25 @@ function toggleWork(id,on){
   if(on&&!had)addWorkSec(id);else if(!on&&had)removeWorkSec(id);
   onCh();
 }
+/* 試験区分（分娩舎など）を押す＝その区分の作業一式に入れ替える。今の人が試験期間に済ませた作業は入れない。
+   採点した作業を外す時だけ確認。やり直し中は外せないので足すだけ */
+function applyPreset(pid){
+  if(editId){toast(t('editingBanner'),1);return}
+  const p=presetById(pid);if(!p)return;
+  const dn=curDoneWorks();
+  let want=p.works.filter(w=>workById(w)&&!dn.includes(w));
+  if(!want.length)want=p.works.filter(workById);   // 全部済んでいる＝全作業
+  const drop=curEe.redo?[]:selWorks.filter(w=>!want.includes(w));
+  const f=collectForm(),scored=f.works.filter(we=>drop.includes(we.workId)&&formHasContent({works:[we]}));
+  if(scored.length&&!confirm(t('cPresetDrop').replace('{w}',scored.map(we=>loc(workById(we.workId),'name')).join(listSep()))))return;
+  if(!formHasContent(f)){selWorks=curEe.redo?selWorks.concat(want.filter(w=>!selWorks.includes(w))):want.slice();saveSel();buildWorkSel();buildCards()}
+  else{
+    drop.forEach(w=>{selWorks=selWorks.filter(x=>x!==w);removeWorkSec(w)});
+    want.forEach(w=>{if(!selWorks.includes(w)){selWorks.push(w);addWorkSec(w)}});
+    saveSel();buildWorkSel();
+  }
+  onCh();
+}
 function clearWorks(){
   if(!selWorks.length)return;
   if(editId){cancelEdit();return}

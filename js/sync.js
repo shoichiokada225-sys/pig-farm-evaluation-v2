@@ -105,8 +105,9 @@ async function fetchRoster(){
       const aliases=(Array.isArray(p&&p.aliases)?p.aliases:String(p&&p.aliases||'').split(/[、,，\/／;；\n]/)).map(a=>String(a==null?'':a).trim()).filter(a=>a&&a!==name);
       (p&&Array.isArray(p.works)?p.works:[]).forEach(v=>{
         const raw=String(v==null?'':v).trim();if(!raw)return;
-        const id=resolveWork(raw);
+        const id=resolveWork(raw),pr=id?null:presetByName(raw);   // 作業欄に区分名（肥育舎など）＝その区分の作業一式
         if(id){if(!works.includes(id))works.push(id)}
+        else if(pr)pr.works.forEach(w=>{if(workById(w)&&!works.includes(w))works.push(w)});
         else if(!unresolved.includes(raw))unresolved.push(raw);
       });
       if(name)unresolved.forEach(w=>unknown.push({name,farm,work:w}));

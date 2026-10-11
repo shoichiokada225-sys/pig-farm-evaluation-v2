@@ -17,7 +17,7 @@
      違えば {ok:false, error:'auth'}。ping は合言葉なしで版だけ返す。APP_TOKEN が無い時は従来どおり誰でも（テスト・移行用）
    - 削除ログ（2026-10-06a〜）: 削除・上書き（再送・編集）で消える行は、消す前に「削除ログ」タブへ写す（取り返せるように） */
 
-const CODE_VERSION = '2026-10-06d';
+const CODE_VERSION = '2026-10-11a';
 /* アプリはこれを見て「シート側が古い（旧名・削除が使えない）」を警告する（js/contract.js の GAS_REQUIRED_CAPS） */
 const API_CAPABILITIES = ['roster', 'roster.aliases', 'roster.done', 'submit', 'submit.redoOf', 'delete', 'auth', 'dellog', 'submit.ver', 'submit.dups', 'submit.revive'];
 const ROSTER_SHEET = '受験者';
@@ -80,7 +80,7 @@ function authOk_(k) {
   noteFail_();
   return false;
 }
-const WORKS = [["No.11","給餌","飼養管理"],["No.02","エサ調整","飼養管理"],["No.16","エサ回収","飼養管理"],["No.43","えつけ（哺乳期給餌）","飼養管理"],["No.27","育成受け","飼養管理"],["No.34","去勢","飼養管理"],["No.18","添加剤準備","飼養管理"],["No.12","除フン","衛生管理"],["No.31","5S清掃","衛生管理"],["No.04","治療","衛生管理"],["No.06","母豚ワクチン接種","衛生管理"],["No.41","CSF（豚熱）子ワクチン接種","衛生管理"],["No.40","洗浄（離乳後）","衛生管理"],["No.15","消毒","衛生管理"],["No.44","石灰散布","衛生管理"],["No.37","死獣回収","衛生管理"],["No.14","AI（人工授精）注入作業","繁殖管理"],["No.33","許容確認","繁殖管理"],["No.03","精液検査・反転","繁殖管理"],["No.17","精液攪拌","繁殖管理"],["No.09","妊娠鑑定","繁殖管理"],["No.08","PMS投与","繁殖管理"],["No.36","PG（プロスタグランジン）接種","繁殖管理"],["No.42","子宮内洗浄","繁殖管理"],["No.26","入室（分娩舎）","分娩管理"],["No.35","分娩介助","分娩管理"],["No.39","送り里子","分娩管理"],["No.13","母豚の並びの整理","施設管理"],["No.10","移動指示","施設管理"],["No.25","妊娠舎→交配舎・育成舎 移動","施設管理"],["No.19","スクレーパー動作確認","施設管理"],["No.29","ファン清掃","施設管理"],["No.30","パドタンク清掃（夏季）","施設管理"],["No.20","エサスイッチ","施設管理"],["No.05","日報記入","記録管理"],["No.07","プレート作成","記録管理"],["No.21","タグ付け","記録管理"],["No.32","分娩予定記入","記録管理"],["No.22","廃豚出荷（母豚出し）","出荷管理"],["No.23","育成舎へ廃豚移動","出荷管理"]];   // [No, 作業名, カテゴリ]
+const WORKS = [["No.11","給餌","飼養管理"],["No.02","エサ調整","飼養管理"],["No.16","エサ回収","飼養管理"],["No.43","えつけ（哺乳期給餌）","飼養管理"],["No.27","育成受け","飼養管理"],["No.34","去勢","飼養管理"],["No.18","添加剤準備","飼養管理"],["No.12","除フン","衛生管理"],["No.31","5S清掃","衛生管理"],["No.04","治療","衛生管理"],["No.06","母豚ワクチン接種","衛生管理"],["No.41","CSF（豚熱）子ワクチン接種","衛生管理"],["No.40","洗浄（離乳後）","衛生管理"],["No.15","消毒","衛生管理"],["No.44","石灰散布","衛生管理"],["No.37","死獣回収","衛生管理"],["No.14","AI（人工授精）注入作業","繁殖管理"],["No.33","許容確認","繁殖管理"],["No.03","精液検査・反転","繁殖管理"],["No.17","精液攪拌","繁殖管理"],["No.09","妊娠鑑定","繁殖管理"],["No.08","PMS投与","繁殖管理"],["No.36","PG（プロスタグランジン）接種","繁殖管理"],["No.42","子宮内洗浄","繁殖管理"],["","育成豚の受け入れ","繁殖管理"],["No.26","入室（分娩舎）","分娩管理"],["No.35","分娩介助","分娩管理"],["No.39","送り里子","分娩管理"],["No.13","母豚の並びの整理","施設管理"],["No.10","移動指示","施設管理"],["No.25","妊娠舎→交配舎・育成舎 移動","施設管理"],["No.19","スクレーパー動作確認","施設管理"],["No.29","ファン清掃","施設管理"],["No.30","パドタンク清掃（夏季）","施設管理"],["No.20","エサスイッチ","施設管理"],["No.05","日報記入","記録管理"],["No.07","プレート作成","記録管理"],["No.21","タグ付け","記録管理"],["No.32","分娩予定記入","記録管理"],["No.22","廃豚出荷（母豚出し）","出荷管理"],["No.23","育成舎へ廃豚移動","出荷管理"],["","体測","出荷管理"],["区分","分娩舎","試験区分（7作業）"],["区分","ストール舎","試験区分（6作業）"],["区分","子豚舎","試験区分（6作業）"],["区分","肥育舎","試験区分（8作業）"]];   // [No, 作業名, カテゴリ]
 
 function setup() {
   const ss = SpreadsheetApp.getActive();
@@ -171,11 +171,47 @@ function admin_(e) {
   try {
     if (e.parameter.op === 'check') return json_({ ok: true, version: CODE_VERSION, check: checkSummary_(), authFails: failCount_() });   // 読むだけ（集計タブの式の結果を検算）
     const r = setup();
+    // op=common: 既存の（農場共通）行の作業も COMMON_SEED に置き換える（試験区分の変更用）。置き換え前の作業を応答で返す（共通行に人の名前は無い）
+    if (e.parameter.op === 'common') {
+      const rep = typeof COMMON_SEED !== 'undefined' ? setCommonRows_(COMMON_SEED) : [];
+      return json_({ ok: true, version: CODE_VERSION, setup: r, commonReplaced: rep, commonAdded: typeof COMMON_SEED !== 'undefined' ? addCommonRows_(COMMON_SEED) : [] });
+    }
     const added = typeof COMMON_SEED !== 'undefined' ? addCommonRows_(COMMON_SEED) : [];
     return json_({ ok: true, version: CODE_VERSION, setup: r, commonAdded: added, check: checkSummary_() });
   } finally {
     lock.releaseLock();
   }
+}
+/* （農場共通）行の名前か。アプリの isCommonRow（js/sync.js）と同じ: 全角半角・空白をそろえ、括弧の種類（【】［］など）は問わない */
+function isCommonName_(v) {
+  const s = String(v || '').normalize('NFKC').replace(/\s+/g, '');
+  return s.replace(/[\[\]（）()【】〔〕［］「」『』<>＜＞{}]/g, '') === '農場共通';
+}
+/* 既存の（農場共通）行のうち、seed にある農場の行の作業列を seed の作業に置き換える（人の行・seed に無い農場の行は触らない）。
+   戻り値 [{farm, before:[作業…], after:[作業…]}] */
+function setCommonRows_(seed) {
+  const rs = SpreadsheetApp.getActive().getSheetByName(ROSTER_SHEET);
+  if (!rs || rs.getLastRow() < 2) return [];
+  const c = rosterCols_(rs);
+  if (c.farm < 0 || !c.works.length) return [];
+  const nf = v => String(v || '').normalize('NFKC').replace(/\s+/g, '');
+  const want = {};
+  (seed || []).forEach(([farm, works]) => {
+    if (!farm) return;
+    const a = (works || []).slice(0, c.works.length);
+    if ((works || []).length > a.length) a.cut = works.slice(a.length);   // 作業列が足りず入らない作業（応答で知らせる）
+    want[nf(farm)] = a;
+  });
+  const w = rs.getLastColumn(), vals = rs.getRange(2, 1, rs.getLastRow() - 1, w).getDisplayValues(), out = [];
+  vals.forEach((r, i) => {
+    if (!isCommonName_(r[c.name])) return;
+    const nw = want[nf(r[c.farm])];
+    if (!nw) return;
+    const before = c.works.map(k => String(r[k] || '').trim()).filter(Boolean);
+    c.works.forEach((k, j) => rs.getRange(i + 2, k + 1, 1, 1).setValues([[nw[j] || '']]));
+    out.push({ farm: r[c.farm], before: before, after: nw, ...(want[nf(r[c.farm])].cut ? { cut: want[nf(r[c.farm])].cut } : {}) });
+  });
+  return out;
 }
 /* （農場共通）行が無い農場にだけ追記する（既存の行・人の行は触らない）。追記した農場名を返す */
 function addCommonRows_(seed) {
@@ -188,7 +224,7 @@ function addCommonRows_(seed) {
   if (rs.getLastRow() > 1) {
     const w = rs.getLastColumn();
     rs.getRange(2, 1, rs.getLastRow() - 1, w).getDisplayValues().forEach(r => {
-      if (/^[（(]?\s*農場共通\s*[）)]?$/.test(String(r[c.name] || '').trim())) has.add(nf(r[c.farm]));
+      if (isCommonName_(r[c.name])) has.add(nf(r[c.farm]));
     });
   }
   const w = rs.getLastColumn(), out = [];

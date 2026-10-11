@@ -4,12 +4,16 @@
 if(typeof WORKDATA_V2==='undefined'){window.WORKDATA_V2={version:'-',categories:[],works:[]}}
 WORKDATA_V2.categories=WORKDATA_V2.categories||[];
 WORKDATA_V2.works=WORKDATA_V2.works||[];
+WORKDATA_V2.presets=WORKDATA_V2.presets||[];   // 試験区分 [{id,name,name_*,works:[workId]}]（分娩舎・ストール舎・子豚舎・肥育舎）
 
 /* 多言語アクセサ: o[f+'_'+lang] があればそれを、無ければ o[f]（ja原文） */
 function loc(o,f){if(lang!=='ja'&&o){const v=o[f+'_'+lang];if(v!=null)return v}return o?o[f]:''}
 function locLevels(o){if(lang!=='ja'&&o){const v=o['levels_'+lang];if(Array.isArray(v)&&v.length)return v}return o&&o.levels||[]}
 
 function workById(id){return WORKDATA_V2.works.find(w=>w.id===id)}
+function presetById(id){return WORKDATA_V2.presets.find(p=>p.id===id)}
+/* 名簿の作業欄に書いた区分名（「肥育舎」「【肥育舎】」など）→ 区分。作業名の照合と同じく全角半角・空白・括弧をそろえる */
+function presetByName(v){const n=String(v||'').normalize('NFKC').replace(/[\s\[\]（）()【】〔〕［］「」『』<>＜＞{}]/g,'');return n?WORKDATA_V2.presets.find(p=>String(p.name).normalize('NFKC').replace(/\s/g,'')===n):undefined}
 function worksInCat(catId){return WORKDATA_V2.works.filter(w=>w.category===catId)}
 function catLabel(catId){
   const k='cat'+catId.charAt(0).toUpperCase()+catId.slice(1);

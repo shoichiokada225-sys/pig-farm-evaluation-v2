@@ -1,0 +1,10 @@
+[
+  {"id": "farrowing-house", "name": "分娩舎", "name_en": "Farrowing barn", "name_vi": "Chuồng đẻ", "name_id": "Kandang beranak",
+   "works": ["feeding-daily", "nursing-feed", "castration", "sow-vaccine", "farrow-assist", "cross-foster", "disinfect"]},
+  {"id": "stall-house", "name": "ストール舎", "name_en": "Stall barn", "name_vi": "Chuồng cá thể", "name_id": "Kandang stall",
+   "works": ["feeding-daily", "additive", "gilt-intake", "preg-check", "pms", "ai-insem"]},
+  {"id": "nursery-house", "name": "子豚舎", "name_en": "Nursery barn", "name_vi": "Chuồng cai sữa", "name_id": "Kandang sapihan",
+   "works": ["fan-clean", "five-s", "treatment", "carcass", "washing", "lime"]},
+  {"id": "finishing-house", "name": "肥育舎", "name_en": "Finishing barn", "name_vi": "Chuồng vỗ béo", "name_id": "Kandang penggemukan",
+   "works": ["feeding-daily", "feed-adjust", "additive", "disinfect", "daily-report", "dung-removal", "lime", "body-measure"]}
+]
