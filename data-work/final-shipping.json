@@ -631,5 +631,216 @@
     "purposeShort_vi": "Cân đúng cân nặng lợn thịt để nắm thời điểm xuất chuồng phù hợp và độ chênh lệch phát triển trong đàn",
     "name_id": "Pengukuran berat badan",
     "purposeShort_id": "Menimbang berat babi penggemukan dengan benar untuk mengetahui waktu kirim yang tepat dan variasi pertumbuhan dalam kelompok"
+  },
+  {
+    "id": "ship-fin",
+    "category": "shipping",
+    "no": "",
+    "name": "出荷",
+    "purposeShort": "選別された肥育豚を、休薬を確かめたうえでストレスと事故なく積み込み、頭数と記録を残して出荷する",
+    "gyomu": "",
+    "name_en": "Shipping",
+    "purposeShort_en": "Load the selected finishing pigs after confirming the withdrawal period, without stress or accidents, and ship them with the head count and records kept",
+    "name_vi": "Xuất chuồng",
+    "purposeShort_vi": "Sau khi xác nhận thời gian ngừng thuốc, đưa lợn thịt đã chọn lên xe không căng thẳng, không tai nạn, rồi xuất chuồng và lưu số lượng cùng ghi chép",
+    "name_id": "Pengiriman",
+    "purposeShort_id": "Memuat babi penggemukan yang sudah dipilih setelah memastikan masa henti obat, tanpa stres dan kecelakaan, lalu mengirimnya dengan jumlah ekor dan catatan tersimpan",
+    "aspects": [
+      {
+        "id": "ship-criteria-plan",
+        "name": "出荷基準の確認と1週間前からの準備",
+        "kanten": "体重110〜120kg（契約による）・170〜180日齢・休薬完了・歩行可能で重い外傷がないという出荷基準を確かめ、7日前の候補選定から前日の最終選別までの段取りに沿って動けるか。",
+        "levels": [
+          "基準を確かめず見た目だけで出荷候補を決め、段取りも知らないまま前日や当日になって慌てる。",
+          "指示があれば基準を見て候補を挙げるが、月齢や外傷の確認が抜け、7日前・3日前などの段取りは他者まかせ。",
+          "指示があれば体重・日齢・健康状態・外傷を基準と照らして候補を選び、7日前の選定、3日前の最終確認、前日の最終選別の流れに沿って動ける。",
+          "指示がなくても基準を満たすか自分で確かめて候補を選び、段取りの各日に何をするか把握して、頭数の確定や業者連絡が必要な時期を上長に伝える。",
+          "基準が契約や出荷先で変わること、準備が遅れると出荷が乱れることを理解し、1週間前からの段取りを新人に指導できる。"
+        ],
+        "name_en": "Checking the shipping criteria and preparing from one week before",
+        "name_vi": "Xác nhận tiêu chuẩn xuất chuồng và chuẩn bị từ một tuần trước",
+        "name_id": "Memeriksa standar kirim dan persiapan dari satu minggu sebelumnya",
+        "kanten_en": "Can they check the shipping criteria (110-120 kg depending on contract, 170-180 days of age, withdrawal period completed, able to walk, no serious injury) and work along the schedule from selecting candidates 7 days before to the final sorting the day before?",
+        "kanten_vi": "Có xác nhận tiêu chuẩn xuất chuồng (110-120 kg tùy hợp đồng, 170-180 ngày tuổi, đã hết thời gian ngừng thuốc, đi lại được, không có vết thương nặng) và làm theo trình tự từ chọn lợn dự kiến 7 ngày trước đến phân loại lần cuối vào hôm trước không.",
+        "kanten_id": "Apakah memeriksa standar kirim (110-120 kg tergantung kontrak, umur 170-180 hari, masa henti obat selesai, bisa berjalan, tanpa luka berat) dan bekerja sesuai urutan dari pemilihan calon 7 hari sebelumnya sampai pemilahan akhir sehari sebelumnya.",
+        "levels_en": [
+          "Picks shipping candidates by appearance without checking the criteria, does not know the schedule, and scrambles the day before or on the day.",
+          "With guidance, lists candidates by the criteria, but misses age and injury checks, and leaves the schedule (7 days, 3 days before, etc.) to others.",
+          "With guidance, selects candidates by comparing weight, age, health, and injuries with the criteria, and can follow the flow of selection 7 days before, final check 3 days before, and final sorting the day before.",
+          "Independently checks whether pigs meet the criteria and selects candidates, knows what to do on each day of the schedule, and tells the supervisor when the head count must be fixed and the buyer contacted.",
+          "Understands that the criteria change with the contract and destination and that late preparation disrupts shipping, and can teach new staff the schedule from one week before."
+        ],
+        "levels_vi": [
+          "Không xác nhận tiêu chuẩn mà chỉ nhìn bề ngoài để chọn lợn dự kiến xuất, không biết trình tự nên đến hôm trước hoặc hôm xuất mới cuống lên.",
+          "Nếu có chỉ dẫn thì xem tiêu chuẩn và nêu lợn dự kiến, nhưng sót việc kiểm tra ngày tuổi và vết thương, trình tự như 7 ngày trước, 3 ngày trước thì phó mặc cho người khác.",
+          "Nếu có chỉ dẫn thì so cân nặng, ngày tuổi, sức khỏe, vết thương với tiêu chuẩn để chọn lợn dự kiến, và làm theo trình tự chọn 7 ngày trước, kiểm tra lần cuối 3 ngày trước, phân loại lần cuối hôm trước được.",
+          "Không cần chỉ dẫn cũng tự xác nhận lợn có đạt tiêu chuẩn để chọn, nắm rõ mỗi ngày trong trình tự phải làm gì, và báo cấp trên khi đến lúc cần chốt số lượng và liên hệ bên vận chuyển.",
+          "Hiểu tiêu chuẩn thay đổi theo hợp đồng và nơi nhận, chuẩn bị chậm thì xuất chuồng sẽ rối, và có thể hướng dẫn người mới trình tự từ một tuần trước."
+        ],
+        "levels_id": [
+          "Memilih calon kirim hanya dari penampilan tanpa memeriksa standar, tidak tahu urutan kerja, dan panik pada hari sebelumnya atau hari H.",
+          "Jika ada instruksi, mencantumkan calon sesuai standar, tetapi terlewat memeriksa umur dan luka, dan urutan kerja (7 hari, 3 hari sebelumnya, dll.) diserahkan ke orang lain.",
+          "Jika ada instruksi, memilih calon dengan membandingkan berat, umur, kesehatan, dan luka dengan standar, dan bisa mengikuti alur pemilihan 7 hari sebelumnya, pemeriksaan akhir 3 hari sebelumnya, dan pemilahan akhir sehari sebelumnya.",
+          "Tanpa instruksi pun, memeriksa sendiri apakah babi memenuhi standar untuk memilih calon, tahu apa yang dikerjakan pada tiap hari, dan memberi tahu atasan saat jumlah ekor perlu ditetapkan dan pengangkut perlu dihubungi.",
+          "Memahami bahwa standar berubah menurut kontrak dan tujuan, serta persiapan yang terlambat mengacaukan pengiriman, dan bisa mengajari karyawan baru urutan kerja dari satu minggu sebelumnya."
+        ]
+      },
+      {
+        "id": "ship-withdrawal-confirm",
+        "name": "投薬記録での休薬完了の確認と逆算",
+        "kanten": "出荷予定日から逆算して投薬記録で全対象豚の休薬期間の完了を確かめ、前日と当日朝にダブルチェックし、確認できない豚は出荷せず上長に確認できるか。",
+        "levels": [
+          "投薬記録を見ずに出荷する豚を決め、休薬期間中の豚が混ざっていても気づかない。",
+          "指示があれば投薬記録を見るが、一部の豚や薬剤の確認が抜け、確認は1人だけで済ませる。",
+          "指示があれば出荷予定日から休薬期間を逆算し、投薬記録で全対象豚の休薬完了を確かめ、当日朝にもう一度確認できる。",
+          "指示がなくても前日と当日朝の2回、記録を正本にダブルチェックし、休薬の完了が確認できない豚は出荷せず、その場で上長に確認して出荷から外す。",
+          "休薬期間中の出荷が法律違反で農場全体の出荷停止につながることを理解し、逆算カレンダーの使い方とダブルチェックの方法を新人に指導できる。"
+        ],
+        "name_en": "Confirming completed withdrawal periods in medication records, and counting back",
+        "name_vi": "Xác nhận đã hết thời gian ngừng thuốc trong ghi chép dùng thuốc và tính ngược",
+        "name_id": "Memastikan masa henti obat selesai di catatan pemberian obat, dan menghitung mundur",
+        "kanten_en": "Can they count back from the planned shipping date, confirm in the medication records that the withdrawal period has ended for every target pig, double-check the day before and on the morning of shipping, and not ship any pig that cannot be confirmed but ask the supervisor?",
+        "kanten_vi": "Có tính ngược từ ngày dự kiến xuất, xác nhận trong ghi chép dùng thuốc rằng mọi con lợn dự kiến xuất đã hết thời gian ngừng thuốc, kiểm tra hai lần vào hôm trước và sáng hôm xuất, con nào không xác nhận được thì không xuất mà hỏi cấp trên không.",
+        "kanten_id": "Apakah menghitung mundur dari tanggal kirim yang direncanakan, memastikan di catatan pemberian obat bahwa masa henti obat semua babi sasaran sudah selesai, memeriksa dua kali pada hari sebelumnya dan pagi hari kirim, dan tidak mengirim babi yang tidak bisa dipastikan melainkan bertanya ke atasan.",
+        "levels_en": [
+          "Decides which pigs to ship without looking at the medication records, and does not notice even if a pig in its withdrawal period is mixed in.",
+          "With guidance, looks at the medication records, but misses some pigs or drugs, and finishes the check with only one person.",
+          "With guidance, counts back the withdrawal period from the planned shipping date, confirms in the medication records that it has ended for all target pigs, and checks again on the morning of shipping.",
+          "Independently double-checks twice, the day before and the morning of shipping, using the records as the source of truth, does not ship any pig whose completed withdrawal cannot be confirmed, and asks the supervisor on the spot and removes it from shipping.",
+          "Understands that shipping a pig in its withdrawal period is against the law and can lead to a shipping ban for the whole farm, and can teach new staff how to use the count-back calendar and how to double-check."
+        ],
+        "levels_vi": [
+          "Quyết định lợn xuất mà không xem ghi chép dùng thuốc, lợn đang trong thời gian ngừng thuốc lẫn vào cũng không nhận ra.",
+          "Nếu có chỉ dẫn thì xem ghi chép dùng thuốc, nhưng sót một số con hoặc loại thuốc, và chỉ một người kiểm tra là xong.",
+          "Nếu có chỉ dẫn thì tính ngược thời gian ngừng thuốc từ ngày dự kiến xuất, xác nhận trong ghi chép dùng thuốc rằng mọi con dự kiến xuất đã hết thời gian ngừng thuốc, và kiểm tra lại vào sáng hôm xuất được.",
+          "Không cần chỉ dẫn cũng kiểm tra hai lần vào hôm trước và sáng hôm xuất, lấy ghi chép làm căn cứ chính, con nào không xác nhận được đã hết thời gian ngừng thuốc thì không xuất, hỏi cấp trên ngay tại chỗ và loại khỏi danh sách xuất.",
+          "Hiểu xuất lợn đang trong thời gian ngừng thuốc là vi phạm pháp luật và có thể khiến cả trại bị đình chỉ xuất chuồng, và có thể hướng dẫn người mới cách dùng lịch tính ngược và cách kiểm tra hai lần."
+        ],
+        "levels_id": [
+          "Menentukan babi yang dikirim tanpa melihat catatan pemberian obat, dan tidak sadar walau ada babi dalam masa henti obat yang tercampur.",
+          "Jika ada instruksi, melihat catatan pemberian obat, tetapi sebagian babi atau obat terlewat, dan pemeriksaan selesai hanya dengan satu orang.",
+          "Jika ada instruksi, menghitung mundur masa henti obat dari tanggal kirim yang direncanakan, memastikan di catatan pemberian obat bahwa masa henti obat semua babi sasaran sudah selesai, dan memeriksa lagi pada pagi hari kirim.",
+          "Tanpa instruksi pun, memeriksa dua kali pada hari sebelumnya dan pagi hari kirim dengan catatan sebagai dasar, tidak mengirim babi yang selesainya masa henti obat tidak bisa dipastikan, bertanya ke atasan di tempat, dan mengeluarkannya dari pengiriman.",
+          "Memahami bahwa mengirim babi dalam masa henti obat melanggar hukum dan bisa menyebabkan penghentian pengiriman seluruh peternakan, dan bisa mengajari karyawan baru cara memakai kalender hitung mundur dan cara memeriksa dua kali."
+        ]
+      },
+      {
+        "id": "ship-eve-prep",
+        "name": "前日の準備（絶食・マーキング・通路）と当日朝の歩様確認",
+        "kanten": "前日に最終選別した豚へ見分けやすくマーキングし、夕方の給餌だけを止めて水は止めず、出荷通路を清掃して障害物を除き、当日朝に歩けない豚や具合の悪い豚を外せるか。",
+        "levels": [
+          "マーキングも通路の準備もせず、水まで止めてしまい、歩けない豚も出荷に回す。",
+          "指示があれば準備するが、マーキングが不明瞭だったり通路の障害物を見落としたりし、歩様の確認は他者まかせ。",
+          "指示があれば前日に対象豚へはっきりマーキングし、夕方の給餌を止めて水は出し続け、通路を清掃し、当日朝に歩様・呼吸・外観を確認できる。",
+          "指示がなくても水を止めないことを確かめ、通路を自分で見て回って障害物を除き、当日朝に歩けない豚や明らかに具合が悪い豚を出荷から外して上長に伝える。",
+          "絶食の目的と、脱水が肉質低下と動物福祉の問題になることを理解し、前日の準備と当日朝の確認を新人に指導できる。"
+        ],
+        "name_en": "Preparation the day before (fasting, marking, passage) and gait check on the morning",
+        "name_vi": "Chuẩn bị hôm trước (nhịn ăn, đánh dấu, lối đi) và kiểm tra dáng đi sáng hôm xuất",
+        "name_id": "Persiapan hari sebelumnya (puasa, penandaan, lorong) dan pemeriksaan cara jalan pada pagi hari",
+        "kanten_en": "Can they mark the pigs finally selected the day before so they are easy to tell apart, stop only the evening feeding while keeping water available, clean the shipping passage and remove obstacles, and on the morning remove pigs that cannot walk or are unwell?",
+        "kanten_vi": "Có đánh dấu dễ nhận biết lên lợn đã phân loại lần cuối hôm trước, chỉ ngừng cho ăn buổi chiều mà không ngừng nước, dọn lối đi xuất chuồng và bỏ vật cản, sáng hôm xuất loại được lợn không đi được hoặc không khỏe không.",
+        "kanten_id": "Apakah menandai babi hasil pemilahan akhir sehari sebelumnya agar mudah dibedakan, menghentikan hanya pemberian pakan sore tanpa menghentikan air, membersihkan lorong pengiriman dan menyingkirkan penghalang, serta pada pagi hari mengeluarkan babi yang tidak bisa berjalan atau tidak sehat.",
+        "levels_en": [
+          "Does no marking or passage preparation, even stops the water, and sends pigs that cannot walk to shipping.",
+          "With guidance, prepares, but marks unclearly or overlooks obstacles in the passage, and leaves the gait check to others.",
+          "With guidance, marks the target pigs clearly the day before, stops the evening feeding while keeping water running, cleans the passage, and can check gait, breathing, and appearance on the morning.",
+          "Independently makes sure the water is not stopped, walks the passage to remove obstacles, and on the morning removes pigs that cannot walk or are clearly unwell from shipping and tells the supervisor.",
+          "Understands the purpose of fasting and that dehydration causes lower meat quality and an animal welfare problem, and can teach new staff the preparation the day before and the check on the morning."
+        ],
+        "levels_vi": [
+          "Không đánh dấu, không chuẩn bị lối đi, còn cắt cả nước, lợn không đi được vẫn đưa đi xuất.",
+          "Nếu có chỉ dẫn thì chuẩn bị, nhưng đánh dấu không rõ hoặc sót vật cản ở lối đi, việc kiểm tra dáng đi thì phó mặc cho người khác.",
+          "Nếu có chỉ dẫn thì hôm trước đánh dấu rõ lên lợn xuất, ngừng cho ăn buổi chiều nhưng vẫn cho uống nước, dọn lối đi, và sáng hôm xuất kiểm tra được dáng đi, hơi thở, bề ngoài.",
+          "Không cần chỉ dẫn cũng đảm bảo không cắt nước, tự đi xem lối đi để dọn vật cản, và sáng hôm xuất loại khỏi danh sách xuất lợn không đi được hoặc rõ ràng không khỏe rồi báo cấp trên.",
+          "Hiểu mục đích của việc nhịn ăn, và mất nước làm giảm chất lượng thịt và là vấn đề phúc lợi động vật, và có thể hướng dẫn người mới việc chuẩn bị hôm trước và kiểm tra sáng hôm xuất."
+        ],
+        "levels_id": [
+          "Tidak menandai dan tidak menyiapkan lorong, bahkan menghentikan air, dan mengirim babi yang tidak bisa berjalan.",
+          "Jika ada instruksi, menyiapkan, tetapi penandaan tidak jelas atau penghalang di lorong terlewat, dan pemeriksaan cara jalan diserahkan ke orang lain.",
+          "Jika ada instruksi, menandai babi sasaran dengan jelas sehari sebelumnya, menghentikan pakan sore tetapi air tetap ada, membersihkan lorong, dan memeriksa cara jalan, napas, dan penampilan pada pagi hari.",
+          "Tanpa instruksi pun, memastikan air tidak dihentikan, berjalan memeriksa lorong untuk menyingkirkan penghalang, dan pada pagi hari mengeluarkan babi yang tidak bisa berjalan atau jelas tidak sehat dari pengiriman lalu memberi tahu atasan.",
+          "Memahami tujuan puasa serta bahwa dehidrasi menurunkan kualitas daging dan menjadi masalah kesejahteraan hewan, dan bisa mengajari karyawan baru persiapan hari sebelumnya dan pemeriksaan pada pagi hari."
+        ]
+      },
+      {
+        "id": "ship-calm-loading",
+        "name": "静かな誘導と積み込み（肉質と事故の防止）",
+        "kanten": "追い板で豚の視界を限りながら静かにゆっくり誘導し、1回に3〜5頭ずつ、滑り止めを確かめたスロープで転倒や挟まれを防いで積み込め、夏は早朝、冬は凍結に気を配れるか。",
+        "levels": [
+          "追い回し、叩き、大人数を一度に押し込んで、転倒や挟まれが起きても気にしない。",
+          "指示があれば追い板で誘導するが、焦ると追い回したり多頭数を一度に動かしたりし、スロープの滑りやすさを見落とす。",
+          "指示があれば追い板で静かに誘導し、1回に3〜5頭ずつ、滑り止めを確かめたスロープから転倒や挟まれに注意して積み込める。",
+          "指示がなくても豚のペースに合わせ、興奮した豚がいれば待ち、電気ショッカーは最小限にとどめる。夏は早朝・車内の換気、冬は凍結箇所の滑り止めまで気を配る。",
+          "追い回しや暑熱のストレスがPSE肉、長いストレスがDFD肉につながることを理解し、静かな積み込みのコツを新人に指導できる。"
+        ],
+        "name_en": "Calm guiding and loading (protecting meat quality and preventing accidents)",
+        "name_vi": "Lùa nhẹ nhàng và lên xe (giữ chất lượng thịt, phòng tai nạn)",
+        "name_id": "Penggiringan dan pemuatan yang tenang (menjaga kualitas daging dan mencegah kecelakaan)",
+        "kanten_en": "Can they guide quietly and slowly with a pig board while limiting the pigs' view, load 3-5 pigs at a time on a ramp whose non-slip surface they have checked, prevent falls and crushing, and attend to early-morning shipping in summer and freezing in winter?",
+        "kanten_vi": "Có lùa nhẹ nhàng, chậm rãi bằng tấm chắn để hạn chế tầm nhìn của lợn, mỗi lần 3-5 con, lên xe qua dốc đã kiểm tra chống trượt, phòng ngã và bị kẹp, và chú ý xuất sáng sớm vào mùa hè, chú ý đóng băng vào mùa đông không.",
+        "kanten_id": "Apakah menggiring dengan tenang dan pelan memakai papan penggiring sambil membatasi pandangan babi, memuat 3-5 ekor sekali jalan dari ramp yang anti-selip sudah diperiksa, mencegah jatuh dan terjepit, serta memperhatikan pengiriman pagi hari di musim panas dan es di musim dingin.",
+        "levels_en": [
+          "Chases, hits, and pushes many pigs at once, and does not care even when pigs fall or get caught.",
+          "With guidance, guides with the pig board, but when rushed chases or moves many pigs at once and overlooks slippery ramps.",
+          "With guidance, guides quietly with the pig board and can load 3-5 pigs at a time from a ramp whose non-slip surface is checked, watching for falls and crushing.",
+          "Independently matches the pigs' pace, waits if a pig is excited, and keeps the use of an electric prod to a minimum. Also attends to early-morning shipping and ventilation of the truck in summer and non-slip treatment of icy spots in winter.",
+          "Understands that chasing and heat stress lead to PSE meat and prolonged stress to DFD meat, and can teach new staff tips for quiet loading."
+        ],
+        "levels_vi": [
+          "Đuổi, đánh, dồn nhiều con cùng lúc, lợn ngã hay bị kẹp cũng mặc kệ.",
+          "Nếu có chỉ dẫn thì lùa bằng tấm chắn, nhưng khi vội thì đuổi hoặc cho nhiều con đi cùng lúc, bỏ sót dốc trơn trượt.",
+          "Nếu có chỉ dẫn thì lùa nhẹ nhàng bằng tấm chắn, mỗi lần 3-5 con, lên xe qua dốc đã kiểm tra chống trượt, chú ý lợn ngã và bị kẹp được.",
+          "Không cần chỉ dẫn cũng theo nhịp của lợn, con nào bị kích động thì chờ, hạn chế dùng súng điện ở mức tối thiểu. Mùa hè chú ý xuất sáng sớm và thông gió trên xe, mùa đông chú ý rải chống trượt chỗ đóng băng.",
+          "Hiểu việc đuổi và nắng nóng gây căng thẳng dẫn đến thịt PSE, căng thẳng kéo dài dẫn đến thịt DFD, và có thể hướng dẫn người mới mẹo lên xe nhẹ nhàng."
+        ],
+        "levels_id": [
+          "Mengejar, memukul, dan mendorong banyak babi sekaligus, tidak peduli walau babi jatuh atau terjepit.",
+          "Jika ada instruksi, menggiring dengan papan penggiring, tetapi saat terburu-buru mengejar atau menggerakkan banyak ekor sekaligus dan melewatkan ramp yang licin.",
+          "Jika ada instruksi, menggiring dengan tenang memakai papan penggiring dan bisa memuat 3-5 ekor sekali jalan dari ramp yang anti-selipnya sudah diperiksa, sambil mengawasi babi jatuh dan terjepit.",
+          "Tanpa instruksi pun, menyesuaikan dengan kecepatan babi, menunggu jika ada babi yang gelisah, dan memakai alat kejut listrik seminimal mungkin. Juga memperhatikan pengiriman pagi hari dan ventilasi truk di musim panas serta penahan selip di bagian beku di musim dingin.",
+          "Memahami bahwa dikejar dan stres panas menyebabkan daging PSE, serta stres yang berkepanjangan menyebabkan daging DFD, dan bisa mengajari karyawan baru trik pemuatan yang tenang."
+        ]
+      },
+      {
+        "id": "ship-count-record",
+        "name": "頭数の照合・出荷伝票と出荷記録・残留個体の確認",
+        "kanten": "積み込んだ頭数を数えて出荷伝票と照合し、頭数・農場名・日付を記入し、出荷先・オス・メスの内訳・体重・運搬車の情報・体調に不安のある個体を出荷記録に残し、出荷後の豚房に残った豚がいないか確かめられるか。",
+        "levels": [
+          "頭数を数えず伝票も記録も残さず、出荷後の豚房も見ないまま作業を終える。",
+          "指示があれば数えて記入するが、伝票との不一致や記録項目の抜けが多く、出荷後の豚房の確認を忘れる。",
+          "指示があれば積み込んだ頭数を伝票と照合し、頭数・農場名・日付を記入して出荷記録に必要な項目を残し、出荷後に豚房に残った豚がいないか確かめられる。",
+          "指示がなくても不一致はその場で原因を確かめてから出発させ、オス・メスの内訳や体調に不安のある個体の特記事項まで記録し、日報にも記入して残留個体なしを自分で確認する。",
+          "出荷記録が休薬や頭数の確認の証拠になり、残留個体がいると頭数が合わなくなることを理解し、照合と記録の書き方を新人に指導できる。"
+        ],
+        "name_en": "Matching head counts, shipping slip and shipping record, and checking for pigs left behind",
+        "name_vi": "Đối chiếu số lượng, phiếu xuất và ghi chép xuất chuồng, kiểm tra lợn còn sót",
+        "name_id": "Pencocokan jumlah ekor, surat pengiriman dan catatan pengiriman, serta pemeriksaan babi yang tertinggal",
+        "kanten_en": "Can they count the pigs loaded and match them with the shipping slip, fill in the head count, farm name, and date, record the destination, male/female breakdown, weights, transport company and vehicle number, and any pig with a health concern in the shipping record, and check that no pig is left in the pen after shipping?",
+        "kanten_vi": "Có đếm số lợn đã lên xe và đối chiếu với phiếu xuất, ghi số lượng, tên trại, ngày, ghi vào hồ sơ xuất chuồng nơi nhận, số đực cái, cân nặng, thông tin xe vận chuyển và con nào có điều lo ngại về sức khỏe, và kiểm tra sau khi xuất không còn lợn sót trong ô không.",
+        "kanten_id": "Apakah menghitung babi yang dimuat dan mencocokkannya dengan surat pengiriman, mengisi jumlah ekor, nama peternakan, dan tanggal, mencatat tujuan, rincian jantan dan betina, berat, perusahaan dan nomor kendaraan pengangkut, serta babi yang dikhawatirkan kesehatannya di catatan pengiriman, dan memeriksa tidak ada babi yang tertinggal di kandang setelah pengiriman.",
+        "levels_en": [
+          "Does not count, leaves no slip or record, and finishes the work without looking at the pens after shipping.",
+          "With guidance, counts and fills in, but often has mismatches with the slip or missing record items, and forgets to check the pens after shipping.",
+          "With guidance, matches the loaded head count with the slip, fills in head count, farm name, and date, leaves the required items in the shipping record, and can check that no pig is left in the pens after shipping.",
+          "Independently checks the cause of a mismatch on the spot before letting the truck leave, records the male/female breakdown and notes on pigs with health concerns, enters it in the daily report, and confirms by themselves that no pig is left behind.",
+          "Understands that the shipping record is evidence for withdrawal and head count checks and that a pig left behind throws the head count off, and can teach new staff how to match and record."
+        ],
+        "levels_vi": [
+          "Không đếm, không để lại phiếu hay ghi chép, và kết thúc công việc mà không xem lại các ô sau khi xuất.",
+          "Nếu có chỉ dẫn thì đếm và ghi, nhưng hay lệch với phiếu hoặc thiếu mục ghi chép, và quên kiểm tra ô sau khi xuất.",
+          "Nếu có chỉ dẫn thì đối chiếu số lợn lên xe với phiếu xuất, ghi số lượng, tên trại, ngày, để lại các mục cần thiết trong hồ sơ xuất chuồng, và kiểm tra sau khi xuất không còn lợn sót trong ô được.",
+          "Không cần chỉ dẫn cũng tìm nguyên nhân ngay tại chỗ khi số liệu lệch rồi mới cho xe đi, ghi cả số đực cái và ghi chú về con có điều lo ngại sức khỏe, ghi cả vào nhật ký, và tự xác nhận không còn lợn sót.",
+          "Hiểu hồ sơ xuất chuồng là bằng chứng cho việc kiểm tra thời gian ngừng thuốc và số lượng, còn lợn sót thì số lượng sẽ không khớp, và có thể hướng dẫn người mới cách đối chiếu và ghi chép."
+        ],
+        "levels_id": [
+          "Tidak menghitung, tidak meninggalkan surat maupun catatan, dan mengakhiri pekerjaan tanpa melihat kandang setelah pengiriman.",
+          "Jika ada instruksi, menghitung dan mengisi, tetapi sering tidak cocok dengan surat atau ada item catatan yang kurang, dan lupa memeriksa kandang setelah pengiriman.",
+          "Jika ada instruksi, mencocokkan jumlah ekor yang dimuat dengan surat pengiriman, mengisi jumlah ekor, nama peternakan, dan tanggal, meninggalkan item yang diperlukan di catatan pengiriman, dan bisa memeriksa tidak ada babi yang tertinggal di kandang setelah pengiriman.",
+          "Tanpa instruksi pun, memeriksa penyebab ketidakcocokan di tempat sebelum truk berangkat, mencatat rincian jantan dan betina serta catatan khusus babi yang dikhawatirkan kesehatannya, mengisi laporan harian, dan memastikan sendiri tidak ada babi yang tertinggal.",
+          "Memahami bahwa catatan pengiriman adalah bukti pemeriksaan masa henti obat dan jumlah ekor, serta babi yang tertinggal membuat jumlah tidak cocok, dan bisa mengajari karyawan baru cara mencocokkan dan mencatat."
+        ]
+      }
+    ]
   }
 ]
