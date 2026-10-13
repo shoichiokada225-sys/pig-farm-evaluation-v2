@@ -832,8 +832,7 @@ function renderRosterBody(){
   // 名簿の警告は画面に残す（トーストは消える・キャッシュから起動した時は出ない）
   const wn=document.getElementById('eeWarn');
   const errW=rosterLoading?'':rosterErrMsg(),rw=rosterWarnText(rs),gOld=rosterLoading?'':rosterErrGasOld();
-  const oldDone=!examStart()&&Array.isArray(rs.done)&&rs.done.some(r=>r&&(r.date||'')<todayLocal());   // 前日以前のシートの記録がある＝複数日の試験かもしれない
-  if(wn){const w=[errW,rosterKeptEmpty?t('eRosterEmptyKept'):'',rw,gOld&&!rw.includes(gOld)?gOld:'',oldDone?t('wExamStart'):''].filter(Boolean).join(' ／ ');wn.textContent=w?'⚠ '+w:'';wn.hidden=!w}
+  if(wn){const w=[errW,rosterKeptEmpty?t('eRosterEmptyKept'):'',rw,gOld&&!rw.includes(gOld)?gOld:''].filter(Boolean).join(' ／ ');wn.textContent=w?'⚠ '+w:'';wn.hidden=!w}   // 前日以前の記録の注意（wExamStart）は出さない（10-13 社長指示）
 }
 /* 試験期間の記録（設定の「試験開始日」以降。未設定なら全部）。作業の済/残りは日付をまたいで数える（豚がいない作業は後日に回すため） */
 const EXAM_START_KEY='jitsugi_v2_exam_start';
