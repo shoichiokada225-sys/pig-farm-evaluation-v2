@@ -43,7 +43,7 @@ const SEED = [['那須農場', 'テスト 一郎', '給餌'], ['大田原農場'
 const G = new Function('ROSTER_SEED', code + ';return {setup,doGet,doPost};')(SEED);
 let pass = 0, fail = 0; const ok = (n, c) => { c ? pass++ : fail++; console.log((c ? '  OK ' : '  NG ') + n); };
 
-ok('setup', G.setup() === 'setup OK' && sheets['受験者'] && sheets['作業一覧'].d.length === 49); // 見出し＋44作業＋試験区分4
+ok('setup', G.setup() === 'setup OK' && sheets['受験者'] && sheets['作業一覧'].d.length === 54); // 見出し＋49作業＋試験区分4
 ok('見出し=農場・被評価者・作業1〜8・旧名', sheets['受験者'].d[0].join() === '農場,被評価者,作業1,作業2,作業3,作業4,作業5,作業6,作業7,作業8,旧名');
 ok('空の受験者タブにシードが入る', sheets['受験者'].d.length === 3 && sheets['受験者'].d[1][1] === 'テスト 一郎' && sheets['受験者'].d[2].length === 11);
 // S8-4: 農場のプルダウン（正本=農場一覧タブ）
