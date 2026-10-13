@@ -92,6 +92,9 @@ function setSheetState(reason,gas){rosterErrReason=reason||'';rosterErrGas=gas||
 function getRoster(){
   const none={list:[],at:''};
   try{const r=JSON.parse(localStorage.getItem(ROSTER_KEY));if(!r||!Array.isArray(r.list))return none;if(r.url&&r.url!==sheetUrl())return none;
+    // 判定は今の版で作り直す（古い版で取った名簿の「名簿に見つからない作業名」を、新しい版で知っている作業まで残さない）
+    if(Array.isArray(r.src)){try{const b=buildRoster(r.src);if(b.list.length)Object.assign(r,b)}catch(e){}}
+    else reResolveLegacy(r);
     // 壊れた要素（null・作業が配列でない）で起動できなくならないよう、形をそろえる
     r.list=r.list.filter(p=>p&&typeof p==='object'&&p.name).map(p=>({...p,name:String(p.name),farm:String(p.farm||''),works:Array.isArray(p.works)?p.works:[],...(Array.isArray(p.aliases)?{}:{aliases:undefined})}));
     const asg=getAssign();   // 作業が無い人には、この端末で決めた作業を当てる（localWorks=端末の割り当て）
@@ -100,30 +103,22 @@ function getRoster(){
     if(r.done!=null&&!Array.isArray(r.done))r.done=null;
     return r}catch{return none}
 }
-/* 名簿を取り直す。0件が返った時は前回の名簿（1件以上）を上書きしない（貼り替え中・タブ取り違えで全員が消えないように）
-   戻り値 {ok, list, unknown:[{name,farm,work}], dup:[{name,farm}], cdup:[共通行が2行以上の農場], corphan:[受験者と一致しない共通行の農場], keptEmpty?} / {ok:false, reason:'nourl'|'bad'|'nosheet'|'net'} */
-async function fetchRoster(){
-  const u=sheetUrl();if(!u)return{ok:false,reason:'nourl'};
-  let j,tx;
-  try{tx=(await fetchTxt(u+'?action=roster'+(getTok()?'&k='+encodeURIComponent(getTok()):''),{cache:'no-store'},ROSTER_TIMEOUT_MS)).text}catch(e){return{ok:false,reason:'net'}}
-  // 届いたが JSON でない（doGet の無い版・誤った版のエラーページ）・HTTP エラー = シート側の問題（電波では直らない）
-  try{j=JSON.parse(tx)}catch(e){return{ok:false,reason:'bad'}}
-  const jg=j&&typeof j==='object'&&(j.version||Array.isArray(j.capabilities))?gasInfo(j):null;
-  if(j&&j.ok===false&&j.error==='no roster sheet')return{ok:false,reason:'nosheet',gas:jg};
-  if(j&&j.ok===false&&j.error==='auth')return{ok:false,reason:'auth',gas:jg};   // 合言葉が無い・違う（電波では直らない）
-  if(!j||!j.ok||!Array.isArray(j.roster))return{ok:false,reason:'bad',gas:jg};
-  try{
-    const gas=gasInfo(j);   // シート側の版と機能（古い GAS は旧名・削除が使えない → 警告）
+/* シートの名簿（roster の生データ）→ 端末の名簿。作業名の解決は今の版のカタログで行う
+   （名簿キャッシュには生データ src も残し、読み込むたびにこれで作り直す＝アプリの版が上がれば、名簿を取り直せない圏外でも判定が新しくなる） */
+function resolveCell(raw){   // 作業欄1つ → 作業IDの配列（区分名は作業一式）。解決できなければ null
+  const id=resolveWork(raw);if(id)return[id];
+  const pr=presetByName(raw);return pr?pr.works.filter(w=>workById(w)):null;
+}
+function buildRoster(src){
     const unknown=[],dup=[],common={},seen=new Set();
-    const all=j.roster.map(p=>{
+    const all=src.map(p=>{
       const raw=String(p&&p.name||'').trim(),name=raw.replace(/[\s\u3000]+/g,' ').trim(),farm=String(p&&p.farm||'').trim(),works=[],unresolved=[];   // セル内改行・全角空白は1つの半角空白（手入力・保存の名前とそろう）
       // 旧名（別名）: 名前を直した人の、直す前の名前で保存した記録も「済」に数える
       const aliases=(Array.isArray(p&&p.aliases)?p.aliases:String(p&&p.aliases||'').split(/[、,，\/／;；\n]/)).map(a=>String(a==null?'':a).trim()).filter(a=>a&&a!==name);
       (p&&Array.isArray(p.works)?p.works:[]).forEach(v=>{
         const raw=String(v==null?'':v).trim();if(!raw)return;
-        const id=resolveWork(raw),pr=id?null:presetByName(raw);   // 作業欄に区分名（肥育舎など）＝その区分の作業一式
-        if(id){if(!works.includes(id))works.push(id)}
-        else if(pr)pr.works.forEach(w=>{if(workById(w)&&!works.includes(w))works.push(w)});
+        const ids=resolveCell(raw);   // 作業欄に区分名（肥育舎など）＝その区分の作業一式
+        if(ids)ids.forEach(w=>{if(!works.includes(w))works.push(w)});
         else if(!unresolved.includes(raw))unresolved.push(raw);
       });
       if(name)unresolved.forEach(w=>unknown.push({name,farm,work:w}));
@@ -158,6 +153,34 @@ async function fetchRoster(){
       }
       list.push(e);
     });
+    return{list,unknown,dup,cdup,corphan,fvar};
+}
+/* 生データ src の無い旧キャッシュ: 解決できなかった作業名だけ、今の版で解決し直す */
+function reResolveLegacy(r){
+  const left=new Set();
+  r.list.forEach(p=>{
+    if(!p||!Array.isArray(p.unresolved)||!p.unresolved.length)return;
+    const ws=Array.isArray(p.works)?p.works.slice():[],still=[];
+    p.unresolved.forEach(raw=>{const ids=resolveCell(raw);if(ids)ids.forEach(w=>{if(!ws.includes(w))ws.push(w)});else still.push(raw)});
+    p.works=ws;if(still.length)p.unresolved=still;else delete p.unresolved;
+  });
+  if(Array.isArray(r.unknown))r.unknown=r.unknown.filter(x=>x&&!resolveCell(x.work));
+}
+/* 名簿を取り直す。0件が返った時は前回の名簿（1件以上）を上書きしない（貼り替え中・タブ取り違えで全員が消えないように）
+   戻り値 {ok, list, unknown:[{name,farm,work}], dup:[{name,farm}], cdup:[共通行が2行以上の農場], corphan:[受験者と一致しない共通行の農場], keptEmpty?} / {ok:false, reason:'nourl'|'bad'|'nosheet'|'net'} */
+async function fetchRoster(){
+  const u=sheetUrl();if(!u)return{ok:false,reason:'nourl'};
+  let j,tx;
+  try{tx=(await fetchTxt(u+'?action=roster'+(getTok()?'&k='+encodeURIComponent(getTok()):''),{cache:'no-store'},ROSTER_TIMEOUT_MS)).text}catch(e){return{ok:false,reason:'net'}}
+  // 届いたが JSON でない（doGet の無い版・誤った版のエラーページ）・HTTP エラー = シート側の問題（電波では直らない）
+  try{j=JSON.parse(tx)}catch(e){return{ok:false,reason:'bad'}}
+  const jg=j&&typeof j==='object'&&(j.version||Array.isArray(j.capabilities))?gasInfo(j):null;
+  if(j&&j.ok===false&&j.error==='no roster sheet')return{ok:false,reason:'nosheet',gas:jg};
+  if(j&&j.ok===false&&j.error==='auth')return{ok:false,reason:'auth',gas:jg};   // 合言葉が無い・違う（電波では直らない）
+  if(!j||!j.ok||!Array.isArray(j.roster))return{ok:false,reason:'bad',gas:jg};
+  try{
+    const gas=gasInfo(j);   // シート側の版と機能（古い GAS は旧名・削除が使えない → 警告）
+    const {list,unknown,dup,cdup,corphan,fvar}=buildRoster(j.roster);
     // シートの記録の要約（ほかの端末で済んだ人・作業）。古い GAS は返さない＝null（この端末の記録だけで数える）
     const done=parseSheetDone(j.done);
     const prev=getRoster();
@@ -165,7 +188,7 @@ async function fetchRoster(){
       try{localStorage.setItem(ROSTER_KEY,JSON.stringify({...prev,gas,url:u,done}))}catch{}
       return{ok:true,list:prev.list,unknown:prev.unknown||[],dup:prev.dup||[],cdup:prev.cdup||[],corphan:prev.corphan||[],fvar:prev.fvar||[],gas,keptEmpty:true};
     }
-    try{localStorage.setItem(ROSTER_KEY,JSON.stringify({list,at:new Date().toISOString(),unknown,dup,cdup,corphan,fvar,gas,url:u,done}))}catch{}
+    try{localStorage.setItem(ROSTER_KEY,JSON.stringify({list,at:new Date().toISOString(),unknown,dup,cdup,corphan,fvar,gas,url:u,done,src:j.roster}))}catch{}
     return{ok:true,list,unknown,dup,cdup,corphan,fvar,gas};
   }catch(e){return{ok:false,reason:'bad',gas:jg}}
 }

@@ -633,5 +633,29 @@ const scoreWork = (p, wid, s, n) => p.evaluate(([wid, s, n]) => { [...document.q
     await browser.close();
   }
 
+  console.log('[P] 古い版で取った名簿キャッシュの警告を新しい版で作り直す（10-13 現場で「エサ調整（肥育）」「肥育舎」が名簿に見つからないと出た）');
+  {
+    const { browser, page } = await open();
+    const r = await page.evaluate(() => {
+      // 旧版（作業・区分を知らない版）が保存した形: src なし・unresolved/unknown に新しい版では解ける作業名
+      localStorage.setItem(ROSTER_KEY, JSON.stringify({ at: '2026-10-10T00:00:00Z', list: [
+        { name: '架空 太郎', farm: '架空農場', works: ['feeding-daily'], unresolved: ['エサ調整（肥育）'] },
+        { name: '架空 花子', farm: '架空農場', works: [], common: true, unresolved: ['肥育舎'] },
+        { name: '架空 次郎', farm: '架空農場', works: [], unresolved: ['存在しない作業'] }],
+        unknown: [{ name: '架空 太郎', farm: '架空農場', work: 'エサ調整（肥育）' }, { name: '（農場共通）', farm: '架空農場', work: '肥育舎' }, { name: '架空 次郎', farm: '架空農場', work: '存在しない作業' }] }));
+      const a = getRoster(), L = n => a.list.find(p => p.name === n);
+      const legacy = { unk: a.unknown.map(x => x.work), taro: L('架空 太郎'), hana: L('架空 花子'), w: rosterWarnText(a) };
+      // 新しい形: 生データ src から今の版で作り直す（保存された unknown は使わない）
+      localStorage.setItem(ROSTER_KEY, JSON.stringify({ at: '2026-10-13T00:00:00Z', list: [], unknown: [{ name: 'x', farm: '', work: '古い警告' }],
+        src: [{ name: '架空 太郎', farm: '架空農場', works: ['給餌', 'エサ調整（肥育）'] }, { name: '架空 花子', farm: '架空農場', works: [] }, { name: '（農場共通）', farm: '架空農場', works: ['肥育舎'] }] }));
+      const b = getRoster();
+      return { legacy, srcUnk: b.unknown.length, srcN: b.list.length, srcHana: (b.list.find(p => p.name === '架空 花子') || {}).works || [], srcW: rosterWarnText(b) };
+    });
+    ok('旧キャッシュ: 解ける作業名は警告から消え、解けない名前だけ残る', JSON.stringify(r.legacy.unk) === '["存在しない作業"]' && !/エサ調整|肥育舎/.test(r.legacy.w));
+    ok('旧キャッシュ: 個人の「エサ調整（肥育）」と共通行の「肥育舎」が作業になる', r.legacy.taro.works.includes('feed-adjust-fin') && !r.legacy.taro.unresolved && r.legacy.hana.works.includes('feed-adjust-fin') && r.legacy.hana.works.length >= 7 && !r.legacy.hana.unresolved);
+    ok('生データ付きキャッシュ: 今の版で作り直し・警告0・共通行の区分が展開', r.srcUnk === 0 && r.srcN === 2 && r.srcHana.includes('body-measure') && r.srcW === '');
+    await browser.close();
+  }
+
   console.log(`\n合計: OK ${pass} / NG ${fail}`); process.exit(fail ? 1 : 0);
 })().catch(e => { console.error(e); process.exit(1); });
