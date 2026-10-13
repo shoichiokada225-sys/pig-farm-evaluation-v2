@@ -6,3 +6,7 @@
 - 飲水器の点検: freeze-outage は季節外なら実地で見られない。口頭で「最初の行動」を聞いて採点する。
 - 換気設定確認（ウインドレス）: 当日に見られるのは read-record と verify-actual。change-rule・weekly-review・power-backup は口頭試問と記録用紙の確認で採点する。カーテン式の農場には割り当てない。
 - 最高最低温度計は換気・温度管理（肥育）の read-temp が採点する。換気設定確認では採点しない。
+- 口頭で確かめる種目（当日に見られないことが多い）: 見回り=urgency-judge・mark-followup の翌日確認、飲水器=freeze-outage・clog-leak（不具合が無い日）、換気・温度=read-temp の3回読み・fan-failure-first・季節外の pig-signs/never-stop、換気設定=change-rule・weekly-review・power-backup、密度=split-judge・timing-fight・area-calc。
+- change-rule: 「決められた人」本人が受験する場合は、変更前の相談先と変更後の記録を言えれば L4 とする。
+- power-backup: 発電機の起動訓練を受けていない受験者は、決められた人を呼ぶ行動で L4。代替換気の手順が無い農場は、当日農場の手順書で確かめる。
+- 375px 幅: 種目の段階文が長い vi/id は折り返しが増える。画面の文字は最小限の方針のため、必要なら vi/id の括弧内の例示から削る。

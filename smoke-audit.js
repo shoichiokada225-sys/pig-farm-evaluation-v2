@@ -657,5 +657,30 @@ const scoreWork = (p, wid, s, n) => p.evaluate(([wid, s, n]) => { [...document.q
     await browser.close();
   }
 
+  console.log('[Q] 肥育の新5作業（見回り・飲水器・換気温度・換気設定・密度群分け）: カード5枚・4言語で空文字0・pageerror 0');
+  {
+    const NEW5 = ['patrol-check', 'water-check', 'vent-temp', 'vent-controller', 'density-grouping'];
+    const { browser, page, st } = await open();
+    await pick(page, 'テスト 一郎'); await page.waitForTimeout(200);
+    for (const wid of NEW5) {
+      await page.evaluate(w => { selWorks = []; saveSel(); toggleWork(w, true); }, wid); await page.waitForTimeout(150);
+      const n = await page.evaluate(w => document.querySelectorAll(`#cards .ec[data-w="${w}"]`).length, wid);
+      ok(wid + ': 選ぶとカードが5枚出る', n === 5);
+      const empties = {};
+      for (const l of ['ja', 'en', 'vi', 'id']) {
+        await page.evaluate(x => setLang(x), l); await page.waitForTimeout(80);
+        empties[l] = await page.evaluate(w => {
+          const sec = document.querySelector(`#cards .wsec[data-w="${w}"]`); if (!sec) return -1;
+          const els = [...sec.querySelectorAll('.wshd-nm, .enm, .crit-k, .crit-t')];
+          return els.filter(e => !e.textContent.replace(/\s/g, '').length).length + (els.length === 1 + 5 + 5 + 25 ? 0 : 1000);
+        }, wid);
+      }
+      ok(wid + ': ja/en/vi/id に切り替えてもカード内の空文字要素が0（要素数も見出し1+種目5+観点5+段階25）', Object.values(empties).every(v => v === 0));
+      await page.evaluate(() => setLang('ja'));
+    }
+    ok('新5作業の表示中に pageerror が0', st.errors.length === 0);
+    await browser.close();
+  }
+
   console.log(`\n合計: OK ${pass} / NG ${fail}`); process.exit(fail ? 1 : 0);
 })().catch(e => { console.error(e); process.exit(1); });

@@ -3,7 +3,7 @@
 # patrol-check 根拠行
 ## route-cover
 /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L108-118 — 入口で俯瞰→立つ豚→寝ている豚（全頭が起き上がるか確認・起き上がらない豚は要注意）→エサ箱→飲水器→排泄エリア→奥まで
-/Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L201-203 — 遠くから見ただけで大丈夫と判断しない・ルートを時々変える
+/Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L201-203 — 遠くから見ただけで大丈夫と判断しない（「ルートを時々変える」は20ガイド L109-111・L320 の「同じルートを毎日」と食い違うため本文に書かない）
 ## urgency-judge
 /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L120-143 — 異常サイン表。開口呼吸=緊急／突然死=緊急／湿った咳+鼻汁=高（L125）／血便（黒色タール便）=高（L128）／起立不能=高・移動しない（L132）／発熱40℃以上=高／乾いた咳=中（L124）／跛行・食欲低下=中
 /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L202 — 「迷ったら即報告」
@@ -114,3 +114,51 @@ count-record: /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-gu
 
 ## water-check / season-record（点検結果の記録と予備品・追記）
 /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/10_緊急時対応.md:L414-422 — ニップルの詰まり=分解清掃・予備のニップルと交換
+
+# patrol-check 根拠行（追記・差し戻し反映）
+## urgency-judge
+/Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L120-143 — 高: 湿った咳+鼻汁（L125）・水様性下痢/粘液性の下痢・血便・起立不能・発熱40℃以上・皮膚の赤い斑点。「動かさない」は起立不能のみ（L132）で、突然死は「即報告・死因の調査」。本文から「動かさない」は除いた（移動中止は move-order に任せる）
+## report-template
+/Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L148-161 — 発見者・連絡済み/未連絡の欄（「連絡が要るかの判断」は資料に無いので書かない）
+## mark-followup
+/Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L141-141 — 群内で明らかに小さい個体は別群管理
+/Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L733-741 — 軽量豚は別管理（上長に相談）
+
+# water-check 根拠行（追記・差し戻し反映）
+## freeze-outage
+/Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/23_豚の病気図鑑.md:L324-331 — 塩中毒（水欠乏症）: 断水・飲水器故障の後に水が戻ってからけいれん・ふらつき・首を反らす。緊急度★★★★・すぐ報告。「少量ずつ与える」は獣医師の指示として扱い本文に書かない
+## flow-measure
+/Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L925-925 — 全ニップルの動作確認は週1回（本文は「毎週」）
+## height-fit
+/Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/12_設備・道具ガイド.md:L84-87 — 肥育前期25〜60kg・後期60〜120kg
+## clog-leak
+/Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/15_チェックリスト集.md:L662-662 — 水質（臭い・色・濁り）
+/Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/10_緊急時対応.md:L410-440 — 漏水: 元栓を閉めて漏水箇所を特定し応急修理か業者に連絡
+## season-record
+/Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L55-55 — 記録の更新（用紙の様式は資料に無いので「記録に残す」とだけ書く）
+
+# vent-temp 根拠行（追記・差し戻し反映）
+## fan-failure-first
+/Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/12_設備・道具ガイド.md:L147-147 — 必ず電源を切ってから。回転するファンに手を近づけない
+/Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L903-903 — 電源を確実にOFFにしファンが完全に停止してから作業
+## pig-signs
+/Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L682-683 — 緊急時は直接水をかける・特に耳の裏
+## never-stop
+/Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L621-621 — 高濃度の硫化水素は嗅覚が麻痺する
+/Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L661-661 — ピットの攪拌時は換気を最大にし人は絶対にピット内に入らない
+
+# vent-controller 根拠（追記・差し戻し反映）
+## change-rule
+/Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/03_共通業務.md:L1583-1583 — 設定の変更は決められた担当者が行う（エサスイッチの同型ルールを換気コントローラに準用）
+/Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/03_共通業務.md:L1615-1615 — 勝手に変えない
+## read-record
+/Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L609-609 — ヒーターがある場合は適切な温度に設定（無い農場では対象外）
+
+# density-grouping 根拠行（追記・差し戻し反映）
+## area-calc
+/Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L764-771 — 面積基準は資料間で食い違う（08: 30〜50kg 0.5〜0.6／100〜120kg 0.85〜1.0、16 L208-209、13 L258-259）ため、本文に数値は書かず「農場で決めた体重帯の必要面積」とした
+## split-judge
+/Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L733-741 — 軽量豚は別管理・栄養強化・疾病確認
+/Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L795-795 — 新しい群を作ると闘争
+## count-record
+/Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/11_記録と数値管理.md:L111-114 — 頭数の式は舎単位（前日頭数±移動…）。豚房間の移動は舎の合計を変えない

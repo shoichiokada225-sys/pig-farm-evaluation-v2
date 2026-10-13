@@ -1498,7 +1498,7 @@
      "流量を測らないまま、飲水器の点検を済ませたことにする。",
      "指示があれば流量を測るが、一部のニップルだけで済ませたり、換算を間違えたりして、結果は他者まかせ。",
      "指示があればカップで15秒など一定時間受けて1分に換算し、肥育豚の目安1.0〜1.5L/分に合うか全ニップルで確認できる。",
-     "指示がなくても豚房に複数あるニップルを全部測り、目安の1.0〜1.5L/分から外れるものや出っぱなしのものは上長に報告する。",
+     "指示がなくても毎週、豚房に複数あるニップルを全部測り、1.0L/分を下回るものを上長に報告する。",
      "流量が足りないニップルがあると水の取り合いになることを理解し、一定時間で受ける測り方と換算のしかたを新人に指導できる。"
     ],
     "name_en": "Checking flow rate (every nipple)",
@@ -1511,21 +1511,21 @@
      "Does not measure flow and treats the drinker check as done.",
      "With guidance, measures flow, but covers only some nipples or miscalculates the conversion, and leaves the result to others.",
      "With guidance, catches water in a cup for a set time such as 15 seconds, converts it to 1 minute, and can check all nipples against the finishing-pig guideline of 1.0-1.5 L/min.",
-     "Independently measures every nipple in a pen that has several, and reports to the supervisor any that fall outside the guideline of 1.0-1.5 L/min or run constantly.",
+     "Independently every week measures every nipple in a pen that has several, and reports to the supervisor any below 1.0 L/min.",
      "Understands that a nipple with low flow leads to pigs competing for water, and can teach new staff how to catch water for a set time and convert it."
     ],
     "levels_vi": [
      "Không đo lưu lượng mà coi như đã kiểm tra xong núm uống.",
      "Nếu có chỉ dẫn thì đo lưu lượng, nhưng chỉ đo một số núm uống hoặc quy đổi sai, kết quả phó mặc cho người khác.",
      "Nếu có chỉ dẫn thì hứng nước bằng cốc trong thời gian cố định như 15 giây, quy ra 1 phút, và xác nhận tất cả núm uống đạt mức tham khảo cho lợn thịt là 1,0–1,5 L/phút được.",
-     "Không cần chỉ dẫn cũng đo hết các núm uống trong ô chuồng có nhiều núm, núm nào nằm ngoài mức tham khảo 1,0–1,5 L/phút hoặc chảy liên tục thì báo cấp trên.",
+     "Không cần chỉ dẫn vẫn hằng tuần đo hết các núm uống trong ô chuồng có nhiều núm, núm nào dưới 1,0 L/phút thì báo cấp trên.",
      "Hiểu rằng núm uống có lưu lượng yếu sẽ khiến lợn tranh nhau nước, và có thể hướng dẫn người mới cách hứng nước trong thời gian cố định và cách quy đổi."
     ],
     "levels_id": [
      "Tidak mengukur debit, lalu menganggap pemeriksaan tempat minum sudah selesai.",
      "Jika ada instruksi, mengukur debit, tetapi hanya sebagian nipple atau salah mengonversi, dan hasilnya diserahkan ke orang lain.",
      "Jika ada instruksi, bisa menampung air dengan cangkir selama waktu tertentu seperti 15 detik, mengonversinya ke 1 menit, dan memastikan semua nipple sesuai acuan babi penggemukan 1,0–1,5 L/menit.",
-     "Tanpa instruksi pun, mengukur semua nipple di petak kandang yang punya beberapa nipple, dan melaporkan ke atasan yang berada di luar acuan 1,0–1,5 L/menit atau terus mengalir.",
+     "Tanpa instruksi pun, setiap minggu mengukur semua nipple di petak kandang yang punya beberapa nipple, dan melaporkan ke atasan nipple yang debitnya di bawah 1,0 L/menit.",
      "Memahami bahwa nipple dengan debit kecil membuat babi berebut air, dan bisa mengajari karyawan baru cara menampung air selama waktu tertentu dan mengonversinya."
     ]
    },
@@ -1536,7 +1536,7 @@
     "levels": [
      "ニップルの高さを見ず、豚が飲みにくそうでも、そのままにして気にしない。",
      "指示があれば高さを見るが、前期と後期の違いを意識せず、ずれていても直すのは他者まかせ。",
-     "指示があれば床から肥育前期45〜55cm、後期60〜75cmの目安と照らし、高すぎ・低すぎのニップルを見つけられる。",
+     "指示があれば床から肥育前期（25〜60kg）45〜55cm、後期（60〜120kg）60〜75cmの目安と照らし、体重でどちらかを確かめて、高すぎ・低すぎのニップルを見つけられる。",
      "指示がなくても豚の成長で合わなくなった高さに気づき、直すか上長に報告して、直した後も豚が飲めるか見る。",
      "高すぎると小さい豚が飲めず、低すぎると水のロスが増えることを理解し、豚の肩より少し上という高さの見方を新人に指導できる。"
     ],
@@ -1549,21 +1549,21 @@
     "levels_en": [
      "Does not look at nipple height and ignores it even when pigs seem to have trouble drinking.",
      "With guidance, looks at the height, but does not consider early versus late finishing and leaves fixing a mismatch to others.",
-     "With guidance, compares with the guideline of 45-55 cm from the floor for early finishing and 60-75 cm for late finishing, and can find nipples that are too high or too low.",
+     "With guidance, compares with the guideline of 45-55 cm from the floor for early finishing (25-60 kg) and 60-75 cm for late finishing (60-120 kg), checks by weight which applies, and can find nipples that are too high or too low.",
      "Independently notices heights that no longer fit as pigs grow, fixes them or reports to the supervisor, and checks that pigs can drink afterward.",
      "Understands that too high means small pigs cannot drink and too low means more water waste, and can teach new staff to look for a position a little above the pig's shoulder."
     ],
     "levels_vi": [
      "Không xem chiều cao núm uống, dù lợn có vẻ khó uống cũng bỏ mặc.",
      "Nếu có chỉ dẫn thì xem chiều cao, nhưng không để ý khác biệt giữa giai đoạn đầu và cuối vỗ béo, lệch cũng phó mặc việc chỉnh cho người khác.",
-     "Nếu có chỉ dẫn thì đối chiếu mức tham khảo 45–55 cm tính từ sàn cho giai đoạn đầu vỗ béo và 60–75 cm cho giai đoạn cuối vỗ béo, tìm được núm uống quá cao hoặc quá thấp.",
+     "Nếu có chỉ dẫn thì đối chiếu mức tham khảo 45–55 cm tính từ sàn cho giai đoạn đầu vỗ béo (25–60 kg) và 60–75 cm cho giai đoạn cuối vỗ béo (60–120 kg), xem cân nặng để biết áp dụng mức nào, và tìm được núm uống quá cao hoặc quá thấp.",
      "Không cần chỉ dẫn cũng nhận ra chiều cao không còn hợp khi lợn lớn lên, tự chỉnh hoặc báo cấp trên, và xem lợn có uống được sau khi chỉnh không.",
      "Hiểu quá cao thì lợn nhỏ không uống được, quá thấp thì hao nước nhiều hơn, và có thể hướng dẫn người mới nhìn vị trí cao hơn vai lợn một chút."
     ],
     "levels_id": [
      "Tidak memeriksa tinggi nipple dan membiarkannya meskipun babi tampak sulit minum.",
      "Jika ada instruksi, memeriksa tinggi, tetapi tidak membedakan penggemukan awal dan akhir, dan jika tingginya tidak sesuai, perbaikannya diserahkan ke orang lain.",
-     "Jika ada instruksi, bisa membandingkan dengan acuan 45–55 cm dari lantai untuk awal penggemukan dan 60–75 cm untuk akhir penggemukan, serta menemukan nipple yang terlalu tinggi atau rendah.",
+     "Jika ada instruksi, bisa membandingkan dengan acuan 45–55 cm dari lantai untuk awal penggemukan (25–60 kg) dan 60–75 cm untuk akhir penggemukan (60–120 kg), memeriksa bobot untuk menentukan yang berlaku, serta menemukan nipple yang terlalu tinggi atau rendah.",
      "Tanpa instruksi pun, menyadari tinggi yang tidak cocok lagi karena babi tumbuh, memperbaikinya atau melapor ke atasan, dan memeriksa babi bisa minum setelahnya.",
      "Memahami bahwa terlalu tinggi membuat babi kecil tidak bisa minum dan terlalu rendah menambah air terbuang, dan bisa mengajari karyawan baru melihat posisi sedikit di atas bahu babi."
     ]
@@ -1571,118 +1571,118 @@
    {
     "id": "clog-leak",
     "name": "詰まり・出っぱなしの切り分け",
-    "kanten": "水が出ない・出が悪い・出っぱなし・水が汚いときに、原因を順に切り分け、元栓・ニップル・フィルター・配管に合った対処と、漏水時の元栓閉止と報告ができるか。",
+    "kanten": "水が出ない・出が悪い・出っぱなし・水が汚いときに、原因を順に切り分け、元栓・ニップル・フィルター・配管に合った対処と、漏水時の元栓閉止と報告ができるか（不具合が無ければ症状ごとの最初の行動を口頭で聞く）。",
     "levels": [
      "水が出ないニップルや出っぱなしの水を見ても、原因を調べず放置し、床の濡れも気にしない。",
      "指示があれば不具合を見に行くが、原因を切り分けず、対処の判断は他者まかせ。",
      "指示があれば元栓を確かめ、ニップルの分解清掃か交換、フィルター清掃、配管の洗い流しから原因に合う対処を選べる。",
-     "指示がなくても床の濡れすぎなどの原因を切り分けて対処し、配管の漏水は元栓を閉めたら直ちに上長へ報告し、断水する豚房の仮設給水を始める。",
+     "指示がなくても床の濡れすぎなどの原因を切り分けて対処し、水の臭い・色・濁りも見て、配管の漏水は元栓を閉めて漏水箇所を特定し、上長に報告して応急修理か業者への連絡につなげる。",
      "症状と原因と対処の対応を理解し、元栓から順に切り分ける手順を新人に指導できる。"
     ],
     "name_en": "Isolating clogs and constantly running nipples",
     "name_vi": "Phân biệt nguyên nhân tắc và chảy liên tục",
     "name_id": "Menelusuri penyebab sumbatan dan air terus mengalir",
-    "kanten_en": "When water does not come out, flows poorly, runs constantly, or is dirty, can they work through the cause in order, respond appropriately to the main valve, nipple, filter, or piping, and close the main valve and report for a leak?",
-    "kanten_vi": "Khi nước không ra, ra yếu, chảy liên tục hoặc bẩn, có lần lượt tìm nguyên nhân, xử lý phù hợp với van tổng, núm uống, bộ lọc, đường ống, và đóng van tổng rồi báo cáo khi rò rỉ không.",
-    "kanten_id": "Apakah saat air tidak keluar, keluarnya buruk, terus mengalir, atau kotor, dapat menelusuri penyebab secara berurutan, menangani sesuai keran utama, nipple, filter, atau pipa, dan menutup keran utama lalu melapor saat bocor.",
+    "kanten_en": "When water does not come out, flows poorly, runs constantly, or is dirty, can they work through the cause in order, respond appropriately to the main valve, nipple, filter, or piping, and close the main valve and report for a leak (if no fault is present, ask orally what they would do first for each symptom)?",
+    "kanten_vi": "Khi nước không ra, ra yếu, chảy liên tục hoặc bẩn, có lần lượt tìm nguyên nhân, xử lý phù hợp với van tổng, núm uống, bộ lọc, đường ống, và đóng van tổng rồi báo cáo khi rò rỉ không (nếu không có sự cố thì hỏi miệng hành động đầu tiên cho từng triệu chứng).",
+    "kanten_id": "Apakah saat air tidak keluar, keluarnya buruk, terus mengalir, atau kotor, dapat menelusuri penyebab secara berurutan, menangani sesuai keran utama, nipple, filter, atau pipa, dan menutup keran utama lalu melapor saat bocor (jika tidak ada gangguan, tanyakan secara lisan tindakan pertama untuk tiap gejala)?",
     "levels_en": [
      "Sees nipples with no water or constant running water but leaves them without checking the cause, and ignores wet floors.",
      "With guidance, goes to look at the fault, but does not isolate the cause and leaves the decision on action to others.",
      "With guidance, checks the main valve and can choose the right action: disassemble and clean or replace the nipple, clean the filter, or flush the piping.",
-     "Independently isolates the cause of problems such as overly wet floors and deals with it; for a piping leak, reports to the supervisor at once after closing the main valve and starts temporary watering for pens that lose water.",
+     "Independently isolates the cause of problems such as overly wet floors and deals with it, also looks at the smell, colour and cloudiness of the water, and for a piping leak closes the main valve, locates the leak, and reports to the supervisor so that emergency repair or a contractor call follows.",
      "Understands how symptoms, causes, and actions match, and can teach new staff the step-by-step check starting from the main valve."
     ],
     "levels_vi": [
      "Thấy núm uống không ra nước hoặc nước chảy liên tục cũng không tìm nguyên nhân mà bỏ mặc, sàn ướt cũng không để ý.",
      "Nếu có chỉ dẫn thì đi xem chỗ hỏng, nhưng không tách nguyên nhân, việc quyết định xử lý phó mặc cho người khác.",
      "Nếu có chỉ dẫn thì kiểm tra van tổng, chọn được cách xử lý đúng nguyên nhân: tháo vệ sinh hoặc thay núm uống, vệ sinh bộ lọc, xả rửa đường ống.",
-     "Không cần chỉ dẫn cũng tìm nguyên nhân khi sàn ướt quá mức và xử lý; khi đường ống rò rỉ thì đóng van tổng xong báo cấp trên ngay, và bắt đầu cấp nước tạm cho ô chuồng bị mất nước.",
+     "Không cần chỉ dẫn cũng tìm nguyên nhân khi sàn ướt quá mức và xử lý, xem cả mùi, màu và độ đục của nước; khi đường ống rò rỉ thì đóng van tổng, xác định chỗ rò và báo cấp trên để sửa tạm hoặc liên lạc thợ.",
      "Hiểu mối liên hệ giữa triệu chứng, nguyên nhân và cách xử lý, và có thể hướng dẫn người mới trình tự kiểm tra từ van tổng."
     ],
     "levels_id": [
      "Melihat nipple tanpa air atau air yang terus mengalir tetapi dibiarkan tanpa mencari penyebab, dan tidak peduli lantai basah.",
      "Jika ada instruksi, pergi melihat masalahnya, tetapi tidak menelusuri penyebab, dan keputusan penanganan diserahkan ke orang lain.",
      "Jika ada instruksi, bisa memeriksa keran utama dan memilih penanganan yang sesuai: bongkar dan bersihkan atau ganti nipple, bersihkan filter, atau bilas pipa.",
-     "Tanpa instruksi pun, menelusuri penyebab seperti lantai yang terlalu basah lalu menanganinya; saat pipa bocor, setelah menutup keran utama segera melapor ke atasan dan mulai memberi air sementara ke petak yang airnya terhenti.",
+     "Tanpa instruksi pun, menelusuri penyebab seperti lantai yang terlalu basah lalu menanganinya, juga memeriksa bau, warna, dan kekeruhan air; saat pipa bocor, menutup keran utama, menentukan lokasi kebocoran, dan melapor ke atasan agar dilakukan perbaikan darurat atau menghubungi teknisi.",
      "Memahami hubungan gejala, penyebab, dan penanganan, dan bisa mengajari karyawan baru urutan pemeriksaan mulai dari keran utama."
     ]
    },
    {
     "id": "freeze-outage",
     "name": "凍結・断水時の対応",
-    "kanten": "凍結に気づいたらぬるま湯で解凍し（熱湯は使わない）、凍結以外も含む断水ならバケツやホースで仮設給水して報告できるか（季節外は口頭で最初の行動を聞く）。",
+    "kanten": "凍結に気づいたらぬるま湯で解凍し（熱湯は使わない）、断水ならバケツやホースで仮設給水して報告し、水が戻った後はふらつきやけいれんがないか見られるか（季節外は口頭で最初の行動を聞く）。",
     "levels": [
      "凍結や断水に気づかず、水が出ない豚房があっても確かめに行かない。",
      "指示があれば水の出を見るが、解凍や仮設給水の手順が抜けたり後回しになったりして、報告も遅れる。",
      "指示があれば凍結ならぬるま湯で解凍し、断水なら原因を問わずバケツやホースで仮設給水を始められる。",
-     "指示がなくても冬は毎朝、凍結していないか全箇所を確かめ、水が出ない豚房へすぐ仮設給水し、農場長に報告して再発防止を相談する。",
-     "脱水が命に関わることを理解し、熱湯を使わない理由と、修理までの仮設給水の手順を新人に指導できる。"
+     "指示がなくても冬は毎朝、凍結していないか全箇所を確かめ、水が出ない豚房へすぐ仮設給水し、上長に報告する。水が戻った後はふらつき・けいれん・首を反らす豚がいないか見て、いれば即報告する。",
+     "水が長く止まった後に一気に飲むと塩中毒が起きることと、熱湯を使わない理由を理解し、修理までの仮設給水の手順を新人に指導できる。"
     ],
     "name_en": "Response to freezing and water outage",
     "name_vi": "Xử lý khi đóng băng và mất nước",
     "name_id": "Penanganan saat beku dan air terhenti",
-    "kanten_en": "Can they thaw frozen parts with lukewarm water, never boiling water, give temporary water by bucket or hose when any outage stops the supply (frozen or not) until repair, and report (out of season, ask orally what they would do first)?",
-    "kanten_vi": "Có rã đông bằng nước ấm chứ không dùng nước sôi khi bị đóng băng, cấp nước tạm bằng xô hoặc vòi khi mất nước (dù có đóng băng hay không) cho đến khi sửa xong, rồi báo cáo không (ngoài mùa thì hỏi miệng hành động đầu tiên sẽ làm).",
-    "kanten_id": "Apakah mencairkan bagian beku dengan air hangat, bukan air mendidih, memberi air sementara dengan ember atau selang saat air terhenti (beku atau bukan) sampai diperbaiki, lalu melapor (di luar musim, tanyakan secara lisan tindakan pertama yang dilakukan).",
+    "kanten_en": "Can they thaw frozen parts with lukewarm water, never boiling water, give temporary water by bucket or hose when an outage stops the supply until repair, report, and watch the pen for unsteadiness or convulsions after the water returns (out of season, ask orally what they would do first)?",
+    "kanten_vi": "Có rã đông bằng nước ấm chứ không dùng nước sôi khi bị đóng băng, cấp nước tạm bằng xô hoặc vòi khi mất nước cho đến khi sửa xong, báo cáo, và theo dõi ô chuồng xem có lợn đi loạng choạng hay co giật sau khi nước trở lại không (ngoài mùa thì hỏi miệng hành động đầu tiên sẽ làm).",
+    "kanten_id": "Apakah mencairkan bagian beku dengan air hangat, bukan air mendidih, memberi air sementara dengan ember atau selang saat air terhenti sampai diperbaiki, melapor, serta mengamati petak kandang dari babi yang sempoyongan atau kejang setelah air kembali (di luar musim, tanyakan secara lisan tindakan pertama yang dilakukan)?",
     "levels_en": [
      "Does not notice freezing or outage, and does not go to check even when a pen has no water.",
      "With guidance, looks at water flow, but skips or delays the thawing and temporary watering steps, and reports late.",
      "With guidance, thaws frozen parts with lukewarm water, and can start temporary watering with buckets or hoses in any outage, frozen or not.",
-     "Independently checks every point for freezing each winter morning, gives temporary water at once to pens with none, reports to the farm manager, and discusses preventing a recurrence.",
-     "Understands that dehydration can threaten life, and can teach new staff why not to use boiling water and how to give temporary water until repair."
+     "Independently checks every point for freezing each winter morning, gives temporary water at once to pens with none, and reports to the supervisor. After the water returns, watches for pigs that are unsteady, convulsing or arching their necks back, and reports at once if any.",
+     "Understands that drinking a lot at once after a long water stoppage can cause salt poisoning, and why not to use boiling water, and can teach new staff the temporary watering steps until repair."
     ],
     "levels_vi": [
      "Không nhận ra đóng băng hoặc mất nước, ô chuồng không có nước cũng không đi kiểm tra.",
      "Nếu có chỉ dẫn thì xem nước ra, nhưng thiếu hoặc để chậm các bước rã đông và cấp nước tạm, và báo cáo cũng chậm.",
      "Nếu có chỉ dẫn thì rã đông bằng nước ấm khi đóng băng, và bắt đầu cấp nước tạm bằng xô hoặc vòi khi mất nước do bất kỳ nguyên nhân nào được.",
-     "Không cần chỉ dẫn cũng kiểm tra đóng băng ở tất cả vị trí mỗi sáng mùa đông, cấp nước tạm ngay cho ô chuồng không có nước, báo trưởng trại và bàn cách ngăn tái diễn.",
-     "Hiểu mất nước có thể nguy hiểm đến tính mạng, và có thể hướng dẫn người mới lý do không dùng nước sôi và cách cấp nước tạm cho đến khi sửa xong."
+     "Không cần chỉ dẫn cũng kiểm tra đóng băng ở tất cả vị trí mỗi sáng mùa đông, cấp nước tạm ngay cho ô chuồng không có nước và báo cấp trên. Sau khi nước trở lại thì xem có con nào loạng choạng, co giật hay ngửa cổ ra sau không, nếu có thì báo ngay.",
+     "Hiểu rằng sau khi mất nước lâu, uống nhiều nước một lúc có thể gây ngộ độc muối (thiếu nước), hiểu lý do không dùng nước sôi, và có thể hướng dẫn người mới các bước cấp nước tạm cho đến khi sửa xong."
     ],
     "levels_id": [
      "Tidak menyadari beku atau air terhenti, dan tidak memeriksa meskipun ada petak tanpa air.",
      "Jika ada instruksi, melihat keluarnya air, tetapi melewatkan atau menunda langkah pencairan dan pemberian air sementara, dan terlambat melapor.",
      "Jika ada instruksi, bisa mencairkan bagian beku dengan air hangat, dan memulai pemberian air sementara dengan ember atau selang pada setiap kasus air terhenti, beku atau bukan.",
-     "Tanpa instruksi pun, memeriksa beku di semua titik setiap pagi di musim dingin, segera memberi air sementara ke petak tanpa air, melapor ke kepala peternakan, dan membahas pencegahan terulang.",
-     "Memahami bahwa dehidrasi bisa membahayakan nyawa, dan bisa mengajari karyawan baru alasan tidak memakai air mendidih dan cara memberi air sementara sampai perbaikan."
+     "Tanpa instruksi pun, memeriksa beku di semua titik setiap pagi di musim dingin, segera memberi air sementara ke petak tanpa air, dan melapor ke atasan. Setelah air kembali, memperhatikan babi yang sempoyongan, kejang, atau menengadahkan leher, dan segera melapor jika ada.",
+     "Memahami bahwa minum banyak sekaligus setelah air lama terhenti dapat menyebabkan keracunan garam (kekurangan air), serta alasan tidak memakai air mendidih, dan bisa mengajari karyawan baru langkah memberi air sementara sampai perbaikan."
     ]
    },
    {
     "id": "season-record",
-    "name": "点検結果の記録と予備品",
-    "kanten": "今の季節に水まわりで何を見るかを答え、今日の点検結果を用紙にどう記録するかと、交換用の予備ニップルがあるかを説明できるか。",
+    "name": "季節の点検と記録",
+    "kanten": "今の季節に水まわりで何を見るかを答え、今日の点検結果を記録にどう残すかと、交換用の予備ニップルがあるかをどう確かめるかを説明できるか。",
     "levels": [
      "今の季節に水まわりで見る点を考えず、今日の点検結果も記録に残さず、予備のニップルがあるかも確かめない。",
      "指示があれば今の季節に見る点を話して点検結果を記録するが、記録の項目が抜け、予備のニップルの確認は他者まかせ。",
-     "指示があれば今の季節に見る点（夏は水温・貯水タンク・配管の断熱、冬は保温材）を答え、今日の点検結果を用紙に記録して、予備のニップルの置き場所を言える。",
-     "指示がなくても今の季節に見る点で水まわりを点検し、結果を用紙に記録して、予備のニップルが足りなければ上長に報告する。",
-     "季節で水まわりに見る点が変わる理由を理解し、点検結果の記録のしかたと予備のニップルの置き場所を新人に指導できる。"
+     "指示があれば今の季節に見る点（夏は水温・貯水タンク・配管の断熱、冬は保温材）を答え、今日の点検結果を記録に残し、予備のニップルがあるか確かめられる。",
+     "指示がなくても今の季節に見る点で水まわりを点検し、結果を記録に残して、予備のニップルが足りなければ上長に報告する。",
+     "季節で水まわりに見る点が変わる理由を理解し、点検結果の記録のしかたと予備のニップルの確認を新人に指導できる。"
     ],
-    "name_en": "Recording check results and spare parts",
-    "name_vi": "Ghi chép kết quả kiểm tra và phụ tùng dự phòng",
-    "name_id": "Pencatatan hasil pemeriksaan dan suku cadang",
-    "kanten_en": "Can they say what to check around the water supply in the current season, how today's check results are recorded on a sheet, and whether spare nipples for replacement are on hand?",
-    "kanten_vi": "Có nói được mùa hiện tại cần xem gì ở hệ thống nước uống, kết quả kiểm tra hôm nay được ghi vào phiếu thế nào, và có sẵn núm uống dự phòng để thay không.",
-    "kanten_id": "Apakah dapat menyebutkan apa yang diperiksa pada sistem air minum di musim saat ini, bagaimana hasil pemeriksaan hari ini dicatat di lembar, dan apakah ada nipple cadangan untuk penggantian?",
+    "name_en": "Seasonal Checks and Records",
+    "name_vi": "Kiểm tra theo mùa và ghi chép",
+    "name_id": "Pemeriksaan musiman dan pencatatan",
+    "kanten_en": "Can they say what to check around the water supply in the current season, how today's check results are kept on record, and how they confirm that spare nipples for replacement are on hand?",
+    "kanten_vi": "Có nói được mùa hiện tại cần xem gì ở hệ thống nước uống, kết quả kiểm tra hôm nay được lưu lại thế nào, và xác nhận có sẵn núm uống dự phòng để thay bằng cách nào không.",
+    "kanten_id": "Apakah dapat menyebutkan apa yang diperiksa pada sistem air minum di musim saat ini, bagaimana hasil pemeriksaan hari ini disimpan dalam catatan, dan bagaimana memastikan nipple cadangan untuk penggantian tersedia?",
     "levels_en": [
      "Does not think about what to check around the water supply in the current season, does not record today's check results, and does not confirm that spare nipples are on hand.",
      "With guidance names what to check this season and records the results, but leaves out items, and leaves the check on spare nipples to others.",
-     "With guidance can say what to check this season (summer: water temperature, storage tank, pipe insulation; winter: insulation material), record today's results on a sheet, and say where the spare nipples are kept.",
-     "Independently checks the water supply for what matters this season, records the results on a sheet, and reports to the supervisor if spare nipples are short.",
-     "Understands why what to check around the water supply changes with the season, and can teach new staff how to record check results and where spare nipples are kept."
+     "With guidance can say what to check this season (summer: water temperature, storage tank, pipe insulation; winter: insulation material), keep today's results on record, and confirm that spare nipples are on hand.",
+     "Independently checks the water supply for what matters this season, keeps the results on record, and reports to the supervisor if spare nipples are short.",
+     "Understands why what to check around the water supply changes with the season, and can teach new staff how to keep check results on record and how to confirm spare nipples."
     ],
     "levels_vi": [
      "Không nghĩ đến việc mùa hiện tại cần xem gì ở hệ thống nước uống, không ghi lại kết quả kiểm tra hôm nay, và cũng không xác nhận có núm uống dự phòng hay không.",
      "Nếu có chỉ dẫn thì nói được mùa này cần xem gì và ghi lại kết quả, nhưng còn thiếu mục, và phó mặc việc kiểm tra núm uống dự phòng cho người khác.",
-     "Nếu có chỉ dẫn thì trả lời được mùa này cần xem gì (mùa hè: nhiệt độ nước, bồn chứa, lớp cách nhiệt đường ống; mùa đông: vật liệu bảo ôn), ghi kết quả kiểm tra hôm nay vào phiếu, và nói được chỗ để núm uống dự phòng.",
-     "Không cần chỉ dẫn, vẫn kiểm tra hệ thống nước uống theo các điểm cần xem của mùa này, ghi kết quả vào phiếu, và báo cấp trên nếu núm uống dự phòng không đủ.",
-     "Hiểu vì sao điểm cần xem ở hệ thống nước uống thay đổi theo mùa, và có thể hướng dẫn người mới cách ghi kết quả kiểm tra và chỗ để núm uống dự phòng."
+     "Nếu có chỉ dẫn thì trả lời được mùa này cần xem gì (mùa hè: nhiệt độ nước, bồn chứa, lớp cách nhiệt đường ống; mùa đông: vật liệu bảo ôn), lưu lại kết quả kiểm tra hôm nay và xác nhận có sẵn núm uống dự phòng.",
+     "Không cần chỉ dẫn vẫn kiểm tra hệ thống nước uống theo các điểm cần xem của mùa này, lưu lại kết quả, và báo cấp trên nếu núm uống dự phòng không đủ.",
+     "Hiểu vì sao điểm cần xem ở hệ thống nước uống thay đổi theo mùa, và có thể hướng dẫn người mới cách lưu kết quả kiểm tra và cách xác nhận núm uống dự phòng."
     ],
     "levels_id": [
      "Tidak memikirkan apa yang diperiksa pada sistem air minum di musim saat ini, tidak mencatat hasil pemeriksaan hari ini, dan tidak memastikan ada tidaknya nipple cadangan.",
      "Jika ada instruksi, menyebutkan apa yang diperiksa musim ini dan mencatat hasilnya, tetapi ada item terlewat, dan pemeriksaan nipple cadangan diserahkan ke orang lain.",
-     "Jika ada instruksi, bisa menjawab apa yang diperiksa musim ini (musim panas: suhu air, tangki penampung, isolasi pipa; musim dingin: bahan isolasi), mencatat hasil pemeriksaan hari ini di lembar, dan menyebutkan tempat nipple cadangan.",
-     "Tanpa instruksi pun, memeriksa sistem air minum sesuai hal yang perlu dilihat musim ini, mencatat hasilnya di lembar, dan melapor ke atasan jika nipple cadangan kurang.",
-     "Memahami mengapa hal yang diperiksa pada sistem air minum berubah menurut musim, dan bisa mengajari karyawan baru cara mencatat hasil pemeriksaan dan tempat nipple cadangan."
+     "Jika ada instruksi, bisa menjawab apa yang diperiksa musim ini (musim panas: suhu air, tangki penampung, isolasi pipa; musim dingin: pelindung pipa agar tidak beku), menyimpan hasil pemeriksaan hari ini dalam catatan, dan memastikan nipple cadangan tersedia.",
+     "Tanpa instruksi pun, memeriksa sistem air minum sesuai hal yang perlu dilihat musim ini, menyimpan hasilnya dalam catatan, dan melapor ke atasan jika nipple cadangan kurang.",
+     "Memahami mengapa hal yang diperiksa pada sistem air minum berubah menurut musim, dan bisa mengajari karyawan baru cara menyimpan hasil pemeriksaan dalam catatan dan memastikan nipple cadangan."
     ]
    }
   ]
@@ -1704,118 +1704,118 @@
    {
     "id": "read-temp",
     "name": "温度の読み方",
-    "kanten": "温度計を豚の高さに置いて朝・午後・夕方に読み、最高最低の差や計器の故障にも気づけるか。",
+    "kanten": "温度計を豚の高さに置いて朝・午後・夕方に読み、農場で決めた適正範囲と比べ、最高最低の差や計器の故障にも気づけるか。",
     "levels": [
      "温度計の位置も確かめず、舎内の温度を読まないまま過ごし、壊れた計器の値も疑わずに使う。",
      "指示があれば温度を読むが、天井近くなど豚の高さでない値を使ったり、読む時間帯が抜けたりして他者まかせ。",
-     "指示があれば豚の高さ（床上30〜50cm）の温度計を朝・午後・夕方に読み、最高最低温度計の差も確認できる。",
-     "指示がなくても豚の高さの温度計を朝・午後・夕方に読み、最高最低温度計で冷え込みや昼夜差の大きい日・計器の異常に気づけば上長に報告する。",
+     "指示があれば豚の高さ（床上30〜50cm）の温度計を朝・午後・夕方に読み、最高最低温度計の差と、農場で決めた適正範囲との比較を確認できる。",
+     "指示がなくても豚の高さ（床上30〜50cm）の温度計を朝・午後・夕方に読み、適正範囲から外れた日や昼夜差の大きい日・計器の異常を上長に報告する。",
      "豚の高さで測る理由と計器の故障が管理を誤らせることを理解し、温度の読み方を新人に指導できる。"
     ],
     "name_en": "Reading the Temperature",
     "name_vi": "Đọc nhiệt độ",
     "name_id": "Membaca suhu",
-    "kanten_en": "Does the person place the thermometer at pig height, read it in the morning, afternoon and evening, and notice the high-low gap or a faulty gauge?",
-    "kanten_vi": "Có đặt nhiệt kế ở độ cao của lợn, đọc vào buổi sáng, chiều và tối, và nhận ra chênh lệch cao thấp hoặc nhiệt kế hỏng không.",
-    "kanten_id": "Apakah menaruh termometer setinggi babi, membacanya pagi, siang, dan sore, serta menyadari selisih termometer maksimum-minimum atau alat yang rusak?",
+    "kanten_en": "Does the person place the thermometer at pig height, read it in the morning, afternoon and evening, compare it with the range the farm has set, and notice the max-min gap or a faulty gauge?",
+    "kanten_vi": "Có đặt nhiệt kế ở độ cao của lợn, đọc vào buổi sáng, chiều và tối, so với khoảng thích hợp mà trại đã định, và nhận ra chênh lệch tối đa–tối thiểu hoặc nhiệt kế hỏng không.",
+    "kanten_id": "Apakah menaruh termometer setinggi babi, membacanya pagi, siang, dan sore, membandingkannya dengan rentang yang ditetapkan peternakan, serta menyadari selisih maksimum-minimum atau alat yang rusak?",
     "levels_en": [
      "Does not check where the thermometer is or read the house temperature, and uses the value of a broken gauge without doubt.",
      "With guidance reads the temperature, but uses a value from near the ceiling instead of pig height or skips reading times, leaving it to others.",
-     "With guidance can read a thermometer at pig height (30-50 cm above the floor) in the morning, afternoon and evening, and check the high-low thermometer gap.",
-     "Independently reads the pig-height thermometer in the morning, afternoon and evening, and reports to the supervisor any cold snap, large day-night gap or gauge fault seen on the high-low thermometer.",
+     "With guidance can read a thermometer at pig height (30-50 cm above the floor) in the morning, afternoon and evening, and check the max-min thermometer gap and the comparison with the range the farm has set.",
+     "Independently reads the pig-height thermometer (30-50 cm above the floor) in the morning, afternoon and evening, and reports to the supervisor any day outside the set range, any large day-night gap, or any gauge fault.",
      "Understands why temperature is measured at pig height and how a faulty gauge misleads management, and can teach new staff how to read temperature."
     ],
     "levels_vi": [
      "Không xem vị trí nhiệt kế, không đọc nhiệt độ trong chuồng, và dùng số của nhiệt kế hỏng mà không nghi ngờ.",
      "Nếu có chỉ dẫn thì đọc nhiệt độ, nhưng dùng số đo gần trần chứ không phải ở độ cao của lợn, hoặc bỏ sót giờ đọc và phó mặc cho người khác.",
-     "Nếu có chỉ dẫn thì đọc nhiệt kế ở độ cao của lợn (cách sàn 30–50 cm) vào buổi sáng, chiều và tối, và kiểm tra chênh lệch trên nhiệt kế tối đa–tối thiểu.",
-     "Không cần chỉ dẫn vẫn đọc nhiệt kế ở độ cao của lợn vào buổi sáng, chiều và tối, nếu thấy qua nhiệt kế tối đa–tối thiểu ngày lạnh đột ngột, chênh lệch ngày đêm lớn hoặc nhiệt kế bất thường thì báo cấp trên.",
+     "Nếu có chỉ dẫn thì đọc nhiệt kế ở độ cao của lợn (cách sàn 30–50 cm) vào buổi sáng, chiều và tối, và kiểm tra chênh lệch trên nhiệt kế tối đa–tối thiểu cùng việc so với khoảng thích hợp mà trại đã định.",
+     "Không cần chỉ dẫn vẫn đọc nhiệt kế ở độ cao của lợn (cách sàn 30–50 cm) vào buổi sáng, chiều và tối, và báo cấp trên ngày nằm ngoài khoảng thích hợp, ngày chênh lệch ngày đêm lớn hoặc nhiệt kế bất thường.",
      "Hiểu vì sao đo ở độ cao của lợn và nhiệt kế hỏng làm quản lý sai, và có thể hướng dẫn người mới cách đọc nhiệt độ."
     ],
     "levels_id": [
      "Tidak memeriksa posisi termometer dan tidak membaca suhu kandang, serta memakai angka alat yang rusak tanpa ragu.",
      "Jika ada instruksi, membaca suhu, tetapi memakai angka dekat langit-langit, bukan setinggi babi, atau melewatkan jam baca dan menyerahkannya kepada orang lain.",
-     "Jika ada instruksi, dapat membaca termometer setinggi babi (30–50 cm dari lantai) pada pagi, siang, dan sore, serta memeriksa selisih termometer maksimum-minimum.",
-     "Tanpa instruksi pun membaca termometer setinggi babi pada pagi, siang, dan sore, dan jika termometer maksimum-minimum menunjukkan hari yang sangat dingin, selisih siang-malam besar, atau alat tidak normal, melapor kepada atasan.",
+     "Jika ada instruksi, dapat membaca termometer setinggi babi (30–50 cm dari lantai) pada pagi, siang, dan sore, serta memeriksa selisih termometer maksimum-minimum dan perbandingannya dengan rentang yang ditetapkan peternakan.",
+     "Tanpa instruksi pun membaca termometer setinggi babi (30–50 cm dari lantai) pada pagi, siang, dan sore, dan melapor kepada atasan jika ada hari di luar rentang yang ditetapkan, selisih siang-malam besar, atau alat tidak normal.",
      "Memahami alasan suhu diukur setinggi babi dan bahwa alat rusak menyesatkan pengelolaan, serta bisa mengajari karyawan baru cara membaca suhu."
     ]
    },
    {
     "id": "pig-signs",
     "name": "豚の行動で読む暑さ寒さ",
-    "kanten": "数字だけに頼らず、豚の呼吸・姿勢・集まり方や舎内の臭いと空気感から暑さ寒さの異常に気づけるか。",
+    "kanten": "数字だけに頼らず、豚の呼吸・姿勢・集まり方から暑さ寒さの異常に気づけるか。",
     "levels": [
-     "豚の様子も舎内の空気感も見ず、口を開けて呼吸する豚や一か所に固まる豚がいても気づかない。",
+     "豚の様子を見ず、口を開けて呼吸する豚や一か所に固まる豚がいても気づかない。",
      "指示があれば豚の様子を見るが、口呼吸や特定の場所への集中を見落とし、気づいても他者まかせにする。",
-     "指示があれば口を開けて呼吸する豚や横たわって動かない豚は暑さ、一か所に固まる豚は寒さや温度ムラの可能性と判断できる。",
-     "指示がなくても入った瞬間の臭いと空気感を確かめ、口呼吸や横たわって動かない豚は暑熱の緊急としてすぐ上長に報告し、一か所に固まる豚からは温度ムラや隙間風を疑って調整につなげる。",
+     "指示があれば、口を開けて呼吸する豚や横たわって動かない豚は暑さの可能性、一か所に固まる豚は寒さや温度ムラの可能性と判断できる。",
+     "指示がなくても暑い日に口呼吸や横たわって動かない豚がいれば暑熱の緊急として上長に伝え、農場の手順で耳の裏に水をかけて冷やし、固まる豚は温度ムラや隙間風を疑って調整につなげる。",
      "暑熱が命に関わること、固まりは温度ムラのサインであることを理解し、豚の見方を新人に指導できる。"
     ],
     "name_en": "Reading Heat and Cold from Pig Behavior",
     "name_vi": "Đọc nóng lạnh qua hành vi lợn",
     "name_id": "Membaca panas dingin dari perilaku babi",
-    "kanten_en": "Beyond the numbers, can the person spot heat or cold problems from the pigs' breathing, posture, clustering, and the smell and feel of the air in the house?",
-    "kanten_vi": "Không chỉ dựa vào số đo, có nhận ra bất thường nóng lạnh qua nhịp thở, tư thế, cách tụ lại của lợn và mùi, cảm giác không khí trong chuồng không.",
-    "kanten_id": "Apakah tidak hanya bergantung pada angka, tetapi menyadari kelainan panas dan dingin dari napas, posisi, cara berkumpul babi, serta bau dan suasana udara kandang?",
+    "kanten_en": "Beyond the numbers, can the person spot heat or cold problems from the pigs' breathing, posture, and clustering?",
+    "kanten_vi": "Không chỉ dựa vào số đo, có nhận ra bất thường nóng lạnh qua nhịp thở, tư thế và cách tụ lại của lợn không.",
+    "kanten_id": "Apakah tidak hanya bergantung pada angka, tetapi menyadari kelainan panas dan dingin dari napas, posisi, dan cara berkumpul babi?",
     "levels_en": [
-     "Does not look at the pigs or the feel of the air, and does not notice pigs breathing with open mouths or huddled in one spot.",
+     "Does not look at the pigs, and does not notice pigs breathing with open mouths or huddled in one spot.",
      "With guidance looks at the pigs, but misses open-mouth breathing or crowding in one spot, and leaves it to others even when noticed.",
-     "With guidance can judge that pigs breathing with open mouths or lying and not moving suggest heat, and pigs huddled in one spot suggest cold or uneven temperature.",
-     "Independently checks the smell and feel of the air on entering, reports open-mouth breathing or pigs lying and not moving to the supervisor at once as a heat emergency, and suspects uneven temperature or drafts from huddled pigs and links it to adjustments.",
+     "With guidance can judge that pigs breathing with open mouths or lying and not moving may be too hot, and pigs huddled in one spot may be cold or in uneven temperature.",
+     "Independently, when pigs breathe with open mouths or lie and do not move on a hot day, tells the supervisor as a heat emergency and cools them by wetting the area behind the ears as the farm's procedure directs; suspects uneven temperature or drafts from huddled pigs and links it to adjustments.",
      "Understands that heat stress can be life-threatening and that huddling signals uneven temperature, and can teach new staff how to read pigs."
     ],
     "levels_vi": [
-     "Không nhìn lợn cũng không để ý không khí trong chuồng, lợn thở bằng miệng hoặc tụ lại một chỗ cũng không nhận ra.",
+     "Không nhìn lợn, lợn thở bằng miệng hoặc tụ lại một chỗ cũng không nhận ra.",
      "Nếu có chỉ dẫn thì quan sát lợn, nhưng bỏ sót lợn thở bằng miệng hoặc tụ lại một chỗ, có nhận ra cũng phó mặc cho người khác.",
      "Nếu có chỉ dẫn thì đánh giá được lợn thở bằng miệng hoặc nằm bất động có thể do nóng, còn lợn tụ lại một chỗ có thể do lạnh hoặc nhiệt độ không đều.",
-     "Không cần chỉ dẫn vẫn kiểm tra mùi và cảm giác không khí khi vào chuồng, báo cấp trên ngay lợn thở bằng miệng hoặc nằm bất động như tình huống khẩn cấp do nóng, và từ lợn tụ lại một chỗ mà nghi nhiệt độ không đều hoặc gió lùa rồi chỉnh cho phù hợp.",
-     "Hiểu sốc nhiệt có thể nguy hiểm đến tính mạng, lợn tụ lại là dấu hiệu nhiệt độ không đều, và có thể hướng dẫn người mới cách quan sát lợn."
+     "Không cần chỉ dẫn vẫn, vào ngày nóng thấy lợn thở bằng miệng hoặc nằm bất động thì báo cấp trên như tình huống khẩn cấp do nóng và theo quy trình của trại xối nước làm mát sau tai, còn lợn tụ lại một chỗ thì nghi nhiệt độ không đều hoặc gió lùa rồi chỉnh cho phù hợp.",
+     "Hiểu stress nhiệt (nóng quá mức) có thể nguy hiểm đến tính mạng, lợn tụ lại là dấu hiệu nhiệt độ không đều, và có thể hướng dẫn người mới cách quan sát lợn."
     ],
     "levels_id": [
-     "Tidak memperhatikan babi maupun suasana udara, dan tidak sadar walau ada babi bernapas lewat mulut atau menggerombol di satu tempat.",
+     "Tidak memperhatikan babi, dan tidak sadar walau ada babi bernapas lewat mulut atau menggerombol di satu tempat.",
      "Jika ada instruksi, mengamati babi, tetapi melewatkan napas lewat mulut atau babi menggerombol di satu tempat, dan walau sadar menyerahkannya kepada orang lain.",
      "Jika ada instruksi, dapat menilai bahwa babi yang bernapas lewat mulut atau berbaring tak bergerak kemungkinan kepanasan, dan babi yang menggerombol di satu tempat kemungkinan kedinginan atau suhu tidak merata.",
-     "Tanpa instruksi pun memeriksa bau dan suasana udara saat masuk, segera melapor kepada atasan jika ada babi bernapas lewat mulut atau berbaring tak bergerak sebagai darurat panas, dan mencurigai suhu tidak merata atau angin yang masuk lewat celah dari babi yang menggerombol, lalu menyesuaikannya.",
+     "Tanpa instruksi pun, pada hari panas jika ada babi bernapas lewat mulut atau berbaring tak bergerak, memberi tahu atasan sebagai darurat panas dan mendinginkannya dengan menyiram bagian belakang telinga sesuai prosedur peternakan, serta mencurigai suhu tidak merata atau angin masuk lewat celah dari babi yang menggerombol lalu menyesuaikannya.",
      "Memahami bahwa stres panas bisa mengancam nyawa dan bahwa menggerombol tanda suhu tidak merata, serta bisa mengajari karyawan baru cara mengamati babi."
     ]
    },
    {
     "id": "manual-adjust",
     "name": "カーテン・インレットの調整",
-    "kanten": "カーテンやインレットを段階的に動かし、冷風が豚に直接当たらないよう隙間や破れも確認できるか。",
+    "kanten": "カーテンや手動式のインレットを一気に動かさず少しずつ動かし、冷風が豚に直接当たらないよう隙間や破れも確認できるか（自動制御なら、ずれに気づいたら上長に報告）。",
     "levels": [
-     "カーテンやインレットを天気や時間帯に関係なく放置するか、一気に全開にして豚に冷風が当たる。",
+     "カーテンや手動式のインレットを天気や時間帯に関係なく放置するか、寒い朝晩に一気に全開にして豚に冷風が当たる。",
      "指示があれば開け閉めするが、一気に動かしたり隙間や破れの確認が抜けたりして、他者まかせになる。",
-     "指示があれば朝晩や天気に合わせてカーテンやインレットを段階的に動かし、隙間・破れ・裾の密着を確認できる。",
-     "指示がなくても朝晩や天気、豚への風当たりに応じて段階的に調整し、直せない破れや隙間があれば上長に報告する。",
-     "開度が小さいと風は速く遠くへ届き大きいと遅く近くに落ちることを理解し、調整を新人に指導できる。"
+     "指示があれば朝晩や天気に合わせてカーテンや手動式のインレットを少しずつ動かして風の当たりを確かめ、隙間・破れ・カーテンの裾の密着を確認できる。",
+     "指示がなくても朝晩や天気、豚への風当たりに応じて手動のカーテンやインレットを少しずつ調整し、自動制御のずれや直せない破れ・隙間は上長に報告する。",
+     "インレットの開度が小さいと風は速く遠くへ届き大きいと遅く近くに落ちることを理解し、調整を新人に指導できる。"
     ],
     "name_en": "Adjusting Curtains and Inlets",
     "name_vi": "Chỉnh rèm và cửa gió vào",
     "name_id": "Mengatur tirai dan inlet",
-    "kanten_en": "Can the person move curtains or inlets in steps, check gaps and tears, and keep cold air from blowing directly on the pigs?",
-    "kanten_vi": "Có điều chỉnh rèm và cửa gió vào từng bước, kiểm tra khe hở, chỗ rách và tránh để gió lạnh thổi thẳng vào lợn không.",
-    "kanten_id": "Apakah menggerakkan tirai dan inlet secara bertahap, memeriksa celah dan sobekan, serta mencegah angin dingin langsung mengenai babi?",
+    "kanten_en": "Can the person move curtains or manual inlets a little at a time rather than all at once, check gaps and tears, and keep cold air from blowing directly on the pigs (if automatic, report any deviation to the supervisor)?",
+    "kanten_vi": "Có điều chỉnh rèm và cửa gió vào chỉnh tay từng chút một thay vì cùng lúc, kiểm tra khe hở, chỗ rách và tránh để gió lạnh thổi thẳng vào lợn không (nếu điều khiển tự động thì báo cấp trên khi thấy lệch).",
+    "kanten_id": "Apakah menggerakkan tirai dan inlet manual sedikit demi sedikit, bukan sekaligus, memeriksa celah dan sobekan, serta mencegah angin dingin langsung mengenai babi (jika otomatis, melapor ke atasan bila ada penyimpangan)?",
     "levels_en": [
-     "Leaves curtains and inlets alone regardless of weather or time, or opens them fully at once so cold air hits the pigs.",
+     "Leaves curtains and manual inlets alone regardless of weather or time, or opens them fully at once on a cold morning or evening so cold air hits the pigs.",
      "With guidance opens and closes them, but moves them all at once or skips checking for gaps and tears, leaving it to others.",
-     "With guidance can move curtains and inlets in steps to suit morning, evening and weather, and check gaps, tears and whether the curtain hem sits tight.",
-     "Independently adjusts in steps to suit morning, evening, weather and how the air hits the pigs, and reports to the supervisor any tear or gap that cannot be fixed.",
-     "Understands that a small opening sends air fast and far while a large one drops it slowly and near, and can teach new staff the adjustment."
+     "With guidance can move curtains and manual inlets a little at a time to suit morning, evening and weather, check how the air hits, and check gaps, tears and whether the curtain hem sits tight.",
+     "Independently adjusts manual curtains and inlets a little at a time to suit morning, evening, weather and how the air hits the pigs, and reports to the supervisor any deviation in automatic control and any tear or gap that cannot be fixed.",
+     "Understands that a small inlet opening sends air fast and far while a large one drops it slowly and near, and can teach new staff the adjustment."
     ],
     "levels_vi": [
-     "Mặc kệ rèm và cửa gió vào bất kể thời tiết hay giờ giấc, hoặc mở hết một lúc khiến gió lạnh thổi vào lợn.",
+     "Mặc kệ rèm và cửa gió vào chỉnh tay bất kể thời tiết hay giờ giấc, hoặc mở hết một lúc vào sáng tối lạnh khiến gió lạnh thổi vào lợn.",
      "Nếu có chỉ dẫn thì mở đóng, nhưng mở hoặc đóng hết một lúc, hoặc bỏ sót kiểm tra khe hở, chỗ rách và phó mặc cho người khác.",
-     "Nếu có chỉ dẫn thì điều chỉnh rèm và cửa gió vào từng bước tùy sáng tối và thời tiết, kiểm tra khe hở, chỗ rách và phần chân rèm có sát chặt không.",
-     "Không cần chỉ dẫn vẫn điều chỉnh từng bước theo sáng tối, thời tiết và gió thổi vào lợn, gặp chỗ rách hoặc khe hở không tự sửa được thì báo cấp trên.",
-     "Hiểu độ mở nhỏ thì gió nhanh và đi xa, độ mở lớn thì gió chậm và rơi gần, và có thể hướng dẫn người mới cách điều chỉnh."
+     "Nếu có chỉ dẫn thì điều chỉnh rèm và cửa gió vào chỉnh tay từng chút một tùy sáng tối và thời tiết, xem gió thổi vào đâu, kiểm tra khe hở, chỗ rách và phần chân rèm có sát chặt không.",
+     "Không cần chỉ dẫn vẫn điều chỉnh rèm và cửa gió vào chỉnh tay từng chút một theo sáng tối, thời tiết và gió thổi vào lợn, và báo cấp trên khi điều khiển tự động bị lệch hoặc có chỗ rách, khe hở không tự sửa được.",
+     "Hiểu cửa gió vào mở nhỏ thì gió nhanh và đi xa, mở lớn thì gió chậm và rơi gần, và có thể hướng dẫn người mới cách điều chỉnh."
     ],
     "levels_id": [
-     "Membiarkan tirai dan inlet tanpa memperhatikan cuaca atau waktu, atau membukanya penuh sekaligus sehingga angin dingin mengenai babi.",
+     "Membiarkan tirai dan inlet manual tanpa memperhatikan cuaca atau waktu, atau membukanya penuh sekaligus pada pagi atau sore yang dingin sehingga angin dingin mengenai babi.",
      "Jika ada instruksi, membuka dan menutup, tetapi menggerakkannya sekaligus atau melewatkan pemeriksaan celah dan sobekan, dan menyerahkannya kepada orang lain.",
-     "Jika ada instruksi, dapat menggerakkan tirai dan inlet bertahap sesuai pagi, sore, dan cuaca, serta memeriksa celah, sobekan, dan apakah ujung bawah tirai menempel rapat.",
-     "Tanpa instruksi pun menyesuaikan bertahap sesuai pagi, sore, cuaca, dan angin yang mengenai babi, dan melapor kepada atasan jika ada sobekan atau celah yang tidak bisa diperbaiki sendiri.",
-     "Memahami bahwa bukaan kecil membuat angin cepat dan jauh sedangkan bukaan besar membuat angin lambat dan jatuh dekat, serta bisa mengajari karyawan baru cara mengaturnya."
+     "Jika ada instruksi, dapat menggerakkan tirai dan inlet manual sedikit demi sedikit sesuai pagi, sore, dan cuaca, memeriksa arah angin yang mengenai babi, serta memeriksa celah, sobekan, dan apakah ujung bawah tirai menempel rapat.",
+     "Tanpa instruksi pun menyesuaikan tirai dan inlet manual sedikit demi sedikit sesuai pagi, sore, cuaca, dan angin yang mengenai babi, serta melapor kepada atasan jika kontrol otomatis menyimpang atau ada sobekan atau celah yang tidak bisa diperbaiki sendiri.",
+     "Memahami bahwa bukaan inlet yang kecil membuat angin cepat dan jauh sedangkan bukaan besar membuat angin lambat dan jatuh dekat, serta bisa mengajari karyawan baru cara mengaturnya."
     ]
    },
    {
@@ -1824,10 +1824,10 @@
     "kanten": "寒くても最低限の換気を止めず、目のチクチクなど臭いや体感から換気不足に気づき、換気と除糞でガス対策もできるか。",
     "levels": [
      "寒いからとカーテンを閉め切って換気を止め、臭いや目の刺激があっても何もしない。",
-     "指示があれば換気を保つが、寒さを気にして止めたくなり、臭いや目の刺激を見逃して他者まかせになる。",
+     "指示があれば換気を保つが、寒い日にカーテンを閉め切ったまま臭いや目の刺激を確かめず、他者まかせになる。",
      "指示があれば寒い日も最低限の換気を残し、目がチクチクする時は換気を増やす必要があると判断できる。",
-     "指示がなくても換気を止めず、強い臭いや目の痛みがあれば換気を最大にして除糞を優先し、上長に報告する。",
-     "換気を止めるとアンモニアが溜まり呼吸器の病気が増えること、ピット作業は換気を最大にしてひとりでは入らないことを理解し、新人に指導できる。"
+     "指示がなくても換気を止めず、目の痛みや涙が出る強いガスはまず上長に報告し、目がチクチクする時は農場の手順（自動制御なら決められた人に報告）で換気を増やし除糞を優先する。",
+     "換気を止めるとアンモニアが溜まり呼吸器の病気が増えること、攪拌中はピットに絶対に入らず換気を最大にすること、高濃度では臭いを感じなくなり臭いだけに頼れないことを理解し、新人に指導できる。"
     ],
     "name_en": "Never Stopping Ventilation",
     "name_vi": "Không ngừng thông gió",
@@ -1837,63 +1837,63 @@
     "kanten_id": "Apakah tetap menjaga ventilasi minimum walau dingin, menyadari ventilasi kurang dari bau atau mata perih, dan menangani gas berbahaya dengan ventilasi dan pembersihan kotoran?",
     "levels_en": [
      "Closes the curtains fully because it is cold and stops ventilation, and does nothing even with a strong smell or stinging eyes.",
-     "With guidance keeps ventilation, but is tempted to stop it because of the cold, misses the smell or eye irritation, and leaves it to others.",
+     "With guidance keeps ventilation, but on cold days leaves the curtains shut and does not check for smell or eye irritation, leaving it to others.",
      "With guidance keeps minimum ventilation even on cold days, and can judge that ventilation must be increased when the eyes sting.",
-     "Independently does not stop ventilation, and when there is a strong smell or painful eyes raises ventilation to maximum, gives priority to removing manure, and reports to the supervisor.",
-     "Understands that stopping ventilation lets ammonia build up and respiratory disease increase, and that pit work needs maximum ventilation and no one enters alone, and can teach new staff."
+     "Independently does not stop ventilation; reports strong gas that makes the eyes hurt or water to the supervisor first; and when the eyes sting, increases ventilation by the farm's procedure (if automatic, reports to the designated person) and gives priority to removing manure.",
+     "Understands that stopping ventilation lets ammonia build up and respiratory disease increase, that no one ever enters the pit during agitation and ventilation is set to maximum, and that at high concentrations the smell can no longer be sensed so smell alone cannot be relied on, and can teach new staff."
     ],
     "levels_vi": [
      "Vì lạnh mà đóng kín rèm, ngừng thông gió, có mùi nồng hoặc cay mắt cũng không làm gì.",
-     "Nếu có chỉ dẫn thì giữ thông gió, nhưng vì lo lạnh muốn ngừng, bỏ qua mùi hoặc cay mắt và phó mặc cho người khác.",
+     "Nếu có chỉ dẫn thì giữ thông gió, nhưng ngày lạnh vẫn đóng kín rèm, không kiểm tra mùi hay cay mắt và phó mặc cho người khác.",
      "Nếu có chỉ dẫn thì ngày lạnh vẫn giữ thông gió tối thiểu, và biết phải tăng thông gió khi thấy cay mắt.",
-     "Không cần chỉ dẫn vẫn không ngừng thông gió, khi mùi nồng hoặc đau mắt thì tăng thông gió tối đa, ưu tiên dọn phân và báo cấp trên.",
-     "Hiểu ngừng thông gió thì amoniac tích tụ và bệnh hô hấp tăng, khi làm việc ở hố phân phải thông gió tối đa và không vào một mình, và có thể hướng dẫn người mới."
+     "Không cần chỉ dẫn vẫn không ngừng thông gió; khi khí nồng đến mức đau mắt, chảy nước mắt thì báo cấp trên trước; khi cay mắt thì tăng thông gió theo quy trình của trại (nếu tự động thì báo người được chỉ định) và ưu tiên dọn phân.",
+     "Hiểu ngừng thông gió thì amoniac tích tụ và bệnh hô hấp tăng, khi khuấy hố phân tuyệt đối không ai vào hố và phải thông gió tối đa, ở nồng độ cao thì không còn cảm nhận được mùi nên không thể chỉ dựa vào mùi, và có thể hướng dẫn người mới."
     ],
     "levels_id": [
      "Menutup tirai penuh karena dingin sehingga ventilasi berhenti, dan tidak berbuat apa-apa walau bau menyengat atau mata perih.",
-     "Jika ada instruksi menjaga ventilasi, tetapi tergoda menghentikannya karena dingin, melewatkan bau atau iritasi mata, dan menyerahkannya kepada orang lain.",
+     "Jika ada instruksi menjaga ventilasi, tetapi pada hari dingin membiarkan tirai tertutup rapat tanpa memeriksa bau atau iritasi mata, dan menyerahkannya kepada orang lain.",
      "Jika ada instruksi, tetap menyisakan ventilasi minimum pada hari dingin, dan dapat menilai bahwa ventilasi perlu ditambah saat mata perih.",
-     "Tanpa instruksi pun tidak menghentikan ventilasi, dan saat bau menyengat atau mata sakit menaikkan ventilasi ke maksimum, mengutamakan pembersihan kotoran, dan melapor kepada atasan.",
-     "Memahami bahwa jika ventilasi dihentikan amonia menumpuk dan penyakit pernapasan meningkat, serta kerja di lubang kotoran (pit) perlu ventilasi maksimum dan tidak boleh masuk sendirian, serta bisa mengajari karyawan baru."
+     "Tanpa instruksi pun tidak menghentikan ventilasi; jika gas begitu kuat hingga mata sakit atau berair, melapor dulu kepada atasan; jika mata perih, menambah ventilasi sesuai prosedur peternakan (jika otomatis, melapor ke orang yang ditunjuk) dan mengutamakan pembersihan kotoran.",
+     "Memahami bahwa jika ventilasi dihentikan amonia menumpuk dan penyakit pernapasan meningkat, bahwa saat pengadukan tidak boleh ada yang masuk ke lubang kotoran (pit) sama sekali dan ventilasi harus maksimum, serta bahwa pada konsentrasi tinggi bau tidak lagi tercium sehingga tidak bisa hanya mengandalkan bau, dan bisa mengajari karyawan baru."
     ]
    },
    {
     "id": "fan-failure-first",
     "name": "ファン故障時の初動",
-    "kanten": "ファンの異常に気づき、ブレーカー・ベルト・羽根の異物を順に確認し、直せなければ報告して代替換気を確保できるか。",
+    "kanten": "ファンの異常に気づき、ブレーカーを確認し、羽根に近づく前に電源を切って完全停止を確かめてからベルトと異物を見て、直せなければ報告して代替換気を確保できるか。",
     "levels": [
-     "ファンが止まっても風や音の変化に気づかず、周辺の豚が口を開けて呼吸していても放置する。",
-     "指示があればファンを見るが、ブレーカーやベルトの確認が抜け、代替換気や報告を他者まかせにする。",
-     "指示があればブレーカーを確認し、ベルトと羽根の異物を順に見て、直せなければ上長に報告できる。",
-     "指示がなくても風や音、臭い、豚の呼吸で異常に気づき、ブレーカー・ベルト・異物を確認して上長に報告し、カーテンや扉を開けて代替換気を確保し、周辺の豚をこまめに見る。",
-     "ファンが一台でも止まれば周辺の豚に影響が出ることを理解し、故障時の初動を新人に指導できる。"
+     "ファンが止まっても風や音の変化に気づかず放置するか、回っているファンに手や物を近づける。",
+     "指示があればファンを見るが、ブレーカーの確認や電源を切る手順が抜け、代替換気や報告を他者まかせにする。",
+     "指示があればブレーカーを確認し、ベルトや羽根の異物を見る前に電源を切って完全に止まるのを確かめ、直せなければ上長に報告できる。",
+     "指示がなくても風や音、臭い、豚の呼吸で異常に気づき、ブレーカー確認後に電源を切り完全停止を確かめてからベルトと異物を見て上長に報告し、カーテンや扉を開けて代替換気を確保し、周辺の豚を見る。",
+     "ファンが一台でも止まれば周辺の豚に影響が出ること、電源を切って完全に止まってから触れる理由を理解し、故障時の初動を新人に指導できる。"
     ],
     "name_en": "First Response to Fan Failure",
     "name_vi": "Xử lý ban đầu khi quạt hỏng",
     "name_id": "Tindakan awal saat kipas rusak",
-    "kanten_en": "Can the person notice a fan problem, check the breaker, belt and foreign objects on the blades in order, and report and secure substitute ventilation if it cannot be fixed?",
-    "kanten_vi": "Có nhận ra quạt bất thường, kiểm tra lần lượt cầu dao, dây curoa, dị vật trên cánh quạt, và nếu không sửa được thì báo cáo, bảo đảm thông gió thay thế không.",
-    "kanten_id": "Apakah menyadari kelainan kipas, memeriksa berurutan pemutus listrik, sabuk, dan benda asing pada bilah, lalu melapor dan menyediakan ventilasi pengganti jika tidak bisa diperbaiki?",
+    "kanten_en": "Can the person notice a fan problem, check the breaker, switch the power off and confirm the fan has fully stopped before going near the blades, then check the belt and foreign objects, and report and secure substitute ventilation if it cannot be fixed?",
+    "kanten_vi": "Có nhận ra quạt bất thường, kiểm tra cầu dao, tắt nguồn và xác nhận quạt đã dừng hẳn trước khi lại gần cánh quạt, rồi mới kiểm tra dây curoa và dị vật, và nếu không sửa được thì báo cáo, bảo đảm thông gió thay thế không.",
+    "kanten_id": "Apakah menyadari kelainan kipas, memeriksa pemutus listrik, mematikan listrik dan memastikan kipas berhenti total sebelum mendekati bilah, lalu memeriksa sabuk dan benda asing, serta melapor dan menyediakan ventilasi pengganti jika tidak bisa diperbaiki?",
     "levels_en": [
-     "Does not notice changes in airflow or sound when a fan stops, and leaves it even when nearby pigs breathe with open mouths.",
-     "With guidance looks at the fan, but skips checking the breaker or belt, and leaves substitute ventilation and reporting to others.",
-     "With guidance can check the breaker, then check the belt and foreign objects on the blades in order, and report to the supervisor if it cannot be fixed.",
-     "Independently notices a problem from airflow, sound, smell or pig breathing, checks the breaker, belt and foreign objects, reports to the supervisor, opens curtains and doors for substitute ventilation, and checks the pigs nearby often.",
-     "Understands that even one stopped fan affects nearby pigs, and can teach new staff the first response to a failure."
+     "Does not notice changes in airflow or sound when a fan stops and leaves it, or puts hands or objects near a fan that is still turning.",
+     "With guidance looks at the fan, but skips checking the breaker or switching the power off, and leaves substitute ventilation and reporting to others.",
+     "With guidance can check the breaker, switch the power off and confirm the fan has fully stopped before looking at the belt or foreign objects on the blades, and report to the supervisor if it cannot be fixed.",
+     "Independently notices a problem from airflow, sound, smell or pig breathing, checks the breaker, switches the power off and confirms full stop before checking the belt and foreign objects, reports to the supervisor, opens curtains and doors for substitute ventilation, and checks the pigs nearby often.",
+     "Understands that even one stopped fan affects nearby pigs and why the power must be off and the fan fully stopped before touching it, and can teach new staff the first response to a failure."
     ],
     "levels_vi": [
-     "Quạt dừng mà không nhận ra thay đổi về gió hay tiếng động, lợn xung quanh há miệng thở cũng bỏ mặc.",
-     "Nếu có chỉ dẫn thì xem quạt, nhưng bỏ sót kiểm tra cầu dao và dây curoa, phó mặc việc thông gió thay thế và báo cáo cho người khác.",
-     "Nếu có chỉ dẫn thì kiểm tra cầu dao, rồi kiểm tra lần lượt dây curoa và dị vật trên cánh quạt, nếu không sửa được thì báo cấp trên.",
-     "Không cần chỉ dẫn vẫn nhận ra bất thường qua gió, tiếng động, mùi, nhịp thở của lợn, kiểm tra cầu dao, dây curoa, dị vật, báo cấp trên, mở rèm và cửa để bảo đảm thông gió thay thế, và thường xuyên xem lợn xung quanh.",
-     "Hiểu chỉ một quạt dừng cũng ảnh hưởng lợn xung quanh, và có thể hướng dẫn người mới cách xử lý ban đầu khi hỏng."
+     "Quạt dừng mà không nhận ra thay đổi về gió hay tiếng động và bỏ mặc, hoặc đưa tay hay vật lại gần quạt đang quay.",
+     "Nếu có chỉ dẫn thì xem quạt, nhưng bỏ sót kiểm tra cầu dao và bước tắt nguồn, phó mặc việc thông gió thay thế và báo cáo cho người khác.",
+     "Nếu có chỉ dẫn thì kiểm tra cầu dao, tắt nguồn và xác nhận quạt đã dừng hẳn trước khi xem dây curoa hoặc dị vật trên cánh quạt, và nếu không sửa được thì báo cấp trên.",
+     "Không cần chỉ dẫn vẫn nhận ra bất thường qua gió, tiếng động, mùi, nhịp thở của lợn, kiểm tra cầu dao, tắt nguồn và xác nhận quạt dừng hẳn rồi mới kiểm tra dây curoa, dị vật, báo cấp trên, mở rèm và cửa để bảo đảm thông gió thay thế, và thường xuyên xem lợn xung quanh.",
+     "Hiểu chỉ một quạt dừng cũng ảnh hưởng lợn xung quanh và vì sao phải tắt nguồn, chờ quạt dừng hẳn mới được chạm vào, và có thể hướng dẫn người mới cách xử lý ban đầu khi hỏng."
     ],
     "levels_id": [
-     "Tidak sadar perubahan angin atau suara saat kipas berhenti, dan membiarkan walau babi di sekitarnya bernapas lewat mulut.",
-     "Jika ada instruksi, memeriksa kipas, tetapi melewatkan pemeriksaan pemutus listrik dan sabuk, dan menyerahkan ventilasi pengganti serta pelaporan kepada orang lain.",
-     "Jika ada instruksi, dapat memeriksa pemutus listrik, lalu memeriksa sabuk dan benda asing pada bilah secara berurutan, dan melapor kepada atasan jika tidak bisa diperbaiki.",
-     "Tanpa instruksi pun menyadari kelainan dari angin, suara, bau, atau napas babi, memeriksa pemutus listrik, sabuk, dan benda asing, melapor kepada atasan, membuka tirai dan pintu untuk ventilasi pengganti, serta sering memeriksa babi di sekitarnya.",
-     "Memahami bahwa satu kipas berhenti pun memengaruhi babi di sekitarnya, serta bisa mengajari karyawan baru tindakan awal saat rusak."
+     "Tidak sadar perubahan angin atau suara saat kipas berhenti dan membiarkannya, atau mendekatkan tangan atau benda ke kipas yang masih berputar.",
+     "Jika ada instruksi, memeriksa kipas, tetapi melewatkan pemeriksaan pemutus listrik dan langkah mematikan listrik, dan menyerahkan ventilasi pengganti serta pelaporan kepada orang lain.",
+     "Jika ada instruksi, dapat memeriksa pemutus listrik, mematikan listrik dan memastikan kipas berhenti total sebelum memeriksa sabuk atau benda asing pada bilah, dan melapor kepada atasan jika tidak bisa diperbaiki.",
+     "Tanpa instruksi pun menyadari kelainan dari angin, suara, bau, atau napas babi, memeriksa pemutus listrik, mematikan listrik dan memastikan kipas berhenti total sebelum memeriksa sabuk dan benda asing, melapor kepada atasan, membuka tirai dan pintu untuk ventilasi pengganti, serta sering memeriksa babi di sekitarnya.",
+     "Memahami bahwa satu kipas berhenti pun memengaruhi babi di sekitarnya dan mengapa listrik harus dimatikan serta kipas berhenti total sebelum disentuh, serta bisa mengajari karyawan baru tindakan awal saat rusak."
     ]
    }
   ]
@@ -1904,8 +1904,8 @@
   "no": "",
   "name": "換気設定確認（ウインドレス）",
   "purposeShort": "自動換気の設定値を読み取って記録し、実際の動きと照合して、決められた人の変更と停電時の対応を守る",
-  "purposeShort_en": "Read and record automatic ventilation settings, compare them with actual operation, and follow the change rule and power-failure response",
-  "purposeShort_vi": "Đọc và ghi lại cài đặt thông gió tự động, đối chiếu với thực tế, tuân thủ quy định thay đổi và cách xử lý khi mất điện",
+  "purposeShort_en": "Read and record automatic ventilation settings, compare them with actual operation, and follow the rule that only the designated person changes settings, plus the power-failure response",
+  "purposeShort_vi": "Đọc và ghi lại cài đặt thông gió tự động, đối chiếu với thực tế, tuân thủ quy định chỉ người được chỉ định mới đổi cài đặt và cách xử lý khi mất điện",
   "purposeShort_id": "Membaca dan mencatat pengaturan ventilasi otomatis, mencocokkannya dengan kondisi nyata, menaati aturan hanya orang yang ditunjuk boleh mengubah, dan penanganan listrik padam",
   "gyomu": "",
   "name_en": "Ventilation Settings Check (Windowless)",
@@ -1915,156 +1915,156 @@
    {
     "id": "read-record",
     "name": "設定値の読み取りと記録",
-    "kanten": "コントローラーの設定温度・換気ステージ・最低換気量・タイマー・ヒーター設定を、変更ボタンを押さず画面で読み取り、用紙に正確に記録できるか（読み取りの正確さを見る）。",
+    "kanten": "コントローラーの設定温度・換気ステージ・最低換気量・タイマー（ヒーターがある場合はその設定も）を、設定を変更する操作に入らず画面で読み取り、用紙に正確に記録できるか（読み取りの正確さを見る）。",
     "levels": [
      "コントローラーの設定を見ず記録もしないため、今どんな設定になっているか分からない。",
      "指示があれば画面を見るが、項目の読み落としや転記ミスが残り、記録は他者まかせ。",
-     "指示があれば設定温度・換気ステージ・最低換気量・タイマー・ヒーター設定を画面から読み取り、用紙に転記できる。",
-     "指示がなくても全項目を漏れなく読み、変更ボタンを押さずに画面の撮影か用紙で記録に残す。",
+     "指示があれば、設定を変更する操作に入らず、設定温度・換気ステージ・最低換気量・タイマー（ヒーターがあればその設定も）を画面から読み取り、用紙に転記できる。",
+     "指示がなくても全項目を漏れなく読み、設定を変更する操作に入らず、用紙か（農場の決まりで認められていれば）画面の撮影で記録に残す。",
      "設定が換気の出方を決めることを理解し、読み取りと記録の手順を新人に指導できる。"
     ],
     "name_en": "Reading and Recording the Settings",
     "name_vi": "Đọc và ghi lại các giá trị cài đặt",
     "name_id": "Membaca dan mencatat nilai pengaturan",
-    "kanten_en": "Can they read the set temperature, ventilation stages, minimum ventilation, timers, and heater setting on the controller screen without pressing change buttons, and record them accurately on a sheet (judged on reading accuracy)?",
-    "kanten_vi": "Có đọc trên màn hình bộ điều khiển nhiệt độ cài đặt, các giai đoạn thông gió, lượng thông gió tối thiểu, bộ hẹn giờ, cài đặt máy sưởi mà không bấm nút thay đổi, và ghi chính xác vào phiếu không (xét độ chính xác khi đọc).",
-    "kanten_id": "Apakah bisa membaca di layar pengendali suhu pengaturan, tahap ventilasi, ventilasi minimum, timer, dan pengaturan pemanas tanpa menekan tombol ubah, lalu mencatatnya dengan akurat di lembar (dinilai dari ketepatan membaca)?",
+    "kanten_en": "Can they read the set temperature, ventilation stages, minimum ventilation, and timers (and the heater setting, if there is a heater) on the controller screen without entering any operation that changes settings, and record them accurately on a sheet (judged on reading accuracy)?",
+    "kanten_vi": "Có đọc trên màn hình bộ điều khiển nhiệt độ cài đặt, các giai đoạn thông gió, lượng thông gió tối thiểu, bộ hẹn giờ (và cài đặt máy sưởi nếu có máy sưởi) mà không vào thao tác làm thay đổi cài đặt, và ghi chính xác vào phiếu không (xét độ chính xác khi đọc).",
+    "kanten_id": "Apakah bisa membaca di layar pengendali suhu pengaturan, tahap ventilasi, ventilasi minimum, dan timer (serta pengaturan pemanas jika ada pemanas) tanpa masuk ke operasi yang mengubah pengaturan, lalu mencatatnya dengan akurat di lembar (dinilai dari ketepatan membaca)?",
     "levels_en": [
      "Does not look at the controller settings or record them, so does not know what the current settings are.",
      "With guidance looks at the screen, but misses items or makes transcription errors, and leaves the recording to others.",
-     "With guidance can read the set temperature, ventilation stage, minimum ventilation, timers, and heater setting from the screen and copy them onto a sheet.",
-     "Independently reads all items without omission, and keeps a record by photographing the screen or on a sheet, without pressing any change button.",
+     "With guidance, without entering any operation that changes settings, can read the set temperature, ventilation stage, minimum ventilation, and timers (and the heater setting, if any) from the screen and copy them onto a sheet.",
+     "Independently reads all items without omission, does not enter any operation that changes settings, and keeps a record on a sheet or (if the farm's rules allow) by photographing the screen.",
      "Understands that the settings decide how the ventilation works, and can teach new staff how to read and record them."
     ],
     "levels_vi": [
      "Không xem cài đặt của bộ điều khiển và cũng không ghi lại, nên không biết hiện đang cài đặt thế nào.",
      "Nếu có chỉ dẫn thì xem màn hình, nhưng còn bỏ sót mục hoặc chép sai, và phó mặc việc ghi chép cho người khác.",
-     "Nếu có chỉ dẫn thì đọc được nhiệt độ cài đặt, giai đoạn thông gió, lượng thông gió tối thiểu, bộ hẹn giờ, cài đặt máy sưởi từ màn hình và chép vào phiếu.",
-     "Không cần chỉ dẫn, vẫn đọc đủ tất cả các mục, không bấm nút thay đổi, và lưu lại bằng cách chụp màn hình hoặc ghi vào phiếu.",
+     "Nếu có chỉ dẫn thì không vào thao tác làm thay đổi cài đặt, đọc được nhiệt độ cài đặt, giai đoạn thông gió, lượng thông gió tối thiểu, bộ hẹn giờ (và cài đặt máy sưởi nếu có) từ màn hình và chép vào phiếu.",
+     "Không cần chỉ dẫn, vẫn đọc đủ tất cả các mục, không vào thao tác làm thay đổi cài đặt, và lưu lại vào phiếu hoặc (nếu quy định của trại cho phép) bằng cách chụp màn hình.",
      "Hiểu rằng cài đặt quyết định cách thông gió hoạt động, và có thể hướng dẫn người mới cách đọc và ghi lại."
     ],
     "levels_id": [
      "Tidak melihat pengaturan pengendali dan tidak mencatatnya, sehingga tidak tahu pengaturan saat ini.",
      "Jika ada instruksi melihat layar, tetapi ada item terlewat atau salah salin, dan pencatatan diserahkan ke orang lain.",
-     "Jika ada instruksi, bisa membaca suhu pengaturan, tahap ventilasi, ventilasi minimum, timer, dan pengaturan pemanas dari layar lalu menyalinnya ke lembar.",
-     "Tanpa instruksi pun, membaca semua item tanpa terlewat, dan menyimpan catatan dengan memotret layar atau di lembar, tanpa menekan tombol ubah.",
+     "Jika ada instruksi, tanpa masuk ke operasi yang mengubah pengaturan, bisa membaca suhu pengaturan, tahap ventilasi, ventilasi minimum, dan timer (serta pengaturan pemanas jika ada) dari layar lalu menyalinnya ke lembar.",
+     "Tanpa instruksi pun, membaca semua item tanpa terlewat, tidak masuk ke operasi yang mengubah pengaturan, dan menyimpan catatan di lembar atau (jika aturan peternakan mengizinkan) dengan memotret layar.",
      "Memahami bahwa pengaturan menentukan cara kerja ventilasi, dan bisa mengajari karyawan baru cara membaca dan mencatatnya."
     ]
    },
    {
     "id": "verify-actual",
     "name": "設定と実際の照合",
-    "kanten": "画面の設定と、今のステージで動くはずのファン・シャッター・インレット・温度計の状態を見比べ、ずれを見つけられるか。",
+    "kanten": "画面の設定と、今のステージで動くはずのファン・シャッター・インレットの状態を見比べ、画面の温度表示と手持ちの温度計の差にも気づけるか。",
     "levels": [
      "画面の表示どおりに動いていると思い込み、ファンやインレットの実際の動きを見に行かない。",
      "指示があればファンを見に行くが、シャッターやインレットの開き具合の確認が抜け、ずれは他者まかせ。",
-     "指示があれば回転部に触れず、今のステージで回るはずのファンが回りシャッターが開き、止まるファンのシャッターは閉じているか、インレットの開きが設定と合うかを確認できる。",
-     "指示がなくても設定と実際を見比べ、センサーが豚の高さと豚のいる場所にあるかも確かめ、ずれを上長に報告する。",
+     "指示があれば回転部に触れず、今のステージで回るはずのファンが回りシャッターが開いているか、止まるファンのシャッターが閉じているかを確認できる。",
+     "指示がなくても設定と実際を見比べ、インレットの開きが画面の設定と合うか、画面の温度表示と手持ちの温度計の差も確かめ、ずれを上長に報告する。",
      "表示と実際がずれることがある理由を理解し、照合のポイントを新人に指導できる。"
     ],
     "name_en": "Checking Settings against Actual Operation",
     "name_vi": "Đối chiếu cài đặt với thực tế",
     "name_id": "Pencocokan pengaturan dengan kondisi nyata",
-    "kanten_en": "Can they compare the settings on the screen with the state of the fans that should be running at the current stage, the shutters, inlets, and thermometer, and find any gaps?",
-    "kanten_vi": "Có so sánh cài đặt trên màn hình với tình trạng thực tế của quạt đáng lẽ chạy ở giai đoạn hiện tại, cửa chớp, cửa gió vào và nhiệt kế để phát hiện chỗ lệch không.",
-    "kanten_id": "Apakah bisa membandingkan pengaturan di layar dengan kondisi nyata kipas yang seharusnya berjalan pada tahap saat ini, shutter, inlet, dan termometer, serta menemukan selisihnya?",
+    "kanten_en": "Can they compare the settings on the screen with the state of the fans that should be running at the current stage, the shutters, and the inlets, and also notice any gap between the temperature shown on the screen and a handheld thermometer?",
+    "kanten_vi": "Có so sánh cài đặt trên màn hình với tình trạng thực tế của quạt đáng lẽ chạy ở giai đoạn hiện tại, cửa chớp và cửa gió vào, đồng thời nhận ra chênh lệch giữa nhiệt độ hiển thị trên màn hình và nhiệt kế cầm tay không.",
+    "kanten_id": "Apakah bisa membandingkan pengaturan di layar dengan kondisi kipas yang seharusnya berjalan pada tahap saat ini, shutter, dan inlet, serta menyadari selisih antara suhu di layar dan termometer genggam?",
     "levels_en": [
      "Assumes things run as displayed on the screen and does not go to see how the fans and inlets actually move.",
      "With guidance goes to see the fans, but skips checking how far the shutters and inlets open, and leaves gaps to others.",
-     "With guidance, without touching rotating parts, can check that the fans that should run at the current stage are running with shutters open, that stopped fans' shutters are closed, and that the inlet opening matches the setting.",
-     "Independently compares settings with reality, also checks that the sensor is at pig height and where pigs are, and reports any gap to the supervisor.",
+     "With guidance, without touching rotating parts, can check that the fans that should run at the current stage are running with shutters open, and that stopped fans' shutters are closed.",
+     "Independently compares settings with reality, checks whether the inlet opening matches the setting on the screen and the gap between the screen temperature and a handheld thermometer, and reports any gap to the supervisor.",
      "Understands why the display and reality can differ, and can teach new staff the points to check."
     ],
     "levels_vi": [
      "Cứ tin là chạy đúng như màn hình hiển thị và không đi xem quạt, cửa gió vào thực tế hoạt động ra sao.",
      "Nếu có chỉ dẫn thì đi xem quạt, nhưng bỏ sót việc kiểm tra độ mở của cửa chớp và cửa gió vào, và phó mặc chỗ lệch cho người khác.",
-     "Nếu có chỉ dẫn thì không chạm vào bộ phận đang quay, kiểm tra được quạt đáng lẽ chạy ở giai đoạn hiện tại có đang quay và cửa chớp mở không, cửa chớp của quạt đang dừng có đóng không, và độ mở cửa gió vào có khớp cài đặt không.",
-     "Không cần chỉ dẫn, vẫn so sánh cài đặt với thực tế, kiểm tra cả cảm biến có ở độ cao của lợn và nơi lợn ở không, và báo cấp trên chỗ lệch.",
+     "Nếu có chỉ dẫn thì không chạm vào bộ phận đang quay, kiểm tra được quạt đáng lẽ chạy ở giai đoạn hiện tại có đang quay và cửa chớp mở không, và cửa chớp của quạt đang dừng có đóng không.",
+     "Không cần chỉ dẫn, vẫn so sánh cài đặt với thực tế, kiểm tra độ mở cửa gió vào có khớp cài đặt trên màn hình không và chênh lệch giữa nhiệt độ hiển thị với nhiệt kế cầm tay, rồi báo cấp trên chỗ lệch.",
      "Hiểu vì sao hiển thị và thực tế có thể lệch nhau, và có thể hướng dẫn người mới các điểm cần kiểm tra."
     ],
     "levels_id": [
      "Mengira semuanya berjalan seperti tampilan layar dan tidak melihat gerakan nyata kipas dan inlet.",
      "Jika ada instruksi pergi melihat kipas, tetapi pemeriksaan bukaan shutter dan inlet terlewat, dan selisih diserahkan ke orang lain.",
-     "Jika ada instruksi, tanpa menyentuh bagian yang berputar, bisa memeriksa apakah kipas yang seharusnya berjalan pada tahap saat ini berputar dengan shutter terbuka, shutter kipas yang berhenti tertutup, dan bukaan inlet sesuai pengaturan.",
-     "Tanpa instruksi pun, membandingkan pengaturan dengan kondisi nyata, juga memeriksa sensor ada di ketinggian babi dan tempat babi berada, dan melapor selisihnya ke atasan.",
+     "Jika ada instruksi, tanpa menyentuh bagian yang berputar, bisa memeriksa apakah kipas yang seharusnya berjalan pada tahap saat ini berputar dengan shutter terbuka, dan shutter kipas yang berhenti tertutup.",
+     "Tanpa instruksi pun, membandingkan pengaturan dengan kondisi nyata, memeriksa apakah bukaan inlet sesuai pengaturan di layar serta selisih suhu di layar dengan termometer genggam, dan melapor selisihnya ke atasan.",
      "Memahami mengapa tampilan dan kondisi nyata bisa berbeda, dan bisa mengajari karyawan baru poin pemeriksaannya."
     ]
    },
    {
     "id": "change-rule",
     "name": "変更の権限と手順",
-    "kanten": "設定の変更は決められた人だけが行うと理解し、変更が必要なときの上長への相談と、変更後の記録・動作確認への立ち会いを守れるか。",
+    "kanten": "設定の変更は決められた人だけが行うと理解し、変更が必要なときの上長への相談と、変更後の記録・動作確認を守れるか。",
     "levels": [
      "寒い暑いと感じて自分の判断でコントローラーの設定を触り、記録も報告もしない。",
-     "設定を勝手には変えないが、指示があれば上長に相談する程度で、変更後の記録と動作確認が抜け、他者まかせ。",
-     "指示があれば、決められた人が変更した後に設定を記録し、動作の確認ができる。",
-     "指示がなくても変更が必要と気づいたら上長に相談し、決められた人が変更した後の記録と動作確認に立ち会う。最低換気量を含め、設定を自分では変えない。",
+     "設定を勝手には変えないが、変更が必要な状況でも上長への相談が遅れ、変更後の記録と動作確認は他者まかせ。",
+     "指示があれば、設定を自分では変えず、変更が必要な時は上長に相談し、決められた人の変更後に設定を記録して動作を確認できる。",
+     "指示がなくても変更が必要と気づいたら上長に相談し、決められた人の変更後は自分で設定を記録して動作確認まで行う。最低換気量も自分では変えない。",
      "換気不足で有害ガスや湿気がたまり、呼吸器の病気につながる理由を理解し、変更の手順を新人に指導できる。"
     ],
     "name_en": "Authority and Procedure for Changes",
     "name_vi": "Quyền và quy trình thay đổi cài đặt",
     "name_id": "Wewenang dan prosedur perubahan",
-    "kanten_en": "Do they understand that only the designated person changes the settings, and follow consulting the supervisor when a change is needed and being present for the recording and operation check afterwards?",
-    "kanten_vi": "Có hiểu rằng chỉ người được chỉ định mới thay đổi cài đặt, và tuân thủ việc trao đổi với cấp trên khi cần đổi, cũng như có mặt khi ghi chép và kiểm tra hoạt động sau khi đổi không.",
-    "kanten_id": "Apakah memahami bahwa perubahan pengaturan hanya dilakukan orang yang ditunjuk, serta menaati konsultasi ke atasan saat perubahan diperlukan dan mendampingi pencatatan serta pemeriksaan kerja setelahnya?",
+    "kanten_en": "Do they understand that only the designated person changes the settings, and follow consulting the supervisor when a change is needed and the recording and operation check afterwards?",
+    "kanten_vi": "Có hiểu rằng chỉ người được chỉ định mới thay đổi cài đặt, và tuân thủ việc trao đổi với cấp trên khi cần đổi, cũng như việc ghi chép và kiểm tra hoạt động sau khi đổi không.",
+    "kanten_id": "Apakah memahami bahwa perubahan pengaturan hanya dilakukan orang yang ditunjuk, serta menaati konsultasi ke atasan saat perubahan diperlukan dan pencatatan serta pemeriksaan kerja setelahnya?",
     "levels_en": [
      "Touches the controller settings on their own judgment because it feels cold or hot, and neither records nor reports it.",
-     "Does not change settings on their own, but only consults the supervisor when told to, and skips recording and checking operation after a change, leaving it to others.",
-     "With guidance can record the settings and check the operation after the designated person has made a change.",
-     "Independently consults the supervisor when noticing a change is needed, and is present for the recording and operation check after the designated person changes it. Does not change any setting, including the minimum ventilation, on their own.",
+     "Does not change settings on their own, but is slow to consult the supervisor even when a change is needed, and leaves recording and checking operation after a change to others.",
+     "With guidance does not change settings on their own, consults the supervisor when a change is needed, and can record the settings and check the operation after the designated person has made the change.",
+     "Independently consults the supervisor when noticing a change is needed, and after the designated person changes it, records the settings and checks the operation themselves. Does not change the minimum ventilation on their own either.",
      "Understands why poor ventilation lets harmful gas and humidity build up and leads to respiratory disease, and can teach new staff the change procedure."
     ],
     "levels_vi": [
      "Thấy lạnh hoặc nóng là tự ý chỉnh cài đặt bộ điều khiển, không ghi chép cũng không báo cáo.",
-     "Không tự ý đổi cài đặt, nhưng chỉ trao đổi với cấp trên khi được bảo, và bỏ sót ghi chép cùng kiểm tra hoạt động sau khi đổi, phó mặc cho người khác.",
-     "Nếu có chỉ dẫn thì ghi lại cài đặt và kiểm tra hoạt động sau khi người được chỉ định đã đổi.",
-     "Không cần chỉ dẫn, khi nhận ra cần đổi thì trao đổi với cấp trên, và có mặt ghi chép, kiểm tra hoạt động sau khi người được chỉ định đổi. Không tự thay đổi cài đặt nào, kể cả thông gió tối thiểu.",
+     "Không tự ý đổi cài đặt, nhưng dù cần đổi vẫn chậm trao đổi với cấp trên, và phó mặc việc ghi chép cùng kiểm tra hoạt động sau khi đổi cho người khác.",
+     "Nếu có chỉ dẫn thì không tự đổi cài đặt, trao đổi với cấp trên khi cần đổi, và ghi lại cài đặt, kiểm tra hoạt động được sau khi người được chỉ định đã đổi.",
+     "Không cần chỉ dẫn, khi nhận ra cần đổi thì trao đổi với cấp trên, và sau khi người được chỉ định đổi thì tự ghi lại cài đặt và kiểm tra hoạt động. Cũng không tự đổi thông gió tối thiểu.",
      "Hiểu vì sao thiếu thông gió làm khí độc và hơi ẩm tích tụ, dẫn đến bệnh hô hấp, và có thể hướng dẫn người mới quy trình thay đổi."
     ],
     "levels_id": [
      "Merasa dingin atau panas lalu mengubah pengaturan pengendali dengan penilaian sendiri, tanpa mencatat dan melapor.",
-     "Tidak mengubah pengaturan sendiri, tetapi hanya berkonsultasi ke atasan jika diminta, dan melewatkan pencatatan serta pemeriksaan kerja setelah perubahan, diserahkan ke orang lain.",
-     "Jika ada instruksi, bisa mencatat pengaturan dan memeriksa kerja setelah orang yang ditunjuk mengubahnya.",
-     "Tanpa instruksi pun, berkonsultasi ke atasan saat menyadari perlu perubahan, dan mendampingi pencatatan serta pemeriksaan kerja setelah orang yang ditunjuk mengubahnya. Tidak mengubah pengaturan apa pun sendiri, termasuk ventilasi minimum.",
+     "Tidak mengubah pengaturan sendiri, tetapi terlambat berkonsultasi ke atasan meski perubahan diperlukan, dan menyerahkan pencatatan serta pemeriksaan kerja setelah perubahan kepada orang lain.",
+     "Jika ada instruksi, tidak mengubah pengaturan sendiri, berkonsultasi ke atasan saat perubahan diperlukan, dan bisa mencatat pengaturan serta memeriksa kerja setelah orang yang ditunjuk mengubahnya.",
+     "Tanpa instruksi pun, berkonsultasi ke atasan saat menyadari perlu perubahan, dan setelah orang yang ditunjuk mengubahnya, mencatat pengaturan dan memeriksa kerja sendiri. Ventilasi minimum juga tidak diubah sendiri.",
      "Memahami mengapa ventilasi kurang membuat gas berbahaya dan kelembapan menumpuk serta menyebabkan penyakit pernapasan, dan bisa mengajari karyawan baru prosedur perubahan."
     ]
    },
    {
     "id": "weekly-review",
     "name": "毎週の見直し依頼",
-    "kanten": "頭数・体重・季節の変化で設定が合わなくなると理解し、豚の様子から、合っているかを判断して毎週上長に見直しを依頼できるか。",
+    "kanten": "前週の設定記録と今の頭数・体重・季節を見比べ、合わない点を挙げて、毎週上長に見直しを依頼できるか。",
     "levels": [
      "一度決めた設定は変わらないと考え、見直しもせず気づいたことも報告しない。",
      "指示があれば設定が合っているかを確かめるが、頭数や季節の変化を考えず、結果の判断は他者まかせ。",
-     "指示があれば毎週、豚の様子から、設定が頭数・体重・季節に合っているかを上長に伝えられる。",
-     "指示がなくても毎週、豚の様子を確かめ、頭数・体重・季節に合わない点があれば見直しを上長に依頼する。",
+     "指示があれば毎週、前週の設定記録と今の頭数・体重・季節を見比べ、合わない点を上長に伝えられる。",
+     "指示がなくても毎週、前週の設定記録と今の頭数・体重・季節を見比べ、合わない点を挙げて見直しを上長に依頼する。",
      "自動換気でも設定の見直しが要る理由を理解し、見直しの視点を新人に指導できる。"
     ],
     "name_en": "Weekly Review Request",
     "name_vi": "Đề nghị xem xét lại hằng tuần",
     "name_id": "Permintaan tinjauan mingguan",
-    "kanten_en": "Do they understand that settings stop fitting as headcount, weight, and season change, and judge from the pigs' condition whether they fit, asking the supervisor for a review every week?",
-    "kanten_vi": "Có hiểu rằng cài đặt sẽ không còn phù hợp khi số lượng lợn, cân nặng và mùa thay đổi, và hằng tuần dựa trên tình trạng lợn để đánh giá cài đặt có phù hợp không rồi đề nghị cấp trên xem lại không.",
-    "kanten_id": "Apakah memahami bahwa pengaturan menjadi tidak cocok karena perubahan jumlah babi, bobot, dan musim, serta setiap minggu menilai kecocokannya dari kondisi babi lalu meminta atasan meninjau?",
+    "kanten_en": "Can they compare last week's settings record with the current headcount, weight, and season, name what does not fit, and ask the supervisor for a review every week?",
+    "kanten_vi": "Có so sánh bản ghi cài đặt tuần trước với số lượng lợn, cân nặng và mùa hiện tại, nêu những điểm không phù hợp, và hằng tuần đề nghị cấp trên xem lại không.",
+    "kanten_id": "Apakah dapat membandingkan catatan pengaturan minggu lalu dengan jumlah babi, bobot, dan musim saat ini, menyebutkan hal yang tidak sesuai, dan setiap minggu meminta atasan meninjau?",
     "levels_en": [
      "Thinks settings, once decided, never change, so does not review them and does not report what they notice.",
      "With guidance checks whether the settings fit, but does not consider changes in headcount or season, and leaves the judgment to others.",
-     "With guidance can tell the supervisor every week, from the pigs' condition, whether the settings fit the headcount, weight, and season.",
-     "Independently checks the pigs' condition every week, and asks the supervisor to review the settings if anything does not fit the headcount, weight, or season.",
+     "With guidance can, every week, compare last week's settings record with the current headcount, weight, and season, and tell the supervisor what does not fit.",
+     "Independently, every week, compares last week's settings record with the current headcount, weight, and season, names what does not fit, and asks the supervisor for a review.",
      "Understands why settings need review even with automatic ventilation, and can teach new staff what to look at."
     ],
     "levels_vi": [
      "Nghĩ rằng cài đặt đã định thì không đổi, nên không xem lại và cũng không báo điều mình nhận thấy.",
      "Nếu có chỉ dẫn thì kiểm tra cài đặt có phù hợp không, nhưng không nghĩ đến thay đổi về số lượng lợn hay mùa, và phó mặc việc đánh giá cho người khác.",
-     "Nếu có chỉ dẫn thì hằng tuần dựa trên tình trạng lợn, báo cấp trên cài đặt có phù hợp với số lượng lợn, cân nặng, mùa không.",
-     "Không cần chỉ dẫn, hằng tuần vẫn kiểm tra tình trạng lợn, và nếu có điểm không phù hợp với số lượng lợn, cân nặng, mùa thì đề nghị cấp trên xem lại cài đặt.",
+     "Nếu có chỉ dẫn thì hằng tuần so sánh bản ghi cài đặt tuần trước với số lượng lợn, cân nặng, mùa hiện tại và báo được cho cấp trên điểm không phù hợp.",
+     "Không cần chỉ dẫn, hằng tuần vẫn so sánh bản ghi cài đặt tuần trước với số lượng lợn, cân nặng, mùa hiện tại, nêu điểm không phù hợp và đề nghị cấp trên xem lại.",
      "Hiểu vì sao thông gió tự động vẫn cần xem lại cài đặt, và có thể hướng dẫn người mới các điểm cần xem."
     ],
     "levels_id": [
      "Mengira pengaturan yang sudah ditentukan tidak berubah, sehingga tidak meninjau dan tidak melaporkan hal yang disadari.",
      "Jika ada instruksi, memeriksa kesesuaian pengaturan, tetapi tidak memikirkan perubahan jumlah babi atau musim, dan penilaian diserahkan ke orang lain.",
-     "Jika ada instruksi, setiap minggu bisa menyampaikan ke atasan, dari kondisi babi, apakah pengaturan sesuai jumlah babi, bobot, dan musim.",
-     "Tanpa instruksi pun, setiap minggu memeriksa kondisi babi, dan meminta atasan meninjau pengaturan jika ada yang tidak sesuai jumlah babi, bobot, atau musim.",
+     "Jika ada instruksi, setiap minggu bisa membandingkan catatan pengaturan minggu lalu dengan jumlah babi, bobot, dan musim saat ini, dan menyampaikan ke atasan hal yang tidak sesuai.",
+     "Tanpa instruksi pun, setiap minggu membandingkan catatan pengaturan minggu lalu dengan jumlah babi, bobot, dan musim saat ini, menyebutkan hal yang tidak sesuai, dan meminta atasan meninjau.",
      "Memahami mengapa pengaturan perlu ditinjau meski ventilasi otomatis, dan bisa mengajari karyawan baru hal yang perlu dilihat."
     ]
    },
@@ -2076,7 +2076,7 @@
      "停電が起きても対応せず、換気ファンが止まったままでも放置する。",
      "指示があればブレーカーを見るが、報告や発電機の手順が抜け、換気の確保は他者まかせ。",
      "指示があれば全体停電か一部か、ブレーカーが落ちているかを確認して農場長に報告し、発電機の起動手順と換気ファン・給水ポンプ優先を説明できる。",
-     "指示がなくても停電時にすぐ報告し、農場で起動訓練を受けた人は発電機を起動する。使えないときは農場の手順に定めた代替換気を行い、豚の呼吸を確かめる。",
+     "指示がなくても停電時にすぐ報告し、訓練を受けた人なら発電機を起動し、そうでなければ決められた人を呼び、使えない時は農場の手順に定めた代替換気を行う。",
      "夏の停電は換気が最優先で、短い時間で豚が危険になる理由を理解し、発電機の毎月の試運転・燃料確認を含め新人に指導できる。"
     ],
     "name_en": "Response to Power Failure",
@@ -2089,22 +2089,22 @@
      "Does not respond to a power failure and leaves it even when the ventilation fans stay stopped.",
      "With guidance checks the breaker, but skips reporting and the generator steps, and leaves securing ventilation to others.",
      "With guidance can check whether the outage is farm-wide or partial and whether the breaker has tripped, report to the farm manager, and explain the generator start procedure and putting ventilation fans and the water pump first.",
-     "Independently reports at once at a power failure, and those trained in starting the generator on the farm start it. If it cannot be used, uses the alternative ventilation set in the farm's procedure and checks the pigs' breathing.",
+     "Independently reports at once at a power failure, starts the generator if trained to, otherwise calls the designated person, and if it cannot be used, uses the alternative ventilation set in the farm's procedure.",
      "Understands why ventilation comes first in a summer outage and pigs become endangered in a short time, and can teach new staff, including the monthly generator test run and fuel check."
     ],
     "levels_vi": [
      "Mất điện cũng không xử lý, quạt thông gió dừng vẫn bỏ mặc.",
      "Nếu có chỉ dẫn thì xem cầu dao, nhưng bỏ sót báo cáo và các bước với máy phát điện, và phó mặc việc đảm bảo thông gió cho người khác.",
      "Nếu có chỉ dẫn thì kiểm tra mất điện toàn trại hay một phần và cầu dao có bị ngắt không, báo cáo trưởng trại, và giải thích được quy trình khởi động máy phát điện cùng việc ưu tiên quạt thông gió và bơm nước.",
-     "Không cần chỉ dẫn, khi mất điện vẫn báo cáo ngay, và người đã được huấn luyện khởi động máy phát điện tại trại thì khởi động máy. Nếu không dùng được thì thông gió thay thế theo quy trình của trại và kiểm tra nhịp thở của lợn.",
+     "Không cần chỉ dẫn, khi mất điện vẫn báo cáo ngay, nếu đã được huấn luyện thì khởi động máy phát điện, nếu không thì gọi người được chỉ định, và khi không dùng được máy phát thì thông gió thay thế theo quy trình của trại.",
      "Hiểu vì sao khi mất điện mùa hè thì thông gió là ưu tiên hàng đầu và lợn nguy hiểm chỉ trong thời gian ngắn, và có thể hướng dẫn người mới, kể cả việc chạy thử máy phát điện hằng tháng và kiểm tra nhiên liệu."
     ],
     "levels_id": [
      "Tidak menanggapi listrik padam dan membiarkan meski kipas ventilasi tetap mati.",
      "Jika ada instruksi memeriksa pemutus sirkuit, tetapi pelaporan dan langkah generator terlewat, dan penjaminan ventilasi diserahkan ke orang lain.",
      "Jika ada instruksi, bisa memeriksa apakah padam seluruh peternakan atau sebagian dan apakah pemutus sirkuit turun, melapor ke kepala peternakan, serta menjelaskan prosedur menyalakan generator dan mendahulukan kipas ventilasi dan pompa air.",
-     "Tanpa instruksi pun, saat listrik padam langsung melapor, dan orang yang sudah dilatih menyalakan generator di peternakan menyalakannya. Jika tidak bisa dipakai, melakukan ventilasi pengganti sesuai prosedur peternakan dan memeriksa napas babi.",
-     "Memahami mengapa ventilasi diutamakan saat listrik padam di musim panas dan babi cepat berbahaya dalam waktu singkat, dan bisa mengajari karyawan baru, termasuk uji coba generator tiap bulan dan pemeriksaan bahan bakar."
+     "Tanpa instruksi pun, saat listrik padam langsung melapor, menyalakan generator jika sudah dilatih, jika tidak memanggil orang yang ditunjuk, dan jika generator tidak bisa dipakai, melakukan ventilasi pengganti sesuai prosedur peternakan.",
+     "Memahami mengapa ventilasi diutamakan saat listrik padam di musim panas dan babi bisa berada dalam bahaya dalam waktu singkat, dan bisa mengajari karyawan baru, termasuk uji coba generator tiap bulan dan pemeriksaan bahan bakar."
     ]
    }
   ]
@@ -2120,39 +2120,39 @@
    {
     "id": "area-calc",
     "name": "面積から上限頭数を出す",
-    "kanten": "豚の体重帯ごとの必要面積（0.5〜1.0 m2/頭）で豚房の面積を割り、入れてよい上限頭数を出せるか（例：15 m2・100 kgなら0.85で割って約17頭）。",
+    "kanten": "農場で決めた体重帯ごとの必要面積で豚房の面積を割り、小数点以下を切り捨てて、入れてよい上限頭数を出せるか。",
     "levels": [
      "豚房の面積も体重帯ごとの必要面積も確かめず、頭数が増えても入れられるだけ入れてしまう。",
      "指示があれば豚房の面積を確かめて割るが、体重帯の選び方を誤ったり、結果の確認を他者まかせにしたりする。",
-     "指示があれば、自分の担当の豚房の面積を体重帯の必要面積で割り、入れてよい上限頭数を出せる。",
-     "指示がなくても体重測定や出荷選別の機会に体重帯を確かめ直して上限頭数を出し直し、移動後も移動元・移動先が収まるかを見て、超えそうなら上長に伝える。",
+     "指示があれば、自分の担当の豚房の面積を農場で決めた体重帯の必要面積で割り、小数点以下を切り捨てた上限頭数を出せる。",
+     "指示がなくても体重帯が変わる頃に上限頭数を出し直し、移動後も移動元・移動先が収まるかを見て、超えそうなら上長に伝える。",
      "体重が増えると必要面積も増えることを理解し、面積と頭数から上限を出す方法を新人に指導できる。"
     ],
     "name_en": "Calculating the Head Limit from Area",
-    "name_vi": "Tính số đầu con tối đa theo diện tích",
+    "name_vi": "Tính số con tối đa theo diện tích",
     "name_id": "Menghitung batas jumlah ekor dari luas",
-    "kanten_en": "Can they divide a pen's area by the required area per pig for the weight band (0.5-1.0 m2 per pig) to work out how many pigs it may hold (example: 15 m2 and 100 kg: divide by 0.85, about 17 pigs)?",
-    "kanten_vi": "Có chia diện tích ô chuồng cho diện tích cần thiết mỗi lợn theo nhóm cân nặng (0,5–1,0 m2/con) để tính số con tối đa được nuôi không (ví dụ: 15 m2, 100 kg thì chia cho 0,85, khoảng 17 con).",
-    "kanten_id": "Apakah dapat membagi luas petak kandang dengan luas yang dibutuhkan per ekor menurut kelompok bobot (0,5–1,0 m2/ekor) untuk menghitung jumlah ekor maksimum (contoh: 15 m2 dan 100 kg, dibagi 0,85, sekitar 17 ekor)?",
+    "kanten_en": "Can they divide a pen's area by the required area per pig for the weight band the farm has set, round down any fraction, and work out how many pigs it may hold?",
+    "kanten_vi": "Có chia diện tích ô chuồng cho diện tích cần thiết mỗi lợn theo nhóm cân nặng mà trại đã định, làm tròn xuống phần thập phân, để tính số con tối đa được nuôi không.",
+    "kanten_id": "Apakah dapat membagi luas petak kandang dengan luas yang dibutuhkan per ekor menurut kelompok bobot yang ditetapkan peternakan, membulatkan ke bawah pecahannya, untuk menghitung jumlah ekor maksimum?",
     "levels_en": [
      "Does not check pen area or the required area for the weight band, and keeps putting in as many pigs as will fit even as the count grows.",
      "With guidance checks the pen area and divides, but picks the wrong weight band or leaves checking the result to others.",
-     "With guidance divides the area of a pen they are in charge of by the required area for the weight band, and can work out the maximum number of pigs it may hold.",
-     "Independently rechecks the weight band at weighing or shipping selection and recalculates the limit, also checks after a move that both the source and destination pens are within it, and tells the supervisor if a count is about to exceed it.",
+     "With guidance divides the area of a pen they are in charge of by the required area for the farm's weight band, rounds down any fraction, and can work out the maximum number of pigs it may hold.",
+     "Independently recalculates the limit when the weight band changes, also checks after a move that both the source and destination pens are within it, and tells the supervisor if a count is about to exceed it.",
      "Understands that the required area per pig increases as weight increases, and can teach new staff how to work out the limit from area and head count."
     ],
     "levels_vi": [
      "Không kiểm tra diện tích ô chuồng hay diện tích cần thiết theo nhóm cân nặng, số con tăng lên vẫn cho vào hết mức có thể.",
      "Nếu có chỉ dẫn thì xác nhận diện tích ô chuồng rồi chia, nhưng chọn sai nhóm cân nặng hoặc phó mặc việc kiểm tra kết quả cho người khác.",
-     "Nếu có chỉ dẫn thì chia diện tích ô chuồng mình phụ trách cho diện tích cần thiết của nhóm cân nặng, và tính được số con tối đa được nuôi.",
-     "Không cần chỉ dẫn vẫn xác nhận lại nhóm cân nặng khi cân hoặc chọn lợn xuất chuồng rồi tính lại số con tối đa, sau khi chuyển cũng xem ô chuồng đi và ô chuồng đến có nằm trong mức đó không, và nếu số con sắp vượt thì nói với cấp trên.",
-     "Hiểu rằng lợn càng nặng thì diện tích cần cho mỗi con càng tăng, và có thể hướng dẫn người mới cách tính mức tối đa từ diện tích và số đầu con."
+     "Nếu có chỉ dẫn thì chia diện tích ô chuồng mình phụ trách cho diện tích cần thiết của nhóm cân nặng mà trại đã định, làm tròn xuống phần thập phân, và tính được số con tối đa được nuôi.",
+     "Không cần chỉ dẫn vẫn tính lại số con tối đa khi nhóm cân nặng thay đổi, sau khi chuyển cũng xem ô chuồng đi và ô chuồng đến có nằm trong mức đó không, và nếu số con sắp vượt thì nói với cấp trên.",
+     "Hiểu rằng lợn càng nặng thì diện tích cần cho mỗi con càng tăng, và có thể hướng dẫn người mới cách tính mức tối đa từ diện tích và số con."
     ],
     "levels_id": [
      "Tidak memeriksa luas petak kandang maupun luas yang dibutuhkan menurut kelompok bobot, dan terus memasukkan sebanyak mungkin walau jumlah ekor bertambah.",
      "Jika ada instruksi, memastikan luas petak kandang lalu membaginya, tetapi salah memilih kelompok bobot atau menyerahkan pengecekan hasil kepada orang lain.",
-     "Jika ada instruksi, dapat membagi luas petak kandang yang menjadi tanggung jawabnya dengan luas yang dibutuhkan kelompok bobot, dan menghitung jumlah ekor maksimum.",
-     "Tanpa instruksi pun, memastikan ulang kelompok bobot saat penimbangan atau seleksi pengiriman lalu menghitung ulang batasnya, setelah pemindahan juga memeriksa apakah petak kandang asal dan tujuan masih dalam batas, dan memberi tahu atasan jika jumlah ekor hampir melebihinya.",
+     "Jika ada instruksi, dapat membagi luas petak kandang yang menjadi tanggung jawabnya dengan luas yang dibutuhkan kelompok bobot yang ditetapkan peternakan, membulatkan ke bawah pecahannya, dan menghitung jumlah ekor maksimum.",
+     "Tanpa instruksi pun, menghitung ulang batas saat kelompok bobot berubah, setelah pemindahan juga memeriksa apakah petak kandang asal dan tujuan masih dalam batas, dan memberi tahu atasan jika jumlah ekor hampir melebihinya.",
      "Memahami bahwa luas yang dibutuhkan per ekor bertambah seiring bobot, dan bisa mengajari karyawan baru cara menghitung batas dari luas dan jumlah ekor."
     ]
    },
@@ -2164,7 +2164,7 @@
      "尾かじり・けんか・エサ箱の渋滞があっても、いつものことと見過ごし、豚房の混み具合を見ない。",
      "指示があれば豚房を見るが、かじりやけんかなど目立つ兆候しか拾えず、見つけても伝えるのは他者まかせ。",
      "指示があれば、かじり・けんか・エサ箱や飲水器の渋滞・糞汚れ・皮膚の傷を確かめ、全頭が同時に横になれるかも見られる。",
-     "指示がなくても豚房ごとに兆候の数の変化を記録して比べ、増えていれば豚房番号と様子を上長へ報告する。",
+     "指示がなくても見回りのたびに兆候と、全頭が同時に横になれるかを確かめ、過密が疑われる豚房の番号と様子を上長に報告する。",
      "過密も兆候の原因の一つだと理解し、横になれるかの簡易判断と主な兆候の見方を新人に指導できる。"
     ],
     "name_en": "Spotting Signs of Overcrowding",
@@ -2177,61 +2177,61 @@
      "Overlooks tail biting, fighting, and crowding at the feeder as normal, and does not look at how crowded the pen is.",
      "With guidance looks at the pen, but only picks up obvious signs such as biting and fighting, and leaves reporting what is found to others.",
      "With guidance checks biting, fighting, queues at feeders and drinkers, soiling with manure, and skin wounds, and can also see whether all pigs can lie down at the same time.",
-     "Independently records and compares the number of signs for each pen, and if they are increasing, reports the pen number and the situation to the supervisor.",
+     "Independently, on every round, checks the signs and whether all pigs can lie down at the same time, and reports the number and condition of any pen suspected of overcrowding to the supervisor.",
      "Understands that overcrowding is one cause of these signs, and can teach new staff the simple lying-down check and how to spot the main signs."
     ],
     "levels_vi": [
      "Bỏ qua cắn đuôi, đánh nhau, chen chúc ở máng ăn coi là chuyện thường, và không nhìn mức độ đông của ô chuồng.",
      "Nếu có chỉ dẫn thì xem ô chuồng, nhưng chỉ nhặt ra các dấu hiệu dễ thấy như cắn và đánh nhau, và phó mặc việc báo những gì thấy cho người khác.",
      "Nếu có chỉ dẫn thì kiểm tra cắn nhau, đánh nhau, chen chúc ở máng ăn và vòi uống, dính phân, vết thương ngoài da, và xem được toàn bộ lợn có nằm xuống cùng lúc được không.",
-     "Không cần chỉ dẫn vẫn ghi lại và so sánh số dấu hiệu của từng ô chuồng, và nếu tăng thì báo cấp trên số ô chuồng và tình trạng.",
+     "Không cần chỉ dẫn, mỗi lần đi kiểm tra vẫn xem các dấu hiệu và xem toàn bộ lợn có nằm xuống cùng lúc được không, và báo cấp trên số và tình trạng ô chuồng nghi quá đông.",
      "Hiểu rằng quá đông là một trong những nguyên nhân gây ra các dấu hiệu này, và có thể hướng dẫn người mới cách xem nhanh lợn có nằm được không cùng cách nhận ra các dấu hiệu chính."
     ],
     "levels_id": [
      "Mengabaikan gigit ekor, perkelahian, dan antrean di tempat pakan sebagai hal biasa, serta tidak melihat tingkat kepadatan petak kandang.",
      "Jika ada instruksi, melihat petak kandang, tetapi hanya menangkap tanda yang mencolok seperti gigitan dan perkelahian, dan menyerahkan pelaporan temuan kepada orang lain.",
      "Jika ada instruksi, memeriksa gigitan, perkelahian, antrean di tempat pakan dan minum, kotoran pada tubuh, dan luka kulit, serta dapat melihat apakah semua babi bisa berbaring bersamaan.",
-     "Tanpa instruksi pun, mencatat dan membandingkan jumlah tanda pada setiap petak kandang, dan jika bertambah, melapor kepada atasan dengan nomor petak dan kondisinya.",
+     "Tanpa instruksi pun, pada setiap keliling memeriksa tanda-tanda dan apakah semua babi bisa berbaring bersamaan, dan melapor kepada atasan nomor serta kondisi petak kandang yang dicurigai terlalu padat.",
      "Memahami bahwa kepadatan berlebih adalah salah satu penyebab tanda-tanda itu, dan bisa mengajari karyawan baru pemeriksaan sederhana berbaring serta cara mengenali tanda utama."
     ]
    },
    {
     "id": "split-judge",
     "name": "分ける判断と上長報告",
-    "kanten": "過密や体格差を見たとき、空き豚房への移動、出荷が近い豚を先に出す案、小さい豚を別群にする、のどれが要るかを考え、放置せず上長に報告して相談できるか。",
+    "kanten": "過密や体格差を見たとき、空き豚房への移動・出荷が近い豚を先に出す提案・小さい豚の別群化（病気の有無も確認）のどれが要るかを考え、放置せず上長に報告して相談できるか。",
     "levels": [
      "過密や小さい豚に気づいても「仕方ない」と放置し、誰にも報告しない。",
      "指示があれば報告するが、どう分ければよいかは考えず、空き豚房の有無や出荷予定も確かめない。",
-     "指示があれば、空き豚房への移動・出荷が近い豚を先に出す案・小さい豚を別群にする、のどれが合うかを示して上長に相談できる。",
+     "指示があれば、空き豚房への移動・出荷が近い豚を先に出す提案・小さい豚の別群化のどれが合うかを示し、小さい豚は病気の有無も確かめて上長に相談できる。",
      "指示がなくても過密や体格差に気づいた時点で、空き豚房と出荷予定を確かめ、案を添えて上長に報告する。",
-     "放置が尾かじりや成長遅延につながると理解し、3つの分け方の使い分けと報告のしかたを新人に指導できる。"
+     "放置が尾かじりや成長遅延につながることと、分けると新しい群のけんかが起きることを理解し、3つの分け方の使い分けを新人に指導できる。"
     ],
     "name_en": "Deciding to Split and Reporting",
     "name_vi": "Quyết định tách đàn và báo cấp trên",
     "name_id": "Keputusan memisahkan kelompok dan lapor atasan",
-    "kanten_en": "When they see overcrowding or size differences, can they think through which is needed (moving some pigs to an empty pen, proposing to ship pigs nearing market weight first, or putting small pigs in a separate group), and report to and consult the supervisor instead of leaving it?",
-    "kanten_vi": "Khi thấy quá đông hoặc chênh lệch cỡ, có cân nhắc cần cách nào (chuyển bớt sang ô chuồng trống, đề xuất cho xuất chuồng trước những con sắp xuất chuồng, tách lợn nhỏ thành đàn riêng), và báo cấp trên để bàn thay vì bỏ mặc không.",
-    "kanten_id": "Ketika melihat kepadatan berlebih atau perbedaan ukuran, apakah dapat menimbang mana yang perlu (memindahkan sebagian ke petak kandang kosong, mengusulkan mengeluarkan lebih dulu babi yang dekat jadwal pengiriman, atau memisahkan babi kecil ke kelompok lain), dan melapor serta berkonsultasi dengan atasan tanpa membiarkannya?",
+    "kanten_en": "When they see overcrowding or size differences, can they think through which is needed (moving some pigs to an empty pen, proposing that pigs due to be shipped soon go first, or putting small pigs in a separate group after checking for illness), and report to and consult the supervisor instead of leaving it?",
+    "kanten_vi": "Khi thấy quá đông hoặc chênh lệch cỡ, có cân nhắc cần cách nào (chuyển bớt sang ô chuồng trống, đề xuất cho xuất chuồng trước những con sắp đến lịch xuất chuồng, tách lợn nhỏ thành đàn riêng sau khi xem có bệnh không), và báo cấp trên để bàn thay vì bỏ mặc không.",
+    "kanten_id": "Ketika melihat kepadatan berlebih atau perbedaan ukuran, apakah dapat menimbang mana yang perlu (memindahkan sebagian ke petak kandang kosong, mengusulkan mengeluarkan lebih dulu babi yang jadwal pengirimannya dekat, atau memisahkan babi kecil ke kelompok lain setelah memeriksa ada tidaknya penyakit), dan melapor serta berkonsultasi dengan atasan tanpa membiarkannya?",
     "levels_en": [
      "Even on noticing overcrowding or small pigs, leaves it as unavoidable and reports to no one.",
      "With guidance reports, but does not think about how to split, and does not check for empty pens or the shipping schedule.",
-     "With guidance can show which fits best (moving to an empty pen, proposing to ship pigs nearing market weight first, or putting small pigs in a separate group) and consult the supervisor.",
+     "With guidance can show which fits best (moving to an empty pen, proposing that pigs due to be shipped soon go first, or putting small pigs in a separate group), check small pigs for illness, and consult the supervisor.",
      "Independently, as soon as overcrowding or size differences are noticed, checks empty pens and the shipping schedule and reports to the supervisor with a proposal.",
-     "Understands that leaving it leads to tail biting and slower growth, and can teach new staff how to choose among the 3 ways of splitting and how to report."
+     "Understands that leaving it leads to tail biting and slower growth and that splitting causes fighting in the new group, and can teach new staff how to choose among the 3 ways of splitting."
     ],
     "levels_vi": [
      "Dù nhận ra quá đông hoặc lợn nhỏ vẫn bỏ mặc vì cho rằng không còn cách nào, và không báo ai.",
      "Nếu có chỉ dẫn thì báo, nhưng không nghĩ cách tách thế nào, cũng không kiểm tra ô chuồng trống hay lịch xuất chuồng.",
-     "Nếu có chỉ dẫn thì nêu được cách nào phù hợp (chuyển sang ô chuồng trống, đề xuất cho xuất chuồng trước những con sắp xuất chuồng, tách lợn nhỏ thành đàn riêng) và bàn với cấp trên.",
+     "Nếu có chỉ dẫn thì nêu được cách nào phù hợp (chuyển sang ô chuồng trống, đề xuất cho xuất chuồng trước những con sắp đến lịch xuất chuồng, tách lợn nhỏ thành đàn riêng), xem lợn nhỏ có bệnh không và bàn với cấp trên.",
      "Không cần chỉ dẫn, ngay khi nhận ra quá đông hoặc chênh lệch cỡ thì kiểm tra ô chuồng trống và lịch xuất chuồng rồi báo cấp trên kèm đề xuất.",
-     "Hiểu bỏ mặc sẽ dẫn đến cắn đuôi và chậm lớn, và có thể hướng dẫn người mới cách chọn trong 3 cách tách đàn và cách báo cáo."
+     "Hiểu bỏ mặc sẽ dẫn đến cắn đuôi và chậm lớn, còn tách đàn thì đàn mới dễ đánh nhau, và có thể hướng dẫn người mới cách chọn trong 3 cách tách đàn."
     ],
     "levels_id": [
      "Walau menyadari kepadatan berlebih atau babi kecil, membiarkannya karena dianggap tidak bisa dihindari, dan tidak melapor kepada siapa pun.",
      "Jika ada instruksi, melapor, tetapi tidak memikirkan cara memisahkan, dan tidak memeriksa petak kandang kosong maupun jadwal pengiriman.",
-     "Jika ada instruksi, dapat menunjukkan mana yang cocok (pindah ke petak kandang kosong, mengusulkan mengeluarkan lebih dulu babi yang dekat jadwal pengiriman, atau memisahkan babi kecil ke kelompok lain) dan berkonsultasi dengan atasan.",
+     "Jika ada instruksi, dapat menunjukkan mana yang cocok (pindah ke petak kandang kosong, mengusulkan mengeluarkan lebih dulu babi yang jadwal pengirimannya dekat, atau memisahkan babi kecil ke kelompok lain), memeriksa ada tidaknya penyakit pada babi kecil, dan berkonsultasi dengan atasan.",
      "Tanpa instruksi pun, begitu menyadari kepadatan berlebih atau perbedaan ukuran, memeriksa petak kandang kosong dan jadwal pengiriman, lalu melapor kepada atasan beserta usulan.",
-     "Memahami bahwa pembiaran menyebabkan gigit ekor dan pertumbuhan lambat, dan bisa mengajari karyawan baru cara memilih dari 3 cara pemisahan serta cara melapor."
+     "Memahami bahwa pembiaran menyebabkan gigit ekor dan pertumbuhan lambat, sedangkan pemisahan memicu perkelahian di kelompok baru, dan bisa mengajari karyawan baru cara memilih dari 3 cara pemisahan."
     ]
    },
    {
@@ -2242,7 +2242,7 @@
      "移動の回数も時間帯も考えず、群の組み替えを何度も繰り返す。",
      "指示があれば移動の時間帯を選ぶが、組み替えの回数を減らす工夫が抜けて他者まかせになる。",
      "指示があれば、新しい群を作る移動を最小限にし、暗めの時間帯（夕方から夜）に行う計画を立てられる。",
-     "指示がなくても移動の要否・回数・時間帯を前もって決めて上長に伝え、移動後に闘争が続いていれば上長に報告する。",
+     "指示がなくても、移動を最小限にする案と夕方〜夜の時間帯の案をまとめて上長に相談する。",
      "新しい群を作ると闘争が起きやすいことと暗めの時間帯が有利な理由を理解し、移動の計画のしかたを新人に指導できる。"
     ],
     "name_en": "Number and Timing of Moves",
@@ -2255,61 +2255,61 @@
      "Does not think about the number or timing of moves, and regroups over and over.",
      "With guidance chooses a time for the move, but does not think of ways to reduce the number of regroupings and leaves it to others.",
      "With guidance can plan to keep moves that form a new group to a minimum and do them in a dimmer time of day (evening to night).",
-     "Independently decides in advance whether to move, how many times and when, and tells the supervisor; if fighting continues after the move, reports to the supervisor.",
+     "Independently puts together a plan that keeps moves to a minimum and a plan for the evening-to-night time, and consults the supervisor.",
      "Understands that forming a new group easily causes fighting and why a dimmer time of day helps, and can teach new staff how to plan moves."
     ],
     "levels_vi": [
      "Không nghĩ đến số lần hay thời điểm chuyển, cứ xáo trộn đàn lặp đi lặp lại.",
      "Nếu có chỉ dẫn thì chọn thời điểm chuyển, nhưng sót việc tìm cách giảm số lần xáo trộn đàn, phó mặc cho người khác.",
      "Nếu có chỉ dẫn thì lập được kế hoạch hạn chế tối thiểu việc chuyển lập đàn mới và thực hiện lúc trời tối hơn (chiều tối đến đêm).",
-     "Không cần chỉ dẫn vẫn quyết định trước có cần chuyển không, bao nhiêu lần và lúc nào rồi báo cấp trên; nếu sau khi chuyển vẫn còn đánh nhau thì báo cấp trên.",
+     "Không cần chỉ dẫn vẫn tổng hợp phương án hạn chế tối thiểu việc chuyển và phương án thời điểm chiều tối đến đêm rồi trao đổi với cấp trên.",
      "Hiểu lập đàn mới dễ gây đánh nhau và vì sao lúc trời tối hơn có lợi, và có thể hướng dẫn người mới cách lập kế hoạch chuyển."
     ],
     "levels_id": [
      "Tidak memikirkan jumlah maupun waktu pemindahan, dan mengacak kelompok berulang kali.",
      "Jika ada instruksi, memilih waktu pemindahan, tetapi tidak memikirkan cara mengurangi jumlah pengacakan kelompok dan menyerahkannya kepada orang lain.",
      "Jika ada instruksi, dapat menyusun rencana agar pemindahan yang membentuk kelompok baru seminimal mungkin dan dilakukan pada waktu yang lebih gelap (sore hingga malam).",
-     "Tanpa instruksi pun, menentukan sebelumnya perlu tidaknya pindah, berapa kali, dan kapan lalu memberi tahu atasan; jika perkelahian berlanjut setelah pemindahan, melapor kepada atasan.",
+     "Tanpa instruksi pun, menyusun usulan agar pemindahan seminimal mungkin dan usulan waktu sore hingga malam, lalu berkonsultasi dengan atasan.",
      "Memahami bahwa pembentukan kelompok baru mudah memicu perkelahian dan mengapa waktu yang lebih gelap membantu, dan bisa mengajari karyawan baru cara merencanakan pemindahan."
     ]
    },
    {
     "id": "count-record",
-    "name": "移動した頭数の記録と日報反映",
-    "kanten": "豚房を移した頭数を、どの豚房から何頭をどこへと記録し、日報の式（前日頭数＋入舎−転出−死亡−出荷）に反映して合うか確かめられるか。",
+    "name": "豚房ごとの頭数の記録",
+    "kanten": "豚を移したら移動元・移動先の豚房の頭数をすぐ書き直し、豚房の合計が舎の当日頭数と合うか確かめられるか（舎をまたぐ移動だけ日報の転出・入舎に入れる）。",
     "levels": [
      "豚を移しても頭数を書き留めず、日報の頭数も前日のままか推測で書いてしまう。",
-     "指示があれば移した頭数を書くが、どの豚房から何頭かが抜け、日報の式への反映は他者まかせ。",
-     "指示があれば、どの豚房から何頭をどこへ移したかを記録し、日報の式（前日頭数＋入舎−転出−死亡−出荷）に入れて合うか確かめられる。",
-     "指示がなくても移動の直後に移動元・移動先の頭数を記録し、豚房の頭数の記録も直し、日報の頭数が合わなければその日のうちに原因を調べる。",
-     "頭数が合わないと原因の特定が難しくなることを理解し、移動の記録と日報への反映のしかたを新人に指導できる。"
+     "指示があれば移した頭数を書くが、どの豚房から何頭かが抜け、豚房の頭数の書き直しは他者まかせ。",
+     "指示があれば、どの豚房から何頭をどこへ移したかを記録し、移動元・移動先の豚房の頭数を書き直して、豚房の合計が舎の頭数と合うか確かめられる。",
+     "指示がなくても移動の直後に移動元・移動先の豚房の頭数を書き直し、舎をまたぐ移動だけを日報の転出・入舎に入れ、舎内の移動は日報の合計を変えないと区別する。",
+     "豚房の頭数が現実とずれると過密や移動の判断を誤ることを理解し、移動直後の頭数の書き直しを新人に指導できる。"
     ],
-    "name_en": "Recording Moved Head Counts in the Daily Report",
-    "name_vi": "Ghi số đầu con đã chuyển vào báo cáo ngày",
-    "name_id": "Mencatat jumlah ekor yang dipindah ke laporan harian",
-    "kanten_en": "Can they record how many pigs went from which pen to which, enter it in the daily-report formula (previous-day count + pigs moved in − pigs moved out − deaths − shipments), and confirm it balances?",
-    "kanten_vi": "Có ghi lại đã chuyển bao nhiêu con từ ô chuồng nào sang đâu, đưa vào công thức của báo cáo ngày (số đầu con hôm trước + lợn nhập chuồng − lợn chuyển đi − chết − xuất chuồng) và xác nhận khớp không.",
-    "kanten_id": "Apakah dapat mencatat berapa ekor yang dipindah dari petak kandang mana ke mana, memasukkannya ke rumus laporan harian (jumlah ekor hari sebelumnya + babi masuk − babi pindah keluar − mati − pengiriman), dan memastikan cocok?",
+    "name_en": "Recording Head Count by Pen",
+    "name_vi": "Ghi số con theo từng ô chuồng",
+    "name_id": "Mencatat jumlah ekor per petak kandang",
+    "kanten_en": "After moving pigs, can they promptly rewrite the head counts of the source and destination pens and confirm that the pens add up to the house's count for the day (only moves between houses go into the daily report's moved-out and moved-in)?",
+    "kanten_vi": "Sau khi chuyển lợn, có ghi lại ngay số con của ô chuồng đi và ô chuồng đến, và xác nhận tổng các ô chuồng khớp với số con của chuồng trong ngày không (chỉ việc chuyển giữa các chuồng mới đưa vào mục chuyển đi và nhập chuồng của báo cáo ngày).",
+    "kanten_id": "Setelah memindahkan babi, apakah segera menulis ulang jumlah ekor petak kandang asal dan tujuan, dan memastikan jumlah semua petak cocok dengan jumlah ekor kandang pada hari itu (hanya pemindahan antar kandang yang dimasukkan ke bagian pindah keluar dan masuk di laporan harian)?",
     "levels_en": [
      "Does not write down the number of pigs after moving them, and leaves the daily head count as the previous day's or guesses it.",
-     "With guidance writes the number moved, but omits how many from which pen, and leaves entering it in the daily-report formula to others.",
-     "With guidance records how many pigs were moved from which pen to which, enters it in the daily-report formula (previous-day count + pigs moved in − pigs moved out − deaths − shipments), and can confirm it balances.",
-     "Independently records the head counts of the source and destination pens right after a move, corrects the pen head-count record, and if the daily count does not balance, investigates the cause the same day.",
-     "Understands that a head count that does not balance makes the cause hard to identify, and can teach new staff how to record moves and enter them in the daily report."
+     "With guidance writes the number moved, but omits how many from which pen, and leaves rewriting the pen head counts to others.",
+     "With guidance records how many pigs were moved from which pen to which, rewrites the head counts of the source and destination pens, and can confirm that the pens add up to the house's count.",
+     "Independently rewrites the head counts of the source and destination pens right after a move, enters only moves between houses as moved-out and moved-in in the daily report, and knows that a move within a house does not change the daily total.",
+     "Understands that pen head counts that drift from reality lead to wrong judgments on overcrowding and moves, and can teach new staff to rewrite the counts right after a move."
     ],
     "levels_vi": [
-     "Chuyển lợn xong không ghi lại số con, số đầu con trong báo cáo ngày để nguyên như hôm trước hoặc ghi đại theo phỏng đoán.",
-     "Nếu có chỉ dẫn thì ghi số con đã chuyển, nhưng sót việc từ ô chuồng nào bao nhiêu con, và phó mặc việc đưa vào công thức báo cáo ngày cho người khác.",
-     "Nếu có chỉ dẫn thì ghi lại đã chuyển bao nhiêu con từ ô chuồng nào sang đâu, đưa vào công thức báo cáo ngày (số đầu con hôm trước + lợn nhập chuồng − lợn chuyển đi − chết − xuất chuồng) và xác nhận được có khớp không.",
-     "Không cần chỉ dẫn vẫn ghi số đầu con của ô chuồng đi và ô chuồng đến ngay sau khi chuyển, sửa lại ghi chép số đầu con của ô chuồng, và nếu số đầu con trong ngày không khớp thì tìm nguyên nhân ngay trong ngày.",
-     "Hiểu rằng số đầu con không khớp làm khó xác định nguyên nhân, và có thể hướng dẫn người mới cách ghi lại việc chuyển và đưa vào báo cáo ngày."
+     "Chuyển lợn xong không ghi lại số con, số con trong báo cáo ngày để nguyên như hôm trước hoặc ghi đại theo phỏng đoán.",
+     "Nếu có chỉ dẫn thì ghi số con đã chuyển, nhưng sót việc từ ô chuồng nào bao nhiêu con, và phó mặc việc ghi lại số con của ô chuồng cho người khác.",
+     "Nếu có chỉ dẫn thì ghi lại đã chuyển bao nhiêu con từ ô chuồng nào sang đâu, ghi lại số con của ô chuồng đi và ô chuồng đến, và xác nhận được tổng các ô chuồng có khớp số con của chuồng không.",
+     "Không cần chỉ dẫn vẫn ghi lại số con của ô chuồng đi và ô chuồng đến ngay sau khi chuyển, chỉ đưa việc chuyển giữa các chuồng vào mục chuyển đi và nhập chuồng của báo cáo ngày, và phân biệt rằng chuyển trong cùng chuồng không làm đổi tổng trong báo cáo ngày.",
+     "Hiểu rằng số con của ô chuồng lệch với thực tế sẽ dẫn đến phán đoán sai về quá đông và việc chuyển, và có thể hướng dẫn người mới ghi lại số con ngay sau khi chuyển."
     ],
     "levels_id": [
      "Setelah memindahkan babi, tidak mencatat jumlah ekornya, dan jumlah ekor di laporan harian dibiarkan sama dengan hari sebelumnya atau ditebak.",
-     "Jika ada instruksi, menulis jumlah ekor yang dipindah, tetapi melewatkan berapa ekor dari petak kandang mana, dan menyerahkan pemasukan ke rumus laporan harian kepada orang lain.",
-     "Jika ada instruksi, dapat mencatat berapa ekor yang dipindah dari petak kandang mana ke mana, memasukkannya ke rumus laporan harian (jumlah ekor hari sebelumnya + babi masuk − babi pindah keluar − mati − pengiriman), dan memastikan cocok.",
-     "Tanpa instruksi pun, mencatat jumlah ekor petak kandang asal dan tujuan segera setelah pemindahan, memperbaiki catatan jumlah ekor petak kandang, dan jika jumlah ekor harian tidak cocok, mencari penyebabnya pada hari itu juga.",
-     "Memahami bahwa jumlah ekor yang tidak cocok membuat penyebab sulit ditemukan, dan bisa mengajari karyawan baru cara mencatat pemindahan serta memasukkannya ke laporan harian."
+     "Jika ada instruksi, menulis jumlah ekor yang dipindah, tetapi melewatkan berapa ekor dari petak kandang mana, dan menyerahkan penulisan ulang jumlah ekor petak kandang kepada orang lain.",
+     "Jika ada instruksi, dapat mencatat berapa ekor yang dipindah dari petak kandang mana ke mana, menulis ulang jumlah ekor petak kandang asal dan tujuan, dan memastikan jumlah semua petak cocok dengan jumlah ekor kandang.",
+     "Tanpa instruksi pun, menulis ulang jumlah ekor petak kandang asal dan tujuan segera setelah pemindahan, hanya memasukkan pemindahan antar kandang ke bagian pindah keluar dan masuk di laporan harian, dan membedakan bahwa pemindahan dalam satu kandang tidak mengubah total harian.",
+     "Memahami bahwa jumlah ekor petak kandang yang menyimpang dari kenyataan membuat penilaian kepadatan dan pemindahan keliru, dan bisa mengajari karyawan baru menulis ulang jumlah ekor segera setelah pemindahan."
     ]
    }
   ],
@@ -2317,7 +2317,7 @@
   "name_vi": "Quản lý mật độ và chia đàn (lợn thịt)",
   "name_id": "Manajemen kepadatan dan pengelompokan (penggemukan)",
   "purposeShort_en": "Prevent overcrowding by checking area and head count, and split groups when needed to reduce tail biting and fighting",
-  "purposeShort_vi": "Xem diện tích và số đầu con để tránh quá đông, và khi cần thì chia đàn để giảm cắn đuôi và đánh nhau",
+  "purposeShort_vi": "Xem diện tích và số con để tránh quá đông, và khi cần thì chia đàn để giảm cắn đuôi và đánh nhau",
   "purposeShort_id": "Mencegah kepadatan berlebih dengan memeriksa luas dan jumlah ekor, dan memisahkan kelompok bila perlu untuk mengurangi gigit ekor dan perkelahian"
  }
 ]
