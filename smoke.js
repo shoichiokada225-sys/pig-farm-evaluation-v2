@@ -53,7 +53,7 @@ function ok(name, cond) {
   const dv = await page.locator('#dataVer').textContent();
   ok('データ版数表示（作業数は言語の単位）', /DATA .* \/ 43 ?作業/.test(dv));
   ok('W16-2 アプリ本体の版も表示（APP jitsugi-v2-…）', /^APP jitsugi-v2-v\d+ \/ DATA /.test(dv));
-  ok('W16-4 ホーム画面から開いていない → 追加の案内が出る', await page.locator('#a2hsBar').isVisible());
+  ok('W16-4 ホーム画面への追加の案内は出さない（10-13 社長指示）', await page.locator('#a2hsBar').isHidden());
   ok('W16-4 保存の保護の状態を表示', /^端末の保存: /.test(await page.locator('#storeSt').textContent()));
 
   console.log('[2] 作業を2つ選択 → 5種目×2=10カード');

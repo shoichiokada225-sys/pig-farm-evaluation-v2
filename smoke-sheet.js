@@ -127,7 +127,7 @@ async function run(devName) {
   ok('スコアが入っている', rec && rec.works.every(w => w.items.every(it => it.score === 4)));
   ok('送信済み表示', /送信済み/.test(await page.locator('#syncBar').textContent()));
   ok('タブに✓（今日済）', await page.locator('.eetab.done').count() === 1);
-  ok('保存後は次の人へ（作業空・評価者は残る）', await page.locator('#cards .pickwork').count() === 1 && (await page.locator('#evName').textContent()) === '岡田 正一');
+  ok('保存後は次の人へ（作業空・案内なし・評価者は残る）', await page.locator('#cards .ec').count() === 0 && await page.locator('#cards .pickwork').count() === 0 && (await page.locator('#evName').textContent()) === '岡田 正一');
 
   console.log('[6] 圏外で保存 → 未送信 → 電波復帰で再送');
   online = false;
@@ -288,8 +288,8 @@ async function run(devName) {
   await page.screenshot({ path: `${__dirname}/_shots/${devName.replace(/\W/g, '_')}_5_big.png` });
 
   console.log('[13] 名簿にない人を手入力で評価（名簿外）');
-  ok('名簿ありでも「名簿にない人を入力」ボタン', await page.locator('#eeAdd').isVisible() && !(await page.locator('#fEe').isVisible()));
-  await page.locator('#eeAdd').tap(); await page.waitForTimeout(200);
+  ok('「名簿にない人を入力」ボタンは出さない（10-13 社長指示）', await page.locator('#eeAdd').isHidden() && !(await page.locator('#fEe').isVisible()) && !/名簿にない人を入力/.test(await page.locator('body').innerText()));
+  await page.evaluate(() => openManualEe()); await page.waitForTimeout(200);
   ok('押すと手入力欄が開く', await page.locator('#fEe').isVisible());
   await page.fill('#fEe', '臨時 花子');
   await page.evaluate(() => { document.getElementById('wselBox').open = true; document.querySelector('.wcat').open = true; });
@@ -1643,11 +1643,11 @@ async function runSWUpdate() {
   // W16-4: ホーム画面から開いていない時の案内・端末の保存の保護の表示（4言語）
   {
     const { ctx, page } = await open();
-    ok('W16-4 ブラウザのタブで開いている → ホーム画面への追加の案内が出る', await page.locator('#a2hsBar').isVisible() && /ホーム画面に追加/.test(await page.locator('#a2hsBar').textContent()));
+    ok('W16-4 ブラウザのタブで開いていても、ホーム画面への追加の案内は出さない（10-13 社長指示）', await page.locator('#a2hsBar').isHidden());
     const stTx = await page.locator('#storeSt').textContent();
     ok('W16-4 設定タブに保存の保護の状態が出る（' + stTx + '）', /^端末の保存: /.test(stTx));
     await page.evaluate(() => setLang('vi'));
-    ok('W16-4 案内が言語に合わせて変わる（vi）', /màn hình chính/.test(await page.locator('#a2hsBar').textContent()) && /^Bộ nhớ máy: /.test(await page.locator('#storeSt').textContent()));
+    ok('W16-4 保存の保護の表示が言語に合わせて変わる（vi）・案内は出ない', await page.locator('#a2hsBar').isHidden() && /^Bộ nhớ máy: /.test(await page.locator('#storeSt').textContent()));
     await page.evaluate(() => setLang('ja'));
     await ctx.close();
     const ctx2 = await browser.newContext();
@@ -2279,8 +2279,7 @@ async function runFirstUse(devName) {
   console.log('[R18-2] 最初の画面の案内は「名前をタップ」（作業を選ぶへ誘導しない）');
   await fresh();
   const vh = page.viewportSize().height;
-  const pw = await page.locator('#cards .pickwork').textContent();
-  ok('人が未選択の空表示は「名簿から名前をタップ」', /名前をタップ/.test(pw) && !/評価する作業を選ぶ/.test(pw) && !/複数の作業を選べます/.test(pw));
+  ok('人が未選択の時は案内を出さない（10-13 社長指示）', await page.locator('#cards .pickwork').count() === 0 && !/名前をタップ|作業を選ぶ必要はありません/.test(await page.locator('body').innerText()));
   ok('作業パネルの見出しは「作業の追加・変更」・閉じている', (await page.locator('#wselBox > summary h3').textContent()) === '作業の追加・変更' && !(await page.evaluate(() => document.getElementById('wselBox').open)));
   ok('作業パネルの説明は名簿の人は自動・名簿にない人用と明記', /自動/.test(await page.locator('#wselBox > .wsel-hint').textContent()) && /名簿にない人/.test(await page.locator('#wselBox > .wsel-hint').textContent()));
   ok('どこにも「評価する作業を選ぶ」が見えない', await page.evaluate(() => ![...document.querySelectorAll('body *')].some(e => e.offsetParent !== null && e.children.length === 0 && /評価する作業を選ぶ/.test(e.textContent))));
@@ -2288,7 +2287,7 @@ async function runFirstUse(devName) {
   ok('#eeNote は名簿が正常なら非表示', await page.locator('#eeNote').isHidden());
   for (const [i, re] of [[1, /Tap/], [2, /Chạm/], [3, /Ketuk/]]) {
     await tapLang(page, i); await page.waitForTimeout(150);
-    ok(`言語${i}: 空表示も切り替わる`, re.test(await page.locator('#cards .pickwork').textContent()));
+    ok(`言語${i}: 人が未選択の案内は出ない`, await page.locator('#cards .pickwork').count() === 0 && !re.test(await page.locator('#cards').innerText()));
   }
   await tapLang(page, 0); await page.waitForTimeout(150);
 

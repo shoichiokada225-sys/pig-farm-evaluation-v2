@@ -161,7 +161,7 @@ function isStandalone(){
   try{if(window.navigator.standalone===true)return true;
     return ['standalone','fullscreen','minimal-ui'].some(m=>window.matchMedia&&window.matchMedia('(display-mode: '+m+')').matches)}catch(e){return false}
 }
-function renderA2hs(){const st=isStandalone();document.querySelectorAll('.a2hsbar').forEach(b=>{b.hidden=st})}
+function renderA2hs(){document.querySelectorAll('.a2hsbar').forEach(b=>{b.hidden=true})}   // 「ホーム画面に追加してください」は出さない（10-13 社長指示）
 /* 端末の保存（未送信の記録・アプリ本体）を、容量不足などでブラウザに消されないよう保護を頼む */
 let storePersist=null;   // true/false/null(確認できない)
 function renderStore(){
@@ -811,7 +811,7 @@ function renderRosterBody(){
   // 手入力欄: 名簿が無い時／「名簿にない人を入力」を押した時／入力済みの名前が名簿の人と一致しない時（打った名前を隠さない）
   const manual=!ro.length||curEe.manual||(!!cur&&!sel);
   document.getElementById('eeManual').style.display=manual?'':'none';
-  document.getElementById('eeAdd').hidden=!ro.length||manual;
+  document.getElementById('eeAdd').hidden=true;   // 「＋ 名簿にない人を入力」は出さない（10-13 社長指示。名簿が無い時は手入力欄が出る）
   // 選んだ人の名前（全文）と農場を採点カードの上に1行で（タブの名前は長いと切れる・手入力欄は隠れるため）
   const ec=document.getElementById('eeCur');
   if(ec){ec.hidden=!sel;ec.classList.toggle('edit',!!editId);
@@ -822,7 +822,7 @@ function renderRosterBody(){
   // 失敗の理由で文言を分ける: 電波（net）だけを「電波の良い所で」。受験者タブが無い・応答が不正は管理者へ（#eeWarn に理由）
   const atTx=fmtAt(rs.at),stale=!!ro.length&&!rosterLoading&&!!sheetUrl()&&(rosterErr||rosterIsOld(rs)),admin=rosterErr&&rosterErrReason!=='net';
   // 最初の操作（名前をタップ）の案内は名簿の先頭＝農場チップの直前に1行で（名簿の下だと最初の画面に入らない）
-  const pw=document.querySelector('#cards .pickwork .pw-tx');if(pw)pw.innerHTML=pickworkTx();   // 名簿が届いた・人を外した時に空表示の案内も合わせる
+  const pw=document.querySelector('#cards .pickwork .pw-tx');if(pw){if(pickEeState())pw.parentNode.remove();else pw.innerHTML=pickworkTx()}   // 名簿が届いた・人を外した時に空表示の案内も合わせる（人が未選択なら案内を消す）
   // 名簿が正常に取れている時は何も出さない（取得日時の行は出さない）。読み込み中・古い名簿・失敗の時だけ1行
   note.textContent=rosterLoading?t('eeLoading')
     :ro.length?(stale?(rosterErr?(admin?t('rosterPrev'):t('rosterStale')):t('rosterOld')).replace('{t}',atTx):'')
