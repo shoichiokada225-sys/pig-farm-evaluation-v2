@@ -26,17 +26,17 @@
 | area-calc | ship-fin/ship-criteria-plan | 0.06 | 農場で決めた体重帯の必要面積で割り上限頭数を出す計算だけ（数値は資料間で食い違うため本文に書かない＝社長判断3）。移動後に収まるかの現物照合は pen-count-fit に分離した（r4）。既存に面積計算は無い |
 | crowd-signs | sow-lineup/after-care | 0.09 | 過密の兆候（かじり・けんか・渋滞・糞汚れ・皮膚の傷・全頭が同時に横になれない）を豚房ごとに確かめて上長に報告する。旧 lie-down はここの兆候リストに統合して種目から削除（r4）。巡回運用・緊急度判定は patrol-check |
 | pen-count-fit | area-calc / count-record | <0.4（check_fin_works で作業内類似なし） | 移動後の豚房ごとの頭数が上限内かを、豚房の豚を実際に数えて確かめる現物照合だけ（計算は area-calc、記録との照合は count-record）。移動が無い日は口頭で想定を聞く。同じ受験者に area-calc と併用する場合も、上限頭数の計算は求めない |
-| split-judge | cull-move/isolation-move | 0.10 | 過密を下げるための頭数の分け方（空き豚房へ移す／出荷が近い豚を先に出す）を比べて案を出し上長に相談する行動だけ（報告は crowd-signs が担当）。夕方〜夜・移動は最小限の回数は「新しい群を作るとき」に限る（出荷には付けない。旧 timing-fight を統合。見えない観点は口頭。L5=新人に「暗い時間は闘争が減る」と説明して指導）。小さい豚の個体対応は外した（mark-followup 側）。誘導手技は move-order、移動後の咬傷観察は mix-watch、出荷の可否確認は ship-fin |
+| split-judge | cull-move/isolation-move | 0.10 | 過密を下げるための頭数の分け方（空き豚房へ移す／出荷が近い豚を先に出す）を比べて案を作り、案を添えて上長に相談する行動だけ。兆候のある豚房の番号と様子の報告（事実の報告）は crowd-signs が担当し、split-judge は案の有無で採点する。夕方〜夜・移動は最小限の回数は「新しい群を作るとき」に限る（出荷には付けない。旧 timing-fight を統合。見えない観点は口頭。L5=新人に「暗い時間は闘争が減る」と説明して指導）。小さい豚の個体対応は外した（mark-followup 側）。誘導手技は move-order、移動後の咬傷観察は mix-watch、出荷の可否確認は ship-fin |
 | count-record | daily-report/headcount-balance | 0.23 | 豚房の頭数を実際に数え、記録と照合する（移動が無い日でも採点できる）。日報の式の検算・転出入の記入は daily-report、移動時の頭数復唱は move-order/count-handover |
 
 
 # vent-controller 重複監査（r2 追記・G14）。Jaccard は概算（2-gram、手計算でなく目安。確定は check script）
 | 種目 | 最も近い既存種目 | Jaccard | 境界 |
 |---|---|---|---|
-| read-record | vent-temp read-temp / feed-switch timer-record | 0.15 | 本作業=コントローラー画面の設定値を読み用紙へ転記する正確さ。read-temp=温度計の読み方。timer-record=エサスイッチの設定記録 |
+| read-record | vent-temp read-temp / feed-switch timer-record | 0.15 | 本作業=コントローラー画面の設定値を読み用紙へ転記する正確さ（L4=前週の記録と画面値の食い違いに気づく）。設定を触らないことは change-rule に一本化し、ここでは採点しない。read-temp=温度計の読み方。timer-record=エサスイッチの設定記録 |
 | verify-actual | vent-temp manual-adjust / fan-clean | 0.14 | 本作業=画面の設定と実際（今のステージで回るべきファン・シャッター・インレット）の照合。manual-adjust=手でカーテン等を調整。fan-clean=清掃 |
-| change-rule | feed-switch の変更権限ルール(エサスイッチ caution) | 0.18 | 本作業=設定は決められた人だけが変え、受験者は権限の行動だけを採点する（L2=寒い暑いで自分で触りかける・相談しない／L3=指示があれば自分では変えず決められた人に相談／L4=指示がなくても根拠を添えて上長に相談し変更は決められた人に任せる）。変更後の記録・動作確認・最低換気量の扱いは採点しない（r4） |
-| weekly-review | vent-temp read-temp | 0.17 | 本作業=今週の設定記録に頭数の増減・体重帯の変化をそろえて毎週渡し（L3、口頭確認）、記録を見て見直し時期を自分から上長に言う（L4、当日の記録用紙で判定）。最高最低温度計は扱わない（read-temp のみ。r4で除去）。設定変更の相談は change-rule、温度計の読み方は read-temp、設定値の転記は read-record |
+| change-rule | feed-switch の変更権限ルール(エサスイッチ caution) | 0.18 | 本作業=設定は決められた人だけが変え、受験者は権限の行動だけを採点する（L1=自分で触る／L2=指示があれば触らないが、変更が必要と思っても上長に相談せず放置する／L3=指示があれば自分では変えず決められた人に相談／L4=指示がなくても触らず変更は決められた人に委ねる。L4 に「相談」「根拠」は含めない＝weekly-review L4 と同じ行動を二重に採点しない）。変更後の記録・動作確認・最低換気量の扱いは採点しない（r4） |
+| weekly-review | vent-temp read-temp | 0.17 | 本作業=今週の設定記録に頭数の増減・体重帯の変化をそろえて毎週渡し（L3、口頭確認）、L4 は L3 の「頭数・体重帯をそろえた記録を渡す」を含めたうえで、農場が決めた見直し時期に当たると自分から伝える（当日の記録用紙で判定）。権限行動（触らない・委ねる）は change-rule だけが採点する。最高最低温度計は扱わない（read-temp のみ。r4で除去）。設定変更の相談は change-rule、温度計の読み方は read-temp、設定値の転記は read-record |
 | power-backup | vent-temp fan-failure-first | 0.22 | 本作業=停電時の報告・発電機・換気ファンと給水ポンプ優先。fan-failure-first=ファン個別故障の初動。power-backup のブレーカー確認と fan-failure-first のブレーカー確認は同一人物に割り当てない（r4） |
 
 運用注記（評価者マニュアル・獣医レビュー文書へ反映すること）: 当日に見られるのは read-record と verify-actual のみ。change-rule・weekly-review・power-backup は口頭試問と記録用紙の確認で採点する。カーテン式の農場にはこの作業を割り当てない。

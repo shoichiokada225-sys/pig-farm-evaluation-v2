@@ -98,7 +98,7 @@
 - weekly-review: 最高最低温度計は扱わない（read-temp のみが採点。r4で除去）。今週の設定記録に頭数の増減・体重帯の変化をそろえて渡し、記録を見て見直し時期を自分から言う形。
 
 # density-grouping 根拠行
-area-calc: /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L764-773 — 体重帯別の必要面積 0.5〜0.6 / 0.6〜0.7 / 0.7〜0.85 / 0.85〜1.0 m2/頭（全体 0.5〜1.0）。計算例 3m x 5m = 15 m2、体重100kgなら 15 ÷ 0.85 = 約17頭が上限
+area-calc: /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L764-773 — 体重帯別の必要面積 0.5〜0.6 / 0.6〜0.7 / 0.7〜0.85 / 0.85〜1.0 m2/頭（全体 0.5〜1.0）。計算例 3m x 5m = 15 m2、体重100kgなら 15 ÷ 0.85 = 約17頭が上限（割り算は17.6で、頭数なので切り捨てて17頭。切り上げて18頭にしない）
 crowd-signs: /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L775-784 — 兆候の表（尾かじり・耳かじり、闘争、エサ箱・飲水器の渋滞、糞で汚れた豚、皮膚の傷。ADGは本作業では使わない）
 crowd-signs: /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L799 — 全頭が同時に横になれないほど詰まっていれば過密（簡易判断）。過密は尾かじり・闘争・成長遅延の最大の原因の「一つ」（L757）
 split-judge: /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L786-790 — 調整法3つ（空き豚房へ移す／出荷が近い豚を優先して出す／小さい豚を別群に）

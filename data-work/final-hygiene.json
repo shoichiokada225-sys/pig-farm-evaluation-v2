@@ -1956,10 +1956,10 @@
     "name": "異常サインの緊急度判定",
     "kanten": "開口呼吸や突然死は緊急、血便や黒いタール便・下痢・起立不能・湿った咳と鼻水・40℃以上の発熱などは高、跛行・乾いた咳・食欲低下は中と見分け、迷ったら即報告すると口頭で説明できるか。",
     "levels": [
-     "異常に気づいても緊急かどうか分けず、様子を見ようと報告を後回しにして悪化させる。",
+     "異常に気づいても緊急かどうか分けず、様子を見ようと報告を後回しにする。",
      "指示があれば報告するが、緊急の異常も他と同じ速さで報告するなど、急ぐ異常の区別があいまいで場当たり的。",
      "指示があれば、観点の区分どおりに異常の緊急度（緊急・高・中）を判断して報告できる。",
-     "指示がなくても緊急度を判断して緊急と高はすぐ報告し、中（跛行・乾いた咳・食欲低下）も当日中に報告し、迷う時も即報告する。",
+     "指示がなくても緊急度を判断して、緊急と高に加えて中（跛行・乾いた咳・食欲低下）も報告し、迷う時も報告する。",
      "緊急度の区分と、迷ったら即報告する理由を理解し、新人の見回りに同行して報告の遅れや区分の誤りをひとつ指摘し直させるなど、新人に指導できる。"
     ],
     "name_en": "Judging Urgency of Abnormal Signs",
@@ -1969,24 +1969,24 @@
     "kanten_vi": "Có nói được bằng miệng cách phân biệt khẩn cấp (thở há miệng, chết đột ngột), mức cao (phân có máu hoặc phân đen như hắc ín, tiêu chảy, không đứng dậy được, ho có đờm kèm chảy mũi, sốt từ 40 °C trở lên…) và mức trung bình (đi khập khiễng, ho khan, giảm ăn), và khi phân vân thì báo cáo ngay không.",
     "kanten_id": "Apakah dapat menjelaskan secara lisan cara membedakan darurat (napas dengan mulut terbuka, mati mendadak), tinggi (feses berdarah atau hitam seperti ter, diare, tidak bisa berdiri, batuk basah disertai ingus, demam 40 °C atau lebih, dan sebagainya), dan sedang (pincang, batuk kering, nafsu makan turun), serta melapor segera bila ragu?",
     "levels_en": [
-     "Even when noticing an abnormality, does not sort out its urgency, puts off reporting to see how it goes, and lets it get worse.",
+     "Even when noticing an abnormality, does not sort out its urgency and puts off reporting to see how it goes.",
      "With guidance reports, but the line between abnormalities to rush is vague, such as reporting urgent cases at the same pace as others, so it is haphazard.",
      "With guidance can judge the urgency of an abnormality according to the categories in the checkpoint (urgent, high, medium) and report it.",
-     "Independently judges urgency, reports urgent and high cases at once, also reports medium ones (lameness, dry cough, reduced appetite) the same day, and reports at once even when unsure.",
+     "Independently judges urgency, reports urgent and high cases, also reports medium ones (lameness, dry cough, reduced appetite), and reports even when unsure.",
      "Understands the urgency levels and why to report at once when unsure, and can teach new staff, for example by going on their rounds and pointing out one late report or wrong level so they fix it."
     ],
     "levels_vi": [
-     "Dù nhận ra bất thường cũng không phân mức khẩn cấp, để lại báo cáo sau vì nghĩ cứ theo dõi thêm, khiến tình trạng nặng hơn.",
-     "Nếu có chỉ dẫn thì báo cáo, nhưng ranh giới các bất thường cần gấp còn mơ hồ, chẳng hạn báo cáo ca khẩn cấp cũng chậm như các ca khác, nên tùy hứng.",
+     "Dù nhận ra bất thường cũng không phân mức khẩn cấp, để lại báo cáo sau vì nghĩ cứ theo dõi thêm.",
+     "Nếu có chỉ dẫn thì báo cáo, nhưng ranh giới các bất thường cần gấp còn mơ hồ, chẳng hạn báo cáo ca khẩn cấp cũng chậm như các ca khác, nên thiếu nhất quán.",
      "Nếu có chỉ dẫn thì phán đoán và báo cáo được mức khẩn cấp của bất thường đúng theo phân loại đã nêu ở mô tả mục (khẩn cấp, mức cao, mức trung bình).",
-     "Không cần chỉ dẫn cũng tự phán đoán mức khẩn cấp, báo cáo ngay ca khẩn cấp và mức cao, báo cả mức trung bình (đi khập khiễng, ho khan, giảm ăn) ngay trong ngày, và khi phân vân cũng báo ngay.",
+     "Không cần chỉ dẫn cũng tự phán đoán mức khẩn cấp, báo cáo ca khẩn cấp và mức cao, báo cả mức trung bình (đi khập khiễng, ho khan, giảm ăn), và khi phân vân cũng báo cáo.",
      "Hiểu các mức khẩn cấp và vì sao khi phân vân phải báo ngay, và có thể hướng dẫn người mới, chẳng hạn đi cùng họ khi kiểm tra, chỉ ra một chỗ báo chậm hoặc phân mức sai để họ sửa."
     ],
     "levels_id": [
-     "Meski menyadari ada yang abnormal, tidak memilah tingkat kedaruratannya, menunda laporan dengan alasan melihat perkembangan, hingga kondisinya memburuk.",
+     "Meski menyadari ada yang abnormal, tidak memilah tingkat kedaruratannya dan menunda laporan dengan alasan melihat perkembangan.",
      "Jika ada instruksi, melapor, tetapi batas kelainan yang harus cepat masih samar, misalnya kasus darurat dilaporkan sama lambatnya dengan yang lain, sehingga tidak menentu.",
      "Jika ada instruksi, dapat menilai tingkat kedaruratan kelainan sesuai pembagian pada deskripsi butir (darurat, tinggi, sedang) dan melapor.",
-     "Tanpa instruksi pun, menilai tingkat kedaruratan, segera melapor kasus darurat dan tinggi, juga melapor kasus sedang (pincang, batuk kering, nafsu makan turun) pada hari itu, dan segera melapor saat ragu.",
+     "Tanpa instruksi pun, menilai tingkat kedaruratan, melapor kasus darurat dan tinggi, juga melapor kasus sedang (pincang, batuk kering, nafsu makan turun), dan melapor saat ragu.",
      "Memahami tingkat kedaruratan dan alasan melapor segera saat ragu, serta bisa mengajari karyawan baru, misalnya mendampingi keliling mereka dan menunjukkan satu laporan yang terlambat atau tingkat yang salah agar diperbaiki."
     ]
    },
@@ -1998,7 +1998,7 @@
      "口頭で「なんか変です」と伝えるだけで、場所も個体も言えず、聞き返されて初めて答える。",
      "指示があれば報告するが、豚房番号やどの豚か、症状の具体性、いつからかが抜け、同房の状況は伝えない。",
      "指示があれば、日時・発見者・棟/列/豚房番号・対象の豚（マーキング色など）・症状・いつから・同房の状況・連絡済みか未連絡かを整理して第一報を伝えられる。",
-     "指示がなくても項目をそろえて第一報を伝え、症状を見たまま具体的に述べ、誰に連絡済みか未連絡かを添えて伝える。",
+     "指示がなくても症状を見たまま具体的に述べ、同房の他の豚の様子を自分から見て添えて第一報を伝え、連絡済みか未連絡かも添える。",
      "報告の項目が獣医師の判断を助ける理由を理解し、新人の第一報を聞いて抜けた項目をひとつ指摘し言い直させるなど、新人に指導できる。"
     ],
     "name_en": "Contents of an Abnormality Report",
@@ -2011,21 +2011,21 @@
      "Only says \"something is off\" verbally, cannot say the place or the pig, and answers only when asked again.",
      "With guidance reports, but leaves out the pen number, which pig, concrete symptoms, or since when, and does not tell the situation in the same pen.",
      "With guidance can organize and give a first report with the date and time, who found it, building/row/pen number, the pig (marking colour, etc.), symptoms, since when, the situation in the same pen, and whether anyone has been contacted yet.",
-     "Independently gives a first report with all items in place, describes symptoms concretely as seen, and adds who has already been contacted or that no one has.",
+     "Independently gives a first report with symptoms described concretely as seen, checks the other pigs in the same pen on their own and adds how they look, and says who has been contacted or that no one has.",
      "Understands why these items help the veterinarian's judgment, and can teach new staff, for example by listening to their first report and pointing out one missing item so they restate it."
     ],
     "levels_vi": [
      "Chỉ nói miệng là \"có gì đó lạ\", không nói được vị trí hay con lợn nào, bị hỏi lại mới trả lời.",
      "Nếu có chỉ dẫn thì báo cáo, nhưng thiếu số ô chuồng, con lợn nào, triệu chứng cụ thể hoặc bắt đầu từ khi nào, và không nói tình trạng các con lợn khác cùng ô.",
      "Nếu có chỉ dẫn thì sắp xếp và báo cáo lần đầu được ngày giờ, người phát hiện, số nhà chuồng/hàng/ô chuồng, con lợn nào (màu đánh dấu…), triệu chứng, bắt đầu từ khi nào, tình trạng các con lợn khác cùng ô và đã liên lạc với ai chưa.",
-     "Không cần chỉ dẫn cũng báo cáo lần đầu đủ các mục, nói cụ thể triệu chứng đúng như thấy, và nói kèm đã liên lạc với ai hoặc chưa liên lạc.",
+     "Không cần chỉ dẫn cũng báo cáo lần đầu, nói cụ thể triệu chứng đúng như thấy, tự xem các con lợn khác cùng ô và nói kèm tình trạng của chúng, và nói kèm đã liên lạc với ai hoặc chưa liên lạc.",
      "Hiểu vì sao các mục này giúp bác sĩ thú y phán đoán, và có thể hướng dẫn người mới, chẳng hạn nghe báo cáo lần đầu của họ, chỉ ra một mục còn thiếu để họ nói lại."
     ],
     "levels_id": [
      "Hanya mengatakan secara lisan \"ada yang aneh\", tidak bisa menyebut tempat atau babi yang mana, dan baru menjawab setelah ditanya lagi.",
      "Jika ada instruksi, melapor, tetapi nomor petak kandang, babi yang mana, kejelasan gejala, atau sejak kapan terlewat, dan kondisi babi lain di petak yang sama tidak disampaikan.",
      "Jika ada instruksi, dapat menyusun dan menyampaikan laporan awal berisi tanggal dan jam, penemu, nomor gedung/baris/petak kandang, babi yang mana (warna tanda, dll.), gejala, sejak kapan, kondisi babi lain di petak yang sama, dan apakah sudah ada yang dihubungi.",
-     "Tanpa instruksi pun, menyampaikan laporan awal dengan butir yang lengkap, menyampaikan gejala secara konkret sesuai yang terlihat, serta menambahkan siapa yang sudah dihubungi atau bahwa belum ada.",
+     "Tanpa instruksi pun, menyampaikan laporan awal dengan gejala konkret sesuai yang terlihat, melihat sendiri babi lain di petak yang sama dan menambahkan kondisinya, serta menambahkan siapa yang sudah dihubungi atau bahwa belum ada.",
      "Memahami mengapa butir-butir ini membantu penilaian dokter hewan, serta bisa mengajari karyawan baru, misalnya mendengarkan laporan awal mereka dan menunjukkan satu butir yang terlewat agar disampaikan ulang."
     ]
    },

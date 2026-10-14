@@ -699,13 +699,15 @@ const scoreWork = (p, wid, s, n) => p.evaluate(([wid, s, n]) => { [...document.q
     const ff = await aspTxt('vent-temp', 'fan-failure-first');
     ok('vent-temp/fan-failure-first: L4に周辺の豚をこまめに見る', JSON.parse(ff)[1][3].includes('こまめに見る'));
     const wr = await aspTxt('vent-controller', 'weekly-review');
-    ok('vent-controller/weekly-review: 最高最低温度計が観点・段階に無く、L3=用紙にそろえて渡す・L4=見直し時期を自分から言う', (() => { const [k, l] = JSON.parse(wr); const all = k + l.join(''); return !all.includes('最高最低') && !all.includes('明け方') && k.includes('頭数の増減') && k.includes('体重帯の変化') && l[2].includes('用紙にそろえて') && l[3].includes('見直し時期') && l[3].includes('自分から上長に言える'); })());
+    ok('vent-controller/weekly-review: 最高最低温度計が観点・段階に無く、L3=用紙にそろえて渡す・L4=見直し時期を自分から言う', (() => { const [k, l] = JSON.parse(wr); const all = k + l.join(''); return !all.includes('最高最低') && !all.includes('明け方') && k.includes('頭数の増減') && k.includes('体重帯の変化') && l[2].includes('用紙にそろえて') && l[3].includes('頭数・体重帯') && l[3].includes('見直し時期') && l[3].includes('自分から伝える') && !all.includes('農場長') && !all.includes('一枚'); })());
     const cr = await aspTxt('vent-controller', 'change-rule');
-    ok('vent-controller/change-rule: 権限の行動だけ（変更後の記録・動作確認・最低換気量が無い）で、L4は根拠を添えて上長に相談し変更は決められた人に任せる', (() => { const [k, l] = JSON.parse(cr); const all = k + l.join(''); return !all.includes('動作確認') && !all.includes('変更後') && !all.includes('最低換気量') && l[1].includes('触りかけ') && l[2].includes('決められた人に相談') && l[3].includes('根拠') && l[3].includes('上長に相談') && l[3].includes('決められた人に任せる'); })());
+    ok('vent-controller/change-rule: 権限の行動だけ（変更後の記録・動作確認・最低換気量が無い）で、L1=自分で触る・L2=触らないが相談せず放置・L4=触らず決められた人に委ねる（相談・根拠はL4に無い）', (() => { const [k, l] = JSON.parse(cr); const all = k + l.join(''); return !all.includes('動作確認') && !all.includes('変更後') && !all.includes('最低換気量') && !l[1].includes('触りかけ') && l[1].includes('相談せず放置') && l[2].includes('決められた人に相談') && !l[3].includes('根拠') && !l[3].includes('相談') && l[3].includes('触らず') && l[3].includes('決められた人に委ねる'); })());
+    const rr = await aspTxt('vent-controller', 'read-record');
+    ok('vent-controller/read-record: 不触は含めず読み取りの正確さだけ・L4は前週の記録との食い違いに気づく', (() => { const [k, l] = JSON.parse(rr); const all = k + l.join(''); return !all.includes('変更する操作') && l[3].includes('前週の記録') && l[3].includes('食い違い') && !l[1].includes('転記ミス'); })());
     const ur = await aspTxt('patrol-check', 'urgency-judge');
-    ok('patrol-check/urgency-judge: L4に中も当日中に報告・観点に「血便や黒いタール便」・L3は区分どおり', (() => { const [k, l] = JSON.parse(ur); return l[3].includes('当日中') && l[3].includes('跛行') && k.includes('血便や黒いタール便') && l[2].includes('区分どおり') && l[2].length <= 60; })());
+    ok('patrol-check/urgency-judge: L4に中も報告（当日中・すぐ無し）・L1に悪化無し・観点に「血便や黒いタール便」・L3は区分どおり', (() => { const [k, l] = JSON.parse(ur); return !l[3].includes('当日中') && !l[3].includes('すぐ') && !l[0].includes('悪化') && l[3].includes('中（跛行') && l[3].includes('報告') && k.includes('血便や黒いタール便') && l[2].includes('区分どおり') && l[2].length <= 60; })());
     const rt = await aspTxt('patrol-check', 'report-template');
-    ok('patrol-check/report-template: 発見者が観点とL3にあり、異常豚がいない日は想定事例を口頭で', (() => { const [k, l] = JSON.parse(rt); return k.includes('発見者') && l[2].includes('発見者') && k.includes('想定事例を口頭で') && l[0].includes('場所も個体も言えず'); })());
+    ok('patrol-check/report-template: 発見者が観点とL3にあり、異常豚がいない日は想定事例を口頭で', (() => { const [k, l] = JSON.parse(rt); return k.includes('発見者') && l[2].includes('発見者') && k.includes('想定事例を口頭で') && l[0].includes('場所も個体も言えず') && l[3].includes('同房の他の豚') && l[3].includes('自分から'); })());
     const rc = await aspTxt('patrol-check', 'route-cover');
     ok('patrol-check/route-cover: 起き上がりの確認はL3、L4は全頭', (() => { const l = JSON.parse(rc)[1]; return l[2].includes('起き上がる') && l[3].includes('全頭起き上がる'); })());
     const fm = await aspTxt('water-check', 'flow-measure');
@@ -715,7 +717,7 @@ const scoreWork = (p, wid, s, n) => p.evaluate(([wid, s, n]) => { [...document.q
     const cl = await aspTxt('water-check', 'clog-leak');
     ok('water-check/clog-leak: 漏水時の元栓閉止と報告はL3、L4は床の濡れの原因と水質に絞る', (() => { const l = JSON.parse(cl)[1]; return l[2].includes('漏水時は元栓を閉めて報告') && l[3].includes('床の濡れ') && l[3].includes('水質') && !l[3].includes('元栓'); })());
     const sr = await aspTxt('water-check', 'season-record');
-    ok('water-check/season-record: L3は季節の点検ポイントを答えるだけ（記録・予備ニップルはL4/L5）', (() => { const l = JSON.parse(sr)[1]; return !l[2].includes('記録') && !l[2].includes('予備') && l[3].includes('記録') && l[3].includes('予備') ; })());
+    ok('water-check/season-record: L3は答えるだけ・L4は点検と異常報告・L5は理由の指導（記録・予備ニップルは無い）', (() => { const l = JSON.parse(sr)[1]; return !l.join('').includes('記録') && !l.join('').includes('予備') && l[3].includes('実際に点検') && l[3].includes('上長に報告') && l[4].includes('新人に指導'); })());
     const dg = await pageText('density-grouping');
     ok('density-grouping: 5種目に timing-fight と lie-down が無く pen-count-fit がある', await page.evaluate(() => { const ids = WORKDATA_V2.works.find(k => k.id === 'density-grouping').aspects.map(a => a.id); return ids.length === 5 && !ids.includes('timing-fight') && !ids.includes('lie-down') && ids.includes('pen-count-fit'); }));
     const ac = await aspTxt('density-grouping', 'area-calc');
@@ -725,7 +727,7 @@ const scoreWork = (p, wid, s, n) => p.evaluate(([wid, s, n]) => { [...document.q
     const cs = await aspTxt('density-grouping', 'crowd-signs');
     ok('density-grouping/crowd-signs: 兆候に全頭が同時に横になれないが入り、L3で豚房ごとに確かめ上長に報告、L2は兆候の一部', (() => { const [k, l] = JSON.parse(cs); return k.includes('全頭が同時に横になれない') && l[2].includes('豚房ごとに確かめ') && l[2].includes('上長に報告') && l[1].includes('兆候の一部しか拾えず'); })());
     const sj = await aspTxt('density-grouping', 'split-judge');
-    ok('density-grouping/split-judge: 夕方〜夜と最小限の回数は新しい群を作るときに限り、L4は相談で報告が無く、L5は暗い時間の説明を指導', (() => { const [k, l] = JSON.parse(sj); return sj.includes('夕方〜夜') && sj.includes('最小限') && !sj.includes('小さい') && k.includes('新しい群を作るときは') && l[3].includes('上長に相談') && !l[3].includes('報告') && l[4].includes('暗い時間は闘争が減る') && l[4].includes('新人に指導'); })());
+    ok('density-grouping/split-judge: 夕方〜夜と最小限の回数は新しい群を作るときに限り、L4は相談で報告が無く、L5は暗い時間の説明を指導', (() => { const [k, l] = JSON.parse(sj); return sj.includes('夕方〜夜') && sj.includes('最小限') && !sj.includes('小さい') && k.includes('新しい群を作るときは') && l[3].includes('案を添えて上長に相談') && !l[3].includes('報告') && l[4].includes('暗い時間は闘争が減る') && l[4].includes('新人に指導'); })());
     const cn = await aspTxt('density-grouping', 'count-record');
     ok('density-grouping/count-record: 実際に数えて記録と照合する', cn.includes('実際に数えて記録と照合'));
     ok('新5作業の表示中に pageerror が0', st.errors.length === 0);
