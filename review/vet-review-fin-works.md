@@ -14,7 +14,7 @@
 | water-check 飲水器の点検 | ○ | ○ | ○ | flow-measure・height-fit は当日見られる。clog-leak（不具合が無い日）・freeze-outage（季節外）は口頭。season-record は記録と予備品の有無を見る |
 | vent-temp 換気・温度管理（肥育） | ○ | ○ | ○ | read-temp は記録用紙、fan-failure-first と季節外の pig-signs/never-stop は口頭 |
 | vent-controller 換気設定確認（ウインドレス） | ○ | ○ | ○ | 当日に見られるのは read-record・verify-actual のみ。change-rule・weekly-review・power-backup は口頭と記録。カーテン式の農場では採点できない（割り当てない） |
-| density-grouping 密度管理・群分け（肥育） | ○ | ○ | ○ | 移動が無い日は split-judge・timing-fight・area-calc がほぼ口頭 |
+| density-grouping 密度管理・群分け（肥育） | ○ | ○ | ○ | 移動が無い日は split-judge・pen-count-fit・area-calc がほぼ口頭 |
 
 ## 差し戻しで直した主な点（根拠行つき）
 

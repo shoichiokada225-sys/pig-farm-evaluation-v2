@@ -1904,9 +1904,9 @@
   "no": "",
   "name": "見回り・健康チェック",
   "purposeShort": "毎日の巡回で不調の豚を早く見つけ、迷わず報告して病気の広がりと出荷ロスを防ぐ",
-  "purposeShort_en": "Find unwell pigs early on daily rounds and report without hesitation to prevent disease spread and losses at market (deaths, condemnation, downgrading)",
-  "purposeShort_vi": "Đi kiểm tra hằng ngày để phát hiện sớm lợn không khỏe, báo cáo không do dự, phòng bệnh lây lan và tổn thất khi xuất bán (chết, loại thải, hạ cấp)",
-  "purposeShort_id": "Menemukan babi yang tidak sehat lebih awal lewat keliling harian dan melapor tanpa ragu, agar penyakit tidak menyebar dan kerugian saat penjualan (kematian, pemusnahan, penurunan kelas) dicegah",
+  "purposeShort_en": "Find unwell pigs early on daily rounds and report without hesitation to prevent disease spread and losses at market",
+  "purposeShort_vi": "Đi kiểm tra hằng ngày để phát hiện sớm lợn không khỏe, báo cáo không do dự, phòng bệnh lây lan và tổn thất khi xuất bán",
+  "purposeShort_id": "Menemukan babi yang tidak sehat lebih awal lewat keliling harian dan melapor tanpa ragu, agar penyakit tidak menyebar dan kerugian saat penjualan dicegah",
   "gyomu": "",
   "name_en": "Rounds and Health Check",
   "name_vi": "Đi kiểm tra và xem sức khỏe lợn",
@@ -1919,47 +1919,47 @@
     "levels": [
      "遠くから見ただけで大丈夫と済ませ、豚房の中に入らず、寝ている豚が起き上がるかも確かめない。",
      "指示があれば豚房に入るが、エサ箱や排泄エリアの確認が抜け、寝ている豚の確認は他者まかせ。",
-     "指示があれば入口で全体を見て、立つ豚・寝ている豚・エサ箱・飲水器・排泄エリア・奥の順に確認できる。",
-     "指示がなくても全豚房を漏れなく回り、寝ている豚が起き上がるかまで確かめる。",
+     "指示があれば入口で全体を見て、立つ豚・寝ている豚・エサ箱・飲水器・排泄エリア・奥の順に確認し、寝ている豚が起き上がるかも確かめられる。",
+     "指示がなくても全豚房を漏れなく回り、寝ている豚が全頭起き上がるかまで確かめる。",
      "遠くから見て済ませる危うさと、異常をひとつ見つけて他が雑になる危うさを理解し、新人の見回りに同行して抜けをひとつ指摘し直させるなど、新人に指導できる。"
     ],
     "name_en": "Pen-by-Pen Rounds Procedure",
     "name_vi": "Trình tự đi kiểm tra từng ô chuồng",
     "name_id": "Prosedur keliling tiap petak kandang",
     "kanten_en": "Can they go inside every pen, view the whole pen from the entrance, then check standing pigs, resting pigs, feeder, drinker, dunging area, and the far end in order?",
-    "kanten_vi": "Có vào tận trong mọi ô chuồng, nhìn tổng thể từ cửa vào rồi lần lượt xem lợn đứng, lợn nằm, máng ăn, núm uống, khu thải phân và phía trong cùng không.",
+    "kanten_vi": "Có vào tận trong mọi ô chuồng, nhìn tổng thể từ cửa vào rồi lần lượt xem lợn đứng, lợn nằm, máng ăn, dụng cụ uống nước, khu thải phân và phía trong cùng không.",
     "kanten_id": "Apakah masuk ke dalam semua petak kandang, melihat keseluruhan dari pintu, lalu memeriksa babi berdiri, babi berbaring, tempat pakan, tempat minum, area kotoran, dan bagian dalam secara berurutan?",
     "levels_en": [
      "Glances from a distance and calls it fine, does not enter the pen, and does not check whether resting pigs get up.",
      "With guidance enters the pen, but skips steps such as the feeder or dunging area, and leaves checking resting pigs to others.",
-     "With guidance can view the pen from the entrance, then check standing pigs, resting pigs, feeder, drinker, dunging area, and the far end in order.",
-     "Independently covers every pen without gaps and checks whether every resting pig gets up.",
+     "With guidance can view the pen from the entrance, check standing pigs, resting pigs, feeder, drinker, dunging area, and the far end in order, and also check whether resting pigs get up.",
+     "Independently covers every pen without gaps and checks that every resting pig gets up.",
      "Understands the danger of judging from a distance and of relaxing on other pens after finding one problem, and can teach new staff, for example by going on their rounds and pointing out one missed step so they fix it."
     ],
     "levels_vi": [
      "Chỉ nhìn từ xa rồi cho là ổn, không vào trong ô chuồng, cũng không kiểm tra xem lợn đang nằm có đứng dậy không.",
      "Nếu có chỉ dẫn thì vào ô chuồng, nhưng bỏ sót bước như máng ăn hay khu thải phân, việc xem lợn đang nằm phó mặc cho người khác.",
-     "Nếu có chỉ dẫn thì nhìn tổng thể từ cửa vào, rồi lần lượt xem lợn đứng, lợn nằm, máng ăn, núm uống, khu thải phân và phía trong cùng được.",
-     "Không cần chỉ dẫn cũng đi hết mọi ô chuồng không sót, và kiểm tra xem lợn đang nằm có đứng dậy không.",
+     "Nếu có chỉ dẫn thì nhìn tổng thể từ cửa vào, lần lượt xem lợn đứng, lợn nằm, máng ăn, dụng cụ uống nước, khu thải phân và phía trong cùng, và kiểm tra xem lợn đang nằm có đứng dậy không được.",
+     "Không cần chỉ dẫn cũng đi hết mọi ô chuồng không sót, và kiểm tra xem tất cả lợn đang nằm có đứng dậy không.",
      "Hiểu sự nguy hiểm của việc nhìn từ xa và của việc thấy một con bất thường rồi yên tâm làm ẩu các ô khác, và có thể hướng dẫn người mới, chẳng hạn đi cùng họ khi kiểm tra, chỉ ra một chỗ sót để họ sửa."
     ],
     "levels_id": [
      "Hanya melihat dari jauh lalu menganggap aman, tidak masuk ke petak kandang, dan tidak memeriksa apakah babi yang berbaring bangun.",
      "Jika ada instruksi, masuk ke petak kandang, tetapi ada langkah yang terlewat seperti tempat pakan atau area kotoran, dan pemeriksaan babi berbaring diserahkan kepada orang lain.",
-     "Jika ada instruksi, dapat melihat keseluruhan dari pintu, lalu memeriksa babi berdiri, babi berbaring, tempat pakan, tempat minum, area kotoran, dan bagian dalam secara berurutan.",
-     "Tanpa instruksi pun, mengelilingi semua petak kandang tanpa terlewat dan memeriksa apakah babi yang berbaring bangun.",
+     "Jika ada instruksi, dapat melihat keseluruhan dari pintu, lalu memeriksa babi berdiri, babi berbaring, tempat pakan, tempat minum, area kotoran, dan bagian dalam secara berurutan, serta memeriksa apakah babi yang berbaring bangun.",
+     "Tanpa instruksi pun, mengelilingi semua petak kandang tanpa terlewat dan memeriksa apakah semua babi yang berbaring bangun.",
      "Memahami bahaya menilai dari jauh dan bahaya menjadi lengah pada petak lain setelah menemukan satu masalah, serta bisa mengajari karyawan baru, misalnya mendampingi keliling mereka dan menunjukkan satu langkah yang terlewat agar diperbaiki."
     ]
    },
    {
     "id": "urgency-judge",
     "name": "異常サインの緊急度判定",
-    "kanten": "開口呼吸や突然死は緊急、血便（黒いタール便）・下痢・起立不能・湿った咳と鼻水・40℃以上の発熱などは高、跛行・乾いた咳・食欲低下は中と見分け、迷ったら即報告すると口頭で説明できるか。",
+    "kanten": "開口呼吸や突然死は緊急、血便や黒いタール便・下痢・起立不能・湿った咳と鼻水・40℃以上の発熱などは高、跛行・乾いた咳・食欲低下は中と見分け、迷ったら即報告すると口頭で説明できるか。",
     "levels": [
      "異常に気づいても緊急かどうか分けず、様子を見ようと報告を後回しにして悪化させる。",
      "指示があれば報告するが、緊急の異常も他と同じ速さで報告するなど、急ぐ異常の区別があいまいで場当たり的。",
-     "指示があれば、開口呼吸・突然死は緊急、血便・下痢・起立不能・湿った咳と鼻水・40℃以上の発熱などは高、跛行・乾いた咳・食欲低下は中と口頭で分けて報告できる。",
-     "指示がなくても緊急度を判断して緊急と高はすぐ報告し、迷う時も即報告する。",
+     "指示があれば、観点の区分どおりに異常の緊急度（緊急・高・中）を判断して報告できる。",
+     "指示がなくても緊急度を判断して緊急と高はすぐ報告し、中（跛行・乾いた咳・食欲低下）も当日中に報告し、迷う時も即報告する。",
      "緊急度の区分と、迷ったら即報告する理由を理解し、新人の見回りに同行して報告の遅れや区分の誤りをひとつ指摘し直させるなど、新人に指導できる。"
     ],
     "name_en": "Judging Urgency of Abnormal Signs",
@@ -1971,60 +1971,60 @@
     "levels_en": [
      "Even when noticing an abnormality, does not sort out its urgency, puts off reporting to see how it goes, and lets it get worse.",
      "With guidance reports, but the line between abnormalities to rush is vague, such as reporting urgent cases at the same pace as others, so it is haphazard.",
-     "With guidance can explain aloud and report: open-mouth breathing and sudden death as urgent; bloody or black tarry stool, diarrhoea, unable to stand, wet cough with nasal discharge, and fever of 40 °C or higher, among others, as high urgency; lameness, dry cough, and reduced appetite as medium.",
-     "Independently judges urgency, reports urgent and high cases at once, and reports at once even when unsure.",
+     "With guidance can judge the urgency of an abnormality according to the categories in the checkpoint (urgent, high, medium) and report it.",
+     "Independently judges urgency, reports urgent and high cases at once, also reports medium ones (lameness, dry cough, reduced appetite) the same day, and reports at once even when unsure.",
      "Understands the urgency levels and why to report at once when unsure, and can teach new staff, for example by going on their rounds and pointing out one late report or wrong level so they fix it."
     ],
     "levels_vi": [
      "Dù nhận ra bất thường cũng không phân mức khẩn cấp, để lại báo cáo sau vì nghĩ cứ theo dõi thêm, khiến tình trạng nặng hơn.",
      "Nếu có chỉ dẫn thì báo cáo, nhưng ranh giới các bất thường cần gấp còn mơ hồ, chẳng hạn báo cáo ca khẩn cấp cũng chậm như các ca khác, nên tùy hứng.",
-     "Nếu có chỉ dẫn thì nói bằng miệng và báo cáo được: thở há miệng, chết đột ngột là khẩn cấp; phân có máu hoặc phân đen như hắc ín, tiêu chảy, không đứng dậy được, ho có đờm kèm chảy mũi, sốt từ 40 °C trở lên… là mức cao; đi khập khiễng, ho khan, giảm ăn là mức trung bình.",
-     "Không cần chỉ dẫn cũng tự phán đoán mức khẩn cấp, báo cáo ngay các ca khẩn cấp và mức cao, và khi phân vân cũng báo ngay.",
+     "Nếu có chỉ dẫn thì phán đoán và báo cáo được mức khẩn cấp của bất thường đúng theo phân loại đã nêu ở mô tả mục (khẩn cấp, mức cao, mức trung bình).",
+     "Không cần chỉ dẫn cũng tự phán đoán mức khẩn cấp, báo cáo ngay ca khẩn cấp và mức cao, báo cả mức trung bình (đi khập khiễng, ho khan, giảm ăn) ngay trong ngày, và khi phân vân cũng báo ngay.",
      "Hiểu các mức khẩn cấp và vì sao khi phân vân phải báo ngay, và có thể hướng dẫn người mới, chẳng hạn đi cùng họ khi kiểm tra, chỉ ra một chỗ báo chậm hoặc phân mức sai để họ sửa."
     ],
     "levels_id": [
      "Meski menyadari ada yang abnormal, tidak memilah tingkat kedaruratannya, menunda laporan dengan alasan melihat perkembangan, hingga kondisinya memburuk.",
      "Jika ada instruksi, melapor, tetapi batas kelainan yang harus cepat masih samar, misalnya kasus darurat dilaporkan sama lambatnya dengan yang lain, sehingga tidak menentu.",
-     "Jika ada instruksi, dapat menjelaskan secara lisan dan melapor: napas dengan mulut terbuka dan mati mendadak sebagai darurat; feses berdarah atau hitam seperti ter, diare, tidak bisa berdiri, batuk basah disertai ingus, demam 40 °C atau lebih, dan sejenisnya sebagai tingkat tinggi; pincang, batuk kering, dan nafsu makan turun sebagai sedang.",
-     "Tanpa instruksi pun, menilai tingkat kedaruratan, segera melapor kasus darurat dan tinggi, dan segera melapor juga saat ragu.",
+     "Jika ada instruksi, dapat menilai tingkat kedaruratan kelainan sesuai pembagian pada deskripsi butir (darurat, tinggi, sedang) dan melapor.",
+     "Tanpa instruksi pun, menilai tingkat kedaruratan, segera melapor kasus darurat dan tinggi, juga melapor kasus sedang (pincang, batuk kering, nafsu makan turun) pada hari itu, dan segera melapor saat ragu.",
      "Memahami tingkat kedaruratan dan alasan melapor segera saat ragu, serta bisa mengajari karyawan baru, misalnya mendampingi keliling mereka dan menunjukkan satu laporan yang terlambat atau tingkat yang salah agar diperbaiki."
     ]
    },
    {
     "id": "report-template",
     "name": "異常報告の中身",
-    "kanten": "異常を見つけたら、日時・棟/列/豚房番号・対象の豚（マーキング色など）・症状・いつから・同房の状況・連絡済みか未連絡かを整理して第一報として伝えられるか。",
+    "kanten": "異常を見つけたら、日時・発見者・棟/列/豚房番号・対象の豚（マーキング色など）・症状・いつから・同房の状況・連絡済みか未連絡かを整理して第一報として伝えられるか（異常豚がいない日は想定事例を口頭で聞く）。",
     "levels": [
-     "口頭で「なんか変です」と伝えるだけで、場所も個体も症状もわからず、聞き返されて初めて答える。",
+     "口頭で「なんか変です」と伝えるだけで、場所も個体も言えず、聞き返されて初めて答える。",
      "指示があれば報告するが、豚房番号やどの豚か、症状の具体性、いつからかが抜け、同房の状況は伝えない。",
-     "指示があれば、日時・棟/列/豚房番号・対象の豚（マーキング色など）・症状・いつから・同房の状況・連絡済みか未連絡かを整理して第一報を伝えられる。",
+     "指示があれば、日時・発見者・棟/列/豚房番号・対象の豚（マーキング色など）・症状・いつから・同房の状況・連絡済みか未連絡かを整理して第一報を伝えられる。",
      "指示がなくても項目をそろえて第一報を伝え、症状を見たまま具体的に述べ、誰に連絡済みか未連絡かを添えて伝える。",
      "報告の項目が獣医師の判断を助ける理由を理解し、新人の第一報を聞いて抜けた項目をひとつ指摘し言い直させるなど、新人に指導できる。"
     ],
     "name_en": "Contents of an Abnormality Report",
     "name_vi": "Nội dung báo cáo bất thường",
     "name_id": "Isi laporan kelainan",
-    "kanten_en": "When they find an abnormality, can they organize and give a first report with the date and time, building/row/pen number, the pig (marking colour, etc.), symptoms, since when, the situation in the same pen, and whether anyone has already been contacted?",
-    "kanten_vi": "Khi phát hiện bất thường, có sắp xếp và báo cáo lần đầu đủ ngày giờ, số nhà chuồng/hàng/ô chuồng, con lợn nào (màu đánh dấu…), triệu chứng, bắt đầu từ khi nào, tình trạng các con lợn khác cùng ô và đã liên lạc với ai chưa không.",
-    "kanten_id": "Apakah saat menemukan kelainan, dapat menyusun dan menyampaikan laporan awal berisi tanggal dan jam, nomor gedung/baris/petak kandang, babi yang mana (warna tanda, dll.), gejala, sejak kapan, kondisi babi lain di petak yang sama, dan apakah sudah menghubungi seseorang?",
+    "kanten_en": "When they find an abnormality, can they organize and give a first report with the date and time, who found it, building/row/pen number, the pig (marking colour, etc.), symptoms, since when, the situation in the same pen, and whether anyone has already been contacted (on a day with no abnormal pig, ask for an imagined case orally)?",
+    "kanten_vi": "Khi phát hiện bất thường, có sắp xếp và báo cáo lần đầu đủ ngày giờ, người phát hiện, số nhà chuồng/hàng/ô chuồng, con lợn nào (màu đánh dấu…), triệu chứng, bắt đầu từ khi nào, tình trạng các con lợn khác cùng ô và đã liên lạc với ai chưa không (ngày không có lợn bất thường thì hỏi miệng một tình huống giả định).",
+    "kanten_id": "Apakah saat menemukan kelainan, dapat menyusun dan menyampaikan laporan awal berisi tanggal dan jam, penemu, nomor gedung/baris/petak kandang, babi yang mana (warna tanda, dll.), gejala, sejak kapan, kondisi babi lain di petak yang sama, dan apakah sudah menghubungi seseorang (pada hari tanpa babi abnormal, tanyakan secara lisan kasus rekaan)?",
     "levels_en": [
-     "Only says \"something is off\" verbally, so the place, the pig, and the symptoms are unclear, and answers only when asked again.",
+     "Only says \"something is off\" verbally, cannot say the place or the pig, and answers only when asked again.",
      "With guidance reports, but leaves out the pen number, which pig, concrete symptoms, or since when, and does not tell the situation in the same pen.",
-     "With guidance can organize and give a first report with the date and time, building/row/pen number, the pig (marking colour, etc.), symptoms, since when, the situation in the same pen, and whether anyone has been contacted yet.",
+     "With guidance can organize and give a first report with the date and time, who found it, building/row/pen number, the pig (marking colour, etc.), symptoms, since when, the situation in the same pen, and whether anyone has been contacted yet.",
      "Independently gives a first report with all items in place, describes symptoms concretely as seen, and adds who has already been contacted or that no one has.",
      "Understands why these items help the veterinarian's judgment, and can teach new staff, for example by listening to their first report and pointing out one missing item so they restate it."
     ],
     "levels_vi": [
-     "Chỉ nói miệng là \"có gì đó lạ\", nên không rõ vị trí, con lợn nào, triệu chứng gì, bị hỏi lại mới trả lời.",
+     "Chỉ nói miệng là \"có gì đó lạ\", không nói được vị trí hay con lợn nào, bị hỏi lại mới trả lời.",
      "Nếu có chỉ dẫn thì báo cáo, nhưng thiếu số ô chuồng, con lợn nào, triệu chứng cụ thể hoặc bắt đầu từ khi nào, và không nói tình trạng các con lợn khác cùng ô.",
-     "Nếu có chỉ dẫn thì sắp xếp và báo cáo lần đầu được ngày giờ, số nhà chuồng/hàng/ô chuồng, con lợn nào (màu đánh dấu…), triệu chứng, bắt đầu từ khi nào, tình trạng các con lợn khác cùng ô và đã liên lạc với ai chưa.",
+     "Nếu có chỉ dẫn thì sắp xếp và báo cáo lần đầu được ngày giờ, người phát hiện, số nhà chuồng/hàng/ô chuồng, con lợn nào (màu đánh dấu…), triệu chứng, bắt đầu từ khi nào, tình trạng các con lợn khác cùng ô và đã liên lạc với ai chưa.",
      "Không cần chỉ dẫn cũng báo cáo lần đầu đủ các mục, nói cụ thể triệu chứng đúng như thấy, và nói kèm đã liên lạc với ai hoặc chưa liên lạc.",
      "Hiểu vì sao các mục này giúp bác sĩ thú y phán đoán, và có thể hướng dẫn người mới, chẳng hạn nghe báo cáo lần đầu của họ, chỉ ra một mục còn thiếu để họ nói lại."
     ],
     "levels_id": [
-     "Hanya mengatakan secara lisan \"ada yang aneh\", sehingga tempat, babi yang mana, dan gejalanya tidak jelas, dan baru menjawab setelah ditanya lagi.",
+     "Hanya mengatakan secara lisan \"ada yang aneh\", tidak bisa menyebut tempat atau babi yang mana, dan baru menjawab setelah ditanya lagi.",
      "Jika ada instruksi, melapor, tetapi nomor petak kandang, babi yang mana, kejelasan gejala, atau sejak kapan terlewat, dan kondisi babi lain di petak yang sama tidak disampaikan.",
-     "Jika ada instruksi, dapat menyusun dan menyampaikan laporan awal berisi tanggal dan jam, nomor gedung/baris/petak kandang, babi yang mana (warna tanda, dll.), gejala, sejak kapan, kondisi babi lain di petak yang sama, dan apakah sudah ada yang dihubungi.",
+     "Jika ada instruksi, dapat menyusun dan menyampaikan laporan awal berisi tanggal dan jam, penemu, nomor gedung/baris/petak kandang, babi yang mana (warna tanda, dll.), gejala, sejak kapan, kondisi babi lain di petak yang sama, dan apakah sudah ada yang dihubungi.",
      "Tanpa instruksi pun, menyampaikan laporan awal dengan butir yang lengkap, menyampaikan gejala secara konkret sesuai yang terlihat, serta menambahkan siapa yang sudah dihubungi atau bahwa belum ada.",
      "Memahami mengapa butir-butir ini membantu penilaian dokter hewan, serta bisa mengajari karyawan baru, misalnya mendengarkan laporan awal mereka dan menunjukkan satu butir yang terlewat agar disampaikan ulang."
     ]

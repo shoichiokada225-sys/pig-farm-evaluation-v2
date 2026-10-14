@@ -86,10 +86,8 @@
 ## weekly-review
 /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/09_季節別対応.md:L112-112 — 自動換気でも設定温度を毎週見直す
 /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L869-869 — 設定確認 週1
-/Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L610-610 — 朝の冷え込み時期は早朝の温度確認
 /Users/okadashoichi/strategy-reports/2026-08-25_豚舎換気コミッショニング_技術仕様書.md:L392-392 — 最小換気量の再計算（頭数変化・体重増加に追随していない）
 /Users/okadashoichi/strategy-reports/2026-08-25_豚舎換気コミッショニング_技術仕様書.md:L66-66 — 温度カーブ＝日齢（設定の見直し観点）
-/Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/16_数値早見表.md:L34-34 — 温度計位置
 ## power-backup
 /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/10_緊急時対応.md:L296-318 — ブレーカー確認→農場長に報告→発電機（手順は農場ごと・事前練習・燃料確認・メインスイッチOFF確認・安定確認）
 /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/10_緊急時対応.md:L319-334 — 換気ファンと給水ポンプ最優先／発電機がなければ扉開放・ポータブルファン
@@ -97,12 +95,12 @@
 /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/10_緊急時対応.md:L346-352 — 停電時の熱死リスク
 ## r2 修正メモ
 - power-backup: L3 の表現は 10_緊急時対応.md L300-305（全体か一部か・ブレーカー）。L5 は L346-357（夏の停電は換気が最優先）。「窓が無い」「復電後の設定再確認」は根拠が無いため削除。扉開放は L319-334 で発電機がない場合の手順のため「農場の手順に定めた代替換気」に変更。
-- weekly-review: 最高・最低の両方を扱う（08 L545 最高最低温度計=1日の変動幅）。
+- weekly-review: 最高最低温度計は扱わない（read-temp のみが採点。r4で除去）。今週の設定記録に頭数の増減・体重帯の変化をそろえて渡し、記録を見て見直し時期を自分から言う形。
 
 # density-grouping 根拠行
 area-calc: /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L764-773 — 体重帯別の必要面積 0.5〜0.6 / 0.6〜0.7 / 0.7〜0.85 / 0.85〜1.0 m2/頭（全体 0.5〜1.0）。計算例 3m x 5m = 15 m2、体重100kgなら 15 ÷ 0.85 = 約17頭が上限
 crowd-signs: /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L775-784 — 兆候の表（尾かじり・耳かじり、闘争、エサ箱・飲水器の渋滞、糞で汚れた豚、皮膚の傷。ADGは本作業では使わない）
-lie-down: /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L799 — 全頭が同時に横になれないほど詰まっていれば過密（簡易判断）。過密は尾かじり・闘争・成長遅延の最大の原因の「一つ」（L757）
+crowd-signs: /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L799 — 全頭が同時に横になれないほど詰まっていれば過密（簡易判断）。過密は尾かじり・闘争・成長遅延の最大の原因の「一つ」（L757）
 split-judge: /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L786-790 — 調整法3つ（空き豚房へ移す／出荷が近い豚を優先して出す／小さい豚を別群に）
 split-judge: /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L794 — 過密を「仕方ない」と放置せず上長に報告し対策を相談。出荷の可否確認は上長へ（資料にない手順は書かない＝上長確認に留める）
 split-judge: /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L795 — 新しい群を作ると闘争が起きる。移動は最小限、夕方〜夜（暗い時間）に行うと闘争が減る（推奨であり規則ではない）
@@ -170,10 +168,12 @@ count-record: /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-gu
 /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/09_季節別対応.md:L817-818 — 目が痛い・涙が出る（50ppm以上の目安）は危険＝直ちに換気を最大にする。目がチクチクは換気を増やす（数値は本文に書かない）
 /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/16_数値早見表.md:L159 — 同上の目安の対応表
 ## weekly-review
-/Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L545 — 最高最低温度計＝1日の変動幅
-/Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L610 — 朝の冷え込みが厳しい時期は早朝の温度確認を重視（明け方の値）
-## lie-down
-/Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L799 — 「豚が自由に横になれるスペースがあるか」が密度の簡易判断。全頭が同時に横になれないほど詰まっていれば過密（新設種目。移動が無い日でも豚房を見れば採点できる）
+/Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/09_季節別対応.md:L112-112 — 自動換気でも設定温度を毎週見直す（本種目は read-temp のみが扱う最高最低温度計を含めない。r4で除去。頭数・体重帯の変化を設定記録にそろえて渡す）
+## crowd-signs
+/Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L799 — 「豚が自由に横になれるスペースがあるか」が密度の簡易判断。全頭が同時に横になれないほど詰まっていれば過密（lie-down 種目を crowd-signs の兆候リストに統合。r4）
+## pen-count-fit
+/Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L764-773 — 体重帯別の必要面積から上限頭数が決まる（上限の計算は area-calc。本種目は計算せず、移動後の豚房の頭数を現物で数えて上限内かを確かめる現物照合のみ。数値は本文に書かない）
+/Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L795-795 — 豚の移動で新しい群ができる。移動は最小限（移動後に収まるかの確認が必要）
 ## split-judge
 /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L786-795 — 調整法（空き豚房へ移す／出荷が近い豚を先に出す）＋新しい群を作ると闘争・移動は最小限・夕方〜夜。timing-fight を本種目に統合。小さい豚の別群化は本種目から外した（mark-followup 側の範囲）
 ## count-record

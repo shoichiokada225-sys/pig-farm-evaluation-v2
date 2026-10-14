@@ -59,7 +59,7 @@ for w in new:
         t=' '.join(texts(w,l)); m=re.findall(pat[l],t,re.I)
         if m: NG('G4',w['id'],l,m)
     tv=' '.join(texts(w,'vi'))
-    if re.search(r'\bheo\b',tv,re.I): NG('G5',w['id'],'heo')
+    if re.search(r'(?<![^\W\d_])heo(?![^\W\d_])',tv,re.I): NG('G5',w['id'],'heo')  # 単語境界(Unicode)。theo dõi 等の語中は誤検出しない
     for l in ['en','vi','id']:
         if '〜' in ' '.join(texts(w,l)): NG('G6',w['id'],l,'〜')
     allt=json.dumps(w,ensure_ascii=False)
