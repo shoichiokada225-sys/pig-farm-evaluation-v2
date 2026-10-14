@@ -59,7 +59,7 @@ function wsecHtml(wid,ci){
       <span class="wshd-nm" title="${esc(loc(w,'name'))}">${esc(shortName(loc(w,'name')))}</span>
       <span class="wshd-ct" id="wct-${esc(w.id)}" data-wct="${esc(w.id)}">0/${workItems(wid).length}</span>
     </div>
-    ${(()=>{const pv=typeof curDoneWorks==='function'&&curDoneWorks().includes(wid)?prevDoneTx(wid):'';const sk=editId?'':`<button type="button" class="wshd-skip" data-w="${esc(w.id)}" aria-label="${esc(t('skipWork')+': '+loc(w,'name'))}" onclick="skipWork(this.dataset.w)">${esc(t('skipWork'))}</button>`;return pv||sk?`<div class="wsub">${pv?`<span class="wsub-prev">${esc(pv)}</span>`:''}${sk}</div>`:''})()}`;
+    ${(()=>{const pv=typeof curDoneWorks==='function'&&curDoneWorks().includes(wid)?prevDoneTx(wid):'';const sk='';/* R5 2026-10-13 画面に出さない。skipWork・記録形式は不変 */return pv||sk?`<div class="wsub">${pv?`<span class="wsub-prev">${esc(pv)}</span>`:''}${sk}</div>`:''})()}`;
   workItems(wid).forEach((it,ii)=>{
     h+=`<div class="cd ec" id="c-${it.id}" data-w="${esc(wid)}" style="animation-delay:${Math.min(ci.n++,8)*0.03}s">
         <div class="en">${ii+1}</div>

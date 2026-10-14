@@ -12,7 +12,7 @@
 .wcat{border:1px solid var(--line,#e3eae7);border-radius:10px;margin-bottom:8px;background:var(--bg2,#fff);overflow:hidden}
 .wcat summary{display:flex;align-items:center;justify-content:space-between;gap:8px;list-style:none;cursor:pointer;padding:10px 14px;font-weight:700;min-height:44px}
 .wcat summary::-webkit-details-marker{display:none}
-.wcat summary::before{content:'▸';margin-right:6px;color:var(--sub,#54635d);transition:transform .15s}
+.wcat summary::before{content:'▸';margin-right:6px;color:var(--sub,#54635d);transition:transform var(--dur)}
 .wcat[open] summary::before{transform:rotate(90deg)}
 .wcat-nm{flex:1}
 .wcat-ct{font-size:.75rem;color:var(--sub,#54635d);background:var(--bg3,#eef2f0);border-radius:999px;padding:2px 8px}
@@ -260,3 +260,68 @@ html[lang=ja] .sb .sl{font-size:var(--slfs,max(.7rem,min(3.4vw,.82rem)))}
 .wpre-b.on{background:var(--brand,#177863);color:#fff}
 .wpre-n{font-size:.75rem;font-weight:700;border-radius:999px;padding:1px 7px;background:var(--bg3,#eef2f0);color:var(--sub,#54635d)}
 .wpre-b.on .wpre-n{background:rgba(255,255,255,.25);color:#fff}
+
+/* ===== 2026-10-13 採点画面デザイン刷新 R1-R6（主役=種目名と選んだ点数） ===== */
+/* R1 種目名 */
+.ec .enm{font-size:var(--fs-item);font-weight:800;line-height:1.35;letter-spacing:-.01em;margin:2px 0 10px;overflow-wrap:anywhere}
+.ec .en{font-size:var(--fs-ui);opacity:.9}
+/* R4 作業の枡 */
+.wsec{border:2px solid var(--bdr);border-radius:var(--r-lg);padding:0 4px 6px;margin:0 0 18px;background:rgba(255,255,255,.55);transition:border-color var(--dur) var(--ease),box-shadow var(--dur) var(--ease)}
+.wsec:has(.ec:not(.scored)):not(.wsec:has(.ec:not(.scored))~*){border-color:var(--pri);box-shadow:0 0 0 1px var(--pri-l)}
+.wsec>.ec{padding:14px 12px}
+.wsec>.wshd{margin:0 -2px 10px;border-radius:14px;min-height:52px;padding:8px 12px;gap:8px}
+.wsec:first-child>.wshd,.wnav+.wsec>.wshd{margin-top:0}
+.wshd-nm{font-size:var(--fs-work);line-height:1.2;letter-spacing:-.01em}
+.wshd-no,.wshd-ct{font-size:var(--fs-ui)}
+#cards .ec{scroll-margin-top:calc(var(--stk,96px) + 72px)}
+/* R5 skip は画面に出さない（保険） */
+.wshd-skip{display:none}
+.wsub:empty{display:none}
+/* R2 点数ボタン */
+.sr{max-width:360px;margin:0 auto 10px;padding-top:4px}
+.sb{min-height:50px;font-size:var(--fs-num);padding:3px 0 5px;border-radius:var(--r-sm);transition:transform var(--dur) var(--ease),box-shadow var(--dur) var(--ease),background var(--dur),border-color var(--dur),color var(--dur)}
+.sb.sel{transform:translateY(-2px);box-shadow:var(--ring),var(--sh-sel);font-weight:900}
+.sb:active{transform:scale(.94)}
+html[lang=ja] .sb .sl{min-height:0}   /* R2 日本語は段階名が1行なので2行ぶんの予約をやめて高さを詰める（他言語は2行予約のまま＝高さそろえ検査） */
+@media(min-width:640px){.sb{min-height:52px;font-size:1.12rem}}
+/* R3 基準ボタン */
+.ec-tools{display:flex;gap:var(--sp-2);justify-content:space-between;align-items:center;margin:4px 0 6px}
+.ec-tools .crit-tg{flex:0 0 auto;width:auto;min-height:var(--tap);min-width:var(--tap);margin:0;padding:0 12px;font-size:var(--fs-ui);border-radius:var(--r-pill);background:transparent;border:1.5px solid var(--bdr-strong);color:var(--sub);transition:background var(--dur),border-color var(--dur),color var(--dur),transform var(--dur) var(--ease)}
+.ec-tools .crit-tg[aria-expanded="true"]{border-color:var(--pri);color:var(--pri-d);background:var(--pri-ll)}
+.cm-add{min-height:var(--tap);font-size:var(--fs-ui);border-radius:var(--r-pill)}
+.crit{border-radius:var(--r)}
+@media(max-width:300px){.wshd-nm{white-space:normal;font-size:1.2rem}}
+
+/* ===== 2026-10-14 ラウンド3 磨き込み ===== */
+/* 点数ボタン: 枠なしの薄面＋下端の中央短線。選択は細いリング */
+.sr{gap:clamp(3px,1.2vw,6px)}
+.sb{border:1.5px solid transparent;background:#f3f6f4}
+.sb:hover{background:var(--pri-ll);border-color:transparent}
+.sb::after{left:25%;right:auto;width:50%;height:3px;border-radius:3px 3px 0 0;opacity:.7}
+.sb.sel{border-color:transparent;box-shadow:0 0 0 2px #fff,0 0 0 4px var(--sc,var(--pri)),var(--sh-sel)}
+/* カード: 枠線なし・影のみ。未採点の左縦線は出さない */
+.cd{box-shadow:0 1px 2px rgba(10,66,56,.06)}
+.ec{border:0;border-left:4px solid transparent}
+.ec.scored{border-left-color:var(--pri)}
+.ec.miss{border-left-color:var(--s1,#c62828)}
+.wsec{border-width:1.5px}
+/* 作業見出し: 薄い緑面＋濃緑文字 */
+.wsec>.wshd,.wshd{background:var(--pri-ll);color:var(--pri-dd);box-shadow:0 1px 0 var(--pri-l)}
+.wshd-no{background:var(--pri-l);color:var(--pri-dd)}
+.wshd-ct,.wshd-ct.full{background:rgba(255,255,255,.7);color:var(--pri-dd)}
+.wshd-ct.full{background:var(--pri-l)}
+.wshd{flex-wrap:wrap}
+.wshd-nm{font-size:clamp(1.5rem,6.4vw,1.7rem);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1 1 5em;min-width:0}   /* 1行のまま。文字が極端に大きい時だけ見出しの2行目に回って広く使う。全文は見出しを押すと出る */
+/* 基準ボタン: 枠なし・下線テキスト。コメント追加も薄く */
+.ec-tools{flex-wrap:wrap}
+.ec-tools .crit-tg,.ec-tools .crit-tg[aria-expanded="true"]{border:0;background:transparent;text-decoration:underline;text-underline-offset:3px;color:var(--sub);min-height:44px;max-width:100%}
+.ec-tools .crit-tg[aria-expanded="true"]{color:var(--pri-d)}
+.cm-add{border:1px dashed var(--bdr);background:transparent;max-width:100%;white-space:normal}
+/* 文字200%でも横にはみ出さない */
+.b-slim{max-width:100%;white-space:normal}
+.tabs button{min-width:0;overflow-wrap:anywhere;text-align:center}
+.toast{max-width:calc(100vw - 24px);max-height:30vh;overflow:auto;font-size:14px;padding:10px 16px}
+.toast.act{font-size:14px}
+.wsel-hd{flex-wrap:wrap}
+.wsel-hd h3{min-width:0;overflow-wrap:anywhere}
+@media(max-height:420px){.wshd{position:static}}

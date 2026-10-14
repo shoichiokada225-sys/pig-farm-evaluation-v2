@@ -746,9 +746,9 @@ async function runAssign(devName) {
   await scoreWork('feeding-daily', 4);
   ok('5枚で ✓ 5/5', /✓ 5\/5/.test(await page.locator('#wnav [data-wct="feeding-daily"]').textContent()));
   // 6作業目のカードの途中までスクロール → 画面上部（進捗バーの下）に6作業目の見出しが貼り付いている
-  await page.evaluate(() => { const c = document.querySelectorAll('#cards .ec[data-w="dung-removal"]')[2]; window.scrollTo(0, c.getBoundingClientRect().top + scrollY - 250); });
+  await page.evaluate(() => { const c = document.querySelectorAll('#cards .ec[data-w="dung-removal"]')[2]; window.scrollTo(0, c.getBoundingClientRect().top + scrollY - 100); });
   await page.waitForTimeout(300);
-  const stuck = await page.evaluate(() => { const stk = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--stk')); const el = document.elementFromPoint(innerWidth / 2, stk + 8); const h = el && el.closest('.wshd'); return { w: h && h.dataset.w, top: h && Math.round(h.getBoundingClientRect().top), stk }; });
+  const stuck = await page.evaluate(() => { const stk = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--stk')); const h = document.querySelector('#wh-dung-removal'); const r = h.getBoundingClientRect(); const el = document.elementFromPoint(innerWidth / 2, r.top + r.height / 2); return { w: el && el.closest('.wshd') && el.closest('.wshd').dataset.w, top: Math.round(r.top), stk }; });
   ok(`スクロール中も今の作業の見出しが上に見える（${stuck.w} top=${stuck.top} / 貼り付け位置${stuck.stk}）`, stuck.w === 'dung-removal' && Math.abs(stuck.top - stuck.stk) <= 2);
   const progBox = await page.locator('.prog').boundingBox(), hdBox = await page.locator('#wh-dung-removal').boundingBox();
   ok('見出しは進捗バーと重ならない', hdBox.y >= progBox.y + progBox.height - 1);
@@ -761,11 +761,11 @@ async function runAssign(devName) {
 
   console.log('[A2] 今回は実施しない（その作業だけ外す）');
   dialogs.length = 0;
-  await page.locator('.wsec[data-w="treatment"] .wshd-skip').tap(); await page.waitForTimeout(300);
+  await page.evaluate(w => skipWork(w), 'treatment'); await page.waitForTimeout(300);
   ok('未採点の作業は確認なしで外れる → 35枚・7作業', dialogs.length === 0 && await page.locator('#cards .ec').count() === 35 && await page.locator('#wnav .wnav-c').count() === 7);
   ok('外した作業の名前をトーストで知らせる', /治療/.test(await page.locator('#toast').textContent()));
   accept = false; dialogs.length = 0;
-  await page.locator('.wsec[data-w="feeding-daily"] .wshd-skip').tap(); await page.waitForTimeout(300);
+  await page.evaluate(w => skipWork(w), 'feeding-daily'); await page.waitForTimeout(300);
   ok('採点済みの作業は確認（キャンセルで残る）', dialogs.length === 1 && /給餌/.test(dialogs[0]) && await page.locator('#wh-feeding-daily').count() === 1);
   accept = true;
   ok('外しても採点は消えない', /✓ 5\/5/.test(await page.locator('#wnav [data-wct="feeding-daily"]').textContent()));
@@ -803,7 +803,7 @@ async function runAssign(devName) {
 
   console.log('[A5] 3作業の人で1作業を外して保存 → 途中 2/3 → 残り1作業');
   await ee('テスト 三作').tap(); await page.waitForTimeout(300);
-  await page.locator('.wsec[data-w="feed-adjust"] .wshd-skip').tap(); await page.waitForTimeout(200);
+  await page.evaluate(w => skipWork(w), 'feed-adjust'); await page.waitForTimeout(200);
   await scoreWork('feeding-daily', 4); await scoreWork('dung-removal', 4);
   await page.locator('#btnSave').tap(); await page.waitForTimeout(900);
   ok('記録は2作業', (await recs()).find(x => x.evaluatee === 'テスト 三作').works.length === 2);
@@ -816,7 +816,7 @@ async function runAssign(devName) {
     localStorage.setItem('jitsugi_v2_data', JSON.stringify({ evaluations: all })); renderRoster(); });
   ok('農場列の無い旧記録も作業で数えて実施済み', await ee('テスト 一作').evaluate(e => e.classList.contains('done')));
   await tapLang(page, 2); await page.waitForTimeout(200);
-  ok('vi: 見出しの「今回は実施しない」・途中表示', /Lần này không làm/.test(await page.locator('.wshd-skip').first().textContent()) && await noHScroll());
+  ok('vi: 途中表示で横スクロールなし', await noHScroll());
   await tapLang(page, 0); await page.waitForTimeout(200);
 
   console.log('[A6] （農場共通）行の管理ミスを警告');
@@ -1270,7 +1270,7 @@ async function runGuard(devName) {
   console.log('[G4] 作業を外す → 別の人を選ぶ → 「元に戻す」を押しても今の人の作業は変わらない（UN）');
   await ee('テスト 丁子').tap(); await page.waitForTimeout(300);
   ok('G4: 丁子は2作業', JSON.stringify(await page.evaluate(() => selWorks)) === '["feeding-daily","feed-adjust"]');
-  await page.locator('.wsec[data-w="feed-adjust"] .wshd-skip').tap(); await page.waitForTimeout(300);
+  await page.evaluate(w => skipWork(w), 'feed-adjust'); await page.waitForTimeout(300);
   await ee('テスト 乙彦').tap(); await page.waitForTimeout(300);
   const undo = page.locator('#toast .toast-act');
   ok('G4: 別の人へ移ったら効かない「元に戻す」は片付ける（2026-10-06）', await undo.count() === 0);
@@ -1711,8 +1711,7 @@ async function runI18n(devName) {
   }
   await setL('vi');
   const full = await page.evaluate(() => WORKDATA_V2.works.find(w => w.id === 'move-preg').name_vi);
-  ok('vi: 見出し下に作業名の行は出さない（見出しの title に全文）', await page.locator('.wsub-nm').count() === 0 && await page.locator('#wh-move-preg .wshd-nm').getAttribute('title') === full && await page.locator('.wsec[data-w="move-preg"] .wsub').evaluate(e => getComputedStyle(e).position !== 'sticky'));
-  ok('vi: 「今回は実施しない」は作業ごとに押せる', await page.locator('.wshd-skip').count() === 8 && /Lần này không làm/.test(await page.locator('.wshd-skip').first().textContent()));
+  ok('vi: 見出し下に作業名の行は出さない（見出しの title に全文）', await page.locator('.wsub-nm').count() === 0 && await page.locator('#wh-move-preg .wshd-nm').getAttribute('title') === full && await page.locator('.wsec[data-w="move-preg"] .wsub').evaluateAll(es => es.every(e => getComputedStyle(e).position !== 'sticky')));
   await page.evaluate(() => { const c = document.querySelectorAll('#cards .ec[data-w="move-preg"]')[2]; window.scrollTo(0, c.getBoundingClientRect().top + scrollY - 250); });
   await page.waitForTimeout(300);
   const st = await page.evaluate(() => { const stk = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--stk')); const el = document.elementFromPoint(innerWidth / 2, stk + 8); const h = el && el.closest('.wshd'); return { w: h && h.dataset.w, b: h && Math.round(h.getBoundingClientRect().bottom), stk }; });
@@ -1811,8 +1810,8 @@ async function runA11y(devName) {
     const cur = await visibleHit('#eeCur');
     ok(`${l}: 「採点中」が帯の下に見える (${cur})`, cur === 'ok');
     ok(`${l}: 採点中の名前が正しい`, (await page.locator('#eeCur').textContent()).includes(name));
-    const nav = await visibleHit('#wnav'), sk = await visibleHit('.wshd-skip');
-    ok(`${l}: 作業の目次が見える (${nav})・1つ目の「今回は実施しない」が押せる (${sk})`, nav === 'ok' && sk === 'ok');
+    const nav = await visibleHit('#wnav');
+    ok(`${l}: 作業の目次が見える (${nav})`, nav === 'ok');
     ok(`${l}: フォーカスは「採点中」へ移る（押したタブに残らない）`, await page.evaluate(() => document.activeElement && document.activeElement.id === 'eeCur'));
     ok(`${l}: 「採点中」は tabindex=-1（Tab順には入らない）`, await page.locator('#eeCur').getAttribute('tabindex') === '-1');
   }
@@ -1849,8 +1848,6 @@ async function runA11y(devName) {
   console.log('[X3] 「今回は実施しない」: 44px・下のリンクと8px以上・誤タップは「元に戻す」で戻る');
   for (const l of ['ja', 'vi']) {
     await setL(l);
-    const hs = await page.locator('.wshd-skip').evaluateAll(els => els.map(e => Math.round(e.getBoundingClientRect().height)));
-    ok(`${l}: 「今回は実施しない」の高さ ${Math.min(...hs)}px ≥ 44`, Math.min(...hs) >= 44);
     ok(`${l}: マニュアルへのリンクは無い`, await page.locator('.man-link').count() === 0);
   }
   await setL('ja');
@@ -1862,7 +1859,7 @@ async function runA11y(devName) {
   ok('横スクロールなし(言語ボタン)', await noHScroll());
   // 未採点の作業を外す → 「元に戻す」で同じ位置に戻る
   const before = await page.evaluate(() => selWorks.slice());
-  await page.locator(`.wsec[data-w="${before[1]}"] .wshd-skip`).tap(); await page.waitForTimeout(300);
+  await page.evaluate(w => skipWork(w), before[1]); await page.waitForTimeout(300);
   ok('外すと作業が減る', await page.evaluate(() => selWorks.length) === before.length - 1);
   const undo = page.locator('#toast .toast-act');
   ok('トーストに「元に戻す」（44px以上）', await undo.isVisible() && /元に戻す/.test(await undo.textContent()) && (await undo.boundingBox()).height >= 44);
@@ -1875,7 +1872,7 @@ async function runA11y(devName) {
   await page.evaluate(id => openCm(id), c0);
   await page.fill(`textarea[data-cid="${c0}"]`, 'テストのコメント');
   const nd = dialogs.length;
-  await page.locator(`.wsec[data-w="${w0}"] .wshd-skip`).tap(); await page.waitForTimeout(300);
+  await page.evaluate(w => skipWork(w), w0); await page.waitForTimeout(300);
   ok('採点済みの作業は確認を出す', dialogs.length === nd + 1);
   await page.locator('#toast .toast-act').tap(); await page.waitForTimeout(300);
   const back = await page.evaluate(id => ({ s: (document.querySelector('.sb[data-id="' + id + '"].sel') || {}).dataset?.s, c: (document.querySelector('textarea[data-cid="' + id + '"]') || {}).value }), c0);

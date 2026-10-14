@@ -36,6 +36,10 @@
   --sh-lg:0 6px 16px rgba(10,66,56,.10),0 16px 40px rgba(10,66,56,.14);
   /* タップ領域の最低寸法 */
   --tap:44px;
+  --fs-work:1.55rem;--fs-item:1.3rem;--fs-num:1.05rem;--fs-ui:.8rem;
+  --sp-1:4px;--sp-2:8px;--sp-3:12px;--sp-4:16px;--sp-5:24px;--r-pill:999px;
+  --sh-sel:0 6px 14px rgba(10,66,56,.22);--ring:0 0 0 3px #fff,0 0 0 5px var(--sc,var(--pri));
+  --ease:cubic-bezier(.2,.8,.2,1);--dur:.18s;
   /* iOS セーフエリア */
   --safe-b:env(safe-area-inset-bottom,0px);
   color-scheme:light;
@@ -91,7 +95,7 @@ button{touch-action:manipulation}
   min-width:56px;min-height:44px;padding:0 10px;border-radius:10px;
   background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.30);color:#fff;
   font:inherit;font-size:.78rem;font-weight:700;letter-spacing:.04em;cursor:pointer;
-  transition:background .15s;
+  transition:background var(--dur);
 }
 .lsw-btn:hover,.lsw-btn[aria-expanded="true"]{background:rgba(255,255,255,.16)}
 .lsw-car{font-size:.75rem;opacity:.85}
@@ -124,7 +128,7 @@ button{touch-action:manipulation}
   flex:1;min-height:var(--tap);padding:12px 8px;border:none;background:#fff;
   font-size:.93rem;font-weight:700;letter-spacing:.01em;color:var(--sub);cursor:pointer;
   border-bottom:3px solid transparent;
-  transition:color .15s,border-color .15s,background .15s;
+  transition:color var(--dur),border-color var(--dur),background var(--dur);
 }
 .modebar button:hover{color:var(--pri-d);background:var(--pri-ll)}
 .modebar button.on{color:var(--pri-d);border-bottom-color:var(--pri);background:var(--pri-ll)}
@@ -140,7 +144,7 @@ button{touch-action:manipulation}
   font-size:.95rem;font-weight:700;color:var(--pri-d);cursor:pointer;
   appearance:none;-webkit-appearance:none;
   box-shadow:0 1px 2px rgba(10,66,56,.06);
-  transition:background-color .15s,box-shadow .15s;
+  transition:background-color var(--dur),box-shadow var(--dur);
 }
 .barnbar select:hover{background-color:var(--pri-ll)}
 .barnbar select:focus{box-shadow:0 0 0 3px var(--pri-l)}
@@ -151,7 +155,7 @@ button{touch-action:manipulation}
   align-items:center;justify-content:center;gap:10px;
 }
 .ebar.show{display:flex}
-.ebar button{background:#fff;border:1.5px solid var(--s2-tx);color:var(--s2-tx);border-radius:7px;padding:5px 14px;min-height:44px;font-size:.8rem;font-weight:700;cursor:pointer;transition:background .15s,color .15s}
+.ebar button{background:#fff;border:1.5px solid var(--s2-tx);color:var(--s2-tx);border-radius:7px;padding:5px 14px;min-height:44px;font-size:.8rem;font-weight:700;cursor:pointer;transition:background var(--dur),color var(--dur)}
 .ebar button:hover{background:var(--s2-tx);color:#fff}
 
 /* ---------- 5. ページ・カード ---------- */
@@ -181,7 +185,7 @@ button{touch-action:manipulation}
   width:100%;min-height:var(--tap);padding:10px 12px;
   border:1.5px solid var(--bdr-strong);border-radius:var(--r-sm);
   font-size:1rem;font-family:inherit;margin-bottom:14px;outline:0;background:#fff;color:var(--txt);
-  transition:border-color .15s,box-shadow .15s;
+  transition:border-color var(--dur),box-shadow var(--dur);
 }
 .meta input:hover{border-color:var(--pri)}
 .meta input:focus{border-color:var(--pri);box-shadow:0 0 0 3px var(--pri-l)}
@@ -191,7 +195,7 @@ button{touch-action:manipulation}
 .ec textarea,.oata{
   width:100%;padding:10px 12px;border:1.5px solid var(--bdr-strong);border-radius:var(--r-sm);
   font-size:.9rem;font-family:inherit;line-height:1.6;resize:vertical;min-height:60px;outline:0;
-  background:#fff;color:var(--txt);transition:border-color .15s,box-shadow .15s;
+  background:#fff;color:var(--txt);transition:border-color var(--dur),box-shadow var(--dur);
 }
 .ec textarea:hover,.oata:hover{border-color:var(--pri)}
 .ec textarea:focus,.oata:focus{border-color:var(--pri);box-shadow:0 0 0 3px var(--pri-l)}
@@ -211,9 +215,9 @@ button{touch-action:manipulation}
   font-size:1.15rem;font-weight:700;font-variant-numeric:tabular-nums;color:var(--txt);cursor:pointer;
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
   position:relative;overflow:hidden;
-  transition:transform .12s,border-color .15s,background .15s,box-shadow .15s,color .15s;
+  transition:transform var(--dur),border-color var(--dur),background var(--dur),box-shadow var(--dur),color var(--dur);
 }
-.sb::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;background:var(--sc,transparent);opacity:.55;transition:opacity .15s}
+.sb::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;background:var(--sc,transparent);opacity:.55;transition:opacity var(--dur)}
 .sb[data-s="5"]{--sc:var(--s5)}
 .sb[data-s="4"]{--sc:var(--s4)}
 .sb[data-s="3"]{--sc:var(--s3)}
@@ -278,7 +282,7 @@ button{touch-action:manipulation}
   width:100%;min-height:44px;margin:2px 0 10px;
   background:var(--pri-ll);border:1px solid var(--pri);color:var(--pri-d);
   border-radius:var(--r-sm);padding:9px 12px;font-size:.82rem;font-weight:700;cursor:pointer;text-align:center;
-  transition:background .15s;
+  transition:background var(--dur);
 }
 .crit-tg:hover{background:var(--pri-l)}
 .crit-tg:active{transform:scale(.98)}
@@ -286,7 +290,7 @@ button{touch-action:manipulation}
 .crit.open{display:block;animation:pgin .18s ease-out}
 .crit-k{padding:10px 12px;background:var(--pri-ll);font-size:.8rem;color:var(--sub);line-height:1.55;border-bottom:1px solid var(--bdr)}
 .crit-k b{color:var(--pri-dd);margin-right:6px}
-.crit-lv{display:flex;gap:10px;padding:11px 12px;border-bottom:1px solid #eef2f1;cursor:pointer;align-items:flex-start;transition:background .15s}
+.crit-lv{display:flex;gap:10px;padding:11px 12px;border-bottom:1px solid #eef2f1;cursor:pointer;align-items:flex-start;transition:background var(--dur)}
 .crit-lv:last-child{border-bottom:none}
 .crit-lv:hover{background:var(--pri-ll)}
 .crit-lv:active{background:var(--pri-l)}
@@ -300,7 +304,7 @@ button{touch-action:manipulation}
 .b{
   flex:1;min-height:50px;padding:14px;border:none;border-radius:10px;
   font-size:1rem;font-weight:700;letter-spacing:.02em;font-family:inherit;cursor:pointer;
-  transition:transform .12s,background .15s,box-shadow .15s,filter .15s;
+  transition:transform var(--dur),background var(--dur),box-shadow var(--dur),filter var(--dur);
 }
 .b:active{transform:scale(.97)}
 .b1{background:linear-gradient(180deg,var(--pri) 0%,var(--pri-d) 100%);color:#fff;box-shadow:0 2px 8px rgba(15,92,74,.32),0 1px 0 rgba(255,255,255,.15) inset}
@@ -321,7 +325,7 @@ button{touch-action:manipulation}
   border:1.5px solid var(--bdr-strong);border-radius:var(--r-sm);font-size:.9rem;font-family:inherit;
   background:#fff url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%2354635d' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 12px center;
   appearance:none;-webkit-appearance:none;outline:0;color:var(--txt);
-  transition:border-color .15s,box-shadow .15s;
+  transition:border-color var(--dur),box-shadow var(--dur);
 }
 .hctrl select:hover{border-color:var(--pri)}
 .hctrl select:focus{border-color:var(--pri);box-shadow:0 0 0 3px var(--pri-l)}
@@ -330,7 +334,7 @@ button{touch-action:manipulation}
   background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);
   padding:14px 16px;box-shadow:var(--sh);cursor:pointer;
   display:flex;justify-content:space-between;align-items:center;gap:10px;
-  transition:border-color .15s,box-shadow .15s,transform .12s;
+  transition:border-color var(--dur),box-shadow var(--dur),transform var(--dur);
 }
 .hi:hover{border-color:var(--pri);box-shadow:var(--sh-lg);transform:translateY(-1px)}
 .hi:active{background:var(--pri-ll);transform:scale(.99)}
@@ -364,7 +368,7 @@ body.mo-open{overflow:hidden}
 @keyframes mcin{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 .mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--bdr)}
 .mh h3{font-size:1.04rem;color:var(--pri-dd)}
-.mx{background:0;border:0;font-size:1.5rem;cursor:pointer;padding:4px 10px;min-width:44px;min-height:44px;color:var(--sub);border-radius:8px;line-height:1;transition:background .15s,color .15s}
+.mx{background:0;border:0;font-size:1.5rem;cursor:pointer;padding:4px 10px;min-width:44px;min-height:44px;color:var(--sub);border-radius:8px;line-height:1;transition:background var(--dur),color var(--dur)}
 .mx:hover{background:var(--bg);color:var(--txt)}
 .di{padding:10px 0;border-bottom:1px solid #eef2f1}
 .di:last-of-type{border-bottom:none}
@@ -393,7 +397,7 @@ body.mo-open{overflow:hidden}
   border:1.5px solid var(--bdr-strong);border-radius:var(--r-sm);font-size:.9rem;font-family:inherit;
   background:#fff url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%2354635d' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 12px center;
   appearance:none;-webkit-appearance:none;outline:0;color:var(--txt);
-  transition:border-color .15s,box-shadow .15s;
+  transition:border-color var(--dur),box-shadow var(--dur);
 }
 .chc select:hover{border-color:var(--pri)}
 .chc select:focus{border-color:var(--pri);box-shadow:0 0 0 3px var(--pri-l)}
@@ -410,27 +414,27 @@ body.mo-open{overflow:hidden}
 .cfg-sec-hdr input{
   flex:1;min-height:var(--tap);font-size:.95rem;font-weight:700;font-family:inherit;padding:8px 12px;
   border:1.5px solid var(--bdr-strong);border-radius:var(--r-sm);outline:0;color:var(--pri-dd);background:#fff;
-  transition:border-color .15s,box-shadow .15s;
+  transition:border-color var(--dur),box-shadow var(--dur);
 }
 .cfg-sec-hdr input:focus{border-color:var(--pri);box-shadow:0 0 0 3px var(--pri-l)}
 .cfg-item{background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);padding:12px;margin-bottom:8px;box-shadow:var(--sh);border-left:3px solid var(--pri)}
 .cfg-item .ci-row{display:flex;gap:6px;align-items:center;margin-bottom:6px}
-.cfg-item input{flex:1;min-height:40px;padding:8px 10px;border:1.5px solid var(--bdr-strong);border-radius:6px;font-size:.9rem;font-family:inherit;outline:0;background:#fff;transition:border-color .15s,box-shadow .15s}
+.cfg-item input{flex:1;min-height:40px;padding:8px 10px;border:1.5px solid var(--bdr-strong);border-radius:6px;font-size:.9rem;font-family:inherit;outline:0;background:#fff;transition:border-color var(--dur),box-shadow var(--dur)}
 .cfg-item input:focus{border-color:var(--pri);box-shadow:0 0 0 3px var(--pri-l)}
 .cfg-item .ci-desc{font-size:.85rem;color:var(--sub)}
-.cfg-item textarea{width:100%;padding:8px 10px;border:1.5px solid var(--bdr-strong);border-radius:6px;font-size:.85rem;font-family:inherit;resize:none;min-height:40px;outline:0;color:var(--sub);background:#fff;transition:border-color .15s,box-shadow .15s}
+.cfg-item textarea{width:100%;padding:8px 10px;border:1.5px solid var(--bdr-strong);border-radius:6px;font-size:.85rem;font-family:inherit;resize:none;min-height:40px;outline:0;color:var(--sub);background:#fff;transition:border-color var(--dur),box-shadow var(--dur)}
 .cfg-item textarea:focus{border-color:var(--pri);box-shadow:0 0 0 3px var(--pri-l)}
 .ci-btns{display:flex;gap:4px;flex-shrink:0}
 .ci-btns button{
   width:44px;height:44px;border:1px solid var(--bdr-strong);border-radius:var(--r-sm);background:#fff;cursor:pointer;
-  font-size:1rem;display:flex;align-items:center;justify-content:center;color:var(--sub);transition:all .15s;
+  font-size:1rem;display:flex;align-items:center;justify-content:center;color:var(--sub);transition:all var(--dur);
 }
 .ci-btns button:hover{background:var(--pri-l);color:var(--pri-d);border-color:var(--pri)}
 .ci-btns button.del:hover{background:var(--s1-l);color:var(--s1);border-color:var(--s1)}
 .cfg-add{display:flex;gap:8px;margin-top:8px}
 .cfg-add button{
   flex:1;min-height:var(--tap);padding:10px;border:2px dashed var(--bdr-strong);border-radius:var(--r);
-  background:0;font-size:.85rem;font-weight:700;font-family:inherit;color:var(--sub);cursor:pointer;transition:all .15s;
+  background:0;font-size:.85rem;font-weight:700;font-family:inherit;color:var(--sub);cursor:pointer;transition:all var(--dur);
 }
 .cfg-add button:hover{border-color:var(--pri);color:var(--pri-d);background:var(--pri-ll)}
 .cfg-blk{margin-top:28px;border-top:1px dashed var(--bdr-strong);padding-top:18px}
@@ -462,9 +466,9 @@ body.mo-open{overflow:hidden}
   flex:1;min-height:58px;padding:9px 2px 7px;border:none;background:0;
   font-size:.75rem;font-weight:600;font-family:inherit;color:var(--sub);cursor:pointer;
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
-  transition:color .15s;position:relative;
+  transition:color var(--dur);position:relative;
 }
-.tabs button svg{width:22px;height:22px;fill:currentColor;transition:transform .15s;position:relative;z-index:1}
+.tabs button svg{width:22px;height:22px;fill:currentColor;transition:transform var(--dur);position:relative;z-index:1}
 /* アクティブタブ: アイコン背後のピル */
 .tabs button::before{
   content:"";position:absolute;top:7px;left:50%;transform:translateX(-50%) scaleX(.6);

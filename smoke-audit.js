@@ -223,7 +223,6 @@ const scoreWork = (p, wid, s, n) => p.evaluate(([wid, s, n]) => { [...document.q
     ok('基準は点数ボタンの下に開く（開いても点数ボタンが動かない）', await page.evaluate(() => { const c = document.querySelector('#cards .ec'), y0 = c.querySelector('.sr').getBoundingClientRect().top; toggleCrit(c.id.slice(2)); const y1 = c.querySelector('.sr').getBoundingClientRect().top; toggleCrit(c.id.slice(2)); return Math.abs(y1 - y0) < 1; }));
     ok('採点済みの行は読み上げで「未採点」と言わない', await page.evaluate(() => { const c = document.querySelector('#cards .ec'); c.querySelector('.sb[data-s="3"]').click(); return !c.querySelector('.sr').hasAttribute('aria-describedby'); }));
     ok('コメント欄の名前は種目ごと（aria-labelledby）', await page.evaluate(() => { const ta = document.querySelector('#cards textarea'); return /clbl-.* enm-/.test(ta.getAttribute('aria-labelledby') || ''); }));
-    ok('「今回は実施しない」は作業名入りの名前', /給餌/.test(await page.locator('.wshd-skip').first().getAttribute('aria-label')));
     // 最後の作業を外す → 人を外して名簿へ・元に戻すで人ごと戻る
     await page.evaluate(() => { skipWork('feed-adjust'); }); await page.waitForTimeout(100);
     st.accept = true; await page.evaluate(() => { skipWork('feeding-daily'); }); await page.waitForTimeout(200);
