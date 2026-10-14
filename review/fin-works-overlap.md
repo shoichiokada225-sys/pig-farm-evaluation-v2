@@ -4,7 +4,7 @@
 | route-cover | 母豚列の巡回系(after-care等) | 0.12 | 豚房内の観察順序のみ。発見後の処置は扱わない。飲水器・排泄エリアは「異常の有無を見る」まで（流量測定は water-check/flow-measure、除フン作業と糞の観察は除フン側）。ルート固定/変更は20ガイドと08で食い違うため採点しない |
 | urgency-judge | 治療 No.04 early-detect / 除フン dung-observation / carcass infect-signs / move-order | 0.08 | patrol=緊急度の区分を口頭で言い報告の速さを決める。No.04=耳標番号の記録と治療指示の受け取り。血便の観察そのものは除フン。「起立不能の豚を動かさない」は move-order の移動中止と同じ行動のため本種目から削除（突然死も資料に「動かさない」の記載なし） |
 | report-template | 日報 detail-findings / 給餌 residue-report | 0.10 | patrol=第一報に「どの豚か（マーキング色など）」を書いたかを採点。印付けと翌日の追跡は mark-followup が採点 |
-| mark-followup | body-measure / record-variance / cull-ship・ship-fin・standing-check のマーキング | 0.13 | patrol=異常個体の印付け（実技）と翌日確認の段取り（口頭・記録は求めない）、群内で明らかに小さい豚の別管理を上長に相談（08 L141・L733）。跛行の処置・隔離は扱わない。選別・出荷・起立不能のマーキングは各作業側 |
+| mark-followup | body-measure / record-variance / cull-ship・ship-fin・standing-check のマーキング | 0.13 | patrol=異常個体の印付け（実技）と翌日確認の段取り（口頭・記録は求めない）。L2=印は付けるが段取りが言えない／L3=印＋翌日確認の段取りを言える。群内で明らかに小さい豚の別管理の相談（08 L141・L733）は mark-followup の守備範囲だが、1種目1行動のため採点項目には置かない（density-grouping も扱わない）。跛行の処置・隔離は扱わない。選別・出荷・起立不能のマーキングは各作業側 |
 | safe-quiet | cull-move calm-drive-safety | 0.19 | patrol=巡回で歩いて観察する時の近づき方と逃げ道。cull-move=追い板で追い込む作業中の安全 |
 
 注: patrol-check の urgency-judge / report-template と治療 No.04 は同じ受験者の8枠に同時に入れない運用を推奨。
@@ -25,9 +25,9 @@
 |---|---|---|---|
 | area-calc | ship-fin/ship-criteria-plan | 0.06 | 農場で決めた体重帯の必要面積で割り上限頭数を出す（数値は資料間で食い違うため本文に書かない＝社長判断3）。移動後の移動元・移動先が上限内かも見る（L4）。既存に面積計算は無い |
 | crowd-signs | sow-lineup/after-care | 0.09 | 過密の兆候（渋滞・糞汚れ・横になれるか）を豚房ごとに数えて比べる。巡回運用・緊急度判定は patrol-check |
-| split-judge | cull-move/isolation-move | 0.10 | 過密・体格差のときの分け方の相談と上長報告まで。小さい豚の個体追跡は patrol-check/mark-followup、出荷の可否確認は ship-fin（本種目は出荷予定を確かめて案を添えるのみ） |
-| timing-fight | semen-check/temp-control | 0.12 | 移動の回数と時間帯を前もって計画し口頭で説明できるか（見えない観点は口頭）。誘導手技は move-order、移動後の咬傷観察は mix-watch、尾かじりの隔離・治療は治療 No.04 |
-| count-record | daily-report/headcount-balance | 0.23 | 豚房ごとの頭数の書き直しと、舎をまたぐ移動だけ日報の転出・入舎に入れる区別まで。日報の式の検算・原因調査は daily-report（本種目からは削除）、移動時の頭数復唱は move-order/count-handover |
+| lie-down | crowd-signs | <0.4（check_fin_works で作業内類似なし） | 全頭が同時に横になれるかを豚房ごとに見て、なれない豚房を報告（移動が無い日でも豚房を見れば採点できる）。かじり・けんか・渋滞などの兆候は crowd-signs |
+| split-judge | cull-move/isolation-move | 0.10 | 過密を下げるための頭数の分け方（空き豚房へ移す／出荷が近い豚を先に出す）＋移動は最小限の回数で夕方〜夜（旧 timing-fight を統合。見えない観点は口頭）。小さい豚の個体対応は外した（mark-followup 側）。誘導手技は move-order、移動後の咬傷観察は mix-watch、出荷の可否確認は ship-fin |
+| count-record | daily-report/headcount-balance | 0.23 | 豚房の頭数を実際に数え、記録と照合する（移動が無い日でも採点できる）。日報の式の検算・転出入の記入は daily-report、移動時の頭数復唱は move-order/count-handover |
 
 
 # vent-controller 重複監査（r2 追記・G14）。Jaccard は概算（2-gram、手計算でなく目安。確定は check script）
@@ -36,7 +36,7 @@
 | read-record | vent-temp read-temp / feed-switch timer-record | 0.15 | 本作業=コントローラー画面の設定値を読み用紙へ転記する正確さ。read-temp=温度計の読み方。timer-record=エサスイッチの設定記録 |
 | verify-actual | vent-temp manual-adjust / fan-clean | 0.14 | 本作業=画面の設定と実際（今のステージで回るべきファン・シャッター・インレット）の照合。manual-adjust=手でカーテン等を調整。fan-clean=清掃 |
 | change-rule | feed-switch の変更権限ルール(エサスイッチ caution) | 0.18 | 本作業=設定は決められた人だけが変え、受験者は相談と変更後の記録・動作確認に立ち会う |
-| weekly-review | vent-temp read-temp | 0.17 | 本作業=設定が頭数・体重・季節に合うかの判断と見直し依頼。温度計の読み方そのものは read-temp、設定値の転記は read-record |
+| weekly-review | vent-temp read-temp | 0.17 | 本作業=頭数の増減・体重帯の変化・最高最低温度計の明け方の値を前週の設定記録に添えて毎週渡す事実列挙型（判断・相談は change-rule だけ）。温度計の読み方そのものは read-temp、設定値の転記は read-record |
 | power-backup | vent-temp fan-failure-first | 0.22 | 本作業=停電時の報告・発電機・換気ファンと給水ポンプ優先。fan-failure-first=ファン個別故障の初動 |
 
 運用注記（評価者マニュアル・獣医レビュー文書へ反映すること）: 当日に見られるのは read-record と verify-actual のみ。change-rule・weekly-review・power-backup は口頭試問と記録用紙の確認で採点する。カーテン式の農場にはこの作業を割り当てない。

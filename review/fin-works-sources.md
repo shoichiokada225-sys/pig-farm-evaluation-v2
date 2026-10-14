@@ -102,11 +102,11 @@
 # density-grouping 根拠行
 area-calc: /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L764-773 — 体重帯別の必要面積 0.5〜0.6 / 0.6〜0.7 / 0.7〜0.85 / 0.85〜1.0 m2/頭（全体 0.5〜1.0）。計算例 3m x 5m = 15 m2、体重100kgなら 15 ÷ 0.85 = 約17頭が上限
 crowd-signs: /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L775-784 — 兆候の表（尾かじり・耳かじり、闘争、エサ箱・飲水器の渋滞、糞で汚れた豚、皮膚の傷。ADGは本作業では使わない）
-crowd-signs: /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L799 — 全頭が同時に横になれないほど詰まっていれば過密（簡易判断）。過密は尾かじり・闘争・成長遅延の最大の原因の「一つ」（L757）
+lie-down: /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L799 — 全頭が同時に横になれないほど詰まっていれば過密（簡易判断）。過密は尾かじり・闘争・成長遅延の最大の原因の「一つ」（L757）
 split-judge: /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L786-790 — 調整法3つ（空き豚房へ移す／出荷が近い豚を優先して出す／小さい豚を別群に）
 split-judge: /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L794 — 過密を「仕方ない」と放置せず上長に報告し対策を相談。出荷の可否確認は上長へ（資料にない手順は書かない＝上長確認に留める）
-timing-fight: /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L795 — 新しい群を作ると闘争が起きる。移動は最小限、夕方〜夜（暗い時間）に行うと闘争が減る（推奨であり規則ではない）
-timing-fight: /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L795 — 本種目は移動の最小化と時間帯のみ。尾かじり対応（L813-819）・複数人/照明/通路は本種目に書かない（資料にない手順・隔離治療は別作業）
+split-judge: /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L795 — 新しい群を作ると闘争が起きる。移動は最小限、夕方〜夜（暗い時間）に行うと闘争が減る（推奨であり規則ではない）
+split-judge: /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L795 — 本種目は移動の最小化と時間帯のみ。尾かじり対応（L813-819）・複数人/照明/通路は本種目に書かない（資料にない手順・隔離治療は別作業）
 count-record: /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/11_記録と数値管理.md:L109-127 — 頭数変動の式（前日頭数±移動…−死亡−出荷＝当日頭数）。合わない時はその日のうちに確認、先延ばしは原因特定が困難。日報の式は final-record.json daily-report/headcount-balance と同じ表記（前日頭数＋入舎−転出−死亡−出荷）
 count-record: /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/11_記録と数値管理.md:L238-241 — 肥育舎の頭数変動の記入例（入舎・出荷・死亡）
 count-record: /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L55 — 11:00 記録の更新（治療記録、頭数管理）
@@ -162,3 +162,19 @@ count-record: /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-gu
 /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L795-795 — 新しい群を作ると闘争
 ## count-record
 /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/11_記録と数値管理.md:L111-114 — 頭数の式は舎単位（前日頭数±移動…）。豚房間の移動は舎の合計を変えない
+
+# r3 追記（fable 差し戻し major 6件の反映）
+## freeze-outage
+/Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/23_豚の病気図鑑.md:L330-331 — 塩中毒: すぐに報告する・水を少量ずつゆっくり与えるよう獣医師が指示することがある。本文は「止まっていた時間を上長に伝え飲ませ方の指示を受ける」まで（「少量ずつ」は書かない）
+## never-stop
+/Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/09_季節別対応.md:L817-818 — 目が痛い・涙が出る（50ppm以上の目安）は危険＝直ちに換気を最大にする。目がチクチクは換気を増やす（数値は本文に書かない）
+/Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/16_数値早見表.md:L159 — 同上の目安の対応表
+## weekly-review
+/Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L545 — 最高最低温度計＝1日の変動幅
+/Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L610 — 朝の冷え込みが厳しい時期は早朝の温度確認を重視（明け方の値）
+## lie-down
+/Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L799 — 「豚が自由に横になれるスペースがあるか」が密度の簡易判断。全頭が同時に横になれないほど詰まっていれば過密（新設種目。移動が無い日でも豚房を見れば採点できる）
+## split-judge
+/Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L786-795 — 調整法（空き豚房へ移す／出荷が近い豚を先に出す）＋新しい群を作ると闘争・移動は最小限・夕方〜夜。timing-fight を本種目に統合。小さい豚の別群化は本種目から外した（mark-followup 側の範囲）
+## count-record
+/Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/11_記録と数値管理.md:L127-132 — 頭数が合わない時はその日のうちに確認。原因は移動の記入漏れ・死亡の報告漏れ・数え間違い・脱柵。本種目は豚房の頭数を実際に数えて記録と照合する形

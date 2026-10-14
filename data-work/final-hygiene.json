@@ -2032,39 +2032,39 @@
    {
     "id": "mark-followup",
     "name": "マーキングと翌日の追跡",
-    "kanten": "異常な豚にスプレーで印を付け、翌日同じ豚を確かめて変化を報告する段取りを言えるか。群内で明らかに小さい豚には、別管理を上長に相談できるか。",
+    "kanten": "異常な豚にスプレーで印を付け、翌日同じ豚を確かめて変化を報告する段取りを言えるか。",
     "levels": [
      "マーキングスプレーを持たず、異常な豚に印を付けないため、翌日に同じ豚を見つけられない。",
-     "指示があれば印を付けるが、翌日の確認があいまいで忘れがち、変化の報告も他者まかせ。",
-     "指示があれば、異常な豚の体にスプレーで見分けやすい印を付けられる。",
-     "指示がなくてもスプレーを常に携帯して印を付け、翌日同じ豚を確かめて変化を報告する段取りを自分から述べ、群内で明らかに小さい豚は別管理を上長に相談する。",
+     "指示があれば異常な豚に印は付けるが、翌日同じ豚を確かめる段取りが言えず、他者まかせにする。",
+     "指示があれば、異常な豚の体にスプレーで見分けやすい印を付け、翌日同じ豚を確かめる段取りを言える。",
+     "指示がなくてもスプレーを常に携帯して印を付け、翌日同じ豚を確かめて変化を報告する段取りを自分から述べる。",
      "印がないと翌日に同じ豚を見つけられない理由と、変化を追う意味を理解し、新人が印を付ける場面に同行して付け忘れをひとつ指摘するなど、新人に指導できる。"
     ],
     "name_en": "Marking and Next-Day Follow-up",
     "name_vi": "Đánh dấu và theo dõi ngày hôm sau",
     "name_id": "Penandaan dan tindak lanjut esok hari",
-    "kanten_en": "Can they spray-mark abnormal pigs and state how they will check the same pig the next day and report any change, and, for a pig clearly smaller than the rest of the group, consult the supervisor about managing it separately?",
-    "kanten_vi": "Có phun đánh dấu lợn bất thường và nói được hôm sau sẽ kiểm tra lại đúng con đó và báo cáo thay đổi ra sao, và với con lợn rõ ràng nhỏ hơn cả đàn thì trao đổi với cấp trên về việc nuôi riêng không.",
-    "kanten_id": "Apakah menandai babi yang abnormal dengan semprotan, dapat menyebutkan cara memeriksa babi yang sama keesokan harinya dan melaporkan perubahannya, serta untuk babi yang jelas lebih kecil dari kelompoknya, berkonsultasi dengan atasan tentang pengelolaan terpisah?",
+    "kanten_en": "Can they spray-mark abnormal pigs and state how they will check the same pig the next day and report any change?",
+    "kanten_vi": "Có phun đánh dấu lợn bất thường và nói được hôm sau sẽ kiểm tra lại đúng con đó và báo cáo thay đổi ra sao không.",
+    "kanten_id": "Apakah menandai babi yang abnormal dengan semprotan dan dapat menyebutkan cara memeriksa babi yang sama keesokan harinya serta melaporkan perubahannya?",
     "levels_en": [
      "Does not carry the marking spray and does not mark abnormal pigs, so cannot find the same pig the next day.",
-     "With guidance marks, but the next-day check is vague and easily forgotten, and leaves reporting changes to others.",
-     "With guidance can mark abnormal pigs clearly with the spray.",
-     "Independently always carries the spray and marks pigs, states on their own how they will check the same pig the next day and report any change, and consults the supervisor about managing a pig clearly smaller than the group separately.",
+     "With guidance marks abnormal pigs, but cannot say how the same pig will be checked the next day and leaves it to others.",
+     "With guidance can mark an abnormal pig clearly with the spray and state how the same pig will be checked the next day.",
+     "Independently always carries the spray and marks pigs, and states on their own how they will check the same pig the next day and report any change.",
      "Understands why the same pig cannot be found the next day without a mark and what following changes is for, and can teach new staff, for example by accompanying them when they mark a pig and pointing out one missed mark."
     ],
     "levels_vi": [
      "Không mang bình xịt đánh dấu, không đánh dấu lợn bất thường nên hôm sau không tìm lại được đúng con đó.",
-     "Nếu có chỉ dẫn thì đánh dấu, nhưng việc kiểm tra hôm sau còn mơ hồ và hay quên, việc báo cáo thay đổi phó mặc cho người khác.",
-     "Nếu có chỉ dẫn thì phun đánh dấu rõ ràng lên lợn bất thường được.",
-     "Không cần chỉ dẫn cũng luôn mang bình xịt để đánh dấu, tự nói được hôm sau sẽ kiểm tra lại đúng con đó và báo cáo thay đổi ra sao, và trao đổi với cấp trên về việc nuôi riêng con lợn rõ ràng nhỏ hơn cả đàn.",
+     "Nếu có chỉ dẫn thì đánh dấu lợn bất thường, nhưng không nói được hôm sau sẽ kiểm tra lại đúng con đó thế nào, và phó mặc cho người khác.",
+     "Nếu có chỉ dẫn thì phun đánh dấu rõ ràng lên lợn bất thường và nói được hôm sau sẽ kiểm tra lại đúng con đó thế nào.",
+     "Không cần chỉ dẫn cũng luôn mang bình xịt để đánh dấu, và tự nói được hôm sau sẽ kiểm tra lại đúng con đó và báo cáo thay đổi ra sao.",
      "Hiểu vì sao không đánh dấu thì hôm sau không tìm lại được đúng con đó, hiểu ý nghĩa của việc theo dõi thay đổi, và có thể hướng dẫn người mới, chẳng hạn đi cùng khi họ đánh dấu và chỉ ra một con quên đánh dấu."
     ],
     "levels_id": [
      "Tidak membawa semprotan penanda dan tidak menandai babi yang abnormal, sehingga esoknya tidak dapat menemukan babi yang sama.",
-     "Jika ada instruksi, menandai, tetapi pemeriksaan esok hari samar dan mudah terlupa, dan pelaporan perubahan diserahkan kepada orang lain.",
-     "Jika ada instruksi, dapat menandai babi yang abnormal dengan semprotan secara jelas.",
-     "Tanpa instruksi pun, selalu membawa semprotan dan menandai, menyebutkan sendiri cara memeriksa babi yang sama keesokan harinya dan melaporkan perubahannya, serta berkonsultasi dengan atasan tentang pengelolaan terpisah untuk babi yang jelas lebih kecil dari kelompoknya.",
+     "Jika ada instruksi, menandai babi yang abnormal, tetapi tidak dapat menyebutkan cara memeriksa babi yang sama esok hari dan menyerahkannya kepada orang lain.",
+     "Jika ada instruksi, dapat menandai babi yang abnormal dengan semprotan secara jelas dan menyebutkan cara memeriksa babi yang sama esok hari.",
+     "Tanpa instruksi pun, selalu membawa semprotan dan menandai, serta menyebutkan sendiri cara memeriksa babi yang sama keesokan harinya dan melaporkan perubahannya.",
      "Memahami mengapa tanpa tanda babi yang sama tidak bisa ditemukan esoknya dan arti memantau perubahan, serta bisa mengajari karyawan baru, misalnya mendampingi saat mereka menandai babi dan menunjukkan satu babi yang lupa ditandai."
     ]
    },

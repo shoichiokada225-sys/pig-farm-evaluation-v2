@@ -678,6 +678,32 @@ const scoreWork = (p, wid, s, n) => p.evaluate(([wid, s, n]) => { [...document.q
       ok(wid + ': ja/en/vi/id に切り替えてもカード内の空文字要素が0（要素数も見出し1+種目5+観点5+段階25）', Object.values(empties).every(v => v === 0));
       await page.evaluate(() => setLang('ja'));
     }
+    // r3: 差し戻し major 6件の内容が画面（ja）に出ていること。作業を選んで描画した観点・段階の文面を読む
+    const pageText = async wid => { await page.evaluate(w => { selWorks = []; saveSel(); toggleWork(w, true); }, wid); await page.waitForTimeout(150);
+      return page.evaluate(w => { const sec = document.querySelector(`#cards .wsec[data-w="${w}"]`); return { ids: [...sec.querySelectorAll('.ec')].map(e => e.getAttribute('data-a') || ''), t: sec.textContent }; }, wid); };
+    const aspTxt = async (wid, aid) => page.evaluate(([w, a]) => { const x = WORKDATA_V2.works.find(k => k.id === w).aspects.find(k => k.id === a); return x ? JSON.stringify([x.kanten, x.levels]) : ''; }, [wid, aid]);
+    await page.evaluate(() => setLang('ja')); await page.waitForTimeout(80);
+    const pc = await pageText('patrol-check');
+    ok('patrol-check: 観点の文面に翌日の追跡が出る', pc.t.includes('翌日同じ豚を確かめる段取り'));
+    const mf = await aspTxt('patrol-check', 'mark-followup');
+    ok('patrol-check/mark-followup: 小さい豚の相談が観点・段階に無い（1種目1行動）', mf && !mf.includes('小さい'));
+    ok('patrol-check/mark-followup: L2に段取りが言えない・L3に段取りを言えるがある', (() => { const l = JSON.parse(mf)[1]; return l[1].includes('段取りが言えず') && l[2].includes('段取りを言える'); })());
+    const wc = await pageText('water-check');
+    ok('water-check: 断水の観点・段階に止まっていた時間を上長に伝える行動が出る', wc.t.includes('止まっていた時間を上長に伝え') && wc.t.includes('飲ませ方の指示を受ける'));
+    ok('water-check: 「少量ずつ」は書かない', !wc.t.includes('少量'));
+    const nv = await aspTxt('vent-temp', 'never-stop');
+    ok('vent-temp/never-stop: L4に目が痛い・涙→直ちに換気を最大が入り、報告より先に書かれる', (() => { const l4 = JSON.parse(nv)[1][3]; return l4.includes('直ちに換気を最大') && l4.indexOf('直ちに換気を最大') < l4.indexOf('上長に報告'); })());
+    ok('vent-temp/never-stop: L4にチクチク→換気を増やし除糞を優先が残る', JSON.parse(nv)[1][3].includes('チクチク') && JSON.parse(nv)[1][3].includes('除糞を優先'));
+    const wr = await aspTxt('vent-controller', 'weekly-review');
+    ok('vent-controller/weekly-review: 頭数の増減・体重帯・最高最低温度計の明け方の値を添えて渡す（判断は求めない）', (() => { const [k, l] = JSON.parse(wr); return k.includes('頭数の増減') && k.includes('体重帯の変化') && k.includes('最高最低温度計の明け方') && !l.join('').includes('合わない点'); })());
+    const cr = await aspTxt('vent-controller', 'change-rule');
+    ok('vent-controller/change-rule L4: 「変更が必要と気づいたら」が無く、変更後の記録と動作確認が中心', (() => { const l4 = JSON.parse(cr)[1][3]; return !l4.includes('気づいたら') && l4.includes('記録') && l4.includes('動作確認'); })());
+    const dg = await pageText('density-grouping');
+    ok('density-grouping: 5種目に timing-fight が無く lie-down がある（移動が無い日でも見られる種目を含む）', await page.evaluate(() => { const ids = WORKDATA_V2.works.find(k => k.id === 'density-grouping').aspects.map(a => a.id); return ids.length === 5 && !ids.includes('timing-fight') && ids.includes('lie-down'); }));
+    const sj = await aspTxt('density-grouping', 'split-judge');
+    ok('density-grouping/split-judge: 夕方〜夜と最小限の回数を含み、小さい豚の別群化は無い', sj.includes('夕方〜夜') && sj.includes('最小限') && !sj.includes('小さい'));
+    const cn = await aspTxt('density-grouping', 'count-record');
+    ok('density-grouping/count-record: 実際に数えて記録と照合する', cn.includes('実際に数えて記録と照合'));
     ok('新5作業の表示中に pageerror が0', st.errors.length === 0);
     await browser.close();
   }
