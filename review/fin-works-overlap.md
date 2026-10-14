@@ -16,7 +16,7 @@
 | height-fit | scraper run-check | 0.10 | height-fit=ニップルの床からの取り付け高さ。既存に高さ調整の種目なし |
 | clog-leak | pad-tank filter-pipe | 0.10 | clog-leak=飲水器の詰まり・出っぱなしと配管漏水の元栓閉止。パドタンクのフィルター・配管清掃とは対象設備が別 |
 | freeze-outage | feed-switch trough-watch | 0.11 | freeze-outage=凍結の解凍と断水時の仮設給水。流量測定は flow-measure、全ニップルの水の出の確認は持たない |
-| season-record | semen-mix light-shield | 0.12 | season-record=夏の水温・断熱・貯水タンクと冬の保温材の見直しと季節点検の記録。ニップル流量は持たない。季節外の試験日は口頭確認 |
+| season-record | semen-mix light-shield | 0.12 | season-record=今の季節（夏は水温・貯水タンク・配管の断熱、冬は保温材）の点検ポイントを答える。記録は採点しない。ニップル流量は持たない。季節外の試験日は口頭確認 |
 
 注: 観察可能性＝freeze-outage・season-record は季節外には実地で見られないため口頭確認（凍結したら最初に何をするか等）。flow-measure はニップル式の農場が対象で、ウォーターカップ式の豚房では評価者が対象外にする。
 
@@ -55,7 +55,7 @@
 | 作業 | 近い既存種目 | 境界・運用 |
 |---|---|---|
 | water-check/flow-measure | 給餌 water-first（final-feeding.json）・residue-water | water-first は「給餌前に水が出るか」の確認で泌乳母豚の目安 2L/分 を使い、flow-measure は肥育豚の目安 1.0〜1.5L/分 を使う。同じカップ流量テストが別基準になるため同じ受験者に併用しない。資料の食い違い（12: 肥育豚1.0〜1.5／09: 夏は1.0以上／給餌側: 2L/分）は社長判断。final-feeding.json は触らない（G18） |
-| water-check/clog-leak ↔ freeze-outage | 同一作業内 | 仮設給水は freeze-outage だけが採点する。clog-leak は L3 で漏水時に元栓を閉めて報告するまで、L4 は床の濡れの原因調べと水質（臭い・色・濁り）に絞る。flow-measure は「基準を下回るもの」まで、出っぱなしは clog-leak |
+| water-check/clog-leak ↔ freeze-outage | 同一作業内 | 仮設給水は freeze-outage だけが採点する。clog-leak は L3 で漏水時に元栓を閉めて報告するまで、L4 は床の濡れの原因調べと水質（臭い・色・濁り）に絞る。flow-measure は 1.0L/分未満と 1.5L/分超の両方を報告するまで、出っぱなしは clog-leak |
 | vent-temp/manual-adjust ↔ vent-controller/change-rule | 同一受験者に両方割り当てる場合 | manual-adjust は手動のカーテン・インレットだけ（自動制御は報告まで）。自動制御の設定変更は change-rule が「自分で変えない」と採点する |
 | vent-temp/fan-failure-first ↔ vent-controller/power-backup | 停電・ファン故障 | fan-failure-first=ファン1台の停止（電源を切り完全停止を確かめてから触れる）。power-backup=停電（発電機・換気ファンと給水ポンプ優先）。復電後の設定再確認は資料に無いため採点しない（候補として社長判断） |
 | vent-temp/pig-signs ↔ patrol-check/urgency-judge | 開口呼吸 | pig-signs=暑い日の行動サインから環境の原因を疑って報告まで（耳の裏に水・温度ムラ。調整は manual-adjust）。緊急度の区分は patrol-check |

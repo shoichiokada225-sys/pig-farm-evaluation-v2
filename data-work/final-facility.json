@@ -1958,7 +1958,7 @@
     "levels": [
      "画面の表示どおりに動いていると思い込み、ファンやインレットの実際の動きを見に行かない。",
      "指示があればファンを見に行くが、シャッターやインレットの開き具合の確認が抜け、ずれは他者まかせ。",
-     "指示があれば回転部に触れず、今のステージで回るはずのファンが回りシャッターが開いているか、止まるファンのシャッターが閉じているかを確認できる。",
+     "指示があれば回転部に触れず、今のステージで回るはずのファンが回りシャッターが開いているか、止まるファンのシャッターが閉じているか、インレットの開きを確認できる。",
      "指示がなくても設定と実際を見比べ、インレットの開きが画面の設定と合うか、画面の温度表示と手持ちの温度計の差も確かめ、ずれを上長に報告する。",
      "表示と実際がずれることがある理由を理解し、照合のポイントを新人に指導できる。"
     ],
@@ -1971,21 +1971,21 @@
     "levels_en": [
      "Assumes things run as displayed on the screen and does not go to see how the fans and inlets actually move.",
      "With guidance goes to see the fans, but skips checking how far the shutters and inlets open, and leaves gaps to others.",
-     "With guidance, without touching rotating parts, can check that the fans that should run at the current stage are running with shutters open, and that stopped fans' shutters are closed.",
+     "With guidance, without touching rotating parts, can check that the fans that should run at the current stage are running with shutters open, that stopped fans' shutters are closed, and how far the inlets are open.",
      "Independently compares settings with reality, checks whether the inlet opening matches the setting on the screen and the gap between the screen temperature and a handheld thermometer, and reports any gap to the supervisor.",
      "Understands why the display and reality can differ, and can teach new staff the points to check."
     ],
     "levels_vi": [
      "Cứ tin là chạy đúng như màn hình hiển thị và không đi xem quạt, cửa gió vào thực tế hoạt động ra sao.",
      "Nếu có chỉ dẫn thì đi xem quạt, nhưng bỏ sót việc kiểm tra độ mở của cửa chớp và cửa gió vào, và phó mặc chỗ lệch cho người khác.",
-     "Nếu có chỉ dẫn thì không chạm vào bộ phận đang quay, kiểm tra được quạt đáng lẽ chạy ở giai đoạn hiện tại có đang quay và cửa chớp mở không, và cửa chớp của quạt đang dừng có đóng không.",
+     "Nếu có chỉ dẫn thì không chạm vào bộ phận đang quay, kiểm tra được quạt đáng lẽ chạy ở giai đoạn hiện tại có đang quay và cửa chớp mở không, cửa chớp của quạt đang dừng có đóng không, và độ mở của cửa gió vào.",
      "Không cần chỉ dẫn, vẫn so sánh cài đặt với thực tế, kiểm tra độ mở cửa gió vào có khớp cài đặt trên màn hình không và chênh lệch giữa nhiệt độ hiển thị với nhiệt kế cầm tay, rồi báo cấp trên chỗ lệch.",
      "Hiểu vì sao hiển thị và thực tế có thể lệch nhau, và có thể hướng dẫn người mới các điểm cần kiểm tra."
     ],
     "levels_id": [
      "Mengira semuanya berjalan seperti tampilan layar dan tidak melihat gerakan nyata kipas dan inlet.",
      "Jika ada instruksi pergi melihat kipas, tetapi pemeriksaan bukaan shutter dan inlet terlewat, dan selisih diserahkan ke orang lain.",
-     "Jika ada instruksi, tanpa menyentuh bagian yang berputar, bisa memeriksa apakah kipas yang seharusnya berjalan pada tahap saat ini berputar dengan shutter terbuka, dan shutter kipas yang berhenti tertutup.",
+     "Jika ada instruksi, tanpa menyentuh bagian yang berputar, bisa memeriksa apakah kipas yang seharusnya berjalan pada tahap saat ini berputar dengan shutter terbuka, shutter kipas yang berhenti tertutup, dan seberapa terbuka inlet.",
      "Tanpa instruksi pun, membandingkan pengaturan dengan kondisi nyata, memeriksa apakah bukaan inlet sesuai pengaturan di layar serta selisih suhu di layar dengan termometer genggam, dan melapor selisihnya ke atasan.",
      "Memahami mengapa tampilan dan kondisi nyata bisa berbeda, dan bisa mengajari karyawan baru poin pemeriksaannya."
     ]
@@ -1993,40 +1993,40 @@
    {
     "id": "change-rule",
     "name": "変更の権限と相談",
-    "kanten": "設定の変更は決められた人だけが行うと理解し、変更が必要と思ったときに自分で触らず、上長に相談できるか。",
+    "kanten": "設定の変更は決められた人だけが行うと理解し、変更が必要と思ったときに自分で触らず、上長または決められた人に相談できるか。",
     "levels": [
      "寒い暑いと感じて自分の判断でコントローラーの設定を触り、誰にも相談しない。",
-     "指示があれば触らないが、変更が必要と思っても上長に相談せず放置する。",
-     "指示があれば、設定を自分では変えず、変更が必要と思う時は決められた人に相談できる。",
-     "指示がなくてもコントローラーを触らず、変更は決められた人に委ねる。",
-     "換気不足で有害ガスや湿気がたまり、呼吸器の病気につながる理由を理解し、変更は決められた人に任せて相談する流れを新人に指導できる。"
+     "指示があれば触らないが、変更が必要と思っても上長または決められた人に相談せず放置する。",
+     "指示があれば、設定を自分では変えず、変更が必要と思う時は上長または決められた人に相談できる。",
+     "指示がなくてもコントローラーを触らず、変更が必要と感じたら自分から決められた人に伝え、変更は決められた人に委ねる。",
+     "換気不足で有害ガスや湿気がたまり、呼吸器の病気につながる理由を理解し、変更は決められた人に任せて上長または決められた人に相談する流れを新人に指導できる。"
     ],
     "name_en": "Authority and Consultation for Changes",
     "name_vi": "Quyền thay đổi và trao đổi",
     "name_id": "Wewenang perubahan dan konsultasi",
-    "kanten_en": "Do they understand that only the designated person changes the settings, and consult the supervisor instead of touching the controller when they think a change is needed?",
-    "kanten_vi": "Có hiểu rằng chỉ người được chỉ định mới thay đổi cài đặt, và khi thấy cần đổi thì trao đổi với cấp trên chứ không tự chạm vào bộ điều khiển không.",
-    "kanten_id": "Apakah memahami bahwa perubahan pengaturan hanya dilakukan orang yang ditunjuk, dan saat merasa perlu perubahan berkonsultasi ke atasan, bukan menyentuh pengendali sendiri?",
+    "kanten_en": "Do they understand that only the designated person changes the settings, and consult the supervisor or the designated person instead of touching the controller when they think a change is needed?",
+    "kanten_vi": "Có hiểu rằng chỉ người được chỉ định mới thay đổi cài đặt, và khi thấy cần đổi thì trao đổi với cấp trên hoặc người được chỉ định chứ không tự chạm vào bộ điều khiển không.",
+    "kanten_id": "Apakah memahami bahwa perubahan pengaturan hanya dilakukan orang yang ditunjuk, dan saat merasa perlu perubahan berkonsultasi ke atasan atau orang yang ditunjuk, bukan menyentuh pengendali sendiri?",
     "levels_en": [
      "Touches the controller settings on their own judgment because it feels cold or hot, and consults no one.",
-     "With guidance does not touch it, but even when a change seems needed, does not consult the supervisor and leaves it alone.",
-     "With guidance does not change settings on their own, and can consult the designated person when a change seems needed.",
-     "Independently does not touch the controller, and leaves any change to the designated person.",
-     "Understands why poor ventilation lets harmful gas and humidity build up and leads to respiratory disease, and can teach new staff to leave changes to the designated person and consult the supervisor."
+     "With guidance does not touch it, but even when a change seems needed, does not consult the supervisor or the designated person and leaves it alone.",
+     "With guidance does not change settings on their own, and can consult the supervisor or the designated person when a change seems needed.",
+     "Independently does not touch the controller; when a change seems needed, tells the designated person on their own initiative and leaves the change to that person.",
+     "Understands why poor ventilation lets harmful gas and humidity build up and leads to respiratory disease, and can teach new staff to leave changes to the designated person and consult the supervisor or the designated person."
     ],
     "levels_vi": [
      "Thấy lạnh hoặc nóng là tự ý chỉnh cài đặt bộ điều khiển và không trao đổi với ai.",
-     "Nếu có chỉ dẫn thì không chạm vào, nhưng dù thấy cần đổi cũng không trao đổi với cấp trên mà bỏ mặc.",
-     "Nếu có chỉ dẫn thì không tự đổi cài đặt, và khi thấy cần đổi thì trao đổi được với người được chỉ định.",
-     "Không cần chỉ dẫn vẫn không chạm vào bộ điều khiển, và giao việc đổi cho người được chỉ định.",
-     "Hiểu vì sao thiếu thông gió làm khí độc và hơi ẩm tích tụ, dẫn đến bệnh hô hấp, và có thể hướng dẫn người mới giao việc đổi cho người được chỉ định và trao đổi với cấp trên."
+     "Nếu có chỉ dẫn thì không chạm vào, nhưng dù thấy cần đổi cũng không trao đổi với cấp trên hoặc người được chỉ định mà bỏ mặc.",
+     "Nếu có chỉ dẫn thì không tự đổi cài đặt, và khi thấy cần đổi thì trao đổi được với cấp trên hoặc người được chỉ định.",
+     "Không cần chỉ dẫn vẫn không chạm vào bộ điều khiển; khi thấy cần đổi thì tự mình báo cho người được chỉ định và giao việc đổi cho người đó.",
+     "Hiểu vì sao thiếu thông gió làm khí độc và hơi ẩm tích tụ, dẫn đến bệnh hô hấp, và có thể hướng dẫn người mới giao việc đổi cho người được chỉ định và trao đổi với cấp trên hoặc người được chỉ định."
     ],
     "levels_id": [
      "Merasa dingin atau panas lalu mengubah pengaturan pengendali dengan penilaian sendiri, dan tidak berkonsultasi dengan siapa pun.",
-     "Jika ada instruksi tidak menyentuhnya, tetapi meski perubahan diperlukan tidak berkonsultasi ke atasan dan membiarkannya.",
-     "Jika ada instruksi, tidak mengubah pengaturan sendiri, dan bisa berkonsultasi ke orang yang ditunjuk saat perubahan diperlukan.",
-     "Tanpa instruksi pun, tidak menyentuh pengendali dan menyerahkan perubahan kepada orang yang ditunjuk.",
-     "Memahami mengapa ventilasi kurang membuat gas berbahaya dan kelembapan menumpuk serta menyebabkan penyakit pernapasan, dan bisa mengajari karyawan baru menyerahkan perubahan kepada orang yang ditunjuk dan berkonsultasi ke atasan."
+     "Jika ada instruksi tidak menyentuhnya, tetapi meski perubahan diperlukan tidak berkonsultasi ke atasan atau orang yang ditunjuk dan membiarkannya.",
+     "Jika ada instruksi, tidak mengubah pengaturan sendiri, dan bisa berkonsultasi ke atasan atau orang yang ditunjuk saat perubahan diperlukan.",
+     "Tanpa instruksi pun, tidak menyentuh pengendali; saat merasa perlu perubahan, menyampaikannya sendiri kepada orang yang ditunjuk dan menyerahkan perubahan kepada orang tersebut.",
+     "Memahami mengapa ventilasi kurang membuat gas berbahaya dan kelembapan menumpuk serta menyebabkan penyakit pernapasan, dan bisa mengajari karyawan baru menyerahkan perubahan kepada orang yang ditunjuk dan berkonsultasi ke atasan atau orang yang ditunjuk."
     ]
    },
    {

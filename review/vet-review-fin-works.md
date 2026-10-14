@@ -11,7 +11,7 @@
 | 作業 | 1 母豚語なし | 2 資料の範囲 | 3 4言語一致 | 4 観察可能性 |
 |---|:-:|:-:|:-:|---|
 | patrol-check 見回り・健康チェック | ○ | ○ | ○ | route-cover・safe-quiet は巡回中に見られる。urgency-judge は口頭、mark-followup の翌日確認は段取りを口頭で述べさせる（記録の提示は求めない） |
-| water-check 飲水器の点検 | ○ | ○ | ○ | flow-measure・height-fit は当日見られる。clog-leak（不具合が無い日）・freeze-outage（季節外）は口頭。season-record は記録と予備品の有無を見る |
+| water-check 飲水器の点検 | ○ | ○ | ○ | flow-measure・height-fit は当日見られる。clog-leak（不具合が無い日）・freeze-outage（季節外）は口頭。season-record は今の季節の点検ポイントを答える（記録・予備品は採点しない） |
 | vent-temp 換気・温度管理（肥育） | ○ | ○ | ○ | read-temp は記録用紙、fan-failure-first と季節外の pig-signs/never-stop は口頭 |
 | vent-controller 換気設定確認（ウインドレス） | ○ | ○ | ○ | 当日に見られるのは read-record・verify-actual のみ。change-rule・weekly-review・power-backup は口頭と記録。カーテン式の農場では採点できない（割り当てない） |
 | density-grouping 密度管理・群分け（肥育） | ○ | ○ | ○ | 移動が無い日は split-judge・pen-count-fit・area-calc がほぼ口頭 |
@@ -26,7 +26,7 @@
 | patrol-check mark-followup | 記録の提示を要求／小さい豚の別管理が抜け | L3=印を付ける実技、L4=翌日確認の段取りを自分から述べる・小さい豚の別管理を上長に相談。記録は求めない | 08 L141・L187・L205・L733 |
 | water-check freeze-outage | 水が戻った後の塩中毒が抜け | kanten・L4・L5 に追加（少量ずつ与えるのは獣医師の指示事項として書かない） | 23 L324-331 |
 | water-check clog-leak | 仮設給水が freeze-outage と二重／「直ちに上長へ」は資料に無い | 仮設給水を削除。元栓を閉め漏水箇所を特定し、報告して応急修理か業者への連絡につなげる | 10 L410-440 |
-| water-check その他 | 出っぱなし・上限の向き／週1回／置き場所／用紙／体重帯 | flow-measure L4 は毎週・1.0L/分を下回るもの。season-record は「予備があるか確かめる」「記録に残す」へ弱め名前を中身に合わせた。height-fit L3 に前期25〜60kg・後期60〜120kg | 08 L925、12 L84-87、10 L414-422 |
+| water-check その他 | 出っぱなし・上限の向き／週1回／置き場所／用紙／体重帯 | flow-measure L4 は毎週・1.0L/分未満と1.5L/分超の両方を報告。season-record は「今の季節の点検ポイントを答える」1行動に絞り、記録・予備ニップルは採点しない（名前を中身に合わせた）。height-fit L3 に前期25〜60kg・後期60〜120kg | 08 L925、12 L84-87、10 L414-422 |
 | vent-temp fan-failure-first | 電源を切る・完全停止の確認が無い | L1〜L5・kanten に追加（回転部に手を近づけるのを L1 の減点に） | 12 L147、08 L903、03 L1357 |
 | vent-temp never-stop | L5 のピット「ひとりでは」が資料より弱い／L4 が除糞優先で危険域でも作業から始まる | L5=攪拌中は絶対に入らない・高濃度では臭いを感じない。L4=目の痛み・涙はまず報告、チクチクの段階で除糞優先。L2 を見える行動に | 08 L621・L661、09 L817-818 |
 | vent-temp manual-adjust | 自動制御のインレットを自分で変える L4 が change-rule と矛盾 | 対象を手動のカーテン・インレットに限定、自動制御はずれの報告まで。L5 はインレットに限定 | 12 L168-169 |

@@ -9,7 +9,7 @@
 - 口頭で確かめる種目（当日に見られないことが多い）: 見回り=urgency-judge・mark-followup の翌日確認、飲水器=freeze-outage・clog-leak（不具合が無い日）、換気・温度=read-temp の3回読み・fan-failure-first・季節外の pig-signs/never-stop、換気設定=change-rule・weekly-review・power-backup、密度=split-judge・pen-count-fit・area-calc。
 - change-rule: 「決められた人」本人が受験する場合は、変更前の相談先を言えれば L4 とする。
 - change-rule・weekly-review・power-backup は口頭試問＋記録用紙で採点する。verify-actual の手持ち温度計は用意物（無い農場は verify-actual の L4 を評価しない）。
-- 換気設定確認の change-rule: L2=指示があれば触らないが、変更が必要と思っても上長に相談せず放置する（L1=自分で触る）。L4=指示がなくても触らず、変更は決められた人に委ねる（相談の有無は L3 で見る）。不触は change-rule だけで採点し、read-record では採点しない。
+- 換気設定確認の change-rule: L2=指示があれば触らないが、変更が必要と思っても上長に相談せず放置する（L1=自分で触る）。L4=指示がなくても触らず、変更が必要と感じたら自分から決められた人に伝え、変更は決められた人に委ねる（L3 は指示があれば上長または決められた人に相談できる）。不触は change-rule だけで採点し、read-record では採点しない。
 - 換気設定確認の read-record: L3=読み取りと転記、L4=全項目を漏れなく読み前週の記録と画面値の食い違いに気づく。
 - 換気設定確認の weekly-review: L3 は今週の設定記録と頭数・体重帯を用紙にそろえて渡せるか（口頭確認）、L4 は頭数・体重帯をそろえた設定記録を毎週上長に渡し、農場が決めた見直し時期に当たると自分から伝えるか（当日の記録用紙で判定）。最高最低温度計は採点しない。
 - power-backup のブレーカー確認と vent-temp の fan-failure-first は同一人物に割り当てない。
@@ -22,3 +22,7 @@
 - 換気・温度（肥育）: pig-signs L4 と fan-failure-first L4 の「豚の呼吸を見る」は同一の観察。一方で採点したら、もう一方では同じ観察を二重に数えない。
 - 密度: pen-count-fit と count-record の「豚房の豚を数える」は1回の実数え行動で両方に使う（二重に数えさせない）。
 - 密度: 口頭確認種目の L4 聞き方の例（split-judge）「この豚房が混んでいるのに気づきました。何を確かめて、誰に何を伝えますか」。
+- 換気設定確認: 用紙への転記は read-record で採点、weekly-review は頭数・体重帯を添えて渡す行為だけ。変更の相談は change-rule、記録の提出は weekly-review。
+- 飲水器の点検 season-record: 春秋は夏か冬の項目で答えさせる。季節外は L3 まで（L4 の実際の点検は季節内のみ）。
+- 飲水器の点検: clog-leak の元栓閉止後は freeze-outage の仮設給水に引き継ぐ（二重採点しない）。
+- 飲水器の点検 freeze-outage: 「長く」止まったかは農場の決まりで判断する（時間の数値は作らない）。

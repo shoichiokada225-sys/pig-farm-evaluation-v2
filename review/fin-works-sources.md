@@ -36,7 +36,7 @@
 /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/10_緊急時対応.md:L424-430 — 仮設給水(バケツ・ホース)・修理まで放置しない
 ## season-record
 /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/09_季節別対応.md:L368-385 — 夏は飲水量1.5〜2倍・貯水タンク容量・水温・直射日光の当たる配管は断熱材（L380-385）
-/Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/15_チェックリスト集.md:L657-662 — 点検結果をチェック欄に記録
+/Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/15_チェックリスト集.md:L657-662 — 点検結果をチェック欄に記録（参考のみ。現行 JSON の season-record は点検ポイントを答える行動で、記録は採点しない）
 /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/09_季節別対応.md:L779-783 — 冬の保温材
 /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L925 — 飲水器の点検（週1。season-recordの本文には使わず）
 
@@ -133,7 +133,7 @@ count-record: /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-gu
 /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/15_チェックリスト集.md:L662-662 — 水質（臭い・色・濁り）
 /Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/10_緊急時対応.md:L410-440 — 漏水: 元栓を閉めて漏水箇所を特定し応急修理か業者に連絡
 ## season-record
-/Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L55-55 — 記録の更新（用紙の様式は資料に無いので「記録に残す」とだけ書く）
+/Users/okadashoichi/swine-manual-app/swine-manual/docs/beginner-guide/08_肥育舎.md:L55-55 — 記録の更新（参考のみ。現行 season-record は記録を採点しない。用紙の様式は資料に無い）
 
 # vent-temp 根拠行（追記・差し戻し反映）
 ## fan-failure-first
