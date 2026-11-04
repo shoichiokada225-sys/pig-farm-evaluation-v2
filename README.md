@@ -47,7 +47,7 @@ works-v2.js（const WORKDATA_V2。直接編集禁止）
   | `jitsugi_v2_deletes` | シートの削除待ち（端末で消した記録。電波が戻ったらシートの行を消す）。**消すとシートに行が残る** |
   | `jitsugi_v2_draft` | 入力途中（採点中の人・やり直しの印を含む） |
   | `jitsugi_v2_sel` | 選んでいる作業 |
-  | `jitsugi_v2_roster` | 取得した名簿（＋シートの記録の要約・GAS の版） |
+  | `jitsugi_v2_roster` | 取得した名簿（＋シートの記録の要約・GAS の版・`aspects`＝シートの「種目」タブで直した文言の上書き） |
   | `jitsugi_v2_evaluator` | 評価者名 |
   | `jitsugi_v2_sheet_url` | 送信先 GAS の URL（設定タブで変えた時だけ） |
   | `jitsugi_v2_date` | 評価者が自分で選んだ評価日（その日のうちだけ） |
@@ -61,11 +61,13 @@ works-v2.js（const WORKDATA_V2。直接編集禁止）
 node gas/build_gas.js && node gas/test_gas.js \
  && PW_PATH=~/anpi-kakunin/node_modules/playwright PW_CHANNEL=chrome node smoke.js \
  && PW_PATH=~/anpi-kakunin/node_modules/playwright PW_CHANNEL=chrome node smoke-sheet.js \
- && PW_PATH=~/anpi-kakunin/node_modules/playwright PW_CHANNEL=chrome node smoke-audit.js
+ && PW_PATH=~/anpi-kakunin/node_modules/playwright PW_CHANNEL=chrome node smoke-audit.js \
+ && PW_PATH=~/anpi-kakunin/node_modules/playwright node smoke-aspects.js
 ```
 - `gas/test_gas.js`＝GAS の単体テスト（シートをモック。名簿・書き込み・削除・評価者タブの台帳・集計タブ・アプリの `toPayload` を本物の `doPost` に通す契約テスト）
 - `smoke.js`＝画面の基本（版の一致・採点・保存・CSV・4言語）
 - `smoke-sheet.js`＝名簿・送信・編集・削除待ち・バックアップ・やり直し・複数端末など（シートの GAS は偽物に差し替え）
+- `smoke-aspects.js`＝種目の上書き（シート「種目」タブ → `roster.aspects` → カード表示・エスケープ・vi・送信名・オフライン・原文復帰・旧GAS・採点途中）。GAS はモック
 - `smoke-audit.js`＝2026-10-06 監査で直した「記録が消える・誤って付く」経路の回帰（やり直しの一部保存・カタログ外の作業の編集・未送信の削除・容量いっぱい・randomUUID の無い端末・同名の改名・前回の記録・合言葉・シート側の失敗・復元の再送）
 - Playwright はほかのプロジェクトから借りる（`PW_PATH`。無ければ `~/farm-shift-app/node_modules/playwright`）。`PW_CHANNEL=chrome` は Mac の Chrome を使う指定
 
@@ -103,3 +105,15 @@ node gas/build_gas.js && node gas/test_gas.js \
 - V1: ~/pig-farm-evaluation（豚舎別評価はV1を継続使用）
 - 口頭試問: ~/oral-exam-app ／ 筆記: hss-exam-app
 - 現場マニュアル: ~/genba-manual → https://genba-manual.vercel.app/
+
+## 種目タブで文言を直す（社長向け・v44〜）
+1. スプレッドシートの「種目」タブで、種目名・観点・Lv1〜Lv5 の文を直す（作業No〜種目ID の A〜D 列は触らない。行の追加削除もしない）
+2. 直した行の「反映」(L 列) にチェックを入れる。**原文と違う欄だけ**がアプリに出る（空欄・原文と同じ欄は変えない）。チェックは TRUE（チェックボックス）のみ有効
+3. 反映の時間: 評価者の端末が前面に戻った時／3分ごと／「名簿を更新」を押した時。圏外の端末は次に電波が入った時（変えたら評価者に「名簿を更新」を頼む）
+4. 直した欄は **4言語（ja/en/vi/id）とも日本語**で出る（古い訳を出さない）。直していない欄は従来どおり訳が出る
+5. 戻すには原文を貼り直すか、チェックを外す。古い GAS（capability `roster.aspects` が無い）では何も起きず、原文のまま
+6. 採点途中の画面は変わらない（採点済みカードが1枚でもあれば描き直さない）。次に人を選んだ時から新しい文言。設定タブの版行に「種目上書き N件」
+7. 種目名を試験の途中で変えると、評価者タブの「種目」列が新旧で割れる（作業単位の集計は影響なし）。種目名は試験前に、期間中は観点・レベル文だけにする
+
+## 受験者別（自動）・農場別（自動）タブ
+GAS が書くタブ（1人1行／農場1行の進み具合と成績）。見方・列の定義・更新のタイミングは [gas/README.md](gas/README.md)。要約: 受験者別＝名簿順に 予定作業数・採点済み数・未採点・全体平均・最終評価日・作業ごとの平均／農場別＝受験者数・全作業済み・一部済み・未採点・平均／送信・削除・setup のたびに更新／手で直さない。

@@ -102,6 +102,8 @@ function renderVer(){
   const el=document.getElementById('dataVer');if(!el)return;
   const app=typeof APP_VER==='string'?APP_VER:'-';
   let s='APP '+app+' / DATA '+(WORKDATA_V2.version||'-')+' / '+WORKDATA_V2.works.length+t('worksUnit');
+  const ovn=typeof aspectOverrideCount==='function'?aspectOverrideCount():0;
+  if(ovn)s+=' / '+t('ovCount').replace('{n}',ovn);
   if(swVer&&swVer!==app)s+=' — '+t('swWait').replace('{v}',swVer);
   el.textContent=s;
 }
@@ -622,20 +624,32 @@ function commitEvaluator(){
 /* ==============================================================
    被評価者タブ（シート「受験者」の名簿→その人に用意した作業を表示）
    ============================================================== */
+/* 種目の上書きが変わった時: 採点済みカードが1枚も無い時だけカードを描き直す（採点途中の画面は変えない。次に人を選んだ時から新しい文言） */
+function aspFp(){try{const r=JSON.parse(localStorage.getItem(ROSTER_KEY));return JSON.stringify(r&&r.aspects||[])}catch{return'[]'}}
+function aspRefresh(before){
+  let now;try{now=aspFp()}catch{return}
+  if(now===before)return;
+  renderVer();
+  if(!document.querySelector('#cards .ec.scored')&&![...document.querySelectorAll('#cards textarea')].some(t=>t.value.trim())&&typeof buildCards==='function'&&selWorks.length)buildCards();
+}
 async function reloadRoster(silent,bg){
   if(!sheetUrl()){renderRoster();return}
   if(bg){   // 裏での取り直し（数分ごと・前面に戻った時）: 読み込み中の表示も知らせも出さない。電波の失敗は前の状態のまま
+    const ap0=aspFp();
     rosterLoading=true;const r=await fetchRoster();rosterLoading=false;
     if(!r.ok&&r.reason==='net')return;
+    aspRefresh(ap0);
     setSheetState(r.ok?'':r.reason,r.gas);rosterKeptEmpty=!!(r.ok&&r.keptEmpty);
     renderRoster();updSyncUI();
     if(r.ok&&curEe.name&&!curEe.manual&&!editId&&!selEntry(r.list))toast(t('eCurGone').replace('{n}',curEe.name),1);
     return;
   }
   const btn=document.querySelector('.eebox .wsel-hd button'),hadFocus=!!btn&&document.activeElement===btn;if(btn){btn.disabled=true;btn.setAttribute('aria-busy','true')}
+  const ap1=aspFp();
   rosterLoading=true;renderRoster();
   const r=await fetchRoster();
   rosterLoading=false;setSheetState(r.ok?'':r.reason,r.gas);
+  aspRefresh(ap1);
   if(btn){btn.disabled=false;btn.removeAttribute('aria-busy');if(hadFocus)btn.focus({preventScroll:true})}   // 読み込み中に押せなくしたボタンへ、フォーカスを戻す
   rosterKeptEmpty=!!(r.ok&&r.keptEmpty);
   renderRoster();updSyncUI();

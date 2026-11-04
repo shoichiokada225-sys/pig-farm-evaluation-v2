@@ -234,3 +234,8 @@ Object.assign(TX.ja,{eGasOld:'シート側（GAS）が古い版です（{v}）�
 Object.assign(TX.en,{eGasOld:'The sheet script (GAS) is an old version ({v}). Ask the administrator to update it'});
 Object.assign(TX.vi,{eGasOld:'Bảng tính (GAS) đang là phiên bản cũ ({v}). Hãy nhờ quản lý cập nhật'});
 Object.assign(TX.id,{eGasOld:'Skrip spreadsheet (GAS) versi lama ({v}). Minta admin memperbaruinya'});
+/* 設定タブの版行: シートの「種目」タブで直した種目の数 */
+Object.assign(TX.ja,{ovCount:'種目上書き {n}件'});
+Object.assign(TX.en,{ovCount:'Aspect overrides: {n}'});
+Object.assign(TX.vi,{ovCount:'Hạng mục đã sửa: {n}'});
+Object.assign(TX.id,{ovCount:'Aspek diubah: {n}'});

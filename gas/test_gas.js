@@ -8,8 +8,10 @@ function mkSheet(name) {
   const sid = nextSheetId++;
   const dv = {};   // 列番号(1始まり) → 入力規則（null=外した）
   const notes = {};
+  const nf = {};   // 'r,c'（範囲の左上）→ 表示形式
+  const prot = [];
   const sh = {
-    name, d, dv, notes, fx, getName: () => name, getSheetId: () => sid,
+    name, d, dv, notes, fx, nf, prot, getName: () => name, getSheetId: () => sid,
     getLastRow: () => d.length, getLastColumn: () => d.reduce((m, r) => Math.max(m, r.length), 0),
     getRange: (r, c, nr = 1, nc = 1) => ({
       _sheet: name,
@@ -20,23 +22,27 @@ function mkSheet(name) {
       setFontWeight() { return this; }, setBackground() { return this; },
       setDataValidation(v) { for (let j = 0; j < nc; j++) dv[c + j] = v; return this; },
       setNote(t) { notes[r + ',' + c] = t; return this; },
+      setNumberFormat(f) { nf[r + ',' + c] = f; return this; },
+      protect() { const p = { r, c, nr, nc, warn: false, setWarningOnly(b) { p.warn = b !== false; return p; }, setDescription() { return p; } }; prot.push(p); return p; },
       setFormula(f) { fx[r + ',' + c] = f; return this; },
     }),
-    deleteRow: i => d.splice(i - 1, 1), setFrozenRows() {}, setColumnWidth() {}, clear() { d.length = 0; Object.keys(fx).forEach(k => delete fx[k]); }, autoResizeColumns() {},
+    deleteRow: i => d.splice(i - 1, 1), setFrozenRows() {}, setColumnWidth() {}, clear() { d.length = 0; Object.keys(fx).forEach(k => delete fx[k]); Object.keys(nf).forEach(k => delete nf[k]); },
+    getMaxRows: () => Math.max(d.length, 1000), getProtections: () => prot.slice(), autoResizeColumns() {},
   };
   return sh;
 }
 const ss = { getSheetByName: n => sheets[n] || null, insertSheet: n => (sheets[n] = mkSheet(n)), getSheets: () => Object.values(sheets) };
-global.SpreadsheetApp = { getActive: () => ss, newDataValidation: () => {
+global.SpreadsheetApp = { ProtectionType: { RANGE: 'RANGE' }, getActive: () => ss, newDataValidation: () => {
   const v = {};
-  return { requireValueInRange(rg) { v.range = rg; return this; }, setAllowInvalid(b) { v.allowInvalid = b; return this; }, build() { return v; } };
+  return { requireCheckbox() { v.checkbox = true; return this; }, requireValueInRange(rg) { v.range = rg; return this; }, setAllowInvalid(b) { v.allowInvalid = b; return this; }, build() { return v; } };
 } };
 const docProps = {};
 global.PropertiesService = { getDocumentProperties: () => ({ getProperty: k => (k in docProps ? docProps[k] : null), setProperty(k, v) { docProps[k] = String(v); return this; }, deleteProperty(k) { delete docProps[k]; return this; } }) };
 /* Sheets の「複製」＝中身も見出しも同じで sheetId だけ新しいタブ */
 const dupSheet = (from, to) => { const s2 = ss.insertSheet(to); sheets[from].d.forEach((row, i) => { s2.d[i] = row.slice(); }); return s2; };
 global.LockService = { getScriptLock: () => ({ tryLock: () => true, releaseLock() {} }) };
-global.Utilities = { formatDate: (d, tz, f) => f === 'yyyy-MM-dd' ? new Date(d.getTime() + 9 * 3600e3).toISOString().slice(0, 10) : '2026-09-23 10:00:00' };
+let mockNow = '2026-09-23 10:00:00';   // 更新日時の確認用に差し替える
+global.Utilities = { formatDate: (d, tz, f) => f === 'yyyy-MM-dd' ? new Date(d.getTime() + 9 * 3600e3).toISOString().slice(0, 10) : mockNow };
 global.ContentService = { MimeType: { JSON: 'j' }, createTextOutput: s => ({ s, setMimeType() { return this; } }) };
 const code = fs.readFileSync(__dirname + '/Code.gs', 'utf8');
 const SEED = [['那須農場', 'テスト 一郎', '給餌'], ['大田原農場', 'テスト 二郎']];
@@ -164,7 +170,7 @@ ok('不正JSON', post.call(null, null) && JSON.parse(G.doPost({ postData: { cont
 // C9-3: 契約（正本=js/contract.js）。アプリ側の本物のコード（works-v2.js＋data.js＋contract.js）で作った要求を、本物の doPost に通す
 const rd = f => fs.readFileSync(__dirname + '/../' + f, 'utf8');
 const APP = new Function(rd('works-v2.js') + ';' + rd('js/data.js') + ';' + rd('js/contract.js') +
-  ';return {WORKDATA_V2,toPayload,submitReq,deleteReq,gasInfo,gasMissing,isUnsupportedOp,GAS_REQUIRED_CAPS,GAS_MIN_VERSION};')();
+  ';return {applyAspectOverrides:typeof applyAspectOverrides==="function"?applyAspectOverrides:null,WORKDATA_V2,toPayload,submitReq,deleteReq,gasInfo,gasMissing,isUnsupportedOp,GAS_REQUIRED_CAPS,GAS_MIN_VERSION};')();
 const ping = JSON.parse(G.doGet({ parameter: { action: 'ping' } }).s);
 const roC = JSON.parse(G.doGet({ parameter: { action: 'roster' } }).s);
 ok('契約: ping・roster は version と capabilities を返す', Array.isArray(ping.capabilities) && ping.version && JSON.stringify(roC.capabilities) === JSON.stringify(ping.capabilities) && roC.version === ping.version);
@@ -406,5 +412,251 @@ ok('シード無し: 農場一覧=受験者タブの農場＋所属未確定（�
   { global.PropertiesService = origPS; const G = new Function('ROSTER_SEED', 'APP_TOKEN', code + ';return {setup,doGet};')(SEED, 'seed-app-token-12345'); G.setup();
     ok('tenantmode: ヒラノ版（既定 false）は Seed の合言葉で従来どおり通り、無ければ拒否', g(G, { action: 'roster', k: 'seed-app-token-12345' }).ok === true && g(G, { action: 'roster' }).error === 'auth'); }
   global.PropertiesService = origPS;
+}
+// ==== 2026-11-04 種目タブ（R1）・受験者別（R2）・農場別（R3）・日付書式（R4） ====
+{
+  const TOKR = 'test-token-0123456789abcdef';
+  const W = APP.WORKDATA_V2, wn = i => W.works[i].name;
+  const reset = () => { Object.keys(sheets).forEach(k => delete sheets[k]); Object.keys(docProps).forEach(k => delete docProps[k]); };
+  const mkG = (c2) => new Function('ROSTER_SEED', 'ADMIN_TOKEN', (c2 || code) + ';return {setup,doGet,doPost,buildPersonTables_,readAspectOverrides_,personOf_,rosterPeople_,onOpen};')(undefined, TOKR);
+  reset();
+  const GR = mkG();
+  const getR = p => JSON.parse(GR.doGet({ parameter: p }).s), postR = o => JSON.parse(GR.doPost({ postData: { contents: JSON.stringify(o) } }).s);
+  const admR = op => getR({ action: 'admin', token: TOKR, op });
+  const rosterR = () => getR({ action: 'roster' });
+  ok('R1 capabilities に roster.aspects・summary.persons（既存の機能は残す）', (() => { const c = getR({ action: 'ping' }).capabilities; return c.includes('roster.aspects') && c.includes('summary.persons') && APP.GAS_REQUIRED_CAPS.every(x => c.includes(x)); })());
+  // --- R1 種目タブ ---
+  GR.setup();
+  const AS = sheets['種目'];
+  const catRows = []; W.works.forEach(w => w.aspects.forEach(a => catRows.push([w.no || '', w.name, w.id, a.id, a.name, a.kanten || '', ...a.levels.slice(0, 5), false])));
+  ok('R1 setup: 種目タブ=見出し1行+245行・A〜D がカタログ・L 列は FALSE', AS && AS.d.length === 246 && catRows.length === 245 && AS.d[0].slice(0, 12).join() === '作業No,作業名,作業ID,種目ID,種目名,観点,Lv1,Lv2,Lv3,Lv4,Lv5,反映'
+    && AS.d.slice(1).every((r, i) => r.slice(0, 4).join('\u0001') === catRows[i].slice(0, 4).join('\u0001') && r[11] === false) && AS.d.slice(1).every((r, i) => r.slice(4, 11).join('\u0001') === catRows[i].slice(4, 11).join('\u0001')));
+  ok('R1 種目タブ: 反映列はチェックボックス・A〜D は警告つき保護（再実行で増えない）・E1 に使い方', AS.dv[12] && AS.dv[12].checkbox === true && (GR.setup(), AS.prot.length === 1) && AS.prot[0].warn === true && /反映にチェック/.test(AS.notes['1,5'] || ''));
+  ok('R1 roster: 何も反映していなければ aspects は []', Array.isArray(rosterR().aspects) && rosterR().aspects.length === 0);
+  const rowOf = (w, a) => AS.d.findIndex((r, i) => i > 0 && r[2] === w && r[3] === a);
+  const w0 = W.works.find(w => w.id === 'feeding-daily'), a0 = w0.aspects[0], a1 = w0.aspects[1], a2 = w0.aspects[2], a3 = w0.aspects[3], a4 = w0.aspects[4];
+  let i0 = rowOf(w0.id, a0.id); AS.d[i0][4] = '  テスト新種目名  '; AS.d[i0][7] = 'テスト新Lv2'; AS.d[i0][10] = 'テスト新Lv5\n二行目'; AS.d[i0][11] = true;
+  let i1 = rowOf(w0.id, a1.id); AS.d[i1][5] = 'テスト新観点'; AS.d[i1][11] = true;
+  let ro1 = rosterR(), e0 = (ro1.aspects || []).find(x => x.w === w0.id && x.a === a0.id), e1 = (ro1.aspects || []).find(x => x.w === w0.id && x.a === a1.id);
+  ok('R1 roster: 反映=TRUE かつ原文と違う欄だけ aspects に載る（lv は長さ5・未変更は空文字）', ro1.aspects.length === 2 && e0 && e0.name === 'テスト新種目名' && !('kanten' in e0) && Array.isArray(e0.lv) && e0.lv.length === 5
+    && e0.lv.join('|') === ['', 'テスト新Lv2', '', '', 'テスト新Lv5\n二行目'].join('|') && e1 && e1.kanten === 'テスト新観点' && !('name' in e1) && !('lv' in e1) && Object.keys(e1).sort().join() === 'a,kanten,w');
+  // 反映 FALSE・空欄・原文と同じ・空白だけ・文字列 "TRUE"・知らない ID は載らない
+  AS.d[i0][11] = false; AS.d[i1][11] = false;
+  const i2 = rowOf(w0.id, a2.id), i3 = rowOf(w0.id, a3.id), i4 = rowOf(w0.id, a4.id);
+  AS.d[rowOf(w0.id, a0.id)][4] = 'FALSEの行の新名';                                               // 反映=FALSE
+  AS.d[i2][4] = ''; AS.d[i2][5] = ''; AS.d[i2][11] = true;                                          // 空欄
+  AS.d[i3][4] = ' ' + a3.name + ' '; AS.d[i3][6] = a3.levels[0]; AS.d[i3][11] = true;              // 原文と同じ（前後空白だけ違う）
+  AS.d[i4][4] = '\u3000\u3000'; AS.d[i4][5] = '   '; AS.d[i4][11] = true;                           // 全角空白だけ
+  const wB = W.works[1], iB = rowOf(wB.id, wB.aspects[0].id); AS.d[iB][4] = '文字列TRUEの新名'; AS.d[iB][11] = 'TRUE';   // 文字列は採用しない
+  AS.d.push(['', '存在しない', 'no-such-work', 'no-such-aspect', 'ID違いの新名', '', '', '', '', '', '', true]);   // カタログに無い行
+  const iC = rowOf(wB.id, wB.aspects[1].id); const idBak = AS.d[iC][3]; AS.d[iC][3] = 'x-' + idBak; AS.d[iC][4] = '種目IDを書き換えた行'; AS.d[iC][11] = true;   // キーを手で書き換えた行
+  ok('R1 roster: 反映=FALSE の行・空欄・原文と同じ欄は載らない', (() => { const r = rosterR(); return Array.isArray(r.aspects) && r.aspects.length === 0; })());
+  ok('R1 roster: 全角空白だけ・文字列 "TRUE"・知らないID・書き換えたキーの行は載らない（反映は真偽値のチェックだけ）', JSON.stringify(rosterR().aspects) === '[]');
+  AS.d[iC][3] = idBak; AS.d.pop();
+  // 制御文字の除去・長さ上限・数式やタグはそのまま文字
+  AS.d[i3][4] = 'a\u0001b\u0007c'; AS.d[i3][5] = 'k'.repeat(5000); AS.d[i3][6] = '<img src=x onerror=alert(1)>'; AS.d[i3][7] = '=HYPERLINK("x")'; AS.d[i3][11] = true;
+  AS.d[i2][4] = 'n'.repeat(500); AS.d[i2][11] = true;
+  const ro2 = rosterR(), e3 = ro2.aspects.find(x => x.a === a3.id), e2 = ro2.aspects.find(x => x.a === a2.id);
+  ok('R1 roster: 制御文字を除き・長さ上限（name120/kanten600/lv600）で切り・タグや式はそのまま文字として返す', e3 && e3.name === 'abc' && e3.kanten.length === 600 && e3.lv[0] === '<img src=x onerror=alert(1)>' && e3.lv[1] === '=HYPERLINK("x")' && e2 && e2.name.length === 120);
+  ok('R1 roster: 同じ種目が2行あっても1回だけ・数は種目数以下', (() => { const dupRow = AS.d[i3].slice(); AS.d.push(dupRow); const r = rosterR(); AS.d.pop(); return r.aspects.filter(x => x.a === a3.id && x.w === w0.id).length === 1 && r.aspects.length <= 245; })());
+  { // 種目タブの読み取りで例外 → aspects を付けない（done と同じ扱い）・名簿は返す。タブが無ければ aspects: []
+    const keep = AS.getRange; AS.getRange = () => { throw new Error('boom'); };
+    const r = rosterR(); AS.getRange = keep;
+    const keepT = sheets['種目']; delete sheets['種目']; const r2 = rosterR(); sheets['種目'] = keepT;
+    ok('R1 roster: 種目タブが読めなければ aspects を付けない・タブが無ければ aspects は []', r.ok === true && Array.isArray(r.roster) && !('aspects' in r) && Array.isArray(r2.aspects) && r2.aspects.length === 0);
+  }
+  // 反映を元に戻す（編集は残す）→ setup 再実行で編集済みの行は上書きしない・消した行は末尾に戻る
+  AS.d.forEach((r, i) => { if (i) r[11] = false; });
+  AS.d[i0][4] = '社長が直した名前'; AS.d[i0][11] = true;
+  const removed = AS.d.splice(rowOf(W.works[2].id, W.works[2].aspects[0].id), 1)[0];
+  AS.d.push(['', 'メモ行', 'memo-w', 'memo-a', 'カタログに無い行', '', '', '', '', '', '', false]);
+  GR.setup();
+  ok('R1 setup 再実行: 編集済みの行を上書きせず、無い種目だけ末尾に追記', AS.d.length === 246 + 1 && AS.d[rowOf(w0.id, a0.id)][4] === '社長が直した名前' && AS.d[rowOf(w0.id, a0.id)][11] === true
+    && AS.d[AS.d.length - 1].slice(2, 4).join() === removed.slice(2, 4).join() && AS.d[AS.d.length - 1][4] === removed[4] && AS.d[AS.d.length - 1][11] === false && AS.d.some(r => r[2] === 'memo-w'));
+  AS.d.splice(AS.d.findIndex(r => r[2] === 'memo-w'), 1);
+  { // 回帰: カタログ改訂後、触っていない欄（初期値のまま）は「上書き」として配らない・Date/数値の自動変換は無視
+    const iR = rowOf(w0.id, a0.id), keep = AS.d[iR].slice();
+    a0.levels.slice(0, 5).forEach((t, k) => { AS.d[iR][6 + k] = t; });
+    AS.d[iR][5] = '改訂前の旧観点文';  AS.d[iR][12] = JSON.stringify([a0.name, '改訂前の旧観点文'].concat(a0.levels.slice(0, 5)));   // 旧カタログで書かれた行（今のカタログは別の文）
+    AS.d[iR][4] = '直した名前'; AS.d[iR][11] = true;
+    const r1 = rosterR().aspects.find(x => x.w === w0.id && x.a === a0.id);
+    AS.d[iR][4] = a0.name; AS.d[iR][5] = new Date(2026, 2, 8); AS.d[iR][6] = 5; AS.d[iR][11] = true;
+    const r2 = rosterR().aspects.find(x => x.w === w0.id && x.a === a0.id);
+    ok('R1 回帰: 初期値のままの欄はカタログ改訂後も配らない・Date/数値は無視', r1 && r1.name === '直した名前' && !('kanten' in r1) && !r2);
+    AS.d[iR] = keep;
+  }
+  // 契約: applyAspectOverrides → toPayload → 本物の doPost
+  {
+    const ov = rosterR().aspects;
+    const can = typeof APP.applyAspectOverrides === 'function';
+    let pay = null, rr = null, rows = [];
+    if (can) {
+      APP.applyAspectOverrides(ov);
+      const fw0 = W.works.find(w => w.id === 'feeding-daily');
+      pay = APP.submitReq({ id: 'ov-1', date: '2026-10-01', evaluator: 'テスト上書き評価者', evaluatee: 'テスト 上書き', farm: 'テスト農場', overall: '', createdAt: '2026-10-01T00:00:00Z',
+        works: [{ workId: fw0.id, workName: fw0.name, category: fw0.category, scores: Object.fromEntries(fw0.aspects.map((a, i) => [a.id, i + 1])), comments: {} }] });
+      rr = postR(pay);
+      rows = sheets['テスト上書き評価者'] ? sheets['テスト上書き評価者'].d.slice(1).map(r => r[7]) : [];
+      APP.applyAspectOverrides([]);   // 後続のために原文へ戻す
+    }
+    ok('R1 契約: applyAspectOverrides 後の toPayload を doPost に通すと 種目列が上書き後の名前', can && rr && rr.ok === true && rows[0] === '社長が直した名前' && rows.length === 5 && rows[1] === W.works.find(w => w.id === 'feeding-daily').aspects[1].name);
+  }
+
+  // --- R2/R3 受験者別・農場別 ---
+  reset();
+  const GP = mkG();
+  const getP = p => JSON.parse(GP.doGet({ parameter: p }).s), postP = o => JSON.parse(GP.doPost({ postData: { contents: JSON.stringify(o) } }).s);
+  GP.setup();
+  const PT = () => sheets['受験者別（自動）'], FT = () => sheets['農場別（自動）'];
+  ok('R2 setup で受験者別（自動）・農場別（自動）ができる（名簿が空でも落ちない・説明＋更新日時の行と見出し行）', PT() && FT() && /更新 \d{4}-\d\d-\d\d \d\d:\d\d:\d\d$/.test(PT().d[0][0]) && PT().d[1].slice(0, 8).join() === '農場,被評価者,予定作業数,採点済み数,未採点の作業,予定外の作業,全体平均,最終評価日' && FT().d[1].join() === '農場,受験者数,全作業済み,一部済み,未採点,平均,採点済み/予定');
+  const preset = W.presets.find(p => p.id === 'farrowing-house'), pn = id => W.works.find(w => w.id === id).name;
+  const outW = W.works.find(w => !preset.works.includes(w.id) && w.id !== W.works[0].id && w.id !== W.works[1].id);
+  const rsx = sheets['受験者'], hdr = rsx.d[0];
+  ok('R2 前提: 受験者タブの見出し', hdr.join() === '農場,被評価者,作業1,作業2,作業3,作業4,作業5,作業6,作業7,作業8,旧名');
+  const pr = (farm, name, works, alias) => { const r = [farm, name]; for (let i = 0; i < 8; i++) r.push((works || [])[i] || ''); r.push(alias || ''); return r; };
+  sheets['農場一覧'].d.length = 0; sheets['農場一覧'].getRange(1, 1, 5, 1).setValues([['農場'], ['テスト東'], ['テスト西'], ['テスト北'], ['所属未確定']]);
+  rsx.getRange(2, 1, 11, 11).setValues([
+    pr('テスト東', 'テスト Hoang Nam', [wn(0), wn(1)], 'テスト 旧名'),
+    pr('テスト西', 'テスト Nam', [wn(0)]),
+    pr('テスト東', 'テスト 区分', ['分娩舎']),
+    pr('テスト東', 'テスト 不明', [wn(2), '存在しない作業']),
+    pr('テスト北', '（農場共通）', [wn(3), wn(4)]),
+    pr('テスト北', 'テスト 共通人', []),
+    pr('テスト東', 'テスト 同名', [wn(0)]),
+    pr('テスト西', 'テスト 同名', [wn(1)]),
+    pr('テスト西', 'テスト 確定', [wn(0)]),
+    pr('テスト東', 'テスト 無採点', [wn(0)]),
+    pr('', '   ', [wn(0)]),   // 空名は除く
+  ]);
+  const rc = (id, ev, name, farm, date, works, redoOf) => ({ action: 'submit', record: { id, date, evaluator: ev, evaluatee: name, farm, overall: '', redoOf: redoOf || '',
+    works: works.map(([wname, scs]) => ({ workName: wname, category: 'テスト', items: scs.map((s, i) => ({ aspect: '種目' + (i + 1), score: s, comment: '' })) })) } });
+  postP(rc('r-1', 'EV-A', 'テスト Hoang Nam', 'テスト東', '2026-10-01', [[wn(0), [2, 2]], [wn(1), [3, 3]]]));
+  postP(rc('r-2', 'EV-B', 'テスト Hoang Nam', 'テスト東', '2026-10-03', [[wn(0), [4, 4]], [wn(1), [5, 3]]], 'r-1'));   // やり直し（別の評価者タブ）
+  postP(rc('r-3', 'EV-A', 'テスト 旧名', 'テスト東', '2026-10-04', [[wn(0), [5]]]));                                 // 旧名で保存
+  postP(rc('r-4', 'EV-B', 'テスト Nam', 'テスト西', '2026-10-02', [[wn(0), [3, 4]]]));
+  postP(rc('r-5', 'EV-A', 'テスト 区分', 'テスト東', '2026-10-05', [[pn('feeding-daily'), [5]], [pn('castration'), [1]], [outW.name, [2]]]));
+  postP(rc('r-6', 'EV-B', 'テスト 不明', 'テスト東', '2026-10-05', [[wn(2), [4]]]));
+  postP(rc('r-7', 'EV-A', 'テスト 共通人', 'テスト北', '2026-10-06', [[wn(3), [4]]]));
+  postP(rc('r-8', 'EV-B', 'テスト 同名', 'テスト西', '2026-10-06', [[wn(1), [5]]]));
+  postP(rc('r-9', 'EV-A', 'テスト 同名', 'テスト東', '2026-10-06', [[wn(0), [1]]]));
+  postP(rc('r-10', 'EV-B', 'テスト 同名', '所属未確定', '2026-10-07', [[wn(0), [3]]]));
+  postP(rc('r-11', 'EV-A', 'テスト 確定', '所属未確定', '2026-10-07', [[wn(0), [2]]]));
+  postP(rc('r-12', 'EV-B', 'テスト 外部', 'テスト南', '2026-10-08', [[wn(0), [4]]]));
+  const pd = PT().d, prow = n => pd.slice(2).find(r => r[1] === n);
+  const pairs = r => { const o = []; for (let i = 8; i + 1 < r.length; i += 2) if (r[i] !== '') o.push(r[i] + '=' + r[i + 1]); return o.join('|'); };
+  const names = pd.slice(2).map(r => r[1]);
+  ok('R2 受験者別: 名簿順1人1行・予定/採点済み/未採点/全体平均/最終評価日/作業ごとの平均', names.slice(0, 9).join() === ['テスト Hoang Nam', 'テスト Nam', 'テスト 区分', 'テスト 不明', 'テスト 共通人', 'テスト 同名', 'テスト 同名', 'テスト 確定', 'テスト 無採点'].join()
+    && prow('テスト Hoang Nam').slice(0, 8).join() === ['テスト東', 'テスト Hoang Nam', 2, 2, '', '', 4.2, '2026-10-04'].join() && pairs(prow('テスト Hoang Nam')) === wn(0) + '=4.33|' + wn(1) + '=4'
+    && prow('テスト Nam').slice(2, 8).join() === [1, 1, '', '', 3.5, '2026-10-02'].join() && prow('テスト 無採点').slice(2, 8).join() === [1, 0, wn(0), '', '', ''].join() && pairs(prow('テスト 無採点')) === wn(0) + '=' && pd[1].length === 24 && pd[1][23] === '平均8');
+  ok('R2 受験者別: やり直し前の行を数えない（平均は最新回だけ・前回の作業の予定は残る）', prow('テスト Hoang Nam')[3] === 2 && prow('テスト Hoang Nam')[6] === 4.2);
+  ok('R2 受験者別: 旧名/所属未確定→確定/同名2農場の振り分けが checkSummary_ と同じ', prow('テスト Hoang Nam')[7] === '2026-10-04'   // 旧名の記録が Hoang Nam に入る
+    && pd.slice(2, 11).filter(r => r[1] === 'テスト 同名').map(r => r[0] + ':' + pairs(r)).join('|') === 'テスト東:' + wn(0) + '=2|テスト西:' + wn(1) + '=5'   // 所属未確定の同名は最初の行
+    && pairs(prow('テスト 確定')) === wn(0) + '=2');
+  const planRest = preset.works.filter(id => id !== 'feeding-daily' && id !== 'castration').map(pn);
+  ok('R2 受験者別: 区分名は作業一式・予定外の作業・解決できないセルは ?原文 で未採点', prow('テスト 区分')[2] === 7 && prow('テスト 区分')[3] === 2 && prow('テスト 区分')[4] === planRest.join('、') && prow('テスト 区分')[5] === outW.name
+    && prow('テスト 不明')[2] === 2 && prow('テスト 不明')[3] === 1 && prow('テスト 不明')[4] === '?存在しない作業' && prow('テスト 区分')[6] === 2.67);
+  ok('R2 受験者別: 共通行を使う（作業が空の人は同じ農場の（農場共通）行の作業）・共通行は人の行に出ない', prow('テスト 共通人')[2] === 2 && prow('テスト 共通人')[3] === 1 && prow('テスト 共通人')[4] === wn(4) && pairs(prow('テスト 共通人')) === wn(3) + '=4|' + wn(4) + '=' && !names.includes('（農場共通）') && !names.slice(0, 9).includes('   '));
+  ok('R2 受験者別: 名簿外は末尾に 名簿外 として1人1行（捨てない）', pd.length === 2 + 10 && pd[pd.length - 1][0] === '名簿外' && pd[pd.length - 1][1] === 'テスト 外部（テスト南）' && pd[pd.length - 1][6] === 4 && pd[pd.length - 1][5] === wn(0));
+  ok('R2 受験者別: やり直し前の行を数えない・旧名/所属未確定→確定/同名2農場の振り分けが checkSummary_ と同じ・区分名は作業一式・共通行を使う・名簿外は末尾',
+    prow('テスト Hoang Nam')[6] === 4.2 && prow('テスト 確定')[3] === 1 && prow('テスト 区分')[2] === 7 && prow('テスト 共通人')[2] === 2 && pd[pd.length - 1][0] === '名簿外');
+  { // 集計の P 列（今の農場）と同じ振り分け: checkSummary_ の期待値（personOf_）と、表の人の農場が一致
+    const P = GP.rosterPeople_(), fo = (n, f) => { const p = GP.personOf_(n, f, P); return p ? p.farm : null; };
+    ok('R2 人の特定: 名前＋農場 → 名前 → 旧名の完全一致 → 名簿外（共通行・部分一致は候補にしない）', fo('テスト 同名', 'テスト西') === 'テスト西' && fo('テスト 同名', 'テスト東') === 'テスト東' && fo('テスト 同名', '所属未確定') === 'テスト東' && fo('テスト 旧名', 'テスト東') === 'テスト東'
+      && fo('テスト 旧', 'テスト東') === null && fo('（農場共通）', 'テスト北') === null && fo('テスト 外部', 'テスト南') === null && fo('テスト　Nam', 'テスト西') === 'テスト西');
+  }
+  const ft = FT().d;
+  ok('R3 農場別: 受験者数・全作業済み・一部済み・未採点・平均・採点済み/予定', ft.length === 2 + 4 && ft[2].join() === ['テスト東', 5, 2, 2, 1, 3.36, '6/13'].join() && ft[3].join() === ['テスト西', 3, 3, 0, 0, 3.5, '3/3'].join()
+    && ft[4].join() === ['テスト北', 1, 0, 1, 0, 4, '1/2'].join() && ft[5].join() === ['所属未確定', 0, 0, 0, 0, '', '0/0'].join());
+  ok('R3 農場別: 順番=農場一覧の順・所属未確定は最後、名簿にだけある農場は一覧の後ろ', (() => { sheets['農場一覧'].d.length = 0; sheets['農場一覧'].getRange(1, 1, 3, 1).setValues([['農場'], ['所属未確定'], ['テスト西']]); GP.setup(); const f = FT().d.slice(2).map(r => r[0]); return f.join() === 'テスト西,テスト東,テスト北,所属未確定'; })());
+  ok('R2/R3 表は自動の説明つき・文字として書く列は書式@・H列は yyyy-mm-dd', PT().nf['3,1'] === '@' && PT().nf['3,8'] === 'yyyy-mm-dd' && FT().nf['3,7'] === '@' && /手で直さない/.test(PT().d[0][0]) && /手で直さない/.test(FT().d[0][0]));
+  // 更新: submit・delete・setup・op=persons のたびに更新日時が進む／同名の管理者タブは触らない
+  const stamp = sh => String(sh.d[0][0]).replace(/^.*更新 /, '');
+  const sub = () => postP(rc('u-' + Math.random().toString(36).slice(2, 6), 'EV-A', 'テスト 無採点', 'テスト東', '2026-10-09', [[wn(0), [3]]]));
+  mockNow = '2026-11-04 09:00:01'; const u1 = sub();
+  const s1 = [stamp(PT()), stamp(FT())];
+  mockNow = '2026-11-04 09:00:02'; const dl = postP({ action: 'delete', id: 'r-12' });
+  const s2 = [stamp(PT()), stamp(FT())], outsideAfterDel = PT().d.some(r => r[0] === '名簿外');
+  mockNow = '2026-11-04 09:00:03'; GP.setup();
+  const s3 = [stamp(PT()), stamp(FT())];
+  mockNow = '2026-11-04 09:00:04'; const pr4 = getP({ action: 'admin', token: TOKR, op: 'persons' });
+  const s4 = [stamp(PT()), stamp(FT())];
+  delete sheets['受験者別（自動）'];
+  const mine = ss.insertSheet('受験者別（自動）'); mine.getRange(1, 1, 2, 2).setValues([['自分の表', 1], ['x', 2]]);
+  mockNow = '2026-11-04 09:00:05'; sub(); GP.setup(); const pr5 = getP({ action: 'admin', token: TOKR, op: 'persons' });
+  ok('R2/R3 更新: submit・delete・setup・op=persons のたびに更新日時が進む／同名の管理者タブは触らない',
+    u1.ok && dl.ok && dl.deleted > 0 && s1.join() === '2026-11-04 09:00:01,2026-11-04 09:00:01' && s2.join() === '2026-11-04 09:00:02,2026-11-04 09:00:02' && s3.join() === '2026-11-04 09:00:03,2026-11-04 09:00:03'
+    && pr4.ok === true && /^OK/.test(pr4.persons) && s4.join() === '2026-11-04 09:00:04,2026-11-04 09:00:04'
+    && mine.d.length === 2 && mine.d[0][0] === '自分の表' && stamp(FT()) === '2026-11-04 09:00:05' && pr5.ok === true);
+  ok('R2 delete 後: 削除した記録の分が受験者別から消える（名簿外の行が無くなる）', outsideAfterDel === false);
+  { // 自動更新の上限: 超えたら submit では更新せず、op=persons だけが更新する
+    const codeS = code.replace('const PERSON_AUTO_MAX_ROWS = 20000;', 'const PERSON_AUTO_MAX_ROWS = 3;');
+    reset(); const GS = mkG(codeS); GS.setup();
+    const sp = o => JSON.parse(GS.doPost({ postData: { contents: JSON.stringify(o) } }).s);
+    sheets['受験者'].getRange(2, 1, 1, 3).setValues([['テスト東', 'テスト 上限', wn(0)]]);
+    mockNow = '2026-11-04 10:00:00'; GS.setup();
+    mockNow = '2026-11-04 10:00:01'; sp(rc('lim-1', 'EV-A', 'テスト 上限', 'テスト東', '2026-10-01', [[wn(0), [1, 2, 3, 4, 5]]]));
+    const st1 = sheets['受験者別（自動）'].d[0][0].replace(/^.*更新 /, '');
+    mockNow = '2026-11-04 10:00:02'; const r = JSON.parse(GS.doGet({ parameter: { action: 'admin', token: TOKR, op: 'persons' } }).s);
+    ok('R2 自動更新の上限: 行数が上限を超えたら submit では作り直さず、op=persons だけが更新する', st1 === '2026-11-04 10:00:00' && r.ok && sheets['受験者別（自動）'].d[0][0].endsWith('10:00:02') && sheets['受験者別（自動）'].d[2][3] === 1);
+  }
+  // 更新に失敗しても submit の応答は変わらない
+  {
+    reset(); const GF = mkG(); GF.setup();
+    const fp = o => JSON.parse(GF.doPost({ postData: { contents: JSON.stringify(o) } }).s);
+    const bad = sheets['受験者別（自動）']; bad.clear = () => { throw new Error('boom'); };
+    const rr = fp(rc('f-1', 'EV-A', 'テスト 失敗', 'テスト東', '2026-10-01', [[wn(0), [3]]]));
+    const rd = fp({ action: 'delete', id: 'f-1' });
+    ok('R2 更新が失敗しても submit・delete の応答と書き込みは変わらない', rr.ok === true && rr.rows === 1 && rd.ok === true && rd.deleted === 1);
+  }
+  // R4 日付書式
+  {
+    reset(); const GD = mkG(); GD.setup();
+    const dp = o => JSON.parse(GD.doPost({ postData: { contents: JSON.stringify(o) } }).s);
+    dp(rc('d-1', 'EV-A', 'テスト 日付', 'テスト東', '2026-10-01', [[wn(0), [3]]]));
+    const SM = sheets['集計（自動）'];
+    ok('R4 集計（自動）B列=yyyy-mm-dd・N列=yyyy-mm-dd hh:mm:ss の書式', SM.nf['3,2'] === 'yyyy-mm-dd' && SM.nf['3,14'] === 'yyyy-mm-dd hh:mm:ss' && !SM.nf['3,3']);
+    ok('R4 評価者名が 種目・受験者別（自動）・農場別（自動）でも予約名のタブに書かない', (['種目', '受験者別（自動）', '農場別（自動）'].forEach((n, i) => dp(rc('d-r' + i, n, 'テスト 日付', 'テスト東', '2026-10-01', [[wn(0), [3]]]))), ['種目', '受験者別（自動）', '農場別（自動）'].every(n => sheets['評価者_' + n]) && sheets['種目'].d[0][0] === '作業No' && sheets['受験者別（自動）'].d[1][0] === '農場'));
+  }
+  // onOpen: getUi が無い環境でも落ちない／ある環境ではメニューを作る
+  {
+    reset(); const GO = mkG(); let threw = false; try { GO.onOpen(); } catch (e) { threw = true; }
+    const items = []; global.SpreadsheetApp.getUi = () => ({ createMenu: t => ({ addItem(n, f) { items.push([t, n, f]); return this; }, addToUi() { return this; } }) }); GO.onOpen(); delete global.SpreadsheetApp.getUi;
+    ok('onOpen: getUi が無くても落ちない・あればメニュー「HSS実技」を作る', !threw && items.length === 1 && items[0].join() === 'HSS実技,受験者別・農場別を更新,refreshPersonTabs');
+  }
+  // 速度: 94名×8作業×5種目 = 3,760行
+  {
+    reset(); const GV = mkG(); GV.setup();
+    const rows = []; const rs2 = sheets['受験者'];
+    for (let i = 0; i < 94; i++) rs2.d.push(pr('テスト農場' + (i % 6), 'テスト 速度' + i, [0, 1, 2, 3, 4, 5, 6, 7].map(wn)));
+    const ev = ss.insertSheet('評価者速度'); ev.d.push(['記録ID', '評価日', '評価者', '被評価者', '農場', 'カテゴリ', '作業', '種目', 'スコア', 'コメント', '作業平均', 'セッション平均', '全体所感', '送信日時', 'やり直し元']);
+    for (let i = 0; i < 94; i++) for (let k = 0; k < 8; k++) for (let a = 0; a < 5; a++) ev.d.push(['sp-' + i, '2026-10-0' + (1 + (k % 8)), '評価者速度', 'テスト 速度' + i, 'テスト農場' + (i % 6), 'テスト', wn(k), '種目' + a, 1 + ((i + k + a) % 5), '', '', '', '', '2026-10-01 10:00:00', '']);
+    docProps.HSS_EVAL_TAB_IDS = JSON.stringify([String(ev.getSheetId())]);
+    const t0 = Date.now(), T = GV.buildPersonTables_(), dt = Date.now() - t0;
+    ok('R2 速度: 94名×8作業×5種目の評価者行で buildPersonTables_ が Node 上 3 秒以内（' + dt + 'ms・' + (ev.d.length - 1) + '行）', ev.d.length - 1 === 3760 && dt < 3000 && T.person.rows.length === 94 && T.person.rows.every(r => r[2] === 8 && r[3] === 8) && T.farm.rows.length === 7);
+  }
+  { // 回帰: 壊す検証の指摘
+    const w0n = pn(W.works[0].id), w1n = pn(W.works[1].id);
+    // (1) 同名の別タブ「種目」には書かない
+    reset(); const G3 = mkG(); const foreign = ss.insertSheet('種目'); foreign.getRange(1, 1, 2, 5).setValues([['記録ID', '評価日', '評価者', '被評価者', '農場'], ['x1', '2026-11-01', '種目', '太郎', 'F']]);
+    G3.setup();
+    ok('回帰: 同名の別タブ「種目」には書き込まない（行数・見出しはそのまま）', foreign.d.length === 2 && foreign.d[0][0] === '記録ID' && foreign.d[1][0] === 'x1' && foreign.d[0].length === 5);
+    // (2) 農場の表記ずれ: 同名2農場で別の人に点が付かない
+    reset(); const G4 = mkG(), post4 = o => JSON.parse(G4.doPost({ postData: { contents: JSON.stringify(o) } }).s); G4.setup();
+    sheets['受験者'].d.length = 0;
+    sheets['受験者'].getRange(1, 1, 3, 4).setValues([['農場', '被評価者', '作業1', '作業2'], ['那須農場', '太郎', w0n, ''], ['大田原農場', '太郎', w0n, '']]);
+    const rec4 = (id, farm) => ({ action: 'submit', record: { id: id, evaluator: 'EV', person: '太郎', farm: farm, date: '2026-11-02', sentAt: '2026-11-02T10:00:00+09:00', works: [{ workId: W.works[0].id, workName: w0n, aspects: [{ aspect: 'a', score: 5 }] }] } });
+    const P4 = G4.rosterPeople_();
+    ok('回帰: 農場名が「大田原」（農場なし）でも那須の太郎に付けず、部分一致で大田原の太郎に付く', G4.personOf_('太郎', '大田原', P4).farm === '大田原農場' && G4.personOf_('太郎', '那須農場', P4).farm === '那須農場');
+    ok('回帰: 同名2農場で決められない表記は名簿外（別の人に付けない）・所属未確定は先頭', G4.personOf_('太郎', '東京', P4) === null && G4.personOf_('太郎', '所属未確定', P4).farm === '那須農場' && G4.personOf_('太郎', '', P4).farm === '那須農場');
+    // (3) 同じ農場・同名の2行は1人にまとめる
+    sheets['受験者'].getRange(4, 1, 1, 4).setValues([['那須農場', '太郎', w0n, w1n]]);
+    const P5 = G4.rosterPeople_(), taros = P5.people.filter(p => p.name === '太郎' && p.farm === '那須農場');
+    ok('回帰: 名簿の同じ農場・同名の2行は1人にまとめ作業を合わせる', taros.length === 1 && taros[0].cells.join() === [w0n, w1n].join() && P5.people.length === 2);
+    // (4) サロゲートペアが上限で切れない
+    const GC = new Function('ROSTER_SEED', 'ADMIN_TOKEN', code + ';return {cleanText_};')(undefined, TOKR);
+    const ct = GC.cleanText_('あ'.repeat(119) + '😀', 120);
+    ok('回帰: 上限の境界で絵文字が切れても孤立サロゲートを残さない', ct === 'あ'.repeat(119) && GC.cleanText_('あ'.repeat(118) + '😀', 120).endsWith('😀'));
+  }
+  mockNow = '2026-09-23 10:00:00';
 }
 console.log(`\n合計: OK ${pass} / NG ${fail}`); process.exit(fail ? 1 : 0);

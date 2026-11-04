@@ -3,6 +3,9 @@
                           done?:[{id, date:'YYYY-MM-DD', name:被評価者, farm, works:[作業名]}]}（点数・評価者名は含まない）
                         done = シートの評価者タブにある記録の要約（ほかの端末で済んだ人・作業も数える。'roster.done' の GAS だけが返す＝無くても動く）
                         受験者タブが無い時 {ok:false, version, capabilities, error:'no roster sheet'}
+                        aspects?:[{w:作業ID, a:種目ID, name?, kanten?, lv?:[5]}]（'roster.aspects' の GAS。シートの「種目」タブで反映=TRUE かつ原文と違う欄だけ。lv は長さ5・未変更は空文字。
+                          キーが無い＝古い GAS／読み取り失敗 → アプリは前回保存した上書きを保持。[] → 原文に戻す。w/a でカタログの種目を特定）
+                        'summary.persons'=シートに 受験者別（自動）・農場別（自動）タブがある（アプリは使わない）
    GET  ?action=ping   → {ok:true, version, capabilities}
    POST {action:'submit', record: toPayload(記録)} → {ok:true, id, rows}（record.redoOf=やり直し元の記録ID。'submit.redoOf' の GAS が「やり直し元」列に書く・古い GAS は無視＝送っても安全） ／ {ok:false, error:'no record'|'no id'|'busy'|…}
         record.ver=端末の更新時刻（updatedAt||createdAt）。'submit.ver' の GAS は、シートに新しい版があれば書かずに {ok:true, id, rows:0, stale:true}
@@ -33,7 +36,8 @@ function isUnsupportedOp(j){return !!(j&&j.ok===false&&(j.error==='unknown actio
 /* 送る形 */
 function submitReq(r){return{action:'submit',record:toPayload(r)}}
 function deleteReq(d){return{action:'delete',id:d.id,evaluator:d.evaluator||'',rv:d.rv||'',at:d.at||''}}   // at=削除を出した時刻（戻しより前に出された古い削除を見分ける）
-/* 端末の記録 → シートの行の元（作業名・カテゴリ・種目名は日本語の正本の名前） */
+/* 端末の記録 → シートの行の元（作業名・カテゴリ・種目名は日本語の正本の名前）。
+   種目名 a.name は applyAspectOverrides の適用後の値＝シートで直した種目名が「種目」列に入る（コードは変えない） */
 function toPayload(r){
   return{id:r.id,date:r.date,evaluator:r.evaluator,evaluatee:r.evaluatee,farm:r.farm||'',overall:r.overall||'',redoOf:r.redoOf||'',ver:r.updatedAt||r.createdAt||'',...(r.revive?{revive:true}:{}),...(r.rv?{rv:r.rv,rvAt:r.rvAt||''}:{}),
     works:(r.works||[]).map(we=>{

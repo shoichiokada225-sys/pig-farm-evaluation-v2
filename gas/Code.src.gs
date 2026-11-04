@@ -15,11 +15,14 @@
      何度実行しても受験者タブの行・農場一覧（管理者が直した分）は消さない。作業一覧だけ作り直す
    - 合言葉（2026-10-06a〜）: git 管理外の Seed.js に APP_TOKEN（8文字以上）があれば、roster（GET の k）・submit/delete（POST の k）に必須。
      違えば {ok:false, error:'auth'}。ping は合言葉なしで版だけ返す。APP_TOKEN が無い時は従来どおり誰でも（テスト・移行用）
-   - 削除ログ（2026-10-06a〜）: 削除・上書き（再送・編集）で消える行は、消す前に「削除ログ」タブへ写す（取り返せるように） */
+   - 削除ログ（2026-10-06a〜）: 削除・上書き（再送・編集）で消える行は、消す前に「削除ログ」タブへ写す（取り返せるように）
+   - 種目タブ（roster.aspects）: 5種目の文言（種目名・観点・Lv1〜5）をシートで直せる。「反映」が TRUE の行のうち原文と違う欄だけを roster の aspects に載せる
+     （[{w:作業ID, a:種目ID, name?, kanten?, lv?:[5つ・''=変えない]}]。種目タブの読み取りで例外が出た時だけ aspects を付けない）
+   - 受験者別（自動）・農場別（自動）（summary.persons）: GAS が値を書く。setup・submit 後・delete 後・管理入口 op=persons で更新 */
 
-const CODE_VERSION = '2026-10-11b';
+const CODE_VERSION = '2026-11-04a';
 /* アプリはこれを見て「シート側が古い（旧名・削除が使えない）」を警告する（js/contract.js の GAS_REQUIRED_CAPS） */
-const API_CAPABILITIES = ['roster', 'roster.aliases', 'roster.done', 'submit', 'submit.redoOf', 'delete', 'auth', 'dellog', 'submit.ver', 'submit.dups', 'submit.revive'];
+const API_CAPABILITIES = ['roster', 'roster.aliases', 'roster.done', 'submit', 'submit.redoOf', 'delete', 'auth', 'dellog', 'submit.ver', 'submit.dups', 'submit.revive', 'roster.aspects', 'summary.persons'];
 const ROSTER_SHEET = '受験者';
 const WORKS_SHEET = '作業一覧';
 const FARMS_SHEET = '農場一覧';
@@ -81,6 +84,21 @@ function authOk_(k) {
   return false;
 }
 const WORKS = /*__WORKS__*/[];   // [No, 作業名, カテゴリ]
+/* 作業カタログ（日本語の原文のみ）: {works:[{id,no,name,cat,aspects:[{id,name,kanten,levels:[5]}]}], presets:[{id,name,works:[作業ID]}]}。build_gas.js が埋め込む */
+const CATALOG = /*__CATALOG__*/{};
+const ASPECT_SHEET = '種目';
+const PERSON_SHEET = '受験者別（自動）';
+const FARMSUM_SHEET = '農場別（自動）';
+const PERSON_KEY = 'HSS_PERSON_TAB_ID';
+const ASPECT_KEY = 'HSS_ASPECT_TAB_ID';
+const FARMSUM_KEY = 'HSS_FARM_TAB_ID';
+const PERSON_AUTO_MAX_ROWS = 20000;   // 評価者タブの合計行がこれを超えたら、submit・delete では作り直さない（op=persons だけ）
+const ASPECT_HEAD = ['作業No', '作業名', '作業ID', '種目ID', '種目名', '観点', 'Lv1', 'Lv2', 'Lv3', 'Lv4', 'Lv5', '反映'];
+const ASPECT_NOTE = '使い方\n' +
+  '・種目名・観点・Lv1〜Lv5 の文を直し、右端の「反映」にチェックを入れる\n' +
+  '・反映にチェックした行のうち、原文と違う欄だけがアプリに出る（空欄・原文と同じ欄は変わらない）\n' +
+  '・種目は5つ固定。ID（作業ID・種目ID）は変えない。行の追加・削除はしない\n' +
+  '・元に戻すには、原文を貼り直すか、チェックを外す';
 
 function setup() {
   const ss = SpreadsheetApp.getActive();
@@ -125,6 +143,8 @@ function setup() {
   }
   rs.getRange(1, cols.name + 1).setNote(ROSTER_NOTE);
   buildSummary_(true);   // 集計タブ（全評価者タブを1本の式で並べる）を作る・作り直す
+  ensureAspectSheet_();   // 種目タブ（編集済みの行は上書きしない・無い種目だけ末尾に追記）
+  try { updatePersonTabs_(true, false); } catch (err) { /* 受験者別・農場別が作れなくても setup は成功 */ }
   return 'setup OK';
 }
 function farmsSheet_(rs, cols) {
@@ -152,6 +172,7 @@ function doGet(e) {
     if (!roster) return json_({ ok: false, version: CODE_VERSION, capabilities: API_CAPABILITIES, error: 'no roster sheet' });
     const res = { ok: true, version: CODE_VERSION, capabilities: API_CAPABILITIES, roster: roster };
     try { res.done = readDone_(); } catch (err) { /* 要約が読めなくても名簿は返す（アプリはこの端末の記録だけで数える） */ }
+    try { res.aspects = readAspectOverrides_(); } catch (err) { /* 種目タブが読めなければ aspects を付けない（アプリは前回の上書きを保つ） */ }
     return json_(res);
   }
   if (action === 'admin') return admin_(e);
@@ -170,6 +191,7 @@ function admin_(e) {
   if (!lock.tryLock(20000)) return json_({ ok: false, error: 'busy' });
   try {
     if (e.parameter.op === 'check') return json_({ ok: true, version: CODE_VERSION, check: checkSummary_(), authFails: failCount_() });   // 読むだけ（集計タブの式の結果を検算）
+    if (e.parameter.op === 'persons') return json_({ ok: true, version: CODE_VERSION, persons: updatePersonTabs_(true, false) });   // setup せず受験者別・農場別だけ更新
     const r = setup();
     // op=common: 既存の（農場共通）行の作業も COMMON_SEED に置き換える（試験区分の変更用）。置き換え前の作業を応答で返す（共通行に人の名前は無い）
     if (e.parameter.op === 'common') {
@@ -271,6 +293,7 @@ function doPost(e) {
         pp.deleteProperty(REV_KEY + id);
         pp.setProperty(VER_KEY + id, '~del');
       } catch (err) { /* 印が書けなくても削除は成功 */ }
+      try { updatePersonTabs_(false, true); } catch (err) { /* 受験者別・農場別が更新できなくても削除の応答は変えない */ }
       return json_({ ok: true, id: String(body.id), deleted: del });
     }
     // 版（端末の更新時刻）: シートに新しい版が既にあれば、古い版（古いバックアップの復元・遅れて届いた再送）で上書きしない
@@ -289,6 +312,7 @@ function doPost(e) {
     if (rid && body.record.revive === true && tok) props.setProperty(REV_KEY + rid, tok + '|' + String(body.record.rvAt || ''));   // 戻した合図を控える（これより前に出された削除を見分ける）   // 版の無い送信でも墓標は外す（書いた行と印を食い違わせない）
     let dups = [];
     try { dups = findDups_(body.record); } catch (err) { /* 重複の確認に失敗しても書き込みは成功 */ }
+    try { updatePersonTabs_(false, true); } catch (err) { /* 受験者別・農場別が更新できなくても書き込みの応答は変えない */ }
     return json_({ ok: true, id: String(body.record.id), rows: n, dups: dups });
   } catch (err) {
     return json_({ ok: false, error: String(err && err.message || err) });
@@ -388,7 +412,7 @@ function cleanId_(v) { return String(v || '').replace(/[^a-zA-Z0-9_\-]/g, '_'); 
    「評価者タブ」とみなして再送・削除のたびに行を消してしまう（G17-1）。複製タブは sheetId が変わるので台帳に載らない。
    台帳がまだ無い時（この版を入れた直後・文書を複製した時）だけ、見出し14列が HEAD と一致し式でないタブを登録する（移行） */
 const EVAL_TABS_KEY = 'HSS_EVAL_TAB_IDS';
-function isReserved_(nm) { return nm === ROSTER_SHEET || nm === WORKS_SHEET || nm === FARMS_SHEET || nm === DELLOG_SHEET; }
+function isReserved_(nm) { return nm === ROSTER_SHEET || nm === WORKS_SHEET || nm === FARMS_SHEET || nm === DELLOG_SHEET || nm === ASPECT_SHEET || nm === PERSON_SHEET || nm === FARMSUM_SHEET; }
 function isEvalHead_(sh) {
   if (sh.getLastColumn() < HEAD_BASE.length) return false;
   const rg = sh.getRange(1, 1, 1, HEAD_BASE.length);
@@ -557,6 +581,10 @@ function buildSummary_(create) {
     sh.getRange(3, HEAD.length + 1).setFormula(f.farm);
     sh.getRange(3, HEAD.length + 2).setFormula(f.use);
   }
+  // 日付が数字（シリアル値）に見えないよう、評価日（B）と送信日時（N）に表示の書式を付ける
+  const nrow = Math.max(sh.getMaxRows() - 2, 1);
+  sh.getRange(3, 2, nrow, 1).setNumberFormat('yyyy-mm-dd');
+  sh.getRange(3, 14, nrow, 1).setNumberFormat('yyyy-mm-dd hh:mm:ss');
   return 'summary OK: ' + f.tabs.length + ' tabs';
 }
 
@@ -600,17 +628,14 @@ function checkSummary_() {
   if (!sh) return { summary: 'none' };
   const n = Math.max(0, sh.getLastRow() - 2), W = HEAD.length + 2;
   const v = n ? sh.getRange(3, 1, n, W).getDisplayValues() : [];
-  const rs = ss.getSheetByName(ROSTER_SHEET), c = rs ? rosterCols_(rs) : null;
-  const ro = rs && rs.getLastRow() > 1 ? rs.getRange(2, 1, rs.getLastRow() - 1, rs.getLastColumn()).getDisplayValues() : [];
+  const P = rosterPeople_(), c = P.c;
   const redo = {};
   v.forEach(r => String(r[14] || '').split(/\s+/).filter(Boolean).forEach(id => { redo[id] = 1; }));
+  // 今の農場の期待値は受験者別と同じ人の特定（personOf_）で求める
   const want = r => {
-    const n0 = r[3], e = r[4];
-    if (!c || c.farm < 0) return e;
-    let hit = ro.find(x => x[c.name] === n0 && x[c.farm] === e); if (hit) return hit[c.farm];
-    hit = ro.find(x => x[c.name] === n0); if (hit) return hit[c.farm];
-    if (c.alias >= 0) { hit = ro.find(x => ('、' + String(x[c.alias] || '').replace(/\s*[、,，\/／;；\n]\s*/g, '、') + '、').indexOf('、' + n0 + '、') >= 0); if (hit) return hit[c.farm]; }
-    return e;
+    if (!c || c.farm < 0) return r[4];
+    const p = personOf_(r[3], r[4], P);
+    return p ? p.farmRaw : r[4];
   };
   const errs = [], farmBad = [], useBad = [];
   let use = 0, before = 0;
@@ -625,6 +650,302 @@ function checkSummary_() {
   return { rows: v.filter(r => r[0]).length, adopted: use, beforeRedo: before, errorRows: errs.slice(0, 20), farmMismatch: farmBad.slice(0, 20), useMismatch: useBad.slice(0, 20),
     errorSample: errs.length ? (() => { const r = v[errs[0] - 3]; const j = r.findIndex(x => /^#/.test(String(x))); return { col: j + 1, value: r[j], note: String(sh.getRange(errs[0], j + 1).getNote() || '') }; })() : null,
     formulaFarm: n ? String(sh.getRange(3, HEAD.length + 1).getFormula()) : '' };
+}
+/* ==============================================================
+   種目タブ（roster.aspects）: 5種目の文言をシートで直す。A〜D=キー（作業No・作業名・作業ID・種目ID）、E=種目名、F=観点、G〜K=Lv1〜Lv5、L=反映（チェックボックス）
+   ・反映が TRUE（真偽値のチェックだけ。文字列 "TRUE" は採用しない）の行のうち、空欄でなく、埋め込みカタログの日本語原文と違う欄だけを roster に載せる
+   ・種目は (作業ID, 種目ID) で特定する（行の位置・種目名は使わない）
+   ============================================================== */
+let CAT_IDX_ = null;
+function catIdx_() {
+  if (CAT_IDX_) return CAT_IDX_;
+  const works = CATALOG.works || [], byId = new Map();
+  works.forEach(w => { byId.set(w.id, w); });
+  CAT_IDX_ = { works: works, byId: byId, presets: CATALOG.presets || [] };
+  return CAT_IDX_;
+}
+function wkey_(v) { return String(v == null ? '' : v).normalize('NFKC').replace(/\s+/g, '').toLowerCase(); }
+function nkey_(v) { return String(v == null ? '' : v).normalize('NFC').replace(/[\s　]+/g, ' ').trim(); }
+function fkey_(v) { return String(v == null ? '' : v).normalize('NFKC').replace(/\s+/g, ''); }
+function catalogAspects_() {
+  const out = [];
+  catIdx_().works.forEach(w => (w.aspects || []).forEach(a => {
+    const lv = (a.levels || []).slice(0, 5); while (lv.length < 5) lv.push('');
+    out.push({ w: w.id, a: a.id, no: w.no || '', wName: w.name, name: a.name || '', kanten: a.kanten || '', levels: lv });
+  }));
+  return out;
+}
+function ensureAspectSheet_() {
+  const ss = SpreadsheetApp.getActive(), list = catalogAspects_();
+  let sh = ownedTab_(ss, ASPECT_SHEET, ASPECT_KEY, true);   // 同名の別タブ（管理者が作ったもの・旧評価者タブ）には書かない
+  if (!sh) return 0;
+  if (sh.getLastRow() < 1 || !sh.getRange(1, 1).getValues()[0][0]) {
+    sh.getRange(1, 1, 1, ASPECT_HEAD.length).setValues([ASPECT_HEAD]).setFontWeight('bold').setBackground('#e6f2ee');
+    sh.setFrozenRows(1);
+  }
+  const have = {};
+  if (sh.getLastRow() >= 2) sh.getRange(2, 3, sh.getLastRow() - 1, 2).getValues().forEach(r => { have[String(r[0]).trim() + '\u0001' + String(r[1]).trim()] = 1; });
+  const add = list.filter(x => !have[x.w + '\u0001' + x.a]).map(x => [x.no, x.wName, x.w, x.a, x.name, x.kanten].concat(x.levels, [false, JSON.stringify([x.name, x.kanten].concat(x.levels))]));
+  if (!sh.getRange(1, ASPECT_HEAD.length + 1).getValues()[0][0]) sh.getRange(1, ASPECT_HEAD.length + 1).setValues([['初期値(触らない)']]);
+  if (add.length) sh.getRange(sh.getLastRow() + 1, 1, add.length, ASPECT_HEAD.length + 1).setValues(add);   // 既存の行は上書きしない・無い種目だけ末尾へ
+  sh.getRange(2, 12, Math.max(sh.getLastRow() - 1, 1), 1).setDataValidation(SpreadsheetApp.newDataValidation().requireCheckbox().build());
+  sh.getRange(1, 5).setNote(ASPECT_NOTE);
+  try {
+    const ps = sh.getProtections(SpreadsheetApp.ProtectionType.RANGE);
+    if (!ps || !ps.length) sh.getRange(1, 1, sh.getMaxRows(), 4).protect().setWarningOnly(true).setDescription('キー列（作業No・作業名・作業ID・種目ID）。直さない');
+  } catch (err) { /* 保護が付けられなくても続ける */ }
+  return add.length;
+}
+function cleanText_(v, max) {
+  if (v instanceof Date || typeof v === 'number') return '';   // Sheets の自動変換（日付・数値）は上書きとして配らない
+  return String(v == null ? '' : v).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, '').trim().slice(0, max).replace(/[\uD800-\uDBFF]$/, '');   // 上限の境界でサロゲートペアが切れたら半端な1文字を捨てる
+}
+const ASPECT_MAX = { name: 120, kanten: 600, lv: 600 };
+function readAspectOverrides_() {
+  const sh = ownedTab_(SpreadsheetApp.getActive(), ASPECT_SHEET, ASPECT_KEY, false);
+  if (!sh || sh.getLastRow() < 2) return [];
+  const byKey = {};
+  catalogAspects_().forEach(x => { byKey[x.w + '\u0001' + x.a] = x; });
+  const vals = sh.getRange(2, 1, sh.getLastRow() - 1, ASPECT_HEAD.length + 1).getValues(), seen = {}, out = [];
+  vals.forEach(r => {
+    let orig = null;   // 行を書いた時点の初期値。カタログが改訂されても、触っていない欄は「上書き」として配らない
+    try { const j = JSON.parse(String(r[12] || '')); if (Array.isArray(j) && j.length === 7) orig = j.map(x => cleanText_(x, 600)); } catch (err) { orig = null; }
+    const same = (k, t) => orig && orig[k] === t;
+    if (r[11] !== true) return;
+    const key = String(r[2]).trim() + '\u0001' + String(r[3]).trim(), o = byKey[key];
+    if (!o || seen[key]) return;
+    seen[key] = 1;
+    const e = { w: o.w, a: o.a };
+    const nm = cleanText_(r[4], ASPECT_MAX.name), kt = cleanText_(r[5], ASPECT_MAX.kanten);
+    if (nm && nm !== cleanText_(o.name, ASPECT_MAX.name) && !same(0, nm)) e.name = nm;
+    if (kt && kt !== cleanText_(o.kanten, ASPECT_MAX.kanten) && !same(1, kt)) e.kanten = kt;
+    const lv = [0, 1, 2, 3, 4].map(i => { const t = cleanText_(r[6 + i], ASPECT_MAX.lv); return t && t !== cleanText_(o.levels[i], ASPECT_MAX.lv) && !same(2 + i, t) ? t : ''; });
+    if (lv.some(Boolean)) e.lv = lv;
+    if (e.name !== undefined || e.kanten !== undefined || e.lv) out.push(e);
+  });
+  return out;
+}
+
+/* ==============================================================
+   受験者別（自動）・農場別（自動）: GAS が値を書く（式ではない）。setup・submit 後・delete 後・管理入口 op=persons で更新。
+   人の特定（personOf_）は集計タブの「今の農場」（P列）と同じ優先順:
+     被評価者＝name かつ 農場＝farm → 被評価者＝name の最初の行 → 旧名の完全一致 → 名簿外。（農場共通）行は候補にしない
+   ============================================================== */
+/* 受験者タブ → {c: 列の位置, people:[{i,name,nk,farm,farmRaw,nf,cells,aliases}], commonCells:{農場キー:[作業セル]}, memo:{}} */
+function rosterPeople_() {
+  const rs = SpreadsheetApp.getActive().getSheetByName(ROSTER_SHEET);
+  const out = { c: null, people: [], commonCells: {}, memo: {} };
+  if (!rs) return out;
+  const c = out.c = rosterCols_(rs);
+  if (rs.getLastRow() < 2) return out;
+  const vals = rs.getRange(2, 1, rs.getLastRow() - 1, Math.max(2, rs.getLastColumn())).getDisplayValues();
+  vals.forEach(r => {
+    const name = String(r[c.name] || '').trim();
+    if (!name) return;
+    const farmRaw = c.farm >= 0 ? String(r[c.farm] || '') : '', cells = c.works.map(i => String(r[i] || '').trim()).filter(Boolean);
+    if (isCommonName_(name)) {
+      const k = fkey_(farmRaw);
+      out.commonCells[k] = (out.commonCells[k] || []).concat(cells.filter(x => (out.commonCells[k] || []).indexOf(x) < 0));   // 2行あれば作業を合わせて使う
+      return;
+    }
+    const nk = nkey_(name);
+    const aliases = c.alias >= 0 ? String(r[c.alias] || '').split(/[、,，\/／;；\n]/).map(nkey_).filter(v => v && v !== nk) : [];
+    const dup = out.people.find(q => q.nk === nk && q.nf === fkey_(farmRaw));   // 同じ農場・同名の行は1人にまとめる（作業は合わせる）
+    if (dup) {
+      cells.forEach(x => { if (dup.cells.indexOf(x) < 0) dup.cells.push(x); });
+      aliases.forEach(x => { if (dup.aliases.indexOf(x) < 0) dup.aliases.push(x); });
+      return;
+    }
+    out.people.push({ i: out.people.length, name: name, nk: nk, farm: farmRaw.trim(), farmRaw: farmRaw, nf: fkey_(farmRaw), cells: cells, aliases: aliases });
+  });
+  return out;
+}
+function personOf_(name, farm, P) {
+  const n = nkey_(name), f = fkey_(farm);
+  if (!n) return null;
+  const mk = n + '\u0001' + f;
+  if (mk in P.memo) return P.memo[mk];
+  let hit = P.people.find(p => p.nk === n && p.nf === f);
+  if (!hit) {
+    const same = P.people.filter(p => p.nk === n);
+    if (same.length <= 1 || !f || f === fkey_(UNASSIGNED)) hit = same[0];
+    else {   // 同名が複数農場にいて農場の表記がずれている: 片方を含む表記が1件だけならそれ、決まらなければ名簿外（別の人に付けない）
+      const part = same.filter(p => p.nf && (p.nf.indexOf(f) >= 0 || f.indexOf(p.nf) >= 0));
+      hit = part.length === 1 ? part[0] : null;
+      if (!hit) { P.memo[mk] = null; return null; }
+    }
+  }
+  hit = hit || P.people.find(p => p.aliases.indexOf(n) >= 0) || null;
+  P.memo[mk] = hit;
+  return hit;
+}
+/* 作業欄のセル1つ → 作業ID。ID完全一致 → 名前完全一致 → NFKC正規化名 → No. */
+function resolveWork_(v) {
+  const s = String(v == null ? '' : v).trim();
+  if (!s) return null;
+  const C = catIdx_();
+  if (C.byId.has(s)) return s;
+  let w = C.works.find(x => x.name === s);
+  if (!w) { const n = wkey_(s); w = C.works.find(x => wkey_(x.name) === n); }
+  if (!w) { const k = wkey_(s).replace(/^no\.?0*/, ''); if (k) w = C.works.find(x => x.no && wkey_(x.no).replace(/^no\.?0*/, '') === k); }
+  return w ? w.id : null;
+}
+/* 作業欄のセル1つ → 作業IDの配列（区分名は作業一式）。解決できなければ null */
+function resolveWorkCell_(v) {
+  const id = resolveWork_(v);
+  if (id) return [id];
+  const n = fkey_(v).replace(/[\[\]（）()【】〔〕［］「」『』<>＜＞{}]/g, '');
+  if (!n) return null;
+  const C = catIdx_(), pr = C.presets.find(p => fkey_(p.name) === n);
+  return pr ? pr.works.filter(id => C.byId.has(id)) : null;
+}
+/* その人の予定作業 [{key, name}]（key=作業ID、解決できないセルは '?原文'）。全セル空なら同じ農場の（農場共通）行の作業 */
+function plannedWorks_(p, P) {
+  let cells = p.cells;
+  if (!cells.length) cells = P.commonCells[p.nf] || [];
+  const out = [], seen = {}, C = catIdx_();
+  const add = (key, name) => { if (!seen[key]) { seen[key] = 1; out.push({ key: key, name: name }); } };
+  cells.forEach(cell => {
+    const ids = resolveWorkCell_(cell);
+    if (ids) ids.forEach(id => add(id, C.byId.get(id).name)); else add('?' + cell, '?' + cell);
+  });
+  return out;
+}
+/* 評価者タブ（台帳のタブ）の全行のうち、採否が「採用」（やり直し元に書かれた記録IDの行を除く）で、点が1〜5の行 */
+function collectAdopted_() {
+  const ss = SpreadsheetApp.getActive(), ids = evalTabIds_(ss), rows = [];
+  ss.getSheets().forEach(sh => {
+    const nm = sh.getName();
+    if (isReserved_(nm) || sh.getLastRow() < 2) return;
+    if (ids.indexOf(String(sh.getSheetId())) < 0) return;
+    if (String(sh.getRange(1, 1).getValues()[0][0]) !== HEAD[0]) return;
+    sh.getRange(2, 1, sh.getLastRow() - 1, HEAD.length).getValues().forEach(r => rows.push(r));
+  });
+  const redone = {};
+  rows.forEach(r => String(r[14] || '').split(/\s+/).filter(Boolean).forEach(x => { redone[x] = 1; }));
+  const out = [], clean = v => String(v == null ? '' : v).replace(/^'/, '').trim();
+  rows.forEach(r => {
+    const id = String(r[0] || '').trim();
+    if (!id || redone[id]) return;
+    const sc = r[8] === '' || r[8] == null ? NaN : Number(r[8]);
+    if (!(sc >= 1 && sc <= 5)) return;
+    out.push({ id: id, date: ymd_(r[1]), name: clean(r[3]), farm: clean(r[4]), work: clean(r[6]), aspect: clean(r[7]), score: sc });
+  });
+  return out;
+}
+function countEvalRows_() {
+  const ss = SpreadsheetApp.getActive(), ids = evalTabIds_(ss);
+  let n = 0;
+  ss.getSheets().forEach(sh => { if (!isReserved_(sh.getName()) && ids.indexOf(String(sh.getSheetId())) >= 0) n += Math.max(0, sh.getLastRow() - 1); });
+  return n;
+}
+function buildPersonTables_() {
+  const ss = SpreadsheetApp.getActive(), P = rosterPeople_(), recs = collectAdopted_(), C = catIdx_();
+  const newSt = () => ({ sc: new Map(), all: [], last: '' });
+  const st = P.people.map(newSt), outside = new Map(), wkMemo = new Map();
+  recs.forEach(r => {
+    let wk = wkMemo.get(r.work);
+    if (wk === undefined) { const id = resolveWork_(r.work); wk = id || '?' + r.work; wkMemo.set(r.work, wk); }
+    const p = personOf_(r.name, r.farm, P);
+    let s;
+    if (p) s = st[p.i];
+    else {
+      const k = nkey_(r.name) + '\u0001' + fkey_(r.farm);
+      s = outside.get(k);
+      if (!s) { s = newSt(); s.name = nkey_(r.name); s.farm = r.farm; outside.set(k, s); }
+    }
+    if (!s.sc.has(wk)) s.sc.set(wk, []);
+    s.sc.get(wk).push(r.score); s.all.push(r.score);
+    if (r.date > s.last) s.last = r.date;
+  });
+  const wname = k => k.charAt(0) === '?' ? k : (C.byId.get(k) || { name: k }).name;
+  const plans = P.people.map(p => plannedWorks_(p, P));
+  const K = plans.reduce((m, a) => Math.max(m, a.length), 8);
+  const head = ['農場', '被評価者', '予定作業数', '採点済み数', '未採点の作業', '予定外の作業', '全体平均', '最終評価日'];
+  for (let i = 1; i <= K; i++) head.push('作業' + i, '平均' + i);
+  const stat = P.people.map((p, i) => {
+    const s = st[i], pl = plans[i], pk = {};
+    pl.forEach(x => { pk[x.key] = 1; });
+    const done = pl.filter(x => s.sc.has(x.key)), todo = pl.filter(x => !s.sc.has(x.key));
+    const extra = []; s.sc.forEach((_, k) => { if (!pk[k]) extra.push(wname(k)); });
+    return { planned: pl.length, done: done.length, todo: todo, extra: extra };
+  });
+  const prow = P.people.map((p, i) => {
+    const s = st[i], a = stat[i];
+    const row = [safe_(p.farm), safe_(p.name), a.planned, a.done, safe_(a.todo.map(x => x.name).join('、')), safe_(a.extra.join('、')), avg_(s.all), s.last];
+    plans[i].forEach(x => { row.push(safe_(x.name), s.sc.has(x.key) ? avg_(s.sc.get(x.key)) : ''); });
+    return row;
+  });
+  outside.forEach(s => {
+    const extra = []; s.sc.forEach((_, k) => extra.push(wname(k)));
+    prow.push(['名簿外', safe_(s.name + (s.farm ? '（' + s.farm + '）' : '')), 0, 0, '', safe_(extra.join('、')), avg_(s.all), s.last]);
+  });
+  // 農場別: 農場一覧タブの順 → 名簿にだけある農場 → 所属未確定を最後
+  const order = [], disp = {}, addFarm = v => { const t = String(v || '').trim() || UNASSIGNED, k = fkey_(t); if (!(k in disp)) { disp[k] = t; order.push(k); } };
+  const fsh = ss.getSheetByName(FARMS_SHEET);
+  if (fsh && fsh.getLastRow() >= 2) fsh.getRange(2, 1, fsh.getLastRow() - 1, 1).getDisplayValues().forEach(r => { if (String(r[0]).trim()) addFarm(r[0]); });
+  P.people.forEach(p => addFarm(p.farm));
+  const ua = fkey_(UNASSIGNED), farms = order.filter(k => k !== ua).concat(order.indexOf(ua) >= 0 ? [ua] : []);
+  const agg = {};
+  farms.forEach(k => { agg[k] = { n: 0, full: 0, part: 0, none: 0, scores: [], done: 0, planned: 0 }; });
+  P.people.forEach((p, i) => {
+    const g = agg[fkey_(p.farm || UNASSIGNED)], a = stat[i];
+    g.n++; g.done += a.done; g.planned += a.planned;
+    if (a.planned > 0 && a.done === a.planned) g.full++; else if (a.done >= 1) g.part++; else g.none++;
+    st[i].all.forEach(x => g.scores.push(x));
+  });
+  const frow = farms.map(k => { const g = agg[k]; return [safe_(disp[k]), g.n, g.full, g.part, g.none, avg_(g.scores), g.done + '/' + g.planned]; });
+  return {
+    person: { head: head, rows: prow, K: K },
+    farm: { head: ['農場', '受験者数', '全作業済み', '一部済み', '未採点', '平均', '採点済み/予定'], rows: frow },
+  };
+}
+/* 自分が作ったタブ（文書プロパティの sheetId と一致）だけ返す。同じ名前の別タブは触らない（null）。無ければ create の時だけ作る */
+function ownedTab_(ss, name, key, create) {
+  const props = PropertiesService.getDocumentProperties();
+  let sh = ss.getSheetByName(name);
+  if (sh && String(sh.getSheetId()) !== props.getProperty(key)) return null;
+  if (!sh) {
+    if (!create) return null;
+    sh = ss.insertSheet(name);
+    props.setProperty(key, String(sh.getSheetId()));
+  }
+  return sh;
+}
+function writeAuto_(sh, desc, head, rows, textCols, dateCol) {
+  const w = head.length, stamp = Utilities.formatDate(new Date(), 'Asia/Tokyo', 'yyyy-MM-dd HH:mm:ss');
+  sh.clear();
+  const n = rows.length;
+  if (n) textCols.forEach(c => sh.getRange(3, c, n, 1).setNumberFormat('@'));   // 「3/8」などが日付に変わらないよう文字として書く
+  const pad = r => r.concat(new Array(Math.max(0, w - r.length)).fill(''));
+  const all = [pad([desc + '　更新 ' + stamp]), head].concat(rows.map(pad));
+  sh.getRange(1, 1, all.length, w).setValues(all);
+  sh.getRange(2, 1, 1, w).setFontWeight('bold').setBackground('#e6f2ee');
+  sh.setFrozenRows(2);
+  if (dateCol) sh.getRange(3, dateCol, Math.max(sh.getMaxRows() - 2, 1), 1).setNumberFormat('yyyy-mm-dd');
+}
+/* create=true: タブが無ければ作る（setup・op=persons）。auto=true: submit/delete からの自動更新（行数が多すぎる時は作り直さない） */
+function updatePersonTabs_(create, auto) {
+  const ss = SpreadsheetApp.getActive();
+  const ps = ownedTab_(ss, PERSON_SHEET, PERSON_KEY, create), fsh = ownedTab_(ss, FARMSUM_SHEET, FARMSUM_KEY, create);
+  if (!ps && !fsh) return 'skip: 受験者別・農場別のタブなし（または同じ名前の別タブ）';
+  if (auto && countEvalRows_() > PERSON_AUTO_MAX_ROWS) return 'skip: 評価者タブの行数が多い（管理入口 op=persons で更新）';
+  const t = buildPersonTables_();
+  if (ps) {
+    const names = []; for (let i = 0; i < t.person.K; i++) names.push(9 + i * 2);
+    writeAuto_(ps, '受験者別（自動・手で直さない。名簿の順に1人1行。やり直し前の記録は数えない）', t.person.head, t.person.rows, [1, 2, 5, 6].concat(names), 8);
+  }
+  if (fsh) writeAuto_(fsh, '農場別（自動・手で直さない。受験者別と同じ規則）', t.farm.head, t.farm.rows, [1, 7], 0);
+  return 'OK: 受験者別 ' + t.person.rows.length + '行・農場別 ' + t.farm.rows.length + '行';
+}
+/* シートを開いた時のメニュー（任意）。getUi が使えない環境では何もしない */
+function onOpen() {
+  try { SpreadsheetApp.getUi().createMenu('HSS実技').addItem('受験者別・農場別を更新', 'refreshPersonTabs').addToUi(); } catch (err) { /* メニューが作れなくても続ける */ }
+}
+function refreshPersonTabs() {
+  const lock = LockService.getScriptLock();
+  if (!lock.tryLock(20000)) return 'busy';
+  try { return updatePersonTabs_(true, false); } finally { lock.releaseLock(); }
 }
 function json_(o) {
   return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON);

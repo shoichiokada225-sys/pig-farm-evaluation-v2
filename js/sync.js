@@ -30,7 +30,7 @@ function setSheetUrl(u){
   if(u!==before&&typeof pendCount==='function'&&getAll().some(r=>!r.sent)&&!confirm(t('cUrlPend').replace('{n}',getAll().filter(r=>!r.sent).length)))return false;
   localStorage.setItem(SHEET_KEY,u);
   // 送信先が変わったら、前のシートの名簿（と版の情報）は捨てる＝別のシートの人名・農場で採点させない。記録（jitsugi_v2_records）には触れない
-  if(sheetUrl()!==before){try{localStorage.removeItem(ROSTER_KEY)}catch{}setSheetState('',null)}
+  if(sheetUrl()!==before){try{localStorage.removeItem(ROSTER_KEY)}catch{}setSheetState('',null);applyAspectOverrides([])}
   return true;
 }
 
@@ -184,13 +184,36 @@ async function fetchRoster(){
     // シートの記録の要約（ほかの端末で済んだ人・作業）。古い GAS は返さない＝null（この端末の記録だけで数える）
     const done=parseSheetDone(j.done);
     const prev=getRoster();
+    // 種目の上書き: 配列なら入れ替え（[]=原文に戻す）／キーが無い（古い GAS・読み取り失敗）なら前回の保存を保持
+    const aspects=Array.isArray(j.aspects)?cleanAspects(j.aspects):(Array.isArray(prev.aspects)?prev.aspects:[]);
     if(!list.length&&prev.list.length){
-      try{localStorage.setItem(ROSTER_KEY,JSON.stringify({...prev,gas,url:u,done}))}catch{}
+      try{localStorage.setItem(ROSTER_KEY,JSON.stringify({...prev,gas,url:u,done,aspects}))}catch{}
+      applyAspectOverrides(aspects);
       return{ok:true,list:prev.list,unknown:prev.unknown||[],dup:prev.dup||[],cdup:prev.cdup||[],corphan:prev.corphan||[],fvar:prev.fvar||[],gas,keptEmpty:true};
     }
-    try{localStorage.setItem(ROSTER_KEY,JSON.stringify({list,at:new Date().toISOString(),unknown,dup,cdup,corphan,fvar,gas,url:u,done,src:j.roster}))}catch{}
+    try{localStorage.setItem(ROSTER_KEY,JSON.stringify({list,at:new Date().toISOString(),unknown,dup,cdup,corphan,fvar,gas,url:u,done,src:j.roster,aspects}))}catch{}
+    applyAspectOverrides(aspects);
     return{ok:true,list,unknown,dup,cdup,corphan,fvar,gas};
   }catch(e){return{ok:false,reason:'bad',gas:jg}}
+}
+/* GAS の aspects → 検証済みの配列（w/a が文字列でカタログに存在・name/kanten は2000字以内・lv は長さ5。不正な要素は捨てる） */
+function cleanAspects(a){
+  const out=[];
+  a.slice(0,500).forEach(o=>{
+    if(!o||typeof o!=='object'||typeof o.w!=='string'||typeof o.a!=='string')return;
+    const w=workById(o.w);if(!w||!(w.aspects||[]).some(x=>x.id===o.a))return;
+    const e={w:o.w,a:o.a};
+    ['name','kanten'].forEach(f=>{if(o[f]!=null&&typeof o[f]!=='object'){const v=String(o[f]);if(v&&v.length<=2000)e[f]=v}});
+    if(Array.isArray(o.lv)&&o.lv.length===5){const lv=o.lv.map(v=>v!=null&&typeof v!=='object'&&String(v).length<=2000?String(v):'');if(lv.some(Boolean))e.lv=lv}
+    if(e.name!=null||e.kanten!=null||e.lv)out.push(e);
+  });
+  return out;
+}
+/* 起動時: 保存済みの上書きを適用（送信先が違う名簿は無視＝getRoster と同じ規則） */
+function loadAspectOverrides(){
+  try{const r=JSON.parse(localStorage.getItem(ROSTER_KEY));
+    if(r&&Array.isArray(r.aspects)&&!(r.url&&r.url!==sheetUrl())){applyAspectOverrides(r.aspects);return}}catch{}
+  applyAspectOverrides([]);
 }
 /* GAS の done（[{id,date,name,farm,works:[作業名]}]）→ 記録の形 [{id,date,evaluatee,farm,works:[{workId}],sheet:true}]（作業名はカタログのIDへ。解決できない作業は数えない）。
    配列でなければ null（シートが要約を返さない＝古い GAS） */
@@ -405,3 +428,4 @@ function bgRoster(){
 }
 setInterval(bgRoster,ROSTER_BG_MS);
 schedRetry();
+loadAspectOverrides();
