@@ -49,7 +49,7 @@ const SEED = [['那須農場', 'テスト 一郎', '給餌'], ['大田原農場'
 const G = new Function('ROSTER_SEED', code + ';return {setup,doGet,doPost};')(SEED);
 let pass = 0, fail = 0; const ok = (n, c) => { c ? pass++ : fail++; console.log((c ? '  OK ' : '  NG ') + n); };
 
-ok('setup', G.setup() === 'setup OK' && sheets['受験者'] && sheets['作業一覧'].d.length === 54); // 見出し＋49作業＋試験区分4
+ok('setup', G.setup() === 'setup OK' && sheets['受験者'] && sheets['作業一覧'].d.length === 55); // 見出し＋49作業＋試験区分5
 ok('見出し=農場・被評価者・作業1〜8・旧名', sheets['受験者'].d[0].join() === '農場,被評価者,作業1,作業2,作業3,作業4,作業5,作業6,作業7,作業8,旧名');
 ok('空の受験者タブにシードが入る', sheets['受験者'].d.length === 3 && sheets['受験者'].d[1][1] === 'テスト 一郎' && sheets['受験者'].d[2].length === 11);
 // S8-4: 農場のプルダウン（正本=農場一覧タブ）
@@ -289,6 +289,22 @@ ok('シード無し: 農場一覧=受験者タブの農場＋所属未確定（�
   const n7 = sheets['受験者'].d.length, r7 = JSON.parse(G7.doGet({ parameter: { action: 'admin', token: TOK, op: 'common' } }).s);
   ok('admin op=common: 括弧の違う【農場共通】行も置き換え（2行目を足さない）・入らない作業は cut で返す', r7.ok && r7.commonReplaced.length === 1 && r7.commonAdded.length === 0 && sheets['受験者'].d.length === n7 && sheets['受験者'].d.find(x => x[1] === '【農場共通】')[wc[0]] === '子豚舎' && r7.commonReplaced[0].cut.length === 10 - wc.length);
   ok('admin op=common: 合言葉違いは拒否', JSON.parse(G6.doGet({ parameter: { action: 'admin', token: 'x', op: 'common' } }).s).error === 'forbidden');
+  // 2026-11-09 op=narrow: 個人別の作業を区分メモの区分名1つに。メモが対応しない人・作業が空の人・共通行は触らない。元の作業は控えタブへ
+  const rd = sheets['受験者'].d, wn = wc.length, memoAt = wc[wn - 1] + 1;
+  rd[0][memoAt] = '区分（メモ）';
+  const mkP = (f, n, ws, m) => { const x = new Array(memoAt + 1).fill(''); x[0] = f; x[1] = n; ws.forEach((v, j) => { x[wc[j]] = v; }); x[memoAt] = m; rd.push(x); return x; };
+  const pSt = mkP('テスト東', 'テスト 絞1', ['給餌', '消毒'], 'ストール'), pFin = mkP('テスト東', 'テスト 絞2', ['給餌'], '肥育'), pFree = mkP('テスト東', 'テスト 絞3', ['給餌', '消毒'], 'フリー'), pEmp = mkP('テスト東', 'テスト 絞4', [], 'ストール');
+  const nar = o => JSON.parse(G6.doGet({ parameter: { action: 'admin', token: TOK, op: 'narrow', ...o } }).s);
+  const snap = JSON.stringify(rd), dry = nar({ dry: '1' });
+  ok('admin op=narrow dry: 書かずに件数と対象外を返す', dry.ok && dry.narrow.changed['ストール舎'] === 1 && dry.narrow.changed['肥育舎'] === 1 && dry.narrow.skipped.length === 1 && dry.narrow.skipped[0].memo === 'フリー' && JSON.stringify(rd) === snap && !sheets['作業割当の控え']);
+  const nr = nar({});
+  ok('admin op=narrow: 区分名1つに置き換え作業2以降は空', nr.ok && pSt[wc[0]] === 'ストール舎' && wc.slice(1).every(i => pSt[i] === '') && pFin[wc[0]] === '肥育舎');
+  ok('admin op=narrow: 対応しないメモ・作業が空の人は変えない', pFree[wc[0]] === '給餌' && pEmp[wc[0]] === '' && pFree[memoAt] === 'フリー');
+  ok('admin op=narrow: 元の作業を控えタブに残す', sheets['作業割当の控え'].d.length === 3 && sheets['作業割当の控え'].d[1].includes('テスト 絞1') && sheets['作業割当の控え'].d[1].includes("'給餌"));
+  const nr2 = nar({});
+  ok('admin op=narrow: 2回目は変えず控えも増えない', nr2.ok && nr2.narrow.already === 2 && !Object.keys(nr2.narrow.changed).length && sheets['作業割当の控え'].d.length === 3);
+  ok('admin op=narrow: 合言葉違いは拒否', JSON.parse(G6.doGet({ parameter: { action: 'admin', token: 'x', op: 'narrow' } }).s).error === 'forbidden');
+  rd.splice(rd.indexOf(pSt), 4);
 }
 // 2026-10-06a: 合言葉（APP_TOKEN）・削除ログ・空欄を0点にしない
 {
@@ -534,7 +550,7 @@ ok('シード無し: 農場一覧=受験者タブの農場＋所属未確定（�
   postP(rc('r-2', 'EV-B', 'テスト Hoang Nam', 'テスト東', '2026-10-03', [[wn(0), [4, 4]], [wn(1), [5, 3]]], 'r-1'));   // やり直し（別の評価者タブ）
   postP(rc('r-3', 'EV-A', 'テスト 旧名', 'テスト東', '2026-10-04', [[wn(0), [5]]]));                                 // 旧名で保存
   postP(rc('r-4', 'EV-B', 'テスト Nam', 'テスト西', '2026-10-02', [[wn(0), [3, 4]]]));
-  postP(rc('r-5', 'EV-A', 'テスト 区分', 'テスト東', '2026-10-05', [[pn('feeding-daily'), [5]], [pn('castration'), [1]], [outW.name, [2]]]));
+  postP(rc('r-5', 'EV-A', 'テスト 区分', 'テスト東', '2026-10-05', [[pn('sow-vaccine'), [5]], [pn('castration'), [1]], [outW.name, [2]]]));
   postP(rc('r-6', 'EV-B', 'テスト 不明', 'テスト東', '2026-10-05', [[wn(2), [4]]]));
   postP(rc('r-7', 'EV-A', 'テスト 共通人', 'テスト北', '2026-10-06', [[wn(3), [4]]]));
   postP(rc('r-8', 'EV-B', 'テスト 同名', 'テスト西', '2026-10-06', [[wn(1), [5]]]));
@@ -552,20 +568,20 @@ ok('シード無し: 農場一覧=受験者タブの農場＋所属未確定（�
   ok('R2 受験者別: 旧名/所属未確定→確定/同名2農場の振り分けが checkSummary_ と同じ', prow('テスト Hoang Nam')[7] === '2026-10-04'   // 旧名の記録が Hoang Nam に入る
     && pd.slice(2, 11).filter(r => r[1] === 'テスト 同名').map(r => r[0] + ':' + pairs(r)).join('|') === 'テスト東:' + wn(0) + '=2|テスト西:' + wn(1) + '=5'   // 所属未確定の同名は最初の行
     && pairs(prow('テスト 確定')) === wn(0) + '=2');
-  const planRest = preset.works.filter(id => id !== 'feeding-daily' && id !== 'castration').map(pn);
-  ok('R2 受験者別: 区分名は作業一式・予定外の作業・解決できないセルは ?原文 で未採点', prow('テスト 区分')[2] === 7 && prow('テスト 区分')[3] === 2 && prow('テスト 区分')[4] === planRest.join('、') && prow('テスト 区分')[5] === outW.name
+  const planRest = preset.works.filter(id => id !== 'sow-vaccine' && id !== 'castration').map(pn);
+  ok('R2 受験者別: 区分名は作業一式・予定外の作業・解決できないセルは ?原文 で未採点', prow('テスト 区分')[2] === 4 && prow('テスト 区分')[3] === 2 && prow('テスト 区分')[4] === planRest.join('、') && prow('テスト 区分')[5] === outW.name
     && prow('テスト 不明')[2] === 2 && prow('テスト 不明')[3] === 1 && prow('テスト 不明')[4] === '?存在しない作業' && prow('テスト 区分')[6] === 2.67);
   ok('R2 受験者別: 共通行を使う（作業が空の人は同じ農場の（農場共通）行の作業）・共通行は人の行に出ない', prow('テスト 共通人')[2] === 2 && prow('テスト 共通人')[3] === 1 && prow('テスト 共通人')[4] === wn(4) && pairs(prow('テスト 共通人')) === wn(3) + '=4|' + wn(4) + '=' && !names.includes('（農場共通）') && !names.slice(0, 9).includes('   '));
   ok('R2 受験者別: 名簿外は末尾に 名簿外 として1人1行（捨てない）', pd.length === 2 + 10 && pd[pd.length - 1][0] === '名簿外' && pd[pd.length - 1][1] === 'テスト 外部（テスト南）' && pd[pd.length - 1][6] === 4 && pd[pd.length - 1][5] === wn(0));
   ok('R2 受験者別: やり直し前の行を数えない・旧名/所属未確定→確定/同名2農場の振り分けが checkSummary_ と同じ・区分名は作業一式・共通行を使う・名簿外は末尾',
-    prow('テスト Hoang Nam')[6] === 4.2 && prow('テスト 確定')[3] === 1 && prow('テスト 区分')[2] === 7 && prow('テスト 共通人')[2] === 2 && pd[pd.length - 1][0] === '名簿外');
+    prow('テスト Hoang Nam')[6] === 4.2 && prow('テスト 確定')[3] === 1 && prow('テスト 区分')[2] === 4 && prow('テスト 共通人')[2] === 2 && pd[pd.length - 1][0] === '名簿外');
   { // 集計の P 列（今の農場）と同じ振り分け: checkSummary_ の期待値（personOf_）と、表の人の農場が一致
     const P = GP.rosterPeople_(), fo = (n, f) => { const p = GP.personOf_(n, f, P); return p ? p.farm : null; };
     ok('R2 人の特定: 名前＋農場 → 名前 → 旧名の完全一致 → 名簿外（共通行・部分一致は候補にしない）', fo('テスト 同名', 'テスト西') === 'テスト西' && fo('テスト 同名', 'テスト東') === 'テスト東' && fo('テスト 同名', '所属未確定') === 'テスト東' && fo('テスト 旧名', 'テスト東') === 'テスト東'
       && fo('テスト 旧', 'テスト東') === null && fo('（農場共通）', 'テスト北') === null && fo('テスト 外部', 'テスト南') === null && fo('テスト　Nam', 'テスト西') === 'テスト西');
   }
   const ft = FT().d;
-  ok('R3 農場別: 受験者数・全作業済み・一部済み・未採点・平均・採点済み/予定', ft.length === 2 + 4 && ft[2].join() === ['テスト東', 5, 2, 2, 1, 3.36, '6/13'].join() && ft[3].join() === ['テスト西', 3, 3, 0, 0, 3.5, '3/3'].join()
+  ok('R3 農場別: 受験者数・全作業済み・一部済み・未採点・平均・採点済み/予定', ft.length === 2 + 4 && ft[2].join() === ['テスト東', 5, 2, 2, 1, 3.36, '6/10'].join() && ft[3].join() === ['テスト西', 3, 3, 0, 0, 3.5, '3/3'].join()
     && ft[4].join() === ['テスト北', 1, 0, 1, 0, 4, '1/2'].join() && ft[5].join() === ['所属未確定', 0, 0, 0, 0, '', '0/0'].join());
   ok('R3 農場別: 順番=農場一覧の順・所属未確定は最後、名簿にだけある農場は一覧の後ろ', (() => { sheets['農場一覧'].d.length = 0; sheets['農場一覧'].getRange(1, 1, 3, 1).setValues([['農場'], ['所属未確定'], ['テスト西']]); GP.setup(); const f = FT().d.slice(2).map(r => r[0]); return f.join() === 'テスト西,テスト東,テスト北,所属未確定'; })());
   ok('R2/R3 表は自動の説明つき・文字として書く列は書式@・H列は yyyy-mm-dd', PT().nf['3,1'] === '@' && PT().nf['3,8'] === 'yyyy-mm-dd' && FT().nf['3,7'] === '@' && /手で直さない/.test(PT().d[0][0]) && /手で直さない/.test(FT().d[0][0]));

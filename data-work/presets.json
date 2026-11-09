@@ -1,10 +1,12 @@
 [
-  {"id": "farrowing-house", "name": "分娩舎", "name_en": "Farrowing barn", "name_vi": "Chuồng đẻ", "name_id": "Kandang beranak",
-   "works": ["feeding-daily", "nursing-feed", "castration", "sow-vaccine", "farrow-assist", "cross-foster", "disinfect"]},
   {"id": "stall-house", "name": "ストール舎", "name_en": "Stall barn", "name_vi": "Chuồng cá thể", "name_id": "Kandang stall",
-   "works": ["feeding-daily", "additive", "gilt-intake", "preg-check", "pms", "ai-insem"]},
+   "works": ["sow-vaccine", "standing-check", "feeding-daily", "preg-check"]},
+  {"id": "farrowing-house", "name": "分娩舎", "name_en": "Farrowing barn", "name_vi": "Chuồng đẻ", "name_id": "Kandang beranak",
+   "works": ["sow-vaccine", "castration", "farrow-assist", "disinfect"]},
   {"id": "nursery-house", "name": "子豚舎", "name_en": "Nursery barn", "name_vi": "Chuồng cai sữa", "name_id": "Kandang sapihan",
-   "works": ["fan-clean", "five-s", "treatment", "carcass", "washing", "lime"]},
+   "works": ["five-s", "treatment", "disinfect", "carcass"]},
   {"id": "finishing-house", "name": "肥育舎", "name_en": "Finishing barn", "name_vi": "Chuồng vỗ béo", "name_id": "Kandang penggemukan",
-   "works": ["feeding-daily", "feed-adjust-fin", "additive", "disinfect", "daily-report", "dung-removal", "lime", "body-measure"]}
+   "works": ["feeding-daily", "feed-adjust-fin", "disinfect", "five-s"]},
+  {"id": "ai-house", "name": "AI舎", "name_en": "AI barn", "name_vi": "Chuồng phối giống", "name_id": "Kandang kawin",
+   "works": ["disinfect", "five-s", "semen-check", "semen-mix"]}
 ]

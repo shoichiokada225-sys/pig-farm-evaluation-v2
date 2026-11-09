@@ -20,7 +20,7 @@
      （[{w:作業ID, a:種目ID, name?, kanten?, lv?:[5つ・''=変えない]}]。種目タブの読み取りで例外が出た時だけ aspects を付けない）
    - 受験者別（自動）・農場別（自動）（summary.persons）: GAS が値を書く。setup・submit 後・delete 後・管理入口 op=persons で更新 */
 
-const CODE_VERSION = '2026-11-04a';
+const CODE_VERSION = '2026-11-09a';
 /* アプリはこれを見て「シート側が古い（旧名・削除が使えない）」を警告する（js/contract.js の GAS_REQUIRED_CAPS） */
 const API_CAPABILITIES = ['roster', 'roster.aliases', 'roster.done', 'submit', 'submit.redoOf', 'delete', 'auth', 'dellog', 'submit.ver', 'submit.dups', 'submit.revive', 'roster.aspects', 'summary.persons'];
 const ROSTER_SHEET = '受験者';
@@ -192,7 +192,10 @@ function admin_(e) {
   try {
     if (e.parameter.op === 'check') return json_({ ok: true, version: CODE_VERSION, check: checkSummary_(), authFails: failCount_() });   // 読むだけ（集計タブの式の結果を検算）
     if (e.parameter.op === 'persons') return json_({ ok: true, version: CODE_VERSION, persons: updatePersonTabs_(true, false) });   // setup せず受験者別・農場別だけ更新
+    if (e.parameter.op === 'narrow' && e.parameter.dry === '1') return json_({ ok: true, version: CODE_VERSION, narrow: narrowRows_(false) });   // 書かずに結果だけ返す
     const r = setup();
+    // op=narrow: 個人別の作業を区分メモの区分名1つに置き換える（2026-11-09 試験区分の絞り込み）。元の作業は控えタブに残す
+    if (e.parameter.op === 'narrow') return json_({ ok: true, version: CODE_VERSION, setup: r, narrow: narrowRows_(true), persons: updatePersonTabs_(true, false) });
     // op=common: 既存の（農場共通）行の作業も COMMON_SEED に置き換える（試験区分の変更用）。置き換え前の作業を応答で返す（共通行に人の名前は無い）
     if (e.parameter.op === 'common') {
       const rep = typeof COMMON_SEED !== 'undefined' ? setCommonRows_(COMMON_SEED) : [];
@@ -203,6 +206,42 @@ function admin_(e) {
   } finally {
     lock.releaseLock();
   }
+}
+/* 2026-11-09 受験者タブの K 列（区分メモ）→ 試験区分名。ここに無いメモ（フリー等）の人は変えない */
+const NARROW_SHEET = '作業割当の控え';
+const NARROW_MAP = { 'ストール': 'ストール舎', 'ストール舎': 'ストール舎', '分娩舎': '分娩舎', '子豚舎': '子豚舎', '肥育': '肥育舎', '肥育舎': '肥育舎', 'AI舎': 'AI舎', 'AI': 'AI舎' };
+/* 作業が入っている人の行を、区分メモの区分名1つ（作業1）にする。作業2以降は空。実施済みの記録には触らない。
+   apply=false は書かない。書く前に元の作業を控えタブへ1行ずつ残す。すでに区分名だけの行は数えるだけ（2回実行しても控えは増えない） */
+function narrowRows_(apply) {
+  const ss = SpreadsheetApp.getActive(), rs = ss.getSheetByName(ROSTER_SHEET);
+  if (!rs || rs.getLastRow() < 2) return { error: 'no-roster' };
+  const c = rosterCols_(rs), w = rs.getLastColumn();
+  if (c.farm < 0 || !c.works.length) return { error: 'no-columns' };
+  const head = rs.getRange(1, 1, 1, w).getDisplayValues()[0].map(v => String(v || '').normalize('NFKC').trim());
+  let mc = head.findIndex(h => /^区分/.test(h));
+  if (mc < 0 && w > c.works[c.works.length - 1] + 1 && !head[c.works[c.works.length - 1] + 1]) mc = c.works[c.works.length - 1] + 1;   // 見出しの無いメモ列（作業8の右隣）
+  if (mc < 0) return { error: 'no-memo-column', head: head };
+  const vals = rs.getRange(2, 1, rs.getLastRow() - 1, w).getDisplayValues();
+  const out = { memoCol: mc + 1, changed: {}, already: 0, empty: 0, skipped: [] };
+  const todo = [];
+  vals.forEach((r, i) => {
+    const name = String(r[c.name] || '').trim();
+    if (!name || isCommonName_(name)) return;
+    const works = c.works.map(k => String(r[k] || '').trim()).filter(Boolean);
+    if (!works.length) { out.empty++; return; }
+    const memo = String(r[mc] || '').normalize('NFKC').trim(), pr = NARROW_MAP[memo];
+    if (!pr || !resolveWorkCell_(pr)) { out.skipped.push({ row: i + 2, name: name, farm: r[c.farm], memo: memo, works: works.length }); return; }
+    if (works.length === 1 && works[0] === pr) { out.already++; return; }
+    out.changed[pr] = (out.changed[pr] || 0) + 1;
+    todo.push({ row: i + 2, pr: pr, r: r, works: c.works.map(k => r[k]) });
+  });
+  if (!apply || !todo.length) return out;
+  let bk = ss.getSheetByName(NARROW_SHEET);
+  if (!bk) { bk = ss.insertSheet(NARROW_SHEET); bk.getRange(1, 1, 1, 4 + c.works.length).setValues([['控えた日時', '行', '農場', '被評価者'].concat(c.works.map((_, j) => '作業' + (j + 1)))]); }
+  const at = new Date().toISOString();
+  todo.forEach(t => bk.getRange(bk.getLastRow() + 1, 1, 1, 4 + t.works.length).setValues([[at, t.row, t.r[c.farm], t.r[c.name]].concat(t.works.map(v => "'" + v))]));
+  todo.forEach(t => c.works.forEach((k, j) => rs.getRange(t.row, k + 1, 1, 1).setValues([[j === 0 ? t.pr : '']])));
+  return out;
 }
 /* （農場共通）行の名前か。アプリの isCommonRow（js/sync.js）と同じ: 全角半角・空白をそろえ、括弧の種類（【】［］など）は問わない */
 function isCommonName_(v) {
@@ -412,7 +451,7 @@ function cleanId_(v) { return String(v || '').replace(/[^a-zA-Z0-9_\-]/g, '_'); 
    「評価者タブ」とみなして再送・削除のたびに行を消してしまう（G17-1）。複製タブは sheetId が変わるので台帳に載らない。
    台帳がまだ無い時（この版を入れた直後・文書を複製した時）だけ、見出し14列が HEAD と一致し式でないタブを登録する（移行） */
 const EVAL_TABS_KEY = 'HSS_EVAL_TAB_IDS';
-function isReserved_(nm) { return nm === ROSTER_SHEET || nm === WORKS_SHEET || nm === FARMS_SHEET || nm === DELLOG_SHEET || nm === ASPECT_SHEET || nm === PERSON_SHEET || nm === FARMSUM_SHEET; }
+function isReserved_(nm) { return nm === NARROW_SHEET || nm === ROSTER_SHEET ||nm === WORKS_SHEET || nm === FARMS_SHEET || nm === DELLOG_SHEET || nm === ASPECT_SHEET || nm === PERSON_SHEET || nm === FARMSUM_SHEET; }
 function isEvalHead_(sh) {
   if (sh.getLastColumn() < HEAD_BASE.length) return false;
   const rg = sh.getRange(1, 1, 1, HEAD_BASE.length);
