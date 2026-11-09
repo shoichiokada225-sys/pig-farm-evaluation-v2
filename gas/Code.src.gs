@@ -20,7 +20,7 @@
      （[{w:作業ID, a:種目ID, name?, kanten?, lv?:[5つ・''=変えない]}]。種目タブの読み取りで例外が出た時だけ aspects を付けない）
    - 受験者別（自動）・農場別（自動）（summary.persons）: GAS が値を書く。setup・submit 後・delete 後・管理入口 op=persons で更新 */
 
-const CODE_VERSION = '2026-11-09a';
+const CODE_VERSION = '2026-11-09b';
 /* アプリはこれを見て「シート側が古い（旧名・削除が使えない）」を警告する（js/contract.js の GAS_REQUIRED_CAPS） */
 const API_CAPABILITIES = ['roster', 'roster.aliases', 'roster.done', 'submit', 'submit.redoOf', 'delete', 'auth', 'dellog', 'submit.ver', 'submit.dups', 'submit.revive', 'roster.aspects', 'summary.persons'];
 const ROSTER_SHEET = '受験者';
@@ -209,7 +209,7 @@ function admin_(e) {
 }
 /* 2026-11-09 受験者タブの K 列（区分メモ）→ 試験区分名。ここに無いメモ（フリー等）の人は変えない */
 const NARROW_SHEET = '作業割当の控え';
-const NARROW_MAP = { 'ストール': 'ストール舎', 'ストール舎': 'ストール舎', '分娩舎': '分娩舎', '子豚舎': '子豚舎', '肥育': '肥育舎', '肥育舎': '肥育舎', 'AI舎': 'AI舎', 'AI': 'AI舎' };
+const NARROW_MAP = { 'ストール': 'ストール舎', 'ストール舎': 'ストール舎', '分娩舎': '分娩舎', '子豚舎': '子豚舎', '肥育': '肥育舎', '肥育舎': '肥育舎', 'AI舎': 'AI舎', 'AI': 'AI舎', 'フリー': '子豚舎', '環境・仔豚': '子豚舎' };
 /* 作業が入っている人の行を、区分メモの区分名1つ（作業1）にする。作業2以降は空。実施済みの記録には触らない。
    apply=false は書かない。書く前に元の作業を控えタブへ1行ずつ残す。すでに区分名だけの行は数えるだけ（2回実行しても控えは増えない） */
 function narrowRows_(apply) {

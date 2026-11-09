@@ -293,13 +293,13 @@ ok('シード無し: 農場一覧=受験者タブの農場＋所属未確定（�
   const rd = sheets['受験者'].d, wn = wc.length, memoAt = wc[wn - 1] + 1;
   rd[0][memoAt] = '区分（メモ）';
   const mkP = (f, n, ws, m) => { const x = new Array(memoAt + 1).fill(''); x[0] = f; x[1] = n; ws.forEach((v, j) => { x[wc[j]] = v; }); x[memoAt] = m; rd.push(x); return x; };
-  const pSt = mkP('テスト東', 'テスト 絞1', ['給餌', '消毒'], 'ストール'), pFin = mkP('テスト東', 'テスト 絞2', ['給餌'], '肥育'), pFree = mkP('テスト東', 'テスト 絞3', ['給餌', '消毒'], 'フリー'), pEmp = mkP('テスト東', 'テスト 絞4', [], 'ストール');
+  const pSt = mkP('テスト東', 'テスト 絞1', ['給餌', '消毒'], 'ストール'), pFin = mkP('テスト東', 'テスト 絞2', ['給餌'], '肥育'), pFree = mkP('テスト東', 'テスト 絞3', ['給餌', '消毒'], '未定メモ'), pEmp = mkP('テスト東', 'テスト 絞4', [], 'ストール');
   const nar = o => JSON.parse(G6.doGet({ parameter: { action: 'admin', token: TOK, op: 'narrow', ...o } }).s);
   const snap = JSON.stringify(rd), dry = nar({ dry: '1' });
-  ok('admin op=narrow dry: 書かずに件数と対象外を返す', dry.ok && dry.narrow.changed['ストール舎'] === 1 && dry.narrow.changed['肥育舎'] === 1 && dry.narrow.skipped.length === 1 && dry.narrow.skipped[0].memo === 'フリー' && JSON.stringify(rd) === snap && !sheets['作業割当の控え']);
+  ok('admin op=narrow dry: 書かずに件数と対象外を返す', dry.ok && dry.narrow.changed['ストール舎'] === 1 && dry.narrow.changed['肥育舎'] === 1 && dry.narrow.skipped.length === 1 && dry.narrow.skipped[0].memo === '未定メモ' && JSON.stringify(rd) === snap && !sheets['作業割当の控え']);
   const nr = nar({});
   ok('admin op=narrow: 区分名1つに置き換え作業2以降は空', nr.ok && pSt[wc[0]] === 'ストール舎' && wc.slice(1).every(i => pSt[i] === '') && pFin[wc[0]] === '肥育舎');
-  ok('admin op=narrow: 対応しないメモ・作業が空の人は変えない', pFree[wc[0]] === '給餌' && pEmp[wc[0]] === '' && pFree[memoAt] === 'フリー');
+  ok('admin op=narrow: 対応しないメモ・作業が空の人は変えない', pFree[wc[0]] === '給餌' && pEmp[wc[0]] === '' && pFree[memoAt] === '未定メモ');
   ok('admin op=narrow: 元の作業を控えタブに残す', sheets['作業割当の控え'].d.length === 3 && sheets['作業割当の控え'].d[1].includes('テスト 絞1') && sheets['作業割当の控え'].d[1].includes("'給餌"));
   const nr2 = nar({});
   ok('admin op=narrow: 2回目は変えず控えも増えない', nr2.ok && nr2.narrow.already === 2 && !Object.keys(nr2.narrow.changed).length && sheets['作業割当の控え'].d.length === 3);
