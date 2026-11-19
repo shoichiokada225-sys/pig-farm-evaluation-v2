@@ -6,7 +6,24 @@ const ROSTER_KEY='jitsugi_v2_roster';
    ＝一部だけ採点して保存しても、残りの作業が「残りの作業」として出る。名簿の作業（シート）が入ったら、そちらを使う */
 const ASSIGN_KEY='jitsugi_v2_assign';
 function assignKey(name,farm){return nmKey(name)+'\u0001'+normFarm(farm)}
-function getAssign(){try{const o=JSON.parse(localStorage.getItem(ASSIGN_KEY));return o&&typeof o==='object'&&!Array.isArray(o)?o:{}}catch{return{}}}
+/* 2026-11-09（v45）に試験区分を各4作業へ絞る前の区分ボタンで覚えた作業一式（下の旧い中身と同じ組み合わせ）は、今の区分の作業一式として読む
+   ＝絞り込み前に区分を押した端末でも、その人の作業が今の区分（4作業）になる。評価者が作業を足し引きした割り当て（旧い一式と違う組み合わせ）は変えない */
+const OLD_PRESET_SETS=[
+  ['farrowing-house',['feeding-daily','nursing-feed','castration','sow-vaccine','farrow-assist','cross-foster','disinfect']],
+  ['stall-house',['feeding-daily','additive','gilt-intake','preg-check','pms','ai-insem']],
+  ['nursery-house',['fan-clean','five-s','treatment','carcass','washing','lime']],
+  ['finishing-house',['feeding-daily','feed-adjust-fin','additive','disinfect','daily-report','dung-removal','lime','body-measure']],
+  ['finishing-house',['feeding-daily','feed-adjust','additive','disinfect','daily-report','dung-removal','lime','body-measure']],   // 10-11 の最初の版（エサ調整が母豚用）
+];
+function upgradeAssign(a){
+  if(!Array.isArray(a))return a;
+  const key=x=>[...new Set(x)].sort().join('\u0001'),k=key(a);
+  const hit=OLD_PRESET_SETS.find(o=>key(o[1])===k);
+  const p=hit&&typeof presetById==='function'?presetById(hit[0]):null;
+  const ws=p&&Array.isArray(p.works)?p.works.filter(w=>typeof workById!=='function'||workById(w)):[];
+  return ws.length?ws:a;
+}
+function getAssign(){try{const o=JSON.parse(localStorage.getItem(ASSIGN_KEY));if(!o||typeof o!=='object'||Array.isArray(o))return{};Object.keys(o).forEach(k=>{o[k]=upgradeAssign(o[k])});return o}catch{return{}}}
 /* p=getRoster() の人。ids=作業ID。merge=今ある割り当てに足す（false=入れ替え）。覚えた時 true */
 function setAssign(p,ids,merge){
   if(!p||p.common||(p.unresolved&&p.unresolved.length)||(p.works.length&&!p.localWorks))return false;

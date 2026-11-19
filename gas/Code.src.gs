@@ -20,7 +20,7 @@
      （[{w:作業ID, a:種目ID, name?, kanten?, lv?:[5つ・''=変えない]}]。種目タブの読み取りで例外が出た時だけ aspects を付けない）
    - 受験者別（自動）・農場別（自動）（summary.persons）: GAS が値を書く。setup・submit 後・delete 後・管理入口 op=persons で更新 */
 
-const CODE_VERSION = '2026-11-09b';
+const CODE_VERSION = '2026-11-19a';
 /* アプリはこれを見て「シート側が古い（旧名・削除が使えない）」を警告する（js/contract.js の GAS_REQUIRED_CAPS） */
 const API_CAPABILITIES = ['roster', 'roster.aliases', 'roster.done', 'submit', 'submit.redoOf', 'delete', 'auth', 'dellog', 'submit.ver', 'submit.dups', 'submit.revive', 'roster.aspects', 'summary.persons'];
 const ROSTER_SHEET = '受験者';
@@ -192,7 +192,9 @@ function admin_(e) {
   try {
     if (e.parameter.op === 'check') return json_({ ok: true, version: CODE_VERSION, check: checkSummary_(), authFails: failCount_() });   // 読むだけ（集計タブの式の結果を検算）
     if (e.parameter.op === 'persons') return json_({ ok: true, version: CODE_VERSION, persons: updatePersonTabs_(true, false) });   // setup せず受験者別・農場別だけ更新
-    if (e.parameter.op === 'narrow' && e.parameter.dry === '1') return json_({ ok: true, version: CODE_VERSION, narrow: narrowRows_(false) });   // 書かずに結果だけ返す
+    // dry が付いていれば書かずに結果だけ返す（dry=1・true・yes など。書くのは dry が無い・空・0・false・no・off の時だけ＝下見のつもりで書き換えない）
+    const dryV = String(e.parameter.dry == null ? '' : e.parameter.dry).trim().toLowerCase();
+    if (e.parameter.op === 'narrow' && dryV !== '' && !/^(0|false|no|off)$/.test(dryV)) return json_({ ok: true, version: CODE_VERSION, dry: true, narrow: narrowRows_(false) });
     const r = setup();
     // op=narrow: 個人別の作業を区分メモの区分名1つに置き換える（2026-11-09 試験区分の絞り込み）。元の作業は控えタブに残す
     if (e.parameter.op === 'narrow') return json_({ ok: true, version: CODE_VERSION, setup: r, narrow: narrowRows_(true), persons: updatePersonTabs_(true, false) });

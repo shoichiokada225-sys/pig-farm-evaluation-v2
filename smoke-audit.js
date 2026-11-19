@@ -614,6 +614,62 @@ const scoreWork = (p, wid, s, n) => p.evaluate(([wid, s, n]) => { [...document.q
     await browser.close();
   }
 
+  console.log('[V] 区分を各4作業に絞る前（v44 まで）に端末が覚えた区分の作業一式は、今の区分として読む（2026-11-19）');
+  {
+    const F = '所属未確定';
+    const { browser, page, st } = await open({ roster: [
+      { name: 'テスト 旧肥育', farm: F, works: [] }, { name: 'テスト 旧肥育初版', farm: F, works: [] }, { name: 'テスト 旧分娩', farm: F, works: [] },
+      { name: 'テスト 旧ストール', farm: F, works: [] }, { name: 'テスト 旧子豚', farm: F, works: [] },
+      { name: 'テスト 手選び', farm: F, works: [] }, { name: 'テスト 新区分', farm: F, works: [] }, { name: 'テスト 名簿あり', farm: F, works: ['給餌'] }] });
+    const OLD = {   // 10-11〜11-08 の区分の中身（git 664f16b / f5c9a2b の data-work/presets.json）
+      fin: ['feeding-daily', 'feed-adjust-fin', 'additive', 'disinfect', 'daily-report', 'dung-removal', 'lime', 'body-measure'],
+      fin0: ['feeding-daily', 'feed-adjust', 'additive', 'disinfect', 'daily-report', 'dung-removal', 'lime', 'body-measure'],
+      far: ['feeding-daily', 'nursing-feed', 'castration', 'sow-vaccine', 'farrow-assist', 'cross-foster', 'disinfect'],
+      stl: ['feeding-daily', 'additive', 'gilt-intake', 'preg-check', 'pms', 'ai-insem'],
+      nur: ['fan-clean', 'five-s', 'treatment', 'carcass', 'washing', 'lime'] };
+    await page.evaluate(([OLD, F]) => {
+      const o = {}, k = n => assignKey(n, F);
+      o[k('テスト 旧肥育')] = OLD.fin; o[k('テスト 旧肥育初版')] = OLD.fin0.slice().reverse(); o[k('テスト 旧分娩')] = OLD.far; o[k('テスト 旧ストール')] = OLD.stl; o[k('テスト 旧子豚')] = OLD.nur;
+      o[k('テスト 手選び')] = OLD.fin.concat(['five-s']); o[k('テスト 新区分')] = presetById('ai-house').works.slice(); o[k('テスト 名簿あり')] = OLD.fin;
+      localStorage.setItem('jitsugi_v2_assign', JSON.stringify(o));
+    }, [OLD, F]);
+    await page.reload(); await page.waitForTimeout(600);
+    const P = id => page.evaluate(id => presetById(id).works, id);
+    const W = n => page.evaluate(n => { const p = getRoster().list.find(x => x.name === n); return JSON.stringify({ w: p.works, local: !!p.localWorks }); }, n);
+    const now = { fin: await P('finishing-house'), far: await P('farrowing-house'), stl: await P('stall-house'), nur: await P('nursery-house'), ai: await P('ai-house') };
+    ok('V1: 旧い肥育舎の8作業 → 今の肥育舎の4作業', now.fin.length === 4 && await W('テスト 旧肥育') === JSON.stringify({ w: now.fin, local: true }));
+    ok('V2: 10-11 の最初の版（母豚用エサ調整・順番ちがい）→ 今の肥育舎', await W('テスト 旧肥育初版') === JSON.stringify({ w: now.fin, local: true }));
+    ok('V3: 旧い分娩舎7・ストール舎6・子豚舎6 → 今の各4作業', await W('テスト 旧分娩') === JSON.stringify({ w: now.far, local: true }) && await W('テスト 旧ストール') === JSON.stringify({ w: now.stl, local: true }) && await W('テスト 旧子豚') === JSON.stringify({ w: now.nur, local: true }));
+    ok('V4: 評価者が作業を足した割り当て（旧い一式＋5S）は変えない', await W('テスト 手選び') === JSON.stringify({ w: OLD.fin.concat(['five-s']), local: true }));
+    ok('V5: 今の区分の割り当てはそのまま', await W('テスト 新区分') === JSON.stringify({ w: now.ai, local: true }));
+    ok('V6: 名簿に作業がある人は端末の割り当てを受けない', await W('テスト 名簿あり') === JSON.stringify({ w: ['feeding-daily'], local: false }));
+    // 旧い一式から1つ引いた形・壊れた値は、読み替えずそのまま（例外も出さない）
+    const raw = await page.evaluate(([OLD]) => {
+      const keep = localStorage.getItem('jitsugi_v2_assign'), out = {};
+      const cases = { minus: { a: OLD.fin.slice(1) }, nul: { a: null }, unk: { a: ['zzz'] }, inNull: { a: [null] }, str: { a: 'feeding-daily' }, obj: { a: { x: 1 } }, emp: { a: [] } };
+      try {
+        Object.keys(cases).forEach(k => { localStorage.setItem('jitsugi_v2_assign', JSON.stringify(cases[k])); out[k] = JSON.stringify(getAssign()) === JSON.stringify(cases[k]); getRoster(); });
+        ['[]', '"s"', 'null', '{{', '[1,2]'].forEach((v, i) => { localStorage.setItem('jitsugi_v2_assign', v); out['top' + i] = JSON.stringify(getAssign()) === '{}'; getRoster(); });
+      } catch (e) { out.err = String(e); }
+      localStorage.setItem('jitsugi_v2_assign', keep);
+      return out;
+    }, [OLD]);
+    ok('V6b: 旧い一式から1つ引いた形・壊れた値（null・未知の作業・文字列・空など12通り）はそのまま・例外なし' + (raw.err ? ' ' + raw.err : ''), !raw.err && Object.keys(raw).length === 12 && Object.values(raw).every(v => v === true));
+    await page.evaluate(F => selectFarm(F), F); await page.waitForTimeout(150);
+    await pick(page, 'テスト 旧肥育'); await page.waitForTimeout(300);
+    ok('V7: 選ぶと今の4作業・カード20枚（旧い8作業40枚にならない）', JSON.stringify(await page.evaluate(() => selWorks)) === JSON.stringify(now.fin) && await page.locator('#cards .ec').count() === 20);
+    await scoreWork(page, 'feeding-daily', 4); await page.waitForTimeout(100);
+    await page.locator('#btnSave').tap(); await page.waitForTimeout(500);
+    const pg = await page.evaluate(() => { const ro = getRoster().list, p = ro.find(x => x.name === 'テスト 旧肥育'), g = eeProgress(p, examRecs(), ro); return { done: g.done, total: g.total }; });
+    ok('V8: 一部だけ保存すると 1/4（残りは今の区分の3作業）', (await recs(page)).length === 1 && pg.done === 1 && pg.total === 4);
+    await pick(page, 'テスト 旧分娩'); await page.waitForTimeout(300);
+    await page.evaluate(() => applyPreset('farrowing-house')); await page.waitForTimeout(200);   // 作業のある人では区分ボタンの段は閉じている＝関数で押す
+    const saved =await page.evaluate(F => JSON.parse(localStorage.getItem('jitsugi_v2_assign'))[assignKey('テスト 旧肥育', F)], F);
+    ok('V9: 次に割り当てを書いた時、端末の保存も今の区分に直る', JSON.stringify(saved) === JSON.stringify(now.fin));
+    ok('JSエラーなし（旧い割り当ての読み替え）', !st.errors.length);
+    await browser.close();
+  }
+
   console.log('[P] data-1: No.の無い作業に「No.」「no」「0」だけのセルを当てない');
   {
     const { browser, page } = await open();

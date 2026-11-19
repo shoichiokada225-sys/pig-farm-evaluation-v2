@@ -297,12 +297,16 @@ ok('シード無し: 農場一覧=受験者タブの農場＋所属未確定（�
   const nar = o => JSON.parse(G6.doGet({ parameter: { action: 'admin', token: TOK, op: 'narrow', ...o } }).s);
   const snap = JSON.stringify(rd), dry = nar({ dry: '1' });
   ok('admin op=narrow dry: 書かずに件数と対象外を返す', dry.ok && dry.narrow.changed['ストール舎'] === 1 && dry.narrow.changed['肥育舎'] === 1 && dry.narrow.skipped.length === 1 && dry.narrow.skipped[0].memo === '未定メモ' && JSON.stringify(rd) === snap && !sheets['作業割当の控え']);
+  // 2026-11-19: dry=true・yes などでも下見（以前は dry=1 以外だと、下見のつもりで本当に書き換わった）
+  ['true', 'TRUE', 'yes', ' 1 ', '2'].forEach(v => { const d = nar({ dry: v }); ok('admin op=narrow dry=' + JSON.stringify(v) + ': 下見として扱い書かない', d.ok && d.dry === true && !('setup' in d) && d.narrow.changed['ストール舎'] === 1 && JSON.stringify(rd) === snap && !sheets['作業割当の控え']); });
   const nr = nar({});
+  ok('admin op=narrow: dry なしは実行（setup も走る）', nr.ok && !nr.dry && 'setup' in nr);
   ok('admin op=narrow: 区分名1つに置き換え作業2以降は空', nr.ok && pSt[wc[0]] === 'ストール舎' && wc.slice(1).every(i => pSt[i] === '') && pFin[wc[0]] === '肥育舎');
   ok('admin op=narrow: 対応しないメモ・作業が空の人は変えない', pFree[wc[0]] === '給餌' && pEmp[wc[0]] === '' && pFree[memoAt] === '未定メモ');
   ok('admin op=narrow: 元の作業を控えタブに残す', sheets['作業割当の控え'].d.length === 3 && sheets['作業割当の控え'].d[1].includes('テスト 絞1') && sheets['作業割当の控え'].d[1].includes("'給餌"));
   const nr2 = nar({});
   ok('admin op=narrow: 2回目は変えず控えも増えない', nr2.ok && nr2.narrow.already === 2 && !Object.keys(nr2.narrow.changed).length && sheets['作業割当の控え'].d.length === 3);
+  ['0', 'false', 'no', 'off', ''].forEach(v => { const d = nar({ dry: v }); ok('admin op=narrow dry=' + JSON.stringify(v) + ': 下見にしない（実行側・2回目なので変化なし）', d.ok && !d.dry && 'setup' in d && d.narrow.already === 2 && sheets['作業割当の控え'].d.length === 3); });
   ok('admin op=narrow: 合言葉違いは拒否', JSON.parse(G6.doGet({ parameter: { action: 'admin', token: 'x', op: 'narrow' } }).s).error === 'forbidden');
   rd.splice(rd.indexOf(pSt), 4);
 }
